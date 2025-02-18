@@ -1,7 +1,14 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import Alert from '../Components/Alert';
 
 export default function Welcome({ auth, laravelVersion, phpVersion, flash }) {
+
+    const { post } = useForm();
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        post(route('logout'));
+    };
 
     return (
         <>
@@ -31,12 +38,22 @@ export default function Welcome({ auth, laravelVersion, phpVersion, flash }) {
                             </div>
                             <nav className="-mx-3 flex flex-1 justify-end">
                                 {auth.user ? (
+                                    <>
                                     <Link
                                         href={route('dashboard')}
                                         className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                     >
                                         Dashboard
                                     </Link>
+                                    <form onSubmit={handleLogout}>
+                                    <button
+                                        type="submit"
+                                        className="ml-4 rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                    >
+                                        Log Out
+                                    </button>
+                                </form>
+                                </>
                                 ) : (
                                     <>
                                         <Link
