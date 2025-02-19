@@ -3,22 +3,23 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
 
-export default function CreateProduct({ categories = [], sizes = [], colors = [] }) {
-    const { data, setData, post, errors } = useForm({
-        name: '',
-        description: '',
-        price: '',
-        stock: '',
-        categories: [],
-        sizes: [],
-        colors: [],
+export default function EditProduct({ product, categories = [], sizes = [], colors = [] }) {
+    const { data, setData, put, errors } = useForm({
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        stock: product.stock,
+        categories: product.categories.map(category => category.id.toString()),
+        sizes: product.sizes.map(size => size.id.toString()),
+        colors: product.colors.map(color => color.id.toString()),
     });
 
     useEffect(() => {
+        console.log('Product:', product);
         console.log('Categories:', categories);
         console.log('Sizes:', sizes);
         console.log('Colors:', colors);
-    }, [categories, sizes, colors]);
+    }, [product, categories, sizes, colors]);
 
     const handleChange = (e) => {
         const key = e.target.name;
@@ -37,7 +38,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route('products.store'));
+        put(route('products.update', product.id));
     };
 
     return (
@@ -45,7 +46,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                        Crear Producto
+                        Editar Producto
                     </h2>
                     <Link
                         href={route('products.index')}
@@ -56,7 +57,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                 </div>
             }
         >
-            <Head title="Crear Producto" />
+            <Head title="Editar Producto" />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -65,7 +66,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700">Titulo</label>
+                                        <label className="block text-sm font-medium text-gray-700">Nombre</label>
                                         <input
                                             type="text"
                                             name="name"
@@ -124,6 +125,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                                     value={category.id}
                                                     label={category.name}
                                                     onChange={handleChange}
+                                                    checked={data.categories.includes(category.id.toString())}
                                                 />
                                             ))}
                                         </div>
@@ -140,6 +142,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                                     value={size.id}
                                                     label={size.name}
                                                     onChange={handleChange}
+                                                    checked={data.sizes.includes(size.id.toString())}
                                                 />
                                             ))}
                                         </div>
@@ -158,6 +161,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                                     value={color.id}
                                                     label={color.name}
                                                     onChange={handleChange}
+                                                    checked={data.colors.includes(color.id.toString())}
                                                 />
                                             ))}
                                         </div>
@@ -169,7 +173,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                         type="submit"
                                         className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition"
                                     >
-                                        Crear Producto
+                                        Actualizar Producto
                                     </button>
                                 </div>
                             </form>

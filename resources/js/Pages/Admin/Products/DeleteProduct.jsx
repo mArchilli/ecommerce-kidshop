@@ -3,41 +3,27 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
 
-export default function CreateProduct({ categories = [], sizes = [], colors = [] }) {
-    const { data, setData, post, errors } = useForm({
-        name: '',
-        description: '',
-        price: '',
-        stock: '',
-        categories: [],
-        sizes: [],
-        colors: [],
+export default function DeleteProduct({ product, categories = [], sizes = [], colors = [] }) {
+    const { data, setData, delete: destroy, errors } = useForm({
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        stock: product.stock,
+        categories: product.categories.map(category => category.id.toString()),
+        sizes: product.sizes.map(size => size.id.toString()),
+        colors: product.colors.map(color => color.id.toString()),
     });
 
     useEffect(() => {
+        console.log('Product:', product);
         console.log('Categories:', categories);
         console.log('Sizes:', sizes);
         console.log('Colors:', colors);
-    }, [categories, sizes, colors]);
-
-    const handleChange = (e) => {
-        const key = e.target.name;
-        const value = e.target.value;
-
-        if (e.target.type === 'checkbox') {
-            if (e.target.checked) {
-                setData(key, [...data[key], value]);
-            } else {
-                setData(key, data[key].filter((item) => item !== value));
-            }
-        } else {
-            setData(key, value);
-        }
-    };
+    }, [product, categories, sizes, colors]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route('products.store'));
+        destroy(route('products.destroy', product.id));
     };
 
     return (
@@ -45,7 +31,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                        Crear Producto
+                        Eliminar Producto
                     </h2>
                     <Link
                         href={route('products.index')}
@@ -56,7 +42,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                 </div>
             }
         >
-            <Head title="Crear Producto" />
+            <Head title="Eliminar Producto" />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -65,14 +51,13 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700">Titulo</label>
+                                        <label className="block text-sm font-medium text-gray-700">Nombre</label>
                                         <input
                                             type="text"
                                             name="name"
                                             value={data.name}
-                                            onChange={handleChange}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                            required
+                                            readOnly
+                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
                                         />
                                         {errors.name && <div className="text-red-600">{errors.name}</div>}
                                     </div>
@@ -81,8 +66,8 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                         <textarea
                                             name="description"
                                             value={data.description}
-                                            onChange={handleChange}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            readOnly
+                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
                                         ></textarea>
                                         {errors.description && <div className="text-red-600">{errors.description}</div>}
                                     </div>
@@ -94,9 +79,8 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                             type="number"
                                             name="price"
                                             value={data.price}
-                                            onChange={handleChange}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                            required
+                                            readOnly
+                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
                                         />
                                         {errors.price && <div className="text-red-600">{errors.price}</div>}
                                     </div>
@@ -106,8 +90,8 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                             type="number"
                                             name="stock"
                                             value={data.stock}
-                                            onChange={handleChange}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            readOnly
+                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
                                         />
                                         {errors.stock && <div className="text-red-600">{errors.stock}</div>}
                                     </div>
@@ -123,7 +107,9 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                                     name="categories"
                                                     value={category.id}
                                                     label={category.name}
-                                                    onChange={handleChange}
+                                                    onChange={() => {}}
+                                                    checked={data.categories.includes(category.id.toString())}
+                                                    readOnly
                                                 />
                                             ))}
                                         </div>
@@ -139,7 +125,9 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                                     name="sizes"
                                                     value={size.id}
                                                     label={size.name}
-                                                    onChange={handleChange}
+                                                    onChange={() => {}}
+                                                    checked={data.sizes.includes(size.id.toString())}
+                                                    readOnly
                                                 />
                                             ))}
                                         </div>
@@ -157,7 +145,9 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                                     name="colors"
                                                     value={color.id}
                                                     label={color.name}
-                                                    onChange={handleChange}
+                                                    onChange={() => {}}
+                                                    checked={data.colors.includes(color.id.toString())}
+                                                    readOnly
                                                 />
                                             ))}
                                         </div>
@@ -167,9 +157,9 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                 <div className="flex items-center justify-end mt-4">
                                     <button
                                         type="submit"
-                                        className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition"
+                                        className="inline-flex items-center px-4 py-2 bg-red-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-red-900 focus:ring focus:ring-red-300 disabled:opacity-25 transition"
                                     >
-                                        Crear Producto
+                                        Eliminar Producto
                                     </button>
                                 </div>
                             </form>

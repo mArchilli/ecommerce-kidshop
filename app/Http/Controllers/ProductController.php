@@ -82,6 +82,19 @@ class ProductController extends Controller
         return redirect()->route('products.index');
     }
 
+    public function delete(Product $product)
+    {
+        $categories = Category::all();
+        $sizes = Size::all();
+        $colors = Color::all();
+        return Inertia::render('Admin/Products/DeleteProduct', [
+            'product' => $product->load(['categories', 'sizes', 'colors']),
+            'categories' => $categories,
+            'sizes' => $sizes,
+            'colors' => $colors,
+        ]);
+    }
+
     public function destroy(Product $product)
     {
         $product->delete();
