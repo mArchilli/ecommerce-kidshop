@@ -4,6 +4,7 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SizeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -47,6 +48,14 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
     Route::put('/colors/{color}', [ColorController::class, 'update'])->name('colors.update');
     Route::delete('/colors/{color}', [ColorController::class, 'destroy'])->name('colors.destroy');
     Route::get('/colors/{color}/delete', [ColorController::class, 'delete'])->name('colors.delete');
+
+    Route::get('/sizes', [SizeController::class, 'index'])->name('sizes.index');
+    Route::get('/sizes/create', [SizeController::class, 'create'])->name('sizes.create');
+    Route::post('/sizes', [SizeController::class, 'store'])->name('sizes.store');
+    Route::get('/sizes/{size}/edit', [SizeController::class, 'edit'])->name('sizes.edit');
+    Route::put('/sizes/{size}', [SizeController::class, 'update'])->name('sizes.update');
+    Route::delete('/sizes/{size}', [SizeController::class, 'destroy'])->name('sizes.destroy');
+    Route::get('/sizes/{size}/delete', [SizeController::class, 'delete'])->name('sizes.delete');
 });
 
 
