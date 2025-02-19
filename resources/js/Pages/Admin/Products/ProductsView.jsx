@@ -4,7 +4,7 @@ import { Head, Link } from '@inertiajs/react';
 
 export default function ProductsView({ products }) {
     useEffect(() => {
-        console.log(products);
+        //console.log(products);
     }, [products]);
 
     return (
