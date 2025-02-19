@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
@@ -38,6 +39,14 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
     Route::get('/categories/{category}/delete', [CategoryController::class, 'delete'])->name('categories.delete');
+
+    Route::get('/colors', [ColorController::class, 'index'])->name('colors.index');
+    Route::get('/colors/create', [ColorController::class, 'create'])->name('colors.create');
+    Route::post('/colors', [ColorController::class, 'store'])->name('colors.store');
+    Route::get('/colors/{color}/edit', [ColorController::class, 'edit'])->name('colors.edit');
+    Route::put('/colors/{color}', [ColorController::class, 'update'])->name('colors.update');
+    Route::delete('/colors/{color}', [ColorController::class, 'destroy'])->name('colors.destroy');
+    Route::get('/colors/{color}/delete', [ColorController::class, 'delete'])->name('colors.delete');
 });
 
 
