@@ -8,6 +8,7 @@ use App\Models\Size;
 use App\Models\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -16,6 +17,17 @@ class ProductController extends Controller
     {
         $products = Product::with(['categories', 'sizes', 'colors'])->get();
         return Inertia::render('Admin/Products/ProductsView', ['products' => $products]);
+    }
+
+    public function showProducts()
+    {
+        $products = Product::with(['categories', 'sizes', 'colors'])->get();
+        return Inertia::render('Welcome', [
+            'products' => $products,
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'flash' => session('flash'),
+        ]);
     }
 
     public function create()
