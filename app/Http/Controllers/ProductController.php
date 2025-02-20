@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Size;
 use App\Models\Color;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -39,9 +40,15 @@ class ProductController extends Controller
             'categories' => 'array',
             'sizes' => 'array',
             'colors' => 'array',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $product = Product::create($request->only(['name', 'description', 'price', 'stock']));
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
+
+        $product = Product::create($request->only(['name', 'description', 'price', 'stock']) + ['image' => $imagePath]);
         $product->categories()->sync($request->categories);
         $product->sizes()->sync($request->sizes);
         $product->colors()->sync($request->colors);
@@ -72,16 +79,24 @@ class ProductController extends Controller
             'categories' => 'array',
             'sizes' => 'array',
             'colors' => 'array',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $product->update($request->only(['name', 'description', 'price', 'stock']));
+        $imagePath = $product->image;
+        if ($request->hasFile('image')) {
+            if ($imagePath) {
+                Storage::disk('public')->delete($imagePath);
+            }
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
+
+        $product->update($request->only(['name', 'description', 'price', 'stock']) + ['image' => $imagePath]);
         $product->categories()->sync($request->categories);
         $product->sizes()->sync($request->sizes);
         $product->colors()->sync($request->colors);
 
         return redirect()->route('products.index');
     }
-
     public function delete(Product $product)
     {
         $categories = Category::all();

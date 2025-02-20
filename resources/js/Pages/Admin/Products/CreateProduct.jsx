@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
@@ -12,7 +12,10 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
         categories: [],
         sizes: [],
         colors: [],
+        image: null,
     });
+
+    const [imagePreview, setImagePreview] = useState(null);
 
     useEffect(() => {
         console.log('Categories:', categories);
@@ -22,7 +25,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
 
     const handleChange = (e) => {
         const key = e.target.name;
-        const value = e.target.value;
+        const value = e.target.type === 'file' ? e.target.files[0] : e.target.value;
 
         if (e.target.type === 'checkbox') {
             if (e.target.checked) {
@@ -32,6 +35,14 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
             }
         } else {
             setData(key, value);
+        }
+
+        if (e.target.type === 'file') {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                setImagePreview(event.target.result);
+            };
+            reader.readAsDataURL(e.target.files[0]);
         }
     };
 
@@ -162,6 +173,23 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                             ))}
                                         </div>
                                         {errors.colors && <div className="text-red-600">{errors.colors}</div>}
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700">Imagen</label>
+                                        <input
+                                            type="file"
+                                            name="image"
+                                            onChange={handleChange}
+                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        />
+                                        {errors.image && <div className="text-red-600">{errors.image}</div>}
+                                        {imagePreview && (
+                                            <div className="mt-2">
+                                                <img src={imagePreview} alt="Previsualización de la imagen" className="max-w-xs h-auto rounded-md" />
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-end mt-4">

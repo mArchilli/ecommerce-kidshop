@@ -154,6 +154,16 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
                                         {errors.colors && <div className="text-red-600">{errors.colors}</div>}
                                     </div>
                                 </div>
+                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700">Imagen</label>
+                                        {product.image && (
+                                            <div className="mt-2">
+                                                <img src={`/storage/${product.image}`} alt="Imagen del producto" className="max-w-xs h-auto rounded-md" />
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                                 <div className="flex items-center justify-end mt-4">
                                     <button
                                         type="submit"

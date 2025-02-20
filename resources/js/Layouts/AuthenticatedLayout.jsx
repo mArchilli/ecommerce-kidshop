@@ -34,7 +34,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     href={route('products.index')}
                                     active={route().current('products.index')}
                                 >
-                                    Productos
+                                    Prendas
                                 </NavLink>
                                 <NavLink
                                     href={route('categories.index')}
@@ -47,6 +47,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current('colors.index')}
                                 >
                                     Colores
+                                </NavLink>
+                                <NavLink
+                                    href={route('sizes.index')}
+                                    active={route().current('sizes.index')}
+                                >
+                                    Talles
                                 </NavLink>
                             </div>
                         </div>

@@ -12,18 +12,18 @@ export default function ProductsView({ products }) {
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                        Productos
+                        Prendas
                     </h2>
                     <Link
                         href={route('products.create')}
                         className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition"
                     >
-                        Crear Producto
+                        Crear Prenda
                     </Link>
                 </div>
             }
         >
-            <Head title="Productos" />
+            <Head title="Prendas" />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">

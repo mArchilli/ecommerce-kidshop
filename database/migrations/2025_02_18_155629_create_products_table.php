@@ -18,10 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2);
-            $table->string('size')->nullable();
-            $table->string('category')->nullable();
-            $table->string('color')->nullable();
             $table->integer('stock')->default(0);
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
