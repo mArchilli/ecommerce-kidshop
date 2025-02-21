@@ -39,6 +39,14 @@ const ProductCard = ({ product }) => {
             ))}
           </div>
         </div>
+        <div className="mt-4">
+          <h4 className="font-bold">Género:</h4>
+          <div className="flex flex-wrap">
+            <span className="bg-purple-200 text-purple-800 px-2 py-1 rounded-full text-xs font-semibold mr-2 mb-2">
+              {product.gender.name}
+            </span>
+          </div>
+        </div>
       </div>
       <div className="mt-4 flex flex-col space-y-2">
         <Link href={`/products/${product.id}`} className="bg-blue-500 text-white w-full px-4 py-2 rounded-md hover:bg-blue-700 text-center">

@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Size;
 use App\Models\Color;
+use App\Models\Gender;
 
 class ProductSeeder extends Seeder
 {
@@ -17,18 +18,20 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        // Obtener categorías, talles y colores
+        // Obtener categorías, talles, colores y géneros
         $categories = Category::whereIn('name', ['Camisetas', 'Pantalones', 'Chaquetas'])->get();
         $sizes = Size::whereIn('name', ['S', 'M', 'L'])->get();
         $colors = Color::whereIn('name', ['Azul', 'Negro', 'Rojo'])->get();
+        $genders = Gender::whereIn('name', ['Niños', 'Niñas', 'Unisex'])->get();
 
-        // Crear productos y asociarlos con categorías, talles y colores
+        // Crear productos y asociarlos con categorías, talles, colores y géneros
         $product1 = Product::create([
             'name' => 'Camiseta de Niño',
             'description' => 'Camiseta de algodón para niño, color azul.',
             'price' => 15.99,
             'stock' => 50,
             'image' => 'images/products/camiseta_nino_azul.jpg', // Imagen por defecto
+            'gender_id' => $genders->where('name', 'Niños')->first()->id,
         ]);
         $product1->categories()->attach($categories->where('name', 'Camisetas')->pluck('id'));
         $product1->sizes()->attach($sizes->where('name', 'M')->pluck('id'));
@@ -40,6 +43,7 @@ class ProductSeeder extends Seeder
             'price' => 25.99,
             'stock' => 30,
             'image' => 'images/products/pantalones_nino_negro.jpg', // Imagen por defecto
+            'gender_id' => $genders->where('name', 'Niños')->first()->id,
         ]);
         $product2->categories()->attach($categories->where('name', 'Pantalones')->pluck('id'));
         $product2->sizes()->attach($sizes->where('name', 'L')->pluck('id'));
@@ -51,6 +55,7 @@ class ProductSeeder extends Seeder
             'price' => 45.99,
             'stock' => 20,
             'image' => 'images/products/chaqueta_nino_rojo.jpg', // Imagen por defecto
+            'gender_id' => $genders->where('name', 'Niños')->first()->id,
         ]);
         $product3->categories()->attach($categories->where('name', 'Chaquetas')->pluck('id'));
         $product3->sizes()->attach($sizes->where('name', 'S')->pluck('id'));

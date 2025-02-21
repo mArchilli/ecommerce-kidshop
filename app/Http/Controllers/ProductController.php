@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Size;
 use App\Models\Color;
+use App\Models\Gender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Route;
@@ -15,13 +16,13 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['categories', 'sizes', 'colors'])->get();
+        $products = Product::with(['categories', 'sizes', 'colors', 'gender'])->get();
         return Inertia::render('Admin/Products/ProductsView', ['products' => $products]);
     }
 
     public function showProducts()
     {
-        $products = Product::with(['categories', 'sizes', 'colors'])->get();
+        $products = Product::with(['categories', 'sizes', 'colors', 'gender'])->get();
         return Inertia::render('Welcome', [
             'products' => $products,
             'canLogin' => Route::has('login'),
@@ -30,15 +31,25 @@ class ProductController extends Controller
         ]);
     }
 
+    public function show(Product $product)
+    {
+        $product->load(['categories', 'sizes', 'colors', 'gender']);
+        return Inertia::render('Ecommerce/ProductView', [
+            'product' => $product,
+        ]);
+    }
+
     public function create()
     {
         $categories = Category::all();
         $sizes = Size::all();
         $colors = Color::all();
+        $genders = Gender::all();
         return Inertia::render('Admin/Products/CreateProduct', [
             'categories' => $categories,
             'sizes' => $sizes,
             'colors' => $colors,
+            'genders' => $genders, 
         ]);
     }
 
@@ -52,6 +63,7 @@ class ProductController extends Controller
             'categories' => 'array',
             'sizes' => 'array',
             'colors' => 'array',
+            'gender_id' => 'required|exists:genders,id', 
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -60,7 +72,7 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('products', 'public');
         }
 
-        $product = Product::create($request->only(['name', 'description', 'price', 'stock']) + ['image' => $imagePath]);
+        $product = Product::create($request->only(['name', 'description', 'price', 'stock', 'gender_id']) + ['image' => $imagePath]);
         $product->categories()->sync($request->categories);
         $product->sizes()->sync($request->sizes);
         $product->colors()->sync($request->colors);
@@ -73,11 +85,13 @@ class ProductController extends Controller
         $categories = Category::all();
         $sizes = Size::all();
         $colors = Color::all();
+        $genders = Gender::all(); // Cargar géneros
         return Inertia::render('Admin/Products/EditProduct', [
-            'product' => $product->load(['categories', 'sizes', 'colors']),
+            'product' => $product->load(['categories', 'sizes', 'colors', 'gender']),
             'categories' => $categories,
             'sizes' => $sizes,
             'colors' => $colors,
+            'genders' => $genders, // Pasar géneros a la vista
         ]);
     }
 
@@ -91,6 +105,7 @@ class ProductController extends Controller
             'categories' => 'array',
             'sizes' => 'array',
             'colors' => 'array',
+            'gender_id' => 'required|exists:genders,id', // Validar género
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -102,7 +117,7 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('products', 'public');
         }
 
-        $product->update($request->only(['name', 'description', 'price', 'stock']) + ['image' => $imagePath]);
+        $product->update($request->only(['name', 'description', 'price', 'stock', 'gender_id']) + ['image' => $imagePath]);
         $product->categories()->sync($request->categories);
         $product->sizes()->sync($request->sizes);
         $product->colors()->sync($request->colors);
@@ -114,16 +129,21 @@ class ProductController extends Controller
         $categories = Category::all();
         $sizes = Size::all();
         $colors = Color::all();
+        $genders = Gender::all();
         return Inertia::render('Admin/Products/DeleteProduct', [
-            'product' => $product->load(['categories', 'sizes', 'colors']),
+            'product' => $product->load(['categories', 'sizes', 'colors', 'gender']),
             'categories' => $categories,
             'sizes' => $sizes,
             'colors' => $colors,
+            'genders' => $genders, 
         ]);
     }
 
     public function destroy(Product $product)
     {
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
         $product->delete();
         return redirect()->route('products.index');
     }

@@ -1,9 +1,11 @@
+// filepath: /c:/Users/matia/OneDrive/Escritorio/proyectos/ecommerce/resources/js/Pages/Admin/Products/CreateProduct.jsx
 import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
+import RadioLabel from '@/Components/RadioLabel'; // Importa el componente RadioLabel
 
-export default function CreateProduct({ categories = [], sizes = [], colors = [] }) {
+export default function CreateProduct({ categories = [], sizes = [], colors = [], genders = [] }) { // Recibe los géneros como prop
     const { data, setData, post, errors } = useForm({
         name: '',
         description: '',
@@ -13,6 +15,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
         sizes: [],
         colors: [],
         image: null,
+        gender_id: '', // Agrega el estado para el género
     });
 
     const [imagePreview, setImagePreview] = useState(null);
@@ -21,7 +24,8 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
         console.log('Categories:', categories);
         console.log('Sizes:', sizes);
         console.log('Colors:', colors);
-    }, [categories, sizes, colors]);
+        console.log('Genders:', genders); // Log para verificar los géneros
+    }, [categories, sizes, colors, genders]);
 
     const handleChange = (e) => {
         const key = e.target.name;
@@ -173,6 +177,25 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                             ))}
                                         </div>
                                         {errors.colors && <div className="text-red-600">{errors.colors}</div>}
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700">Género</label>
+                                        <div className="mt-1 flex flex-wrap">
+                                            {genders.map((gender) => (
+                                                <RadioLabel
+                                                    key={gender.id}
+                                                    id={gender.id}
+                                                    name="gender_id"
+                                                    value={gender.id}
+                                                    label={gender.name}
+                                                    onChange={handleChange}
+                                                    checked={data.gender_id == gender.id}
+                                                />
+                                            ))}
+                                        </div>
+                                        {errors.gender_id && <div className="text-red-600">{errors.gender_id}</div>}
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">

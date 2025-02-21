@@ -91,6 +91,26 @@ export default function AuthenticatedLayout({ header, children }) {
                                             Profile
                                         </Dropdown.Link>
                                         <Dropdown.Link
+                                            href={route('products.index')}
+                                        >
+                                            Prendas
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            href={route('categories.index')}
+                                        >
+                                            Categorias
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            href={route('colors.index')}
+                                        >
+                                            Colores
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            href={route('sizes.index')}
+                                        >
+                                            Talles
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
                                             href={route('logout')}
                                             method="post"
                                             as="button"
@@ -157,6 +177,30 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('dashboard')}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('products.index')}
+                            active={route().current('products.index')}
+                        >
+                            Prendas
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('categories.index')}
+                            active={route().current('categories.index')}
+                        >
+                            Categorias
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('colors.index')}
+                            active={route().current('colors.index')}
+                        >
+                            Colores
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('sizes.index')}
+                            active={route().current('sizes.index')}
+                        >
+                            Talles
                         </ResponsiveNavLink>
                     </div>
 

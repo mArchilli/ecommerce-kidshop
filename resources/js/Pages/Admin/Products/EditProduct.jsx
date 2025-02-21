@@ -1,17 +1,20 @@
+// filepath: /c:/Users/matia/OneDrive/Escritorio/proyectos/ecommerce/resources/js/Pages/Admin/Products/EditProduct.jsx
 import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
+import RadioLabel from '@/Components/RadioLabel'; // Importa el componente RadioLabel
 
-export default function EditProduct({ product, categories = [], sizes = [], colors = [] }) {
-    const { data, setData, put, errors } = useForm({
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        stock: product.stock,
-        categories: product.categories.map(category => category.id.toString()),
-        sizes: product.sizes.map(size => size.id.toString()),
-        colors: product.colors.map(color => color.id.toString()),
+export default function EditProduct({ product, categories = [], sizes = [], colors = [], genders = [] }) {
+    const { data, setData, post, errors } = useForm({
+        name: product.name || '',
+        description: product.description || '',
+        price: product.price || '',
+        stock: product.stock || '',
+        categories: product.categories.map(category => category.id.toString()) || [],
+        sizes: product.sizes.map(size => size.id.toString()) || [],
+        colors: product.colors.map(color => color.id.toString()) || [],
+        gender_id: product.gender_id || '', // Agrega el estado para el género
         image: null,
     });
 
@@ -22,7 +25,8 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
         console.log('Categories:', categories);
         console.log('Sizes:', sizes);
         console.log('Colors:', colors);
-    }, [product, categories, sizes, colors]);
+        console.log('Genders:', genders); // Log para verificar los géneros
+    }, [product, categories, sizes, colors, genders]);
 
     const handleChange = (e) => {
         const key = e.target.name;
@@ -49,7 +53,20 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route('products.update', product.id));
+        const formData = new FormData();
+        Object.keys(data).forEach(key => {
+            if (Array.isArray(data[key])) {
+                data[key].forEach(value => formData.append(`${key}[]`, value));
+            } else {
+                formData.append(key, data[key]);
+            }
+        });
+        post(route('products.update', product.id), {
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
     };
 
     return (
@@ -74,7 +91,7 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <form onSubmit={handleSubmit} className="space-y-6">
+                            <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700">Nombre</label>
@@ -177,6 +194,25 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                                             ))}
                                         </div>
                                         {errors.colors && <div className="text-red-600">{errors.colors}</div>}
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700">Género</label>
+                                        <div className="mt-1 flex flex-wrap">
+                                            {genders.map((gender) => (
+                                                <RadioLabel
+                                                    key={gender.id}
+                                                    id={gender.id}
+                                                    name="gender_id"
+                                                    value={gender.id}
+                                                    label={gender.name}
+                                                    onChange={handleChange}
+                                                    checked={data.gender_id == gender.id}
+                                                />
+                                            ))}
+                                        </div>
+                                        {errors.gender_id && <div className="text-red-600">{errors.gender_id}</div>}
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">

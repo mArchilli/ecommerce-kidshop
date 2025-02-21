@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function CheckboxLabel({ id, name, value, label, onChange, checked, readOnly, type = 'checkbox' }) {
+export default function RadioLabel({ id, name, value, label, onChange, checked, readOnly }) {
     return (
         <label
             key={id}
@@ -9,13 +9,13 @@ export default function CheckboxLabel({ id, name, value, label, onChange, checke
             }`}
         >
             <input
-                type={type}
+                type="radio"
                 name={name}
                 value={value}
                 onChange={onChange}
                 checked={checked}
                 readOnly={readOnly}
-                className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out rounded-full"
+                className="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out rounded-full"
             />
             <span className="ml-2 text-sm font-medium">{label}</span>
         </label>

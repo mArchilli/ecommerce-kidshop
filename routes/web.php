@@ -17,13 +17,17 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(function () {
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create'); // Declarar esta ruta primero
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::post('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::get('/products/{product}/delete', [ProductController::class, 'delete'])->name('products.delete');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+});
 
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show'); // Declarar esta ruta después
+
+Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
@@ -48,8 +52,6 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
     Route::delete('/sizes/{size}', [SizeController::class, 'destroy'])->name('sizes.destroy');
     Route::get('/sizes/{size}/delete', [SizeController::class, 'delete'])->name('sizes.delete');
 });
-
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

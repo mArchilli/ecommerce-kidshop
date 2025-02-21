@@ -10,11 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'description',
-        'price',
-        'stock',
-        'image',
+        'name', 'description', 'price', 'stock', 'image', 'gender_id'
     ];
 
     public function categories()
@@ -30,5 +26,10 @@ class Product extends Model
     public function colors()
     {
         return $this->belongsToMany(Color::class);
+    }
+
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class);
     }
 }
