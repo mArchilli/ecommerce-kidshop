@@ -50,6 +50,14 @@ const ProductView = ({ product }) => {
                 ))}
               </div>
             </div>
+            <div className="mt-4">
+              <h4 className="font-bold text-gray-900">Género:</h4>
+              <div className="flex flex-wrap mt-2">
+                <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold mr-2 mb-2">
+                  {product.gender.name}
+                </span>
+              </div>
+            </div>
             <div className="mt-6">
               <button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700">
                 Agregar al Carrito
