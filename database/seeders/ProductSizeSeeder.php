@@ -19,9 +19,14 @@ class ProductSizeSeeder extends Seeder
         $sizes = Size::all();
 
         foreach ($products as $product) {
-            $product->sizes()->attach(
-                $sizes->random(rand(1, 3))->pluck('id')->toArray()
-            );
+            $sizesToAttach = $sizes->random(rand(1, 3))->pluck('id')->toArray();
+            $sizesWithStock = [];
+
+            foreach ($sizesToAttach as $sizeId) {
+                $sizesWithStock[$sizeId] = ['stock' => rand(1, 100)]; // Asignar un stock aleatorio entre 1 y 100
+            }
+
+            $product->sizes()->attach($sizesWithStock);
         }
     }
 }

@@ -1,4 +1,3 @@
-// filepath: /c:/Users/matia/OneDrive/Escritorio/proyectos/ecommerce/resources/js/Pages/Admin/Products/DeleteProduct.jsx
 import React, { useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
@@ -10,9 +9,8 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
         name: product.name,
         description: product.description,
         price: product.price,
-        stock: product.stock,
         categories: product.categories.map(category => category.id.toString()),
-        sizes: product.sizes.map(size => size.id.toString()),
+        sizes: product.sizes.map(size => ({ id: size.id, stock: size.pivot.stock })),
         colors: product.colors.map(color => color.id.toString()),
         gender_id: product.gender_id || '', // Agrega el estado para el género
     });
@@ -88,17 +86,6 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
                                         />
                                         {errors.price && <div className="text-red-600">{errors.price}</div>}
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Stock</label>
-                                        <input
-                                            type="number"
-                                            name="stock"
-                                            value={data.stock}
-                                            readOnly
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
-                                        />
-                                        {errors.stock && <div className="text-red-600">{errors.stock}</div>}
-                                    </div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
@@ -123,16 +110,26 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
                                         <label className="block text-sm font-medium text-gray-700">Talles</label>
                                         <div className="mt-1 flex flex-wrap">
                                             {sizes.map((size) => (
-                                                <CheckboxLabel
-                                                    key={size.id}
-                                                    id={size.id}
-                                                    name="sizes"
-                                                    value={size.id}
-                                                    label={size.name}
-                                                    onChange={() => {}}
-                                                    checked={data.sizes.includes(size.id.toString())}
-                                                    readOnly
-                                                />
+                                                <div key={size.id} className="mr-4 mb-4">
+                                                    <CheckboxLabel
+                                                        id={size.id}
+                                                        name="sizes"
+                                                        value={size.id}
+                                                        label={size.name}
+                                                        onChange={() => {}}
+                                                        checked={data.sizes.some(s => s.id === size.id)}
+                                                        readOnly
+                                                    />
+                                                    {data.sizes.some(s => s.id === size.id) && (
+                                                        <input
+                                                            type="number"
+                                                            name={`sizes[${size.id}].stock`}
+                                                            value={data.sizes.find(s => s.id === size.id).stock}
+                                                            readOnly
+                                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
+                                                        />
+                                                    )}
+                                                </div>
                                             ))}
                                         </div>
                                         {errors.sizes && <div className="text-red-600">{errors.sizes}</div>}

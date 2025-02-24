@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head, Link } from '@inertiajs/react';
 
 const ProductView = ({ product }) => {
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedStock, setSelectedStock] = useState(null);
+
+  const handleSizeClick = (size) => {
+    setSelectedSize(size.name);
+    setSelectedStock(size.pivot.stock);
+  };
+
   return (
     <EcommerceLayout>
       <Head title={product.name} />
@@ -34,11 +42,22 @@ const ProductView = ({ product }) => {
               <h4 className="font-bold text-gray-900">Talles:</h4>
               <div className="flex flex-wrap mt-2">
                 {product.sizes.map((size) => (
-                  <span key={size.id} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold mr-2 mb-2">
+                  <button
+                    key={size.id}
+                    onClick={() => handleSizeClick(size)}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold mr-2 mb-2 ${
+                      selectedSize === size.name ? 'bg-green-500 text-white' : 'bg-green-100 text-green-800'
+                    }`}
+                  >
                     {size.name}
-                  </span>
+                  </button>
                 ))}
               </div>
+              {selectedSize && (
+                <div className="mt-2">
+                  <p className="text-gray-700">Stock disponible para {selectedSize}: {selectedStock}</p>
+                </div>
+              )}
             </div>
             <div className="mt-4">
               <h4 className="font-bold text-gray-900">Colores:</h4>

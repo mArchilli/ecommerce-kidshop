@@ -1,24 +1,23 @@
-// filepath: /c:/Users/matia/OneDrive/Escritorio/proyectos/ecommerce/resources/js/Pages/Admin/Products/EditProduct.jsx
 import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
-import RadioLabel from '@/Components/RadioLabel'; // Importa el componente RadioLabel
+import RadioLabel from '@/Components/RadioLabel';
 
 export default function EditProduct({ product, categories = [], sizes = [], colors = [], genders = [] }) {
     const { data, setData, post, errors } = useForm({
         name: product.name || '',
         description: product.description || '',
         price: product.price || '',
-        stock: product.stock || '',
         categories: product.categories.map(category => category.id.toString()) || [],
-        sizes: product.sizes.map(size => size.id.toString()) || [],
+        sizes: product.sizes.map(size => ({ id: size.id, stock: size.pivot.stock })) || [],
         colors: product.colors.map(color => color.id.toString()) || [],
-        gender_id: product.gender_id || '', // Agrega el estado para el género
+        gender_id: product.gender_id || '',
         image: null,
     });
 
     const [imagePreview, setImagePreview] = useState(product.image ? `/storage/${product.image}` : null);
+    const [selectedSizes, setSelectedSizes] = useState(product.sizes.map(size => size.id.toString()) || []);
 
     useEffect(() => {
         console.log('Product:', product);
@@ -51,8 +50,27 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
         }
     };
 
+    const handleSizeSelection = (sizeId) => {
+        if (selectedSizes.includes(sizeId.toString())) {
+            setSelectedSizes(selectedSizes.filter(id => id !== sizeId.toString()));
+            setData('sizes', data.sizes.filter(size => size.id !== sizeId));
+        } else {
+            setSelectedSizes([...selectedSizes, sizeId.toString()]);
+            setData('sizes', [...data.sizes, { id: sizeId, stock: 0 }]);
+        }
+    };
+
+    const handleStockChange = (e, sizeId) => {
+        const newSizes = data.sizes.map(size => 
+            size.id === sizeId ? { ...size, stock: parseInt(e.target.value) || 0 } : size
+        );
+        setData('sizes', newSizes);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        const selectedSizesWithStock = data.sizes.filter(size => selectedSizes.includes(size.id.toString()));
+        setData('sizes', selectedSizesWithStock);
         const formData = new FormData();
         Object.keys(data).forEach(key => {
             if (Array.isArray(data[key])) {
@@ -129,17 +147,6 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                                         />
                                         {errors.price && <div className="text-red-600">{errors.price}</div>}
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Stock</label>
-                                        <input
-                                            type="number"
-                                            name="stock"
-                                            value={data.stock}
-                                            onChange={handleChange}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                        />
-                                        {errors.stock && <div className="text-red-600">{errors.stock}</div>}
-                                    </div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
@@ -163,15 +170,26 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                                         <label className="block text-sm font-medium text-gray-700">Talles</label>
                                         <div className="mt-1 flex flex-wrap">
                                             {sizes.map((size) => (
-                                                <CheckboxLabel
-                                                    key={size.id}
-                                                    id={size.id}
-                                                    name="sizes"
-                                                    value={size.id}
-                                                    label={size.name}
-                                                    onChange={handleChange}
-                                                    checked={data.sizes.includes(size.id.toString())}
-                                                />
+                                                <div key={size.id} className="mr-4 mb-4">
+                                                    <CheckboxLabel
+                                                        id={size.id}
+                                                        name={`sizes[${size.id}].id`}
+                                                        value={size.id}
+                                                        label={size.name}
+                                                        onChange={() => handleSizeSelection(size.id)}
+                                                        checked={selectedSizes.includes(size.id.toString())}
+                                                    />
+                                                    {selectedSizes.includes(size.id.toString()) && (
+                                                        <input
+                                                            type="number"
+                                                            name={`sizes[${size.id}].stock`}
+                                                            value={data.sizes.find(s => s.id === size.id)?.stock || 0}
+                                                            onChange={(e) => handleStockChange(e, size.id)}
+                                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                        />
+                                                    )}
+                                                    {errors[`sizes.${size.id}.stock`] && <div className="text-red-600">{errors[`sizes.${size.id}.stock`]}</div>}
+                                                </div>
                                             ))}
                                         </div>
                                         {errors.sizes && <div className="text-red-600">{errors.sizes}</div>}

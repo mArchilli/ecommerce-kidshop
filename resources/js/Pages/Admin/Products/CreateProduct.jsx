@@ -1,31 +1,31 @@
-// filepath: /c:/Users/matia/OneDrive/Escritorio/proyectos/ecommerce/resources/js/Pages/Admin/Products/CreateProduct.jsx
 import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
-import RadioLabel from '@/Components/RadioLabel'; // Importa el componente RadioLabel
+import RadioLabel from '@/Components/RadioLabel';
 
-export default function CreateProduct({ categories = [], sizes = [], colors = [], genders = [] }) { // Recibe los géneros como prop
+export default function EditProduct({ product, categories = [], sizes = [], colors = [], genders = [] }) {
     const { data, setData, post, errors } = useForm({
-        name: '',
-        description: '',
-        price: '',
-        stock: '',
-        categories: [],
-        sizes: [],
-        colors: [],
+        name: product.name || '',
+        description: product.description || '',
+        price: product.price || '',
+        categories: product.categories.map(category => category.id.toString()) || [],
+        sizes: product.sizes.map(size => ({ id: size.id, stock: size.pivot.stock })) || [],
+        colors: product.colors.map(color => color.id.toString()) || [],
+        gender_id: product.gender_id || '',
         image: null,
-        gender_id: '', // Agrega el estado para el género
     });
 
-    const [imagePreview, setImagePreview] = useState(null);
+    const [imagePreview, setImagePreview] = useState(product.image ? `/storage/${product.image}` : null);
+    const [selectedSizes, setSelectedSizes] = useState(product.sizes.map(size => size.id.toString()) || []);
 
     useEffect(() => {
+        console.log('Product:', product);
         console.log('Categories:', categories);
         console.log('Sizes:', sizes);
         console.log('Colors:', colors);
         console.log('Genders:', genders); // Log para verificar los géneros
-    }, [categories, sizes, colors, genders]);
+    }, [product, categories, sizes, colors, genders]);
 
     const handleChange = (e) => {
         const key = e.target.name;
@@ -50,9 +50,41 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
         }
     };
 
+    const handleSizeSelection = (sizeId) => {
+        if (selectedSizes.includes(sizeId)) {
+            setSelectedSizes(selectedSizes.filter(id => id !== sizeId));
+            setData('sizes', data.sizes.filter(size => size.id !== sizeId));
+        } else {
+            setSelectedSizes([...selectedSizes, sizeId]);
+            setData('sizes', [...data.sizes, { id: sizeId, stock: 0 }]);
+        }
+    };
+
+    const handleStockChange = (e, sizeId) => {
+        const newSizes = data.sizes.map(size => 
+            size.id === sizeId ? { ...size, stock: parseInt(e.target.value) || 0 } : size
+        );
+        setData('sizes', newSizes);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route('products.store'));
+        const selectedSizesWithStock = data.sizes.filter(size => selectedSizes.includes(size.id.toString()));
+        setData('sizes', selectedSizesWithStock);
+        const formData = new FormData();
+        Object.keys(data).forEach(key => {
+            if (Array.isArray(data[key])) {
+                data[key].forEach(value => formData.append(`${key}[]`, value));
+            } else {
+                formData.append(key, data[key]);
+            }
+        });
+        post(route('products.update', product.id), {
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
     };
 
     return (
@@ -60,7 +92,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                        Crear Producto
+                        Editar Producto
                     </h2>
                     <Link
                         href={route('products.index')}
@@ -71,16 +103,16 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                 </div>
             }
         >
-            <Head title="Crear Producto" />
+            <Head title="Editar Producto" />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <form onSubmit={handleSubmit} className="space-y-6">
+                            <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700">Titulo</label>
+                                        <label className="block text-sm font-medium text-gray-700">Nombre</label>
                                         <input
                                             type="text"
                                             name="name"
@@ -115,17 +147,6 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                         />
                                         {errors.price && <div className="text-red-600">{errors.price}</div>}
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Stock</label>
-                                        <input
-                                            type="number"
-                                            name="stock"
-                                            value={data.stock}
-                                            onChange={handleChange}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                        />
-                                        {errors.stock && <div className="text-red-600">{errors.stock}</div>}
-                                    </div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
@@ -139,6 +160,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                                     value={category.id}
                                                     label={category.name}
                                                     onChange={handleChange}
+                                                    checked={data.categories.includes(category.id.toString())}
                                                 />
                                             ))}
                                         </div>
@@ -148,14 +170,26 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                         <label className="block text-sm font-medium text-gray-700">Talles</label>
                                         <div className="mt-1 flex flex-wrap">
                                             {sizes.map((size) => (
-                                                <CheckboxLabel
-                                                    key={size.id}
-                                                    id={size.id}
-                                                    name="sizes"
-                                                    value={size.id}
-                                                    label={size.name}
-                                                    onChange={handleChange}
-                                                />
+                                                <div key={size.id} className="mr-4 mb-4">
+                                                    <CheckboxLabel
+                                                        id={size.id}
+                                                        name={`sizes[${size.id}].id`}
+                                                        value={size.id}
+                                                        label={size.name}
+                                                        onChange={() => handleSizeSelection(size.id)}
+                                                        checked={selectedSizes.includes(size.id)}
+                                                    />
+                                                    {selectedSizes.includes(size.id) && (
+                                                        <input
+                                                            type="number"
+                                                            name={`sizes[${size.id}].stock`}
+                                                            value={data.sizes.find(s => s.id === size.id)?.stock || 0}
+                                                            onChange={(e) => handleStockChange(e, size.id)}
+                                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                        />
+                                                    )}
+                                                    {errors[`sizes.${size.id}.stock`] && <div className="text-red-600">{errors[`sizes.${size.id}.stock`]}</div>}
+                                                </div>
                                             ))}
                                         </div>
                                         {errors.sizes && <div className="text-red-600">{errors.sizes}</div>}
@@ -173,6 +207,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                                     value={color.id}
                                                     label={color.name}
                                                     onChange={handleChange}
+                                                    checked={data.colors.includes(color.id.toString())}
                                                 />
                                             ))}
                                         </div>
@@ -220,7 +255,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                         type="submit"
                                         className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition"
                                     >
-                                        Crear Producto
+                                        Actualizar Producto
                                     </button>
                                 </div>
                             </form>

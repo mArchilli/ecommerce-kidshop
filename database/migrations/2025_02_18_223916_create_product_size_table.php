@@ -12,6 +12,7 @@ class CreateProductSizeTable extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->foreignId('size_id')->constrained()->onDelete('cascade');
+            $table->integer('stock'); //Manejar el stock desde una ternaria en el frontend
             $table->timestamps();
         });
     }

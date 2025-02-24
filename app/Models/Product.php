@@ -10,7 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'price', 'stock', 'image', 'gender_id'
+        'name', 'description', 'price', 'image', 'gender_id'
     ];
 
     public function categories()
@@ -20,7 +20,7 @@ class Product extends Model
 
     public function sizes()
     {
-        return $this->belongsToMany(Size::class);
+        return $this->belongsToMany(Size::class)->withPivot('stock');
     }
 
     public function colors()

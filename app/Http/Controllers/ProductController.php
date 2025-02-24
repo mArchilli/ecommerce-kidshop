@@ -59,11 +59,12 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-            'stock' => 'nullable|integer',
             'categories' => 'array',
             'sizes' => 'array',
+            'sizes.*.id' => 'required|exists:sizes,id',
+            'sizes.*.stock' => 'required|integer|min:0',
             'colors' => 'array',
-            'gender_id' => 'required|exists:genders,id', 
+            'gender_id' => 'required|exists:genders,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -72,10 +73,15 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('products', 'public');
         }
 
-        $product = Product::create($request->only(['name', 'description', 'price', 'stock', 'gender_id']) + ['image' => $imagePath]);
+        $product = Product::create($request->only(['name', 'description', 'price', 'gender_id']) + ['image' => $imagePath]);
         $product->categories()->sync($request->categories);
-        $product->sizes()->sync($request->sizes);
         $product->colors()->sync($request->colors);
+
+        $sizes = [];
+        foreach ($request->sizes as $size) {
+            $sizes[$size['id']] = ['stock' => $size['stock']];
+        }
+        $product->sizes()->sync($sizes);
 
         return redirect()->route('products.index');
     }
@@ -101,26 +107,29 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-            'stock' => 'nullable|integer',
             'categories' => 'array',
             'sizes' => 'array',
+            'sizes.*.id' => 'required|exists:sizes,id',
+            'sizes.*.stock' => 'required|integer|min:0',
             'colors' => 'array',
-            'gender_id' => 'required|exists:genders,id', // Validar género
+            'gender_id' => 'required|exists:genders,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $imagePath = $product->image;
         if ($request->hasFile('image')) {
-            if ($imagePath) {
-                Storage::disk('public')->delete($imagePath);
-            }
             $imagePath = $request->file('image')->store('products', 'public');
         }
 
-        $product->update($request->only(['name', 'description', 'price', 'stock', 'gender_id']) + ['image' => $imagePath]);
+        $product->update($request->only(['name', 'description', 'price', 'gender_id']) + ['image' => $imagePath]);
         $product->categories()->sync($request->categories);
-        $product->sizes()->sync($request->sizes);
         $product->colors()->sync($request->colors);
+
+        $sizes = [];
+        foreach ($request->sizes as $size) {
+            $sizes[$size['id']] = ['stock' => $size['stock']];
+        }
+        $product->sizes()->sync($sizes);
 
         return redirect()->route('products.index');
     }
