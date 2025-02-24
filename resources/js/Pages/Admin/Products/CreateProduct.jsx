@@ -4,28 +4,20 @@ import { Head, useForm, Link } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
 import RadioLabel from '@/Components/RadioLabel';
 
-export default function EditProduct({ product, categories = [], sizes = [], colors = [], genders = [] }) {
+export default function CreateProduct({ categories = [], sizes = [], colors = [], genders = [] }) {
     const { data, setData, post, errors } = useForm({
-        name: product.name || '',
-        description: product.description || '',
-        price: product.price || '',
-        categories: product.categories.map(category => category.id.toString()) || [],
-        sizes: product.sizes.map(size => ({ id: size.id, stock: size.pivot.stock })) || [],
-        colors: product.colors.map(color => color.id.toString()) || [],
-        gender_id: product.gender_id || '',
+        name: '',
+        description: '',
+        price: '',
+        categories: [],
+        sizes: [],
+        colors: [],
+        gender_id: '',
         image: null,
     });
 
-    const [imagePreview, setImagePreview] = useState(product.image ? `/storage/${product.image}` : null);
-    const [selectedSizes, setSelectedSizes] = useState(product.sizes.map(size => size.id.toString()) || []);
-
-    useEffect(() => {
-        console.log('Product:', product);
-        console.log('Categories:', categories);
-        console.log('Sizes:', sizes);
-        console.log('Colors:', colors);
-        console.log('Genders:', genders); // Log para verificar los géneros
-    }, [product, categories, sizes, colors, genders]);
+    const [imagePreview, setImagePreview] = useState(null);
+    const [selectedSizes, setSelectedSizes] = useState([]);
 
     const handleChange = (e) => {
         const key = e.target.name;
@@ -79,7 +71,7 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                 formData.append(key, data[key]);
             }
         });
-        post(route('products.update', product.id), {
+        post(route('products.store'), {
             data: formData,
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -92,7 +84,7 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                        Editar Producto
+                        Crear Producto
                     </h2>
                     <Link
                         href={route('products.index')}
@@ -103,7 +95,7 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                 </div>
             }
         >
-            <Head title="Editar Producto" />
+            <Head title="Crear Producto" />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -255,7 +247,7 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                                         type="submit"
                                         className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition"
                                     >
-                                        Actualizar Producto
+                                        Crear Producto
                                     </button>
                                 </div>
                             </form>
