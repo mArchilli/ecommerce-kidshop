@@ -15,7 +15,7 @@ const Hero = () => {
             className="w-full h-full object-cover opacity-50"
           />
         </div>
-        <div className="relative container mx-auto px-4">
+        <div className="relative w-full px-4">
           <div className="flex flex-col items-center text-center">
             <h1 className="text-5xl font-bold mb-4">Bienvenido a Nuestra Tienda</h1>
             <p className="text-xl mb-8">Encuentra los mejores productos a los mejores precios</p>

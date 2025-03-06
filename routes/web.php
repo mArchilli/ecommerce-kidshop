@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
@@ -25,7 +24,7 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 });
 
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show'); // Declarar esta ruta después
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');

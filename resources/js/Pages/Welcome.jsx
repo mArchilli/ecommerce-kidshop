@@ -4,7 +4,7 @@ import { Head } from '@inertiajs/react';
 import Hero from '../Pages/Ecommerce/Hero';
 import ProductList from '../Pages/Ecommerce/ProductList';
 
-const Welcome = ({ products }) => {
+const Welcome = ({ products, categories, colors, genders }) => {
   const [activeSection, setActiveSection] = useState('home');
 
   const renderSection = () => {
@@ -12,7 +12,7 @@ const Welcome = ({ products }) => {
       case 'home':
         return <Hero />;
       case 'products':
-        return <ProductList products={products} />;
+        return <ProductList products={products} categories={categories} colors={colors} genders={genders} />;
       default:
         return <Hero />;
     }

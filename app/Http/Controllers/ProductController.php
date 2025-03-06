@@ -20,15 +20,50 @@ class ProductController extends Controller
         return Inertia::render('Admin/Products/ProductsView', ['products' => $products]);
     }
 
-    public function showProducts()
+    public function showProducts(Request $request)
     {
-        $products = Product::with(['categories', 'sizes', 'colors', 'gender'])->get();
-        return Inertia::render('Welcome', [
-            'products' => $products,
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            'flash' => session('flash'),
-        ]);
+        $query = Product::with(['categories', 'sizes', 'colors', 'gender']);
+
+        if ($request->has('category')) {
+            $query->whereHas('categories', function ($q) use ($request) {
+                $q->where('name', $request->category);
+            });
+        }
+
+        if ($request->has('color')) {
+            $query->whereHas('colors', function ($q) use ($request) {
+                $q->where('name', $request->color);
+            });
+        }
+
+        if ($request->has('size')) {
+            $query->whereHas('sizes', function ($q) use ($request) {
+                $q->where('name', $request->size);
+            });
+        }
+
+        if ($request->has('gender')) {
+            $query->whereHas('gender', function ($q) use ($request) {
+                $q->where('name', $request->gender);
+            });
+        }        
+
+        $products = $query->get();
+        $categories = Category::all();
+        $colors = Color::all();
+        $sizes = Size::all();
+        $genders = Gender::all();
+    
+        // 🔍 Depurar lo que está enviando Laravel
+        // dd([
+        //     'products' => $products,
+        //     'categories' => $categories,
+        //     'colors' => $colors,
+        //     'sizes' => $sizes,
+        //     'genders' => $genders,
+        // ]);
+    
+        return Inertia::render('Welcome', compact('products', 'categories', 'colors', 'sizes', 'genders'));
     }
 
     public function show(Product $product)
