@@ -15,6 +15,7 @@ const EcommerceLayout = ({ children }) => {
                 {auth.user.role === 'admin' && (
                   <Link href={route('dashboard')} className="text-white mr-4">Dashboard</Link>
                 )}
+                <Link href={route('cart.index')} className="text-white mr-4">Carrito</Link>
                 <Link href={route('logout')} method="post" as="button" className="text-white">Cerrar Sesion</Link>
               </>
             ) : (

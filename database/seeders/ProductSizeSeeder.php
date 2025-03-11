@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Product;
 use App\Models\Size;
+use Illuminate\Support\Facades\DB;
 
 class ProductSizeSeeder extends Seeder
 {
@@ -15,6 +16,8 @@ class ProductSizeSeeder extends Seeder
      */
     public function run()
     {
+
+        DB::table('product_size')->truncate();
         $products = Product::all();
         $sizes = Size::all();
 
