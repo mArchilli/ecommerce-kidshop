@@ -32,9 +32,14 @@ const EcommerceLayout = ({ children }) => {
                 </Link>
               </>
             ) : (
-              <Link href={route('login')} className="text-white">
-                Login
-              </Link>
+              <>
+                <Link href={route('login')} className="text-white mr-4">
+                  Ingresar
+                </Link>
+                <Link href={route('register')} className="text-white">
+                  Registrarse
+                </Link>
+              </>
             )}
           </div>
         </div>
