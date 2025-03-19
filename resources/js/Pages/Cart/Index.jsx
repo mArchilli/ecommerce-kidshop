@@ -44,7 +44,18 @@ const Cart = ({ cart }) => {
     <EcommerceLayout>
       <Head title="Carrito de Compras" />
       <div className="container mx-auto px-4 py-16">
-        <h1 className="text-3xl font-bold mb-6">Carrito de Compras</h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold">Carrito de Compras</h1>
+          <button
+            onClick={updateAll}
+            className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition duration-300"
+          >
+            Actualizar Carrito
+          </button>
+        </div>
+        <p className="text-gray-700 mb-6">
+          En caso de que actualice las cantidades de los productos, haga clic en "Actualizar Carrito".
+        </p>
         {cart && cart.items.length > 0 ? (
           <div className="bg-white shadow-md rounded-lg overflow-hidden">
             <table className="min-w-full divide-y divide-gray-200">
@@ -118,15 +129,6 @@ const Cart = ({ cart }) => {
                 ))}
               </tbody>
             </table>
-            {/* Botón para actualizar todas las cantidades de una vez */}
-            <div className="p-4 text-right space-x-4">
-              <button
-                onClick={updateAll}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-              >
-                Actualizar Carrito
-              </button>
-            </div>
             <div className="p-4 text-right">
               <h3 className="text-xl font-bold">
                 Total: $

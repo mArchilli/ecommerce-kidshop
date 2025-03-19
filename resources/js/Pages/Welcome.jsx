@@ -12,7 +12,14 @@ const Welcome = ({ products, categories, colors, genders }) => {
       case 'home':
         return <Hero />;
       case 'products':
-        return <ProductList products={products} categories={categories} colors={colors} genders={genders} />;
+        return (
+          <ProductList
+            products={products}
+            categories={categories}
+            colors={colors}
+            genders={genders}
+          />
+        );
       default:
         return <Hero />;
     }
@@ -22,23 +29,37 @@ const Welcome = ({ products, categories, colors, genders }) => {
     <EcommerceLayout>
       <Head title="Bienvenido" />
       <div className="flex flex-col min-h-screen">
-        <nav className="bg-gray-800 text-white p-4">
-          <div className="max-w-screen-xl mx-auto">
-            <ul className="flex space-x-4">
+        <nav className="bg-black p-4">
+          <div className="w-full">
+            <ul className="flex space-x-4 justify-center">
               <li>
-                <button onClick={() => setActiveSection('home')} className={`px-3 py-2 rounded-md ${activeSection === 'home' ? 'bg-gray-700' : ''}`}>
+                <button
+                  onClick={() => setActiveSection('home')}
+                  className={`px-4 py-2 rounded-md transition-colors duration-300 ${
+                    activeSection === 'home'
+                      ? 'bg-black text-white'
+                      : 'text-white hover:bg-black hover:text-white hover:border-white'
+                  }`}
+                >
                   Inicio
                 </button>
               </li>
               <li>
-                <button onClick={() => setActiveSection('products')} className={`px-3 py-2 rounded-md ${activeSection === 'products' ? 'bg-gray-700' : ''}`}>
+                <button
+                  onClick={() => setActiveSection('products')}
+                  className={`px-4 py-2 rounded-md transition-colors duration-300 ${
+                    activeSection === 'products'
+                      ? 'bg-black text-white'
+                      : 'text-white hover:bg-black hover:text-white hover:border-white'
+                  }`}
+                >
                   Productos
                 </button>
               </li>
             </ul>
           </div>
         </nav>
-        <main className="flex-grow p-4 max-w-screen-xl mx-auto">
+        <main className="flex-grow p-4 max-w-screen-2xl min-w-xl mx-auto">
           {renderSection()}
         </main>
       </div>
