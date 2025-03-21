@@ -13,8 +13,16 @@ export default function Register() {
         password_confirmation: '',
     });
 
+    const allowedDomains = ['gmail.com', 'hotmail.com', 'yahoo.com', 'gmail.com.ar', 'yahoo.com.ar', 'hotmail.com.ar'];
+
     const submit = (e) => {
         e.preventDefault();
+
+        const emailDomain = data.email.split('@')[1];
+        if (!allowedDomains.includes(emailDomain)) {
+            alert('Solo se permiten correos electrónicos de Gmail, Hotmail y Yahoo.');
+            return;
+        }
 
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),

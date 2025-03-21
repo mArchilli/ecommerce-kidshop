@@ -6,10 +6,10 @@ import { Head, Link } from '@inertiajs/react';
 const Cart = ({ cart }) => {
   // Estado local para controlar las cantidades en el input.
   const [quantities, setQuantities] = useState(
-    cart.items.reduce((acc, item) => {
+    cart && cart.items ? cart.items.reduce((acc, item) => {
       acc[item.id] = item.quantity;
       return acc;
-    }, {})
+    }, {}) : {}
   );
 
   const handleQuantityChange = (itemId, value) => {
@@ -56,7 +56,7 @@ const Cart = ({ cart }) => {
         <p className="text-gray-700 mb-6">
           En caso de que actualice las cantidades de los productos, haga clic en "Actualizar Carrito".
         </p>
-        {cart && cart.items.length > 0 ? (
+        {cart && cart.items && cart.items.length > 0 ? (
           <div className="bg-white shadow-md rounded-lg overflow-hidden">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">

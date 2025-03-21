@@ -6,6 +6,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SizeController;
+use App\Http\Controllers\Auth\VerifyEmailController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Middleware\CheckRole;
@@ -67,5 +70,18 @@ Route::middleware('auth')->group(function () {
     Route::put('/cart/update-all', [CartController::class, 'updateAll'])->name('cart.updateAll');
     Route::delete('/cart/remove/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
 });
+
+// Rutas para la verificación de correo electrónico
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
+    ->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 require __DIR__.'/auth.php';

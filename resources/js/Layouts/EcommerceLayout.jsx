@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link, usePage } from '@inertiajs/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 const EcommerceLayout = ({ children }) => {
   const { auth, flash } = usePage().props;
@@ -20,7 +22,7 @@ const EcommerceLayout = ({ children }) => {
                   </Link>
                 )}
                 <Link href={route('cart.index')} className="text-white mr-4">
-                  Carrito
+                  <FontAwesomeIcon icon={faShoppingCart} />
                 </Link>
                 <Link
                   href={route('logout')}
