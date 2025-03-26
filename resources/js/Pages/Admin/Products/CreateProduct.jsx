@@ -13,15 +13,15 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
         sizes: [],
         colors: [],
         gender_id: '',
-        image: null,
+        images: [],
     });
 
-    const [imagePreview, setImagePreview] = useState(null);
+    const [imagePreviews, setImagePreviews] = useState([]);
     const [selectedSizes, setSelectedSizes] = useState([]);
 
     const handleChange = (e) => {
         const key = e.target.name;
-        const value = e.target.type === 'file' ? e.target.files[0] : e.target.value;
+        const value = e.target.type === 'file' ? Array.from(e.target.files) : e.target.value;
 
         if (e.target.type === 'checkbox') {
             if (e.target.checked) {
@@ -29,16 +29,12 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
             } else {
                 setData(key, data[key].filter((item) => item !== value));
             }
+        } else if (e.target.type === 'file') {
+            setData(key, value);
+            const previews = Array.from(e.target.files).map(file => URL.createObjectURL(file));
+            setImagePreviews(previews);
         } else {
             setData(key, value);
-        }
-
-        if (e.target.type === 'file') {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                setImagePreview(event.target.result);
-            };
-            reader.readAsDataURL(e.target.files[0]);
         }
     };
 
@@ -227,17 +223,21 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                                 </div>
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700">Imagen</label>
+                                        <label className="block text-sm font-medium text-gray-700">Imágenes</label>
                                         <input
                                             type="file"
-                                            name="image"
+                                            name="images"
                                             onChange={handleChange}
                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            multiple
+                                            accept="image/*"
                                         />
-                                        {errors.image && <div className="text-red-600">{errors.image}</div>}
-                                        {imagePreview && (
-                                            <div className="mt-2">
-                                                <img src={imagePreview} alt="Previsualización de la imagen" className="max-w-xs h-auto rounded-md" />
+                                        {errors.images && <div className="text-red-600">{errors.images}</div>}
+                                        {imagePreviews.length > 0 && (
+                                            <div className="mt-2 grid grid-cols-2 gap-2">
+                                                {imagePreviews.map((preview, index) => (
+                                                    <img key={index} src={preview} alt={`Previsualización de la imagen ${index + 1}`} className="max-w-xs h-auto rounded-md" />
+                                                ))}
                                             </div>
                                         )}
                                     </div>

@@ -10,7 +10,11 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'price', 'image', 'gender_id'
+        'name', 'description', 'price', 'images', 'gender_id'
+    ];
+
+    protected $casts = [
+        'images' => 'array', // Convertir la columna images a un array
     ];
 
     public function categories()

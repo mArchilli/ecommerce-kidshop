@@ -39,9 +39,6 @@ export default function ProductsView({ products }) {
                                             Precio
                                         </th>
                                         <th scope="col" className="w-1/6 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Stock
-                                        </th>
-                                        <th scope="col" className="w-1/6 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Talles
                                         </th>
                                         <th scope="col" className="w-1/6 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -57,7 +54,6 @@ export default function ProductsView({ products }) {
                                         <tr key={product.id}>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.name}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.price}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.stock}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {product.sizes.map((size) => (
                                                     <span key={`${product.id}-size-${size.id}`} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mr-1">

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const EcommerceLayout = ({ children }) => {
   const { auth, flash } = usePage().props;
@@ -21,6 +21,9 @@ const EcommerceLayout = ({ children }) => {
                     Dashboard
                   </Link>
                 )}
+                <Link href={route('profile.edit')} className="text-white mr-4">
+                  <FontAwesomeIcon icon={faUser} /> Perfil
+                </Link>
                 <Link href={route('cart.index')} className="text-white mr-4">
                   <FontAwesomeIcon icon={faShoppingCart} />
                 </Link>

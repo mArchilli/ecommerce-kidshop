@@ -4,12 +4,13 @@ import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head, Link } from '@inertiajs/react';
 
 const Cart = ({ cart }) => {
-  // Estado local para controlar las cantidades en el input.
   const [quantities, setQuantities] = useState(
-    cart && cart.items ? cart.items.reduce((acc, item) => {
-      acc[item.id] = item.quantity;
-      return acc;
-    }, {}) : {}
+    cart && cart.items
+      ? cart.items.reduce((acc, item) => {
+          acc[item.id] = item.quantity;
+          return acc;
+        }, {})
+      : {}
   );
 
   const handleQuantityChange = (itemId, value) => {
@@ -19,10 +20,8 @@ const Cart = ({ cart }) => {
     });
   };
 
-  // Función para actualizar cantidad individual (si lo requieres)
   const updateQuantity = (itemId) => {
     const newQuantity = quantities[itemId];
-    console.log('Actualizando cantidad:', itemId, newQuantity);
     Inertia.put(
       `/cart/update/${itemId}`,
       { quantity: newQuantity },
@@ -30,9 +29,7 @@ const Cart = ({ cart }) => {
     );
   };
 
-  // Función para actualizar todas las cantidades a la vez.
   const updateAll = () => {
-    console.log('Actualizando todas las cantidades:', quantities);
     Inertia.put(
       '/cart/update-all',
       { quantities },
@@ -110,9 +107,7 @@ const Cart = ({ cart }) => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
-                        ${(
-                          item.product.price * quantities[item.id]
-                        ).toFixed(2)}
+                        ${(item.product.price * quantities[item.id]).toFixed(2)}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -140,6 +135,14 @@ const Cart = ({ cart }) => {
                   )
                   .toFixed(2)}
               </h3>
+            </div>
+            <div className="p-4 text-right">
+              <Link
+                href="/checkout"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+              >
+                Continuar con la Compra
+              </Link>
             </div>
           </div>
         ) : (

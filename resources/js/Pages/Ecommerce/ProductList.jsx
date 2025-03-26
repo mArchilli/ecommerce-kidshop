@@ -39,46 +39,38 @@ const ProductList = ({ products, categories, colors, genders }) => {
       {filteredProducts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
-            <div key={product.id} className="bg-white shadow-md rounded-lg overflow-hidden k">
+            <div 
+              key={product.id} 
+              className="bg-white shadow-md rounded-lg overflow-hidden transition duration-300 transform hover:shadow-lg hover:scale-105"
+            >
               <img 
-                src={`/storage/${product.image}`} 
+                src={product.images && product.images.length > 0 ? `/storage/${product.images[0]}` : '/placeholder.svg'} 
                 alt={product.name} 
-                className="w-full h-48 object-cover" 
+                className="w-full h-64 object-cover" 
               />
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-black">{product.name}</h3>
                 <p className="mt-2 text-black">${Number(product.price).toFixed(2)}</p>
-                <div className="mt-2">
-                  <h4 className="font-bold text-black">Género:</h4>
-                  <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold mr-2 mb-2">
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
                     {product.gender.name}
                   </span>
-                </div>
-                <div className="mt-2">
-                  <h4 className="font-bold text-black">Categorías:</h4>
-                  <div className="flex flex-wrap mt-2">
-                    {product.categories.map((category, idx) => (
-                      <span 
-                        key={`${category.id}-${idx}`} 
-                        className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold mr-2 mb-2"
-                      >
-                        {category.name}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="mt-2">
-                  <h4 className="font-bold text-black">Colores:</h4>
-                  <div className="flex flex-wrap mt-2">
-                    {product.colors.map((color, idx) => (
-                      <span 
-                        key={`${color.id}-${idx}`} 
-                        className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold mr-2 mb-2"
-                      >
-                        {color.name}
-                      </span>
-                    ))}
-                  </div>
+                  {product.categories.map((category, idx) => (
+                    <span 
+                      key={`${category.id}-${idx}`} 
+                      className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold"
+                    >
+                      {category.name}
+                    </span>
+                  ))}
+                  {product.colors.map((color, idx) => (
+                    <span 
+                      key={`${color.id}-${idx}`} 
+                      className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold"
+                    >
+                      {color.name}
+                    </span>
+                  ))}
                 </div>
                 <Link 
                   href={`/products/${product.id}`} 

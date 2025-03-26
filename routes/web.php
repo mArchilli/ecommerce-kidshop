@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SizeController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(function () {
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create'); // Declarar esta ruta primero
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::post('/products/{product}', [ProductController::class, 'update'])->name('products.update');
@@ -69,6 +70,12 @@ Route::middleware('auth')->group(function () {
     Route::put('cart/update/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::put('/cart/update-all', [CartController::class, 'updateAll'])->name('cart.updateAll');
     Route::delete('/cart/remove/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
+});
+
+// Rutas para el proceso de checkout
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index'); 
+    Route::get('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment'); 
 });
 
 // Rutas para la verificación de correo electrónico

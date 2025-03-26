@@ -29,7 +29,11 @@ class ProductSeeder extends Seeder
             'name' => 'Camiseta de Niño',
             'description' => 'Camiseta de algodón para niño, color azul.',
             'price' => 15.99,
-            'image' => 'images/products/camiseta_nino_azul.jpg', // Imagen por defecto
+            'images' => [
+                'images/products/camiseta_nino_azul_1.jpg',
+                'images/products/camiseta_nino_azul_2.jpg',
+                'images/products/camiseta_nino_azul_3.jpg',
+            ], // Imágenes por defecto
             'gender_id' => $genders->where('name', 'Niños')->first()->id,
         ]);
         $product1->categories()->attach($categories->where('name', 'Camisetas')->pluck('id'));
@@ -42,7 +46,11 @@ class ProductSeeder extends Seeder
             'name' => 'Pantalones de Niño',
             'description' => 'Pantalones de mezclilla para niño, color negro.',
             'price' => 25.99,
-            'image' => 'images/products/pantalones_nino_negro.jpg', // Imagen por defecto
+            'images' => [
+                'images/products/pantalones_nino_negro_1.jpg',
+                'images/products/pantalones_nino_negro_2.jpg',
+                'images/products/pantalones_nino_negro_3.jpg',
+            ], // Imágenes por defecto
             'gender_id' => $genders->where('name', 'Niños')->first()->id,
         ]);
         $product2->categories()->attach($categories->where('name', 'Pantalones')->pluck('id'));
@@ -55,7 +63,11 @@ class ProductSeeder extends Seeder
             'name' => 'Chaqueta de Niño',
             'description' => 'Chaqueta de invierno para niño, color rojo.',
             'price' => 45.99,
-            'image' => 'images/products/chaqueta_nino_rojo.jpg', // Imagen por defecto
+            'images' => [
+                'images/products/chaqueta_nino_rojo_1.jpg',
+                'images/products/chaqueta_nino_rojo_2.jpg',
+                'images/products/chaqueta_nino_rojo_3.jpg',
+            ], // Imágenes por defecto
             'gender_id' => $genders->where('name', 'Niños')->first()->id,
         ]);
         $product3->categories()->attach($categories->where('name', 'Chaquetas')->pluck('id'));

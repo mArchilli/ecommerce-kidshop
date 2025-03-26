@@ -8,9 +8,9 @@ const ProductView = ({ product }) => {
     size: ''
   });
 
-  const [selectedColor, setSelectedColor] = useState("black");
   const [activeImage, setActiveImage] = useState(0);
   const [showQuantity, setShowQuantity] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   const handleSizeClick = (size) => {
     setData('size', size.name);
@@ -21,10 +21,6 @@ const ProductView = ({ product }) => {
     setTimeout(() => {
       setShowQuantity(true);
     }, 10);
-  };
-
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
   };
 
   const handleQuantityChange = (e) => {
@@ -61,6 +57,14 @@ const ProductView = ({ product }) => {
     window.history.back();
   };
 
+  const handleImageClick = () => {
+    setIsPreviewOpen(true);
+  };
+
+  const handleClosePreview = () => {
+    setIsPreviewOpen(false);
+  };
+
   return (
     <EcommerceLayout>
       <Head title={product.name} />
@@ -86,7 +90,8 @@ const ProductView = ({ product }) => {
                 <img
                   src={product.images && product.images.length > 0 ? `/storage/${product.images[activeImage]}` : '/placeholder.svg'}
                   alt={product.name}
-                  className="w-full h-full object-center object-cover"
+                  className="w-full h-auto object-center object-cover cursor-pointer"
+                  onClick={handleImageClick}
                 />
               </div>
               <div className="grid grid-cols-4 gap-2">
@@ -115,15 +120,20 @@ const ProductView = ({ product }) => {
                 <p className="mt-3 text-3xl text-gray-900">${product.price}</p>
               </div>
 
-              {/* Categorías y Colores como etiquetas */}
+              {/* Categorías, Colores y Género como etiquetas */}
               <div>
                 <h3 className="text-sm font-medium text-gray-900 mb-3">Categorías y Colores</h3>
                 <div className="flex flex-wrap gap-2">
+                  {/* Género */}
+                  <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                    {product.gender.name}
+                  </span>
+
                   {/* Categorías */}
                   {product.categories && product.categories.map((category) => (
                     <span
                       key={category.id}
-                      className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+                      className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold"
                     >
                       {category.name}
                     </span>
@@ -131,14 +141,9 @@ const ProductView = ({ product }) => {
 
                   {/* Colores como etiquetas */}
                   {product.colors && product.colors.map((color) => (
-                    <button
+                    <span
                       key={color.id}
-                      onClick={() => handleColorSelect(color.name)}
-                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-colors duration-200 ${
-                        selectedColor === color.name
-                          ? "bg-black text-white"
-                          : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                      }`}
+                      className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold"
                     >
                       <span
                         className="w-3 h-3 rounded-full mr-1.5"
@@ -148,7 +153,7 @@ const ProductView = ({ product }) => {
                         }}
                       ></span>
                       {color.name}
-                    </button>
+                    </span>
                   ))}
                 </div>
               </div>
@@ -165,15 +170,11 @@ const ProductView = ({ product }) => {
                     <button
                       key={size.id}
                       onClick={() => handleSizeClick(size)}
-                      className={`
-                        py-3 px-4 border rounded-md text-center text-sm font-medium
-                        ${
-                          data.size === size.name
-                            ? "bg-black text-white border-black"
-                            : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
-                        }
-                        transition-colors duration-200
-                      `}
+                      className={`py-3 px-4 border rounded-md text-center text-sm font-medium ${
+                        data.size === size.name
+                          ? "bg-black text-white border-black"
+                          : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
+                      } transition-colors duration-200`}
                     >
                       {size.name}
                     </button>
@@ -271,6 +272,25 @@ const ProductView = ({ product }) => {
           </div>
         </div>
       </div>
+
+      {/* Modal de previsualización */}
+      {isPreviewOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="relative">
+            <button
+              onClick={handleClosePreview}
+              className="absolute top-0 right-0 m-4 text-white text-2xl"
+            >
+              &times;
+            </button>
+            <img
+              src={product.images && product.images.length > 0 ? `/storage/${product.images[activeImage]}` : '/placeholder.svg'}
+              alt={product.name}
+              className="max-w-full max-h-screen"
+            />
+          </div>
+        </div>
+      )}
     </EcommerceLayout>
   );
 };

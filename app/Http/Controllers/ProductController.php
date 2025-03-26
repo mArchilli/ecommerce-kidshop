@@ -54,15 +54,6 @@ class ProductController extends Controller
         $sizes = Size::all();
         $genders = Gender::all();
     
-        // 🔍 Depurar lo que está enviando Laravel
-        // dd([
-        //     'products' => $products,
-        //     'categories' => $categories,
-        //     'colors' => $colors,
-        //     'sizes' => $sizes,
-        //     'genders' => $genders,
-        // ]);
-    
         return Inertia::render('Welcome', compact('products', 'categories', 'colors', 'sizes', 'genders'));
     }
 
@@ -100,15 +91,18 @@ class ProductController extends Controller
             'sizes.*.stock' => 'required|integer|min:0',
             'colors' => 'array',
             'gender_id' => 'required|exists:genders,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'required|array|max:4', // Validar que sea un array con un máximo de 4 elementos
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validar que cada elemento del array sea una imagen válida
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imagePaths[] = $image->store('products', 'public');
+            }
         }
 
-        $product = Product::create($request->only(['name', 'description', 'price', 'gender_id']) + ['image' => $imagePath]);
+        $product = Product::create($request->only(['name', 'description', 'price', 'gender_id']) + ['images' => $imagePaths]);
         $product->categories()->sync($request->categories);
         $product->colors()->sync($request->colors);
 
@@ -148,15 +142,25 @@ class ProductController extends Controller
             'sizes.*.stock' => 'required|integer|min:0',
             'colors' => 'array',
             'gender_id' => 'required|exists:genders,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'nullable|array|max:4', // Validar que sea un array con un máximo de 4 elementos
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validar que cada elemento del array sea una imagen válida
         ]);
 
-        $imagePath = $product->image;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
+        $imagePaths = $product->images;
+        if ($request->hasFile('images')) {
+            // Eliminar las imágenes antiguas
+            foreach ($product->images as $image) {
+                Storage::disk('public')->delete($image);
+            }
+
+            // Guardar las nuevas imágenes
+            $imagePaths = [];
+            foreach ($request->file('images') as $image) {
+                $imagePaths[] = $image->store('products', 'public');
+            }
         }
 
-        $product->update($request->only(['name', 'description', 'price', 'gender_id']) + ['image' => $imagePath]);
+        $product->update($request->only(['name', 'description', 'price', 'gender_id']) + ['images' => $imagePaths]);
         $product->categories()->sync($request->categories);
         $product->colors()->sync($request->colors);
 
@@ -168,6 +172,7 @@ class ProductController extends Controller
 
         return redirect()->route('products.index');
     }
+
     public function delete(Product $product)
     {
         $categories = Category::all();
@@ -185,9 +190,11 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+        // Eliminar las imágenes del producto
+        foreach ($product->images as $image) {
+            Storage::disk('public')->delete($image);
         }
+
         $product->delete();
         return redirect()->route('products.index');
     }
