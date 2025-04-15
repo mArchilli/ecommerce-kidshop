@@ -15,9 +15,9 @@ const ProductFilter = ({ categories, colors, genders, onFilter }) => {
 
   return (
     <div className="mb-6 p-4 bg-white rounded-lg">
-      <h3 className="text-lg font-semibold mb-2 text-black">
+      {/* <h3 className="text-lg font-semibold mb-2 text-black">
         Filtrar Productos
-      </h3>
+      </h3> */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <select
           value={selectedCategory}

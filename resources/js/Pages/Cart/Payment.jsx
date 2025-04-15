@@ -10,16 +10,19 @@ const Payment = ({ cart, preferenceId }) => {
     script.type = 'text/javascript';
     script.async = true;
     script.onload = () => {
-      const mp = new window.MercadoPago('TU_PUBLIC_KEY', {
-        locale: 'es-AR',
+      // Inicializar MercadoPago con la Public Key
+      const mp = new window.MercadoPago(process.env.MERCADOPAGO_PUBLIC_KEY, {
+        locale: 'es-AR', // Idioma
       });
+
+      // Renderizar el botón de pago
       mp.checkout({
         preference: {
-          id: preferenceId,
+          id: preferenceId, // ID de la preferencia generada en el backend
         },
         render: {
           container: '.cho-container', // Clase del contenedor donde se renderiza el botón
-          label: 'Pagar',
+          label: 'Pagar', // Texto del botón
         },
       });
     };
@@ -94,6 +97,7 @@ const Payment = ({ cart, preferenceId }) => {
           </p>
         )}
         <div className="mt-6 text-center">
+          {/* Contenedor del botón de MercadoPago */}
           <div className="cho-container"></div>
         </div>
       </div>

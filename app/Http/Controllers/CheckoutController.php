@@ -17,12 +17,13 @@ class CheckoutController extends Controller
     }
 
     public function payment(Request $request)
-    {
-        $cart = $request->user()->cart;
+{
+    // Obtener el carrito del usuario autenticado con los productos asociados
+    $cart = $request->user()->cart()->with('items.product')->first();
 
-        // Aquí puedes generar la preferencia de pago con MercadoPago
-        return Inertia::render('Cart/Payment', [
-            'cart' => $cart,
-        ]);
-    }
+    // Aquí puedes generar la preferencia de pago con MercadoPago si es necesario
+    return Inertia::render('Cart/Payment', [
+        'cart' => $cart,
+    ]);
+}
 }

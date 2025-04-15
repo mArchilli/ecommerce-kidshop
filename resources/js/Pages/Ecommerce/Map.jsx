@@ -2,8 +2,13 @@ import React from 'react';
 
 const Map = () => {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-3xl font-bold mb-6 text-center">Nuestra Ubicación</h2>
+    <div className=" p-6">
+      <div className="text-center py-6">
+          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">Ubicacion</h2>
+          <p className="mt-4 text-lg text-gray-500">
+            Acercarte a nuestro local para conocer todos nuestras prendas.
+          </p>
+        </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="flex justify-center">
           <iframe

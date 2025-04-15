@@ -29,7 +29,7 @@ const ProductList = ({ products, categories, colors, genders }) => {
 
   return (
     <div className="w-full mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-black">Nuestros Productos</h2>
+      <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl text-center m-4">Catalogo</h2>
       <ProductFilter
         categories={categories}
         colors={colors}

@@ -21,7 +21,7 @@ export default function ContactForm() {
       [name]: value,
     })
 
-    // Clear error when user starts typing
+    
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -65,7 +65,6 @@ export default function ContactForm() {
           setSubmitSuccess(true);
           setFormData({ name: "", email: "", message: "" });
 
-          // Resetear el mensaje de éxito después de 5 segundos
           setTimeout(() => {
             setSubmitSuccess(false);
           }, 5000);
@@ -80,8 +79,13 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="max-w-full mx-auto my-5 p-8 bg-white rounded-xl shadow-lg border border-gray-100">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Contáctanos</h2>
+    <div className="max-w-screen-xl mx-auto p-8">
+      <div className="text-center">
+          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">Contactanos</h2>
+          <p className="mt-4 text-lg text-gray-500">
+            Si tenes alguna duda o inquietud podes contactarnos a nuestro correo.
+          </p>
+        </div>
 
       {submitSuccess && (
         <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded">

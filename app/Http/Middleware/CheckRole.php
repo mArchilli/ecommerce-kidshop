@@ -21,16 +21,16 @@ class CheckRole
         if (Auth::check()) {
             $userRole = Auth::user()->role;
 
-            if ($userRole === 'admin' && $role === 'admin') {
+            // Permitir acceso si el rol coincide
+            if ($userRole === $role) {
                 return $next($request);
-            } elseif ($userRole === 'user' && $role === 'user') {
-                return redirect('/');
             }
         }
 
+        // Redirigir con un mensaje flash si no tiene permisos
         return redirect('/')->with('flash', [
             'type' => 'error',
-            'message' => 'Se requieren permisos de administrador para acceder a esta página.'
+            'message' => 'No tienes permisos para acceder a esta página.'
         ]);
     }
 }

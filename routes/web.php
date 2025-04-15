@@ -91,4 +91,16 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
+Route::get('/payment/success', function () {
+    return "Pago exitoso";
+})->name('payment.success');
+
+Route::get('/payment/failure', function () {
+    return "Pago fallido";
+})->name('payment.failure');
+
+Route::get('/payment/pending', function () {
+    return "Pago pendiente";
+})->name('payment.pending');
+
 require __DIR__.'/auth.php';

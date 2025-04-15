@@ -59,7 +59,7 @@ const Welcome = ({ products, categories, colors, genders }) => {
             </ul>
           </div>
         </nav>
-        <main className="flex-grow p-4 max-w-screen-2xl min-w-xl mx-auto">
+        <main className="flex-grow w-full">
           {renderSection()}
         </main>
       </div>

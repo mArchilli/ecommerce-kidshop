@@ -6,7 +6,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
+    const user = usePage().props.auth.user; // Obtener el usuario autenticado
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -23,38 +23,41 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </Link>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
-                                >
-                                    Dashboard
-                                </NavLink>
-                                <NavLink
-                                    href={route('products.index')}
-                                    active={route().current('products.index')}
-                                >
-                                    Prendas
-                                </NavLink>
-                                <NavLink
-                                    href={route('categories.index')}
-                                    active={route().current('categories.index')}
-                                >
-                                    Categorias
-                                </NavLink>
-                                <NavLink
-                                    href={route('colors.index')}
-                                    active={route().current('colors.index')}
-                                >
-                                    Colores
-                                </NavLink>
-                                <NavLink
-                                    href={route('sizes.index')}
-                                    active={route().current('sizes.index')}
-                                >
-                                    Talles
-                                </NavLink>
-                            </div>
+                            {/* Opciones de navegación visibles solo para admin */}
+                            {user.role === 'admin' && (
+                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                    <NavLink
+                                        href={route('dashboard')}
+                                        active={route().current('dashboard')}
+                                    >
+                                        Dashboard
+                                    </NavLink>
+                                    <NavLink
+                                        href={route('products.index')}
+                                        active={route().current('products.index')}
+                                    >
+                                        Prendas
+                                    </NavLink>
+                                    <NavLink
+                                        href={route('categories.index')}
+                                        active={route().current('categories.index')}
+                                    >
+                                        Categorías
+                                    </NavLink>
+                                    <NavLink
+                                        href={route('colors.index')}
+                                        active={route().current('colors.index')}
+                                    >
+                                        Colores
+                                    </NavLink>
+                                    <NavLink
+                                        href={route('sizes.index')}
+                                        active={route().current('sizes.index')}
+                                    >
+                                        Talles
+                                    </NavLink>
+                                </div>
+                            )}
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
@@ -88,34 +91,41 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <Dropdown.Link
                                             href={route('profile.edit')}
                                         >
-                                            Profile
+                                            Perfil
                                         </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route('products.index')}
-                                        >
-                                            Prendas
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route('categories.index')}
-                                        >
-                                            Categorias
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route('colors.index')}
-                                        >
-                                            Colores
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route('sizes.index')}
-                                        >
-                                            Talles
-                                        </Dropdown.Link>
+
+                                        {/* Opciones del dropdown visibles solo para admin */}
+                                        {user.role === 'admin' && (
+                                            <>
+                                                <Dropdown.Link
+                                                    href={route('products.index')}
+                                                >
+                                                    Prendas
+                                                </Dropdown.Link>
+                                                <Dropdown.Link
+                                                    href={route('categories.index')}
+                                                >
+                                                    Categorías
+                                                </Dropdown.Link>
+                                                <Dropdown.Link
+                                                    href={route('colors.index')}
+                                                >
+                                                    Colores
+                                                </Dropdown.Link>
+                                                <Dropdown.Link
+                                                    href={route('sizes.index')}
+                                                >
+                                                    Talles
+                                                </Dropdown.Link>
+                                            </>
+                                        )}
+
                                         <Dropdown.Link
                                             href={route('logout')}
                                             method="post"
                                             as="button"
                                         >
-                                            Log Out
+                                            Cerrar Sesión
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -178,30 +188,34 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('products.index')}
-                            active={route().current('products.index')}
-                        >
-                            Prendas
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('categories.index')}
-                            active={route().current('categories.index')}
-                        >
-                            Categorias
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('colors.index')}
-                            active={route().current('colors.index')}
-                        >
-                            Colores
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('sizes.index')}
-                            active={route().current('sizes.index')}
-                        >
-                            Talles
-                        </ResponsiveNavLink>
+                        {user.role === 'admin' && (
+                            <>
+                                <ResponsiveNavLink
+                                    href={route('products.index')}
+                                    active={route().current('products.index')}
+                                >
+                                    Prendas
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('categories.index')}
+                                    active={route().current('categories.index')}
+                                >
+                                    Categorías
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('colors.index')}
+                                    active={route().current('colors.index')}
+                                >
+                                    Colores
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('sizes.index')}
+                                    active={route().current('sizes.index')}
+                                >
+                                    Talles
+                                </ResponsiveNavLink>
+                            </>
+                        )}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
@@ -216,14 +230,14 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.edit')}>
-                                Profile
+                                Perfil
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route('logout')}
                                 as="button"
                             >
-                                Log Out
+                                Cerrar Sesión
                             </ResponsiveNavLink>
                         </div>
                     </div>
