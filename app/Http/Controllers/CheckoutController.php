@@ -20,8 +20,15 @@ class CheckoutController extends Controller
 
     public function payment(Request $request)
     {
-        // Establecer indicador en la sesión
-        $request->session()->put('payment_in_progress', true);
+        // Validar los datos de envío
+        $validated = $request->validate([
+            'province' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'postal_code' => 'required|string|max:10',
+            'address' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'shipping_method' => 'required|string|in:Correo Argentino,Andreani,Retirar en el local',
+        ]);
 
         // Obtener el carrito del usuario
         $cart = $request->user()->cart()->with('items.product')->first();
@@ -57,10 +64,37 @@ class CheckoutController extends Controller
             'auto_return' => 'approved',
         ]);
 
-        // Retornar la vista con el preferenceId
+        // Guardar la información de envío en la sesión
+        $request->session()->put('shipping_info', $validated);
+
+        // Retornar la vista con el preferenceId y la información de envío
         return Inertia::render('Cart/Payment', [
             'cart' => $cart,
             'preferenceId' => $preference->id,
+            'shippingInfo' => $validated,
         ]);
+    }
+
+    public function success(Request $request)
+    {
+        // Obtener la información de envío de la sesión
+        $shippingInfo = $request->session()->get('shipping_info');
+
+        // Aquí puedes guardar la orden en la base de datos
+        // ...
+
+        return Inertia::render('Cart/Success', [
+            'shippingInfo' => $shippingInfo,
+        ]);
+    }
+
+    public function failure()
+    {
+        return Inertia::render('Cart/Failure');
+    }
+
+    public function pending()
+    {
+        return Inertia::render('Cart/Pending');
     }
 }

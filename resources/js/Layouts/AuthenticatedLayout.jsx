@@ -56,6 +56,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                     >
                                         Talles
                                     </NavLink>
+                                    <NavLink
+                                        href={route('admin.orders.index')}
+                                        active={route().current('admin.orders.index')}
+                                    >
+                                        Órdenes
+                                    </NavLink>
                                 </div>
                             )}
                         </div>
@@ -116,6 +122,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                                     href={route('sizes.index')}
                                                 >
                                                     Talles
+                                                </Dropdown.Link>
+                                                <Dropdown.Link href={route('admin.orders.index')}>
+                                                    Órdenes
                                                 </Dropdown.Link>
                                             </>
                                         )}
@@ -213,6 +222,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current('sizes.index')}
                                 >
                                     Talles
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    href={route('admin.orders.index')}
+                                    active={route().current('admin.orders.index')}
+                                >
+                                    Órdenes
                                 </ResponsiveNavLink>
                             </>
                         )}
