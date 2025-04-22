@@ -20,12 +20,21 @@ class CheckoutController extends Controller
 
     public function payment(Request $request)
     {
-        // Obtener el carrito del usuario autenticado con los productos
+        // Establecer indicador en la sesión
+        $request->session()->put('payment_in_progress', true);
+
+        // Obtener el carrito del usuario
         $cart = $request->user()->cart()->with('items.product')->first();
+
+        // Verificar si el carrito está vacío
+        if (!$cart || $cart->items->isEmpty()) {
+            return redirect()->route('checkout.index')->with('error', 'Tu carrito está vacío.');
+        }
 
         // Configurar el token de MercadoPago
         MercadoPagoConfig::setAccessToken(config('services.mercadopago.access_token'));
 
+        // Crear cliente de preferencias
         $client = new PreferenceClient();
 
         // Mapea los items para MercadoPago
@@ -48,9 +57,10 @@ class CheckoutController extends Controller
             'auto_return' => 'approved',
         ]);
 
+        // Retornar la vista con el preferenceId
         return Inertia::render('Cart/Payment', [
             'cart' => $cart,
-            'preferenceId' => $preference->id, // ¡ahora sí lo vas a tener en React!
+            'preferenceId' => $preference->id,
         ]);
     }
 }
