@@ -1,33 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head } from '@inertiajs/react';
 
 const Payment = ({ cart, preferenceId }) => {
+  const [sdkLoaded, setSdkLoaded] = useState(false);
+
   useEffect(() => {
-    // Cargar el SDK de MercadoPago
+    console.log('Cargando script de MercadoPago...');
+    console.log('Preference ID:', preferenceId);
     const script = document.createElement('script');
     script.src = 'https://sdk.mercadopago.com/js/v2';
     script.type = 'text/javascript';
     script.async = true;
+
     script.onload = () => {
-      // Inicializar MercadoPago con la Public Key
-      const mp = new window.MercadoPago(process.env.MERCADOPAGO_PUBLIC_KEY, {
-        locale: 'es-AR', // Idioma
+      console.log('SDK cargada:', !!window.MercadoPago);
+      setSdkLoaded(true); // Marca que el SDK está cargado
+    };
+
+    script.onerror = () => {
+      console.error('Error al cargar el SDK de MercadoPago');
+    };
+
+    document.body.appendChild(script);
+  }, [preferenceId]);
+
+  useEffect(() => {
+    if (sdkLoaded && preferenceId) {
+      console.log('Inicializando MercadoPago...');
+      const mp = new window.MercadoPago(import.meta.env.VITE_MERCADOPAGO_PUBLIC_KEY, {
+        locale: 'es-AR',
       });
 
-      // Renderizar el botón de pago
       mp.checkout({
         preference: {
-          id: preferenceId, // ID de la preferencia generada en el backend
+          id: preferenceId,
         },
         render: {
-          container: '.cho-container', // Clase del contenedor donde se renderiza el botón
+          container: '.cho-container', // Selector del contenedor donde se renderiza el botón
           label: 'Pagar', // Texto del botón
         },
       });
-    };
-    document.body.appendChild(script);
-  }, [preferenceId]);
+    }
+  }, [sdkLoaded, preferenceId]);
 
   return (
     <EcommerceLayout>
@@ -82,11 +97,7 @@ const Payment = ({ cart, preferenceId }) => {
               <h3 className="text-xl font-bold">
                 Total: $
                 {cart.items
-                  .reduce(
-                    (total, item) =>
-                      total + item.product.price * item.quantity,
-                    0
-                  )
+                  .reduce((total, item) => total + item.product.price * item.quantity, 0)
                   .toFixed(2)}
               </h3>
             </div>
@@ -97,8 +108,12 @@ const Payment = ({ cart, preferenceId }) => {
           </p>
         )}
         <div className="mt-6 text-center">
-          {/* Contenedor del botón de MercadoPago */}
-          <div className="cho-container"></div>
+          {/* Botón de MercadoPago */}
+          {sdkLoaded && preferenceId ? (
+            <div className="cho-container"></div>
+          ) : (
+            <p>Cargando botón de pago...</p>
+          )}
         </div>
       </div>
     </EcommerceLayout>

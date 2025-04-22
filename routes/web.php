@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentStatusController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
@@ -76,6 +78,10 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index'); 
     Route::get('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment'); 
+
+    Route::get('/payment/success', [PaymentStatusController::class, 'success'])->name('payment.success');
+    Route::get('/payment/failure', [PaymentStatusController::class, 'failure'])->name('payment.failure');
+    Route::get('/payment/pending', [PaymentStatusController::class, 'pending'])->name('payment.pending');
 });
 
 // Rutas para la verificación de correo electrónico
@@ -91,16 +97,5 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-Route::get('/payment/success', function () {
-    return "Pago exitoso";
-})->name('payment.success');
-
-Route::get('/payment/failure', function () {
-    return "Pago fallido";
-})->name('payment.failure');
-
-Route::get('/payment/pending', function () {
-    return "Pago pendiente";
-})->name('payment.pending');
 
 require __DIR__.'/auth.php';

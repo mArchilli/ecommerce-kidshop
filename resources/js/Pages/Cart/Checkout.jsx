@@ -70,14 +70,16 @@ const Checkout = ({ cart }) => {
             No hay productos en el carrito.
           </p>
         )}
-        <div className="mt-6 text-right">
-          <a
-            href="/checkout/payment"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
-          >
-            Proceder al Pago
-          </a>
-        </div>
+        {cart && cart.items && cart.items.length > 0 && (
+          <div className="mt-6 text-right">
+            <a
+              href="/checkout/payment"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+            >
+              Proceder al Pago
+            </a>
+          </div>
+        )}
       </div>
     </EcommerceLayout>
   );
