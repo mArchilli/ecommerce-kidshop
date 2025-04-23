@@ -7,18 +7,11 @@ const OrderDetails = ({ order }) => {
         <AuthenticatedLayout>
             <Head title={`Orden #${order.id}`} />
             <div className="container mx-auto px-4 py-16">
-                <div className="my-6">
-                    <Link
-                        href={route('admin.orders.index')}
-                        className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300"
-                    >
-                        Volver a Órdenes
-                    </Link>
-                </div>
-
                 <h1 className="text-3xl font-bold mb-6">Detalles de la Orden</h1>
                 <div className="bg-white shadow-md rounded-lg p-6">
                     <h2 className="text-xl font-semibold mb-4">Información de Envío</h2>
+                    <p><strong>Nombre del Cliente:</strong> {order.user.name}</p>
+                    <p><strong>Correo Electrónico:</strong> {order.user.email}</p>
                     <p><strong>Provincia:</strong> {order.province}</p>
                     <p><strong>Localidad:</strong> {order.city}</p>
                     <p><strong>Código Postal:</strong> {order.postal_code}</p>
@@ -128,6 +121,15 @@ const OrderDetails = ({ order }) => {
                             </form>
                         )}
                     </div>
+                </div>
+
+                <div className="mt-6">
+                    <Link
+                        href={route('admin.orders.index')}
+                        className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300"
+                    >
+                        Volver a Órdenes
+                    </Link>
                 </div>
             </div>
         </AuthenticatedLayout>

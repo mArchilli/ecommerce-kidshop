@@ -34,7 +34,7 @@ class OrderController extends Controller
     {
 
         return Inertia::render('Admin/Orders/OrdenDetails', [
-            'order' => $order->load('items.product'),
+            'order' => $order->load('user', 'items.product'), 
         ]);
     }
 

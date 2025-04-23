@@ -33,6 +33,9 @@ const Checkout = ({ cart }) => {
                       Producto
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Talle
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Cantidad
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -49,6 +52,11 @@ const Checkout = ({ cart }) => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
                           {item.product.name}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">
+                          {item.size || 'N/A'} 
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -73,8 +81,7 @@ const Checkout = ({ cart }) => {
                   Total: $
                   {cart.items
                     .reduce(
-                      (total, item) =>
-                        total + item.product.price * item.quantity,
+                      (total, item) => total + item.product.price * item.quantity,
                       0
                     )
                     .toFixed(2)}
@@ -141,7 +148,10 @@ const Checkout = ({ cart }) => {
 
                 {/* Selección del método de envío */}
                 <div className="mt-6">
-                  <h3 className="text-lg font-semibold mb-2">Método de Envío</h3>
+                  <h3 className="text-lg font-semibold mb-2">Método de Envío (A cargo del comprador)</h3>
+                  <p className="text-sm text-gray-500 mb-4">
+                    En caso de seleccionar envío, nos contactaremos con usted luego de finalizada la compra para informar el importe. Una vez abonado, el paquete será despachado.
+                  </p>
                   <div className="flex flex-col space-y-2">
                     <label className="flex items-center">
                       <input
@@ -169,12 +179,23 @@ const Checkout = ({ cart }) => {
                       <input
                         type="radio"
                         name="shipping_method"
+                        value="Vía Cargo"
+                        checked={data.shipping_method === 'Vía Cargo'}
+                        onChange={(e) => setData('shipping_method', e.target.value)}
+                        className="mr-2"
+                      />
+                      Vía Cargo
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="shipping_method"
                         value="Retirar en el local"
                         checked={data.shipping_method === 'Retirar en el local'}
                         onChange={(e) => setData('shipping_method', e.target.value)}
                         className="mr-2"
                       />
-                      Retirar en el local
+                      Retirar en el local (Varela 505, Mariano Acosta)
                     </label>
                   </div>
                   {errors.shipping_method && (
