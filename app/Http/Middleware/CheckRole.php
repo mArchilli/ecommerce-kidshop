@@ -20,8 +20,6 @@ class CheckRole
     {
         if (Auth::check()) {
             $userRole = Auth::user()->role;
-
-            // Permitir acceso si el rol coincide
             if ($userRole === $role) {
                 return $next($request);
             }

@@ -6,15 +6,27 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 
+
 class OrderController extends Controller
 {
     public function index(Request $request)
     {
         
-        $orders = Order::with('items.product', 'user')->latest()->get();
+        $shippingStatus = $request->get('shipping_status', null);
+
+        $ordersQuery = Order::with('items.product', 'user')->latest();
+
+        if ($shippingStatus) {
+            $ordersQuery->where('shipping_status', $shippingStatus);
+        }
+
+        $orders = $ordersQuery->get();
 
         return Inertia::render('Admin/Orders/Index', [
             'orders' => $orders,
+            'filters' => [
+                'shipping_status' => $shippingStatus,
+            ],
         ]);
     }
 
@@ -24,5 +36,20 @@ class OrderController extends Controller
         return Inertia::render('Admin/Orders/OrdenDetails', [
             'order' => $order->load('items.product'),
         ]);
+    }
+
+    public function updateShippingStatus(Request $request, Order $order)
+    {
+    
+        
+        $validated = $request->validate([
+            'shipping_status' => 'required|string|in:pending,dispatched,delivered',
+        ]);
+
+        $order->update([
+            'shipping_status' => $validated['shipping_status'],
+        ]);
+
+        return back()->with('success', 'El estado del envío se actualizó correctamente.');
     }
 }

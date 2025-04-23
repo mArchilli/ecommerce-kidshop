@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             'email' => 'matiarchilli@gmail.com',
             'password' => bcrypt('1234'), 
             'role' => 'admin',
+            'email_verified_at' => now(),
         ]);
 
         User::create([
@@ -25,6 +26,7 @@ class UserSeeder extends Seeder
             'email' => 'archillimatias@gmail.com',
             'password' => bcrypt('1234'), 
             'role' => 'user',
+            'email_verified_at' => now(),
         ]);
     }
 }

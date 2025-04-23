@@ -8,6 +8,10 @@ class Order extends Model
 {
     use HasFactory;
 
+    const SHIPPING_STATUS_PENDING = 'Pendiente';
+    const SHIPPING_STATUS_DISPATCHED = 'Despachado';
+    const SHIPPING_STATUS_DELIVERED = 'Entregado';
+
     protected $fillable = [
         'user_id',
         'payment_id',
@@ -18,7 +22,8 @@ class Order extends Model
         'postal_code',
         'address',
         'phone',
-        'shipping_method'
+        'shipping_method',
+        'shipping_status',
     ];
 
     public function user()

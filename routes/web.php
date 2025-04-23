@@ -60,6 +60,7 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
 
     Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders.index');
     Route::get('/admin/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::put('/admin/orders/{order}/shipping-status', [OrderController::class, 'updateShippingStatus'])->name('orders.updateShippingStatus');
 });
 
 Route::middleware('auth')->group(function () {

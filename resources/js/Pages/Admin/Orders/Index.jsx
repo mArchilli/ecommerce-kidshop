@@ -32,7 +32,7 @@ export default function Index({ orders }) {
                                             Total
                                         </th>
                                         <th scope="col" className="w-1/6 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Estado
+                                            Estado de Entrega
                                         </th>
                                         <th scope="col" className="w-1/6 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Fecha
@@ -52,7 +52,9 @@ export default function Index({ orders }) {
                                                 ${order.total}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {order.status}
+                                                {order.shipping_status === 'pending' && 'Pendiente'}
+                                                {order.shipping_status === 'dispatched' && 'Despachado'}
+                                                {order.shipping_status === 'delivered' && 'Entregado'}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {new Date(order.created_at).toLocaleDateString()}
