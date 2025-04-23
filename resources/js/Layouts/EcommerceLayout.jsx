@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faUser, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart, faUser, faBars, faTimes, faUserShield } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -41,7 +41,7 @@ const EcommerceLayout = ({ children }) => {
                   {auth.user.role === 'admin' && (
                     <li>
                       <Link href={route('dashboard')} className="text-white block py-2 px-4">
-                        Dashboard
+                        <FontAwesomeIcon icon={faUserShield} /> Panel Administrador
                       </Link>
                     </li>
                   )}

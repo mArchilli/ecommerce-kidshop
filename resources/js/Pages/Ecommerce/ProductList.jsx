@@ -41,7 +41,7 @@ const ProductList = ({ products, categories, colors, genders }) => {
           {filteredProducts.map((product) => (
             <div 
               key={product.id} 
-              className="bg-white shadow-md rounded-lg overflow-hidden transition duration-300 transform hover:shadow-lg hover:scale-105"
+              className="bg-white shadow-md rounded-lg overflow-hidden transition duration-300 transform hover:shadow-lg hover:scale-95"
             >
               <img 
                 src={product.images && product.images.length > 0 ? `/storage/${product.images[0]}` : '/placeholder.svg'} 
