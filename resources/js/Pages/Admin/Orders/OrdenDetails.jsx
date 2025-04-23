@@ -7,6 +7,15 @@ const OrderDetails = ({ order }) => {
         <AuthenticatedLayout>
             <Head title={`Orden #${order.id}`} />
             <div className="container mx-auto px-4 py-16">
+                <div className="my-6">
+                    <Link
+                        href={route('admin.orders.index')}
+                        className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300"
+                    >
+                        Volver a Órdenes
+                    </Link>
+                </div>
+
                 <h1 className="text-3xl font-bold mb-6">Detalles de la Orden</h1>
                 <div className="bg-white shadow-md rounded-lg p-6">
                     <h2 className="text-xl font-semibold mb-4">Información de Envío</h2>
@@ -16,6 +25,46 @@ const OrderDetails = ({ order }) => {
                     <p><strong>Dirección:</strong> {order.address}</p>
                     <p><strong>Teléfono:</strong> {order.phone}</p>
                     <p><strong>Método de Envío:</strong> {order.shipping_method}</p>
+                </div>
+
+                <div className="bg-white shadow-md rounded-lg p-6 mt-6">
+                    <h2 className="text-xl font-semibold mb-4">Resumen de Productos</h2>
+                    <table className="min-w-full divide-y divide-gray-200 table-fixed">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Producto
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Cantidad
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Precio
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Total
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {order.items.map((item) => (
+                                <tr key={item.id}>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        {item.product.name}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {item.quantity}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        ${item.product.price}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        ${item.quantity * item.product.price}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
 
                 <div className="bg-white shadow-md rounded-lg p-6 mt-6">
@@ -33,7 +82,6 @@ const OrderDetails = ({ order }) => {
                                 action={route('orders.updateShippingStatus', order.id)}
                                 className="inline"
                             >
-                                {/* Agregar el token CSRF */}
                                 <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]').getAttribute('content')} />
                                 <input type="hidden" name="_method" value="PUT" />
                                 <input type="hidden" name="shipping_status" value="pending" />
@@ -51,7 +99,6 @@ const OrderDetails = ({ order }) => {
                                 action={route('orders.updateShippingStatus', order.id)}
                                 className="inline"
                             >
-                                {/* Agregar el token CSRF */}
                                 <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]').getAttribute('content')} />
                                 <input type="hidden" name="_method" value="PUT" />
                                 <input type="hidden" name="shipping_status" value="dispatched" />
@@ -69,7 +116,6 @@ const OrderDetails = ({ order }) => {
                                 action={route('orders.updateShippingStatus', order.id)}
                                 className="inline"
                             >
-                                {/* Agregar el token CSRF */}
                                 <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]').getAttribute('content')} />
                                 <input type="hidden" name="_method" value="PUT" />
                                 <input type="hidden" name="shipping_status" value="delivered" />
@@ -82,15 +128,6 @@ const OrderDetails = ({ order }) => {
                             </form>
                         )}
                     </div>
-                </div>
-
-                <div className="mt-6">
-                    <Link
-                        href={route('admin.orders.index')}
-                        className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300"
-                    >
-                        Volver a Órdenes
-                    </Link>
                 </div>
             </div>
         </AuthenticatedLayout>
