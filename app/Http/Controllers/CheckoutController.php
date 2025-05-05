@@ -30,8 +30,11 @@ class CheckoutController extends Controller
             'shipping_method' => 'required|string|in:Correo Argentino,Andreani,Retirar en el local',
         ]);
 
+        // Obtener el usuario autenticado
+        $user = $request->user();
+
         // Obtener el carrito del usuario
-        $cart = $request->user()->cart()->with('items.product')->first();
+        $cart = $user->cart()->with('items.product')->first();
 
         // Verificar si el carrito está vacío
         if (!$cart || $cart->items->isEmpty()) {
@@ -57,11 +60,15 @@ class CheckoutController extends Controller
         $preference = $client->create([
             'items' => $items,
             'back_urls' => [
-                'success' => route('payment.success'),
-                'failure' => route('payment.failure'),
-                'pending' => route('payment.pending'),
+                'success' => "https://be81-201-177-199-126.ngrok-free.app/payment/success",
+                'failure' => "https://be81-201-177-199-126.ngrok-free.app/payment/failure",
+                'pending' => "https://be81-201-177-199-126.ngrok-free.app/payment/pending",
             ],
             'auto_return' => 'approved',
+            'external_reference' => json_encode([
+                'user_id' => $user->id,
+                'shipping_info' => $validated,
+            ]),
         ]);
 
         // Guardar la información de envío en la sesión
@@ -74,6 +81,7 @@ class CheckoutController extends Controller
             'shippingInfo' => $validated,
         ]);
     }
+
 
     public function success(Request $request)
     {

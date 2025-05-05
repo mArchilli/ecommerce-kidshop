@@ -79,13 +79,14 @@ Route::middleware('auth')->group(function () {
 
 // Rutas para el proceso de checkout
 Route::middleware('auth')->group(function () {
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index'); 
-    Route::post('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment'); 
-
-    Route::get('/payment/success', [PaymentStatusController::class, 'success'])->name('payment.success');
-    Route::get('/payment/failure', [PaymentStatusController::class, 'failure'])->name('payment.failure');
-    Route::get('/payment/pending', [PaymentStatusController::class, 'pending'])->name('payment.pending');
+     
 });
+
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index'); 
+Route::post('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
+Route::get('/payment/success', [PaymentStatusController::class, 'success'])->name('payment.success');
+Route::get('/payment/failure', [PaymentStatusController::class, 'failure'])->name('payment.failure');
+Route::get('/payment/pending', [PaymentStatusController::class, 'pending'])->name('payment.pending');
 
 // Rutas para la verificación de correo electrónico
 Route::get('/email/verify', function () {
