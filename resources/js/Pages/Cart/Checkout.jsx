@@ -150,41 +150,19 @@ const Checkout = ({ cart }) => {
                 <div className="mt-6">
                   <h3 className="text-lg font-semibold mb-2">Método de Envío (A cargo del comprador)</h3>
                   <p className="text-sm text-gray-500 mb-4">
-                    En caso de seleccionar envío, nos contactaremos con usted luego de finalizada la compra para informar el importe. Una vez abonado, el paquete será despachado.
+                    En caso de seleccionar Envío a Domicilio, nos contactaremos con usted luego de finalizada la compra para informar el importe. Una vez abonado, el paquete será despachado.
                   </p>
                   <div className="flex flex-col space-y-2">
                     <label className="flex items-center">
                       <input
                         type="radio"
                         name="shipping_method"
-                        value="Correo Argentino"
-                        checked={data.shipping_method === 'Correo Argentino'}
+                        value="Envio a Domicilio"
+                        checked={data.shipping_method === 'Envio a Domicilio'}
                         onChange={(e) => setData('shipping_method', e.target.value)}
                         className="mr-2"
                       />
-                      Correo Argentino
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="shipping_method"
-                        value="Andreani"
-                        checked={data.shipping_method === 'Andreani'}
-                        onChange={(e) => setData('shipping_method', e.target.value)}
-                        className="mr-2"
-                      />
-                      Andreani
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="shipping_method"
-                        value="Vía Cargo"
-                        checked={data.shipping_method === 'Vía Cargo'}
-                        onChange={(e) => setData('shipping_method', e.target.value)}
-                        className="mr-2"
-                      />
-                      Vía Cargo
+                      Envío a Domicilio
                     </label>
                     <label className="flex items-center">
                       <input
@@ -195,7 +173,7 @@ const Checkout = ({ cart }) => {
                         onChange={(e) => setData('shipping_method', e.target.value)}
                         className="mr-2"
                       />
-                      Retirar en el local (Varela 505, Mariano Acosta)
+                      Retirar en el local (Varela 505, Mariano Acosta, Buenos Aires)
                     </label>
                   </div>
                   {errors.shipping_method && (

@@ -25,8 +25,21 @@ const Map = () => {
           <div className="flex flex-col justify-center">
             <h3 className="text-2xl font-bold mb-4">Dirección</h3>
             <p className="text-gray-700 mb-4">Varela 505, Mariano Acosta, Buenos Aires</p>
-            <h3 className="text-2xl font-bold mb-4">Teléfono</h3>
-            <p className="text-gray-700 mb-4">+54 9 11 5956-5176</p>
+            <h3 className="text-2xl font-bold">Teléfono</h3>
+            <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-4 mb-4">
+              <div>
+                
+                <p className="text-gray-700">+54 9 11 5956-5176</p>
+              </div>
+              <a
+                href="https://wa.me/5491133973222?text=Hola,%20quiero%20hacer%20una%20consulta%20sobre%20sus%20productos."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 lg:mt-0 lg:w-auto w-full bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 text-center"
+              >
+                Contactar por WhatsApp
+              </a>
+            </div>
             <h3 className="text-2xl font-bold mb-4">Horario de Atención</h3>
             <p className="text-gray-700 mb-4">
               <strong>Lunes a Viernes:</strong> 09:00 - 13:00 / 16:00 - 19:30
@@ -37,6 +50,7 @@ const Map = () => {
             <p className="text-gray-700">
               <strong>Domingo:</strong> Cerrado
             </p>
+            
           </div>
         </div>
       </div>

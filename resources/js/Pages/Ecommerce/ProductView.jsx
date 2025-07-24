@@ -8,6 +8,10 @@ const ProductView = ({ product }) => {
     size: ''
   });
 
+  // Ordenar imágenes: image_1, image_2, image_3
+  const orderedImages = product.images && Array.isArray(product.images)
+    ? [product.images[0], product.images[1], product.images[2]].filter(Boolean)
+    : [];
   const [activeImage, setActiveImage] = useState(0);
   const [showQuantity, setShowQuantity] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -88,14 +92,14 @@ const ProductView = ({ product }) => {
             <div className="space-y-4">
               <div className="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden border border-gray-200">
                 <img
-                  src={product.images && product.images.length > 0 ? `/storage/${product.images[activeImage]}` : '/placeholder.svg'}
+                  src={orderedImages.length > 0 ? `/storage/${orderedImages[activeImage]}` : '/placeholder.svg'}
                   alt={product.name}
                   className="w-full h-auto object-center object-cover cursor-pointer"
                   onClick={handleImageClick}
                 />
               </div>
               <div className="grid grid-cols-4 gap-2">
-                {product.images && product.images.map((image, index) => (
+                {orderedImages.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveImage(index)}
@@ -284,7 +288,7 @@ const ProductView = ({ product }) => {
               &times;
             </button>
             <img
-              src={product.images && product.images.length > 0 ? `/storage/${product.images[activeImage]}` : '/placeholder.svg'}
+              src={orderedImages.length > 0 ? `/storage/${orderedImages[activeImage]}` : '/placeholder.svg'}
               alt={product.name}
               className="max-w-full max-h-screen"
             />

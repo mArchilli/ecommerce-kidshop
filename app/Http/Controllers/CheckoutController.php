@@ -60,9 +60,9 @@ class CheckoutController extends Controller
         $preference = $client->create([
             'items' => $items,
             'back_urls' => [
-                'success' => "https://be81-201-177-199-126.ngrok-free.app/payment/success",
-                'failure' => "https://be81-201-177-199-126.ngrok-free.app/payment/failure",
-                'pending' => "https://be81-201-177-199-126.ngrok-free.app/payment/pending",
+                'success' => "https://a7a99a4c0da7.ngrok-free.app/payment/success",
+                'failure' => "https://a7a99a4c0da7.ngrok-free.app/payment/failure",
+                'pending' => "https://a7a99a4c0da7.ngrok-free.app/payment/pending",
             ],
             'auto_return' => 'approved',
             'external_reference' => json_encode([

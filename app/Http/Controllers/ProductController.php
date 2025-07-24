@@ -91,15 +91,21 @@ class ProductController extends Controller
             'sizes.*.stock' => 'required|integer|min:0',
             'colors' => 'array',
             'gender_id' => 'required|exists:genders,id',
-            'images' => 'required|array|max:4', // Validar que sea un array con un máximo de 4 elementos
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validar que cada elemento del array sea una imagen válida
+            'image_1' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_2' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_3' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        $imageFields = ['image_1', 'image_2', 'image_3'];
         $imagePaths = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $imagePaths[] = $image->store('products', 'public');
+        try {
+            foreach ($imageFields as $field) {
+                if ($request->hasFile($field)) {
+                    $imagePaths[] = $request->file($field)->store('products', 'public');
+                }
             }
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['images' => 'Error al guardar las imágenes.']);
         }
 
         $product = Product::create($request->only(['name', 'description', 'price', 'gender_id']) + ['images' => $imagePaths]);

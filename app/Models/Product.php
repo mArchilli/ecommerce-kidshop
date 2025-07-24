@@ -14,7 +14,7 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'images' => 'array', // Convertir la columna images a un array
+        'images' => 'array',
     ];
 
     public function categories()
