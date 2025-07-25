@@ -27,8 +27,8 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
   };
 
   return (
-    <div className="w-full mx-auto">
-      <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl text-center m-4">Catalogo</h2>
+    <div className="max-w-6xl mx-auto">
+      <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl my-6 text-center md:text-left">Catalogo de prendas</h2>
       <ProductFilter
         categories={categories}
         colors={colors}
@@ -38,7 +38,7 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
       />
       {products && products.data && products.data.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center max-w-6xl mx-auto">
             {products.data.map((product) => (
               <div 
                 key={product.id} 

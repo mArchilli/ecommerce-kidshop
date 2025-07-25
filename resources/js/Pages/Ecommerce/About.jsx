@@ -1,7 +1,7 @@
 export default function AboutUs() {
   return (
     <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-      <div className="lg:grid lg:grid-cols-2 lg:gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-center">
         <div>
           <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl text-center">Sobre Nosotros</h2>
           <p className="mt-4 text-lg text-gray-500">
@@ -50,10 +50,10 @@ export default function AboutUs() {
             </div>
           </div>
         </div>
-        <div className="mt-12 lg:mt-0">
-          <div className="relative lg:h-full">
+        <div className="mt-12 xl:mt-0">
+          <div className="relative">
             <img
-              className="w-full h-auto rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
+              className="w-full h-auto rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 object-cover"
               src="/images/Landing/tienda-los-ninios-3.jpg"
               alt="Equipo de trabajo"
             />
