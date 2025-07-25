@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
-const ProductFilter = ({ categories, colors, genders, onFilter }) => {
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
-  const [selectedGender, setSelectedGender] = useState('');
+
+const ProductFilter = ({ categories, colors, genders, onFilter, initialFilters = {} }) => {
+  const [selectedCategory, setSelectedCategory] = useState(initialFilters.category || '');
+  const [selectedColor, setSelectedColor] = useState(initialFilters.color || '');
+  const [selectedGender, setSelectedGender] = useState(initialFilters.gender || '');
 
   const handleFilterChange = () => {
     onFilter({

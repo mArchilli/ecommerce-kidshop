@@ -4,6 +4,7 @@ import { Head, useForm, Link } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
 import RadioLabel from '@/Components/RadioLabel';
 
+
 export default function EditProduct({ product, categories = [], sizes = [], colors = [], genders = [] }) {
     const { data, setData, post, errors } = useForm({
         name: product.name || '',
@@ -13,10 +14,17 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
         sizes: product.sizes.map(size => ({ id: size.id, stock: size.pivot.stock })) || [],
         colors: product.colors.map(color => color.id.toString()) || [],
         gender_id: product.gender_id || '',
-        image: null,
+        image_1: null,
+        image_2: null,
+        image_3: null,
     });
 
-    const [imagePreview, setImagePreview] = useState(product.image ? `/storage/${product.image}` : null);
+    // Previsualizaciones para las 3 imágenes
+    const [imagePreviews, setImagePreviews] = useState({
+        image_1: product.images && product.images[0] ? `/storage/${product.images[0]}` : null,
+        image_2: product.images && product.images[1] ? `/storage/${product.images[1]}` : null,
+        image_3: product.images && product.images[2] ? `/storage/${product.images[2]}` : null,
+    });
     const [selectedSizes, setSelectedSizes] = useState(product.sizes.map(size => size.id.toString()) || []);
 
     useEffect(() => {
@@ -41,12 +49,21 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
             setData(key, value);
         }
 
-        if (e.target.type === 'file') {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                setImagePreview(event.target.result);
-            };
-            reader.readAsDataURL(e.target.files[0]);
+        // Previsualización para cada input de imagen
+        if (e.target.type === 'file' && ['image_1', 'image_2', 'image_3'].includes(key)) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    setImagePreviews(prev => ({
+                        ...prev,
+                        [key]: event.target.result
+                    }));
+                };
+                reader.readAsDataURL(file);
+            } else {
+                setImagePreviews(prev => ({ ...prev, [key]: null }));
+            }
         }
     };
 
@@ -72,10 +89,21 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
         const selectedSizesWithStock = data.sizes.filter(size => selectedSizes.includes(size.id.toString()));
         setData('sizes', selectedSizesWithStock);
         const formData = new FormData();
-        Object.keys(data).forEach(key => {
-            if (Array.isArray(data[key])) {
-                data[key].forEach(value => formData.append(`${key}[]`, value));
-            } else {
+        // Campos simples
+        formData.append('name', data.name);
+        formData.append('description', data.description);
+        formData.append('price', data.price);
+        formData.append('gender_id', data.gender_id);
+        // Arrays
+        data.categories.forEach(c => formData.append('categories[]', c));
+        data.colors.forEach(c => formData.append('colors[]', c));
+        data.sizes.forEach((s, i) => {
+            formData.append(`sizes[${i}][id]`, s.id);
+            formData.append(`sizes[${i}][stock]`, s.stock);
+        });
+        // Imágenes
+        ['image_1', 'image_2', 'image_3'].forEach(key => {
+            if (data[key]) {
                 formData.append(key, data[key]);
             }
         });
@@ -233,22 +261,25 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                                         {errors.gender_id && <div className="text-red-600">{errors.gender_id}</div>}
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Imagen</label>
-                                        <input
-                                            type="file"
-                                            name="image"
-                                            onChange={handleChange}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                        />
-                                        {errors.image && <div className="text-red-600">{errors.image}</div>}
-                                        {imagePreview && (
-                                            <div className="mt-2">
-                                                <img src={imagePreview} alt="Previsualización de la imagen" className="max-w-xs h-auto rounded-md" />
-                                            </div>
-                                        )}
-                                    </div>
+                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                                    {[1, 2, 3].map(i => (
+                                        <div key={i}>
+                                            <label className="block text-sm font-medium text-gray-700">Imagen {i}</label>
+                                            <input
+                                                type="file"
+                                                name={`image_${i}`}
+                                                accept="image/*"
+                                                onChange={handleChange}
+                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            />
+                                            {errors[`image_${i}`] && <div className="text-red-600">{errors[`image_${i}`]}</div>}
+                                            {imagePreviews[`image_${i}`] && (
+                                                <div className="mt-2">
+                                                    <img src={imagePreviews[`image_${i}`]} alt={`Previsualización imagen ${i}`} className="max-w-xs h-auto rounded-md" />
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
                                 </div>
                                 <div className="flex items-center justify-end mt-4">
                                     <button

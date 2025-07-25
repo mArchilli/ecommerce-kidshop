@@ -88,7 +88,7 @@ const EcommerceLayout = ({ children }) => {
       <main className="flex-grow">{children}</main>
 
       <footer className="bg-black p-4 text-white text-center">
-        &copy; 2025 Nuestro Ecommerce. Todos los derechos reservados.
+        &copy; 2025 La Tienda de los Niños. Sitio desarrollado por <a href="https://www.archillimatias.dev" className="underline" target="_blank">Archilli Matias</a>
       </footer>
 
       {/* Contenedor de notificaciones */}

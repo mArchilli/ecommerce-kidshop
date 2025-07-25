@@ -48,13 +48,21 @@ class ProductController extends Controller
             });
         }        
 
-        $products = $query->get();
+        $products = $query->paginate(9); // 9 productos por página
         $categories = Category::all();
         $colors = Color::all();
         $sizes = Size::all();
         $genders = Gender::all();
-    
-        return Inertia::render('Welcome', compact('products', 'categories', 'colors', 'sizes', 'genders'));
+
+        // Pasar los filtros actuales a la vista para mantener el estado
+        $filters = [
+            'category' => $request->category,
+            'color' => $request->color,
+            'gender' => $request->gender,
+            'size' => $request->size,
+        ];
+
+        return Inertia::render('Welcome', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters'));
     }
 
     public function show(Product $product)

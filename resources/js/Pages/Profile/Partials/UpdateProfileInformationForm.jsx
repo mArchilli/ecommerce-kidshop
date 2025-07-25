@@ -26,6 +26,15 @@ export default function UpdateProfileInformation({
 
     return (
         <section className={className}>
+            <div className="flex items-center gap-4">
+                <Link
+                        href={route('welcome')}
+                        className="mb-3 inline-flex items-center px-4 py-2 bg-gray-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-300 transition"
+                    >
+                        Volver a la tienda
+                    </Link>
+            </div>
+            
             <header>
                 <h2 className="text-lg font-medium text-gray-900">
                     Información del Perfil

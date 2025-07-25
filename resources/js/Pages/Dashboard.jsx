@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 export default function Dashboard() {
-    const { auth } = usePage().props; // Obtener los datos del usuario autenticado
+    const { auth, productCount } = usePage().props; // Obtener los datos del usuario autenticado y la cantidad de productos
 
     return (
         <AuthenticatedLayout
@@ -20,6 +20,16 @@ export default function Dashboard() {
                         <div className="p-6 text-gray-900">
                             Bienvenido, {auth.user.name}!
                         </div>
+                    </div>
+
+                    {/* Botón para volver a la home */}
+                    <div className="mt-6 flex justify-end">
+                        <Link
+                            href={route('welcome')}
+                            className="inline-flex items-center px-4 py-2 bg-gray-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-300 transition"
+                        >
+                            Ir a la tienda
+                        </Link>
                     </div>
 
                     {/* Panel de botones */}

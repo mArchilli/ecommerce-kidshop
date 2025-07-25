@@ -53,7 +53,7 @@ const Welcome = ({ products, categories, colors, genders }) => {
                       : 'text-white hover:bg-black hover:text-white hover:border-white'
                   }`}
                 >
-                  Productos
+                  Catalogo
                 </button>
               </li>
             </ul>

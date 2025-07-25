@@ -3,7 +3,7 @@ export default function AboutUs() {
     <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
       <div className="lg:grid lg:grid-cols-2 lg:gap-8">
         <div>
-          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">Sobre Nosotros</h2>
+          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl text-center">Sobre Nosotros</h2>
           <p className="mt-4 text-lg text-gray-500">
             Somos una emprendimiento comprometido con ofrecer productos de alta calidad a precios competitivos. Nuestra misión
             es brindar la mejor experiencia de compra online a nuestros clientes.
