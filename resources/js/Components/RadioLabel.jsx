@@ -5,7 +5,7 @@ export default function RadioLabel({ id, name, value, label, onChange, checked, 
         <label
             key={id}
             className={`inline-flex items-center mr-4 mb-2 p-2 border rounded-md transition duration-150 ease-in-out ${
-                checked ? 'bg-blue-500 text-white border-blue-500' : 'border-gray-300 hover:border-indigo-500'
+                checked ? 'bg-black text-white border-black' : 'border-gray-300 hover:border-black'
             }`}
         >
             <input
@@ -15,7 +15,7 @@ export default function RadioLabel({ id, name, value, label, onChange, checked, 
                 onChange={onChange}
                 checked={checked}
                 readOnly={readOnly}
-                className="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out rounded-full"
+                className="form-radio h-4 w-4 text-black transition duration-150 ease-in-out rounded-full"
             />
             <span className="ml-2 text-sm font-medium">{label}</span>
         </label>

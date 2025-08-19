@@ -145,6 +145,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                             </>
                                         )}
 
+                                        
+
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Cerrar Sesión
                                         </Dropdown.Link>
@@ -255,6 +257,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     >
                                         Órdenes
                                     </Link>
+                                    
                                 </>
                             )}
 
@@ -268,9 +271,15 @@ export default function AuthenticatedLayout({ header, children }) {
                                 method="post"
                                 href={route('logout')}
                                 as="button"
-                                className="px-3 py-2 rounded-md text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 transition-colors text-left"
+                                className="inline-flex w-full justify-center items-center px-4 py-2 rounded-lg bg-black text-white border border-black font-medium hover:bg-neutral-800 hover:text-white transition text-center"
                             >
                                 Cerrar Sesión
+                            </Link>
+                            <Link
+                                href={route('welcome')}
+                                className="inline-flex w-full justify-center items-center px-4 py-2 rounded-lg bg-white text-black border border-black font-medium hover:bg-black hover:text-white transition text-center"
+                            >
+                                Volver al sitio
                             </Link>
                         </div>
                     </div>

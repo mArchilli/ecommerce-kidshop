@@ -103,7 +103,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
           <h2 className="text-xl font-semibold text-black">Crear Producto</h2>
           <Link
             href={route('products.index')}
-            className="inline-flex px-4 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition"
+            className="inline-flex px-4 py-2 rounded-md border border-black text-black hover:bg-black hover:text-white transition"
           >
             Volver a Productos
           </Link>
@@ -125,7 +125,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                   name="name"
                   value={data.name}
                   onChange={handleChange}
-                  className="mt-1 w-full rounded-xl border border-black/20 bg-white px-3 py-2 focus:outline-none focus:border-black focus:border-black"
+                  className="mt-1 w-full rounded-md border border-black/20 bg-white px-3 py-2 focus:outline-none focus:border-black focus:ring-black"
                   required
                 />
                 {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name}</p>}
@@ -137,7 +137,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                   name="price"
                   value={data.price}
                   onChange={handleChange}
-                  className="mt-1 w-full rounded-xl border border-black/20 bg-white px-3 py-2 focus:outline-none focus:ring-black focus:border-black"
+                  className="mt-1 w-full rounded-md border border-black/20 bg-white px-3 py-2 focus:outline-none focus:ring-black focus:border-black"
                   required
                 />
                 {errors.price && <p className="text-red-600 text-sm mt-1">{errors.price}</p>}
@@ -149,7 +149,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                   value={data.description}
                   onChange={handleChange}
                   rows={3}
-                  className="mt-1 w-full rounded-xl border border-black/20 bg-white px-3 py-2 focus:outline-none focus:border-black focus:border-black"
+                  className="mt-1 w-full rounded-md border border-black/20 bg-white px-3 py-2 focus:outline-none focus:border-black focus:ring-black"
                 />
                 {errors.description && <p className="text-red-600 text-sm mt-1">{errors.description}</p>}
               </div>
@@ -174,7 +174,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
           </section>
 
           {/* Sección: Categorías */}
-          <section className="rounded-xl border border-black/10 bg-white p-4">
+          <section className="rounded-md border border-black/10 bg-white p-4">
             <h3 className="text-sm font-semibold text-neutral-700 mb-3">Categorías</h3>
             <div className="flex flex-wrap gap-2">
               {categories.map(({ id, name }) => (
@@ -200,7 +200,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                 const selected = data.sizes.some(s => s.id === size.id);
                 const current = data.sizes.find(s => s.id === size.id);
                 return (
-                  <div key={size.id} className="rounded-lg border border-black/10 p-3">
+                  <div key={size.id} className="rounded-md border border-black/10 p-3">
                     <div className="flex items-center justify-between">
                       <CheckboxLabel
                         id={size.id}
@@ -216,7 +216,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                           min={0}
                           value={current?.stock ?? 0}
                           onChange={e => handleStockChange(e, size.id)}
-                          className="ml-3 w-24 rounded-lg border border-black/20 bg-white px-2 py-1 text-sm focus:outline-none focus:border-black focus:border-black"
+                          className="ml-3 w-24 rounded-md border border-black/20 bg-white px-2 py-1 text-sm focus:outline-none focus:border-black focus:border-black"
                           placeholder="Stock"
                         />
                       )}
@@ -265,7 +265,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                     <p className="text-red-600 text-sm mt-2">{errors[`image_${i}`]}</p>
                   )}
                   {imagePreviews[`image_${i}`] && (
-                    <div className="mt-3 overflow-hidden rounded-lg border border-black/10">
+                    <div className="mt-3 overflow-hidden rounded-md border border-black/10">
                       <img
                         src={imagePreviews[`image_${i}`]}
                         alt={`Preview ${i}`}
@@ -279,19 +279,25 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
           </section>
 
           {/* Acciones */}
-          <div className="flex items-center justify-end gap-3">
+          <div className="flex flex-col sm:flex-row items-center justify-end gap-3">
             <Link
               href={route('products.index')}
-              className="inline-flex px-4 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition"
+              className="hidden w-full sm:w-auto sm:inline-flex px-4 py-2.5 rounded-md text-center border border-black text-black hover:bg-black hover:text-white transition"
             >
               Cancelar
             </Link>
             <button
               type="submit"
-              className="inline-flex px-5 py-2.5 rounded-lg bg-black text-white hover:bg-white hover:text-black border border-black transition"
+              className="block w-full sm:w-auto sm:inline-flex px-5 py-2.5 rounded-md bg-black text-white hover:bg-white hover:text-black border border-black transition"
             >
               Crear Producto
             </button>
+            <Link
+              href={route('products.index')}
+              className="block w-full sm:w-auto sm:hidden px-4 py-2.5 rounded-md text-center border border-black text-black hover:bg-black hover:text-white transition"
+            >
+              Cancelar
+            </Link>
           </div>
         </form>
       </div>
