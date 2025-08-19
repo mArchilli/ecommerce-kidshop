@@ -11,11 +11,6 @@ use App\Models\Gender;
 
 class ProductSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         // Obtener categorías, talles, colores y géneros

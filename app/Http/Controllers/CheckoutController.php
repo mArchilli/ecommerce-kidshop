@@ -64,9 +64,9 @@ class CheckoutController extends Controller
         $preference = $client->create([
             'items' => $items,
             'back_urls' => [
-                'success' => "https://a7a99a4c0da7.ngrok-free.app/payment/success",
-                'failure' => "https://a7a99a4c0da7.ngrok-free.app/payment/failure",
-                'pending' => "https://a7a99a4c0da7.ngrok-free.app/payment/pending",
+                'success' => "https://kidshop.archillimatias.dev/payment/success",
+                'failure' => "https://kidshop.archillimatias.dev/payment/failure",
+                'pending' => "https://kidshop.archillimatias.dev/payment/pending",
             ],
             'auto_return' => 'approved',
             'external_reference' => json_encode([

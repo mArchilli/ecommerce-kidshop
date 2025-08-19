@@ -216,7 +216,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                           min={0}
                           value={current?.stock ?? 0}
                           onChange={e => handleStockChange(e, size.id)}
-                          className="ml-3 w-24 rounded-md border border-black/20 bg-white px-2 py-1 text-sm focus:outline-none focus:border-black focus:border-black"
+                          className="ml-3 w-24 rounded-md border border-black/20 bg-white px-2 py-1 text-sm focus:outline-none focus:border-black "
                           placeholder="Stock"
                         />
                       )}
