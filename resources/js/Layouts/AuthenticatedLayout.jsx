@@ -1,82 +1,109 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user; // Obtener el usuario autenticado
-
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+    const user = usePage().props.auth.user;
+    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <nav className="border-b border-gray-100 bg-white">
+        <div className="min-h-screen bg-white text-black">
+            <nav className="sticky top-0 z-[60] backdrop-blur-md bg-black/70 border-b border-white/10">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 justify-between">
-                        <div className="flex">
+                    <div className="flex h-16 items-center justify-between">
+                        {/* Izquierda: Logo + navegación admin (desktop) */}
+                        <div className="flex items-center">
                             <div className="flex shrink-0 items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                    <ApplicationLogo className="block h-9 w-auto fill-current text-white" />
                                 </Link>
                             </div>
 
-                            {/* Opciones de navegación visibles solo para admin */}
                             {user.role === 'admin' && (
-                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                    <NavLink
+                                <div className="hidden sm:ms-10 sm:flex sm:space-x-2">
+                                    <Link
                                         href={route('dashboard')}
-                                        active={route().current('dashboard')}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            route().current('dashboard')
+                                                ? 'bg-white text-black'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
                                     >
                                         Dashboard
-                                    </NavLink>
-                                    <NavLink
+                                    </Link>
+                                    <Link
                                         href={route('products.index')}
-                                        active={route().current('products.index')}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            route().current('products.index')
+                                                ? 'bg-white text-black'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
                                     >
                                         Prendas
-                                    </NavLink>
-                                    <NavLink
+                                    </Link>
+                                    <Link
                                         href={route('categories.index')}
-                                        active={route().current('categories.index')}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            route().current('categories.index')
+                                                ? 'bg-white text-black'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
                                     >
                                         Categorías
-                                    </NavLink>
-                                    <NavLink
+                                    </Link>
+                                    <Link
                                         href={route('colors.index')}
-                                        active={route().current('colors.index')}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            route().current('colors.index')
+                                                ? 'bg-white text-black'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
                                     >
                                         Colores
-                                    </NavLink>
-                                    <NavLink
+                                    </Link>
+                                    <Link
                                         href={route('sizes.index')}
-                                        active={route().current('sizes.index')}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            route().current('sizes.index')
+                                                ? 'bg-white text-black'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
                                     >
                                         Talles
-                                    </NavLink>
-                                    <NavLink
+                                    </Link>
+                                    <Link
                                         href={route('admin.orders.index')}
-                                        active={route().current('admin.orders.index')}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            route().current('admin.orders.index')
+                                                ? 'bg-white text-black'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
                                     >
                                         Órdenes
-                                    </NavLink>
+                                    </Link>
+
+                                    <Link
+                                        href={route('welcome')}
+                                        className="inline-flex text-right px-3 py-1 rounded-lg border bg-white border-black text-black hover:bg-black hover:text-white transition"
+                                    >
+                                        Ir a la tienda
+                                    </Link>
                                 </div>
                             )}
                         </div>
 
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                        {/* Derecha: Usuario / Dropdown (desktop) */}
+                        <div className="hidden sm:flex sm:items-center">
                             <div className="relative ms-3">
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                className="inline-flex items-center rounded-md border border-white/10 bg-transparent px-3 py-2 text-sm font-medium leading-4 text-white/90 transition duration-150 ease-in-out hover:text-white focus:outline-none"
                                             >
                                                 {user.name}
-
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -94,33 +121,22 @@ export default function AuthenticatedLayout({ header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link
-                                            href={route('profile.edit')}
-                                        >
+                                        <Dropdown.Link href={route('profile.edit')}>
                                             Perfil
                                         </Dropdown.Link>
 
-                                        {/* Opciones del dropdown visibles solo para admin */}
                                         {user.role === 'admin' && (
                                             <>
-                                                <Dropdown.Link
-                                                    href={route('products.index')}
-                                                >
+                                                <Dropdown.Link href={route('products.index')}>
                                                     Prendas
                                                 </Dropdown.Link>
-                                                <Dropdown.Link
-                                                    href={route('categories.index')}
-                                                >
+                                                <Dropdown.Link href={route('categories.index')}>
                                                     Categorías
                                                 </Dropdown.Link>
-                                                <Dropdown.Link
-                                                    href={route('colors.index')}
-                                                >
+                                                <Dropdown.Link href={route('colors.index')}>
                                                     Colores
                                                 </Dropdown.Link>
-                                                <Dropdown.Link
-                                                    href={route('sizes.index')}
-                                                >
+                                                <Dropdown.Link href={route('sizes.index')}>
                                                     Talles
                                                 </Dropdown.Link>
                                                 <Dropdown.Link href={route('admin.orders.index')}>
@@ -129,11 +145,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                             </>
                                         )}
 
-                                        <Dropdown.Link
-                                            href={route('logout')}
-                                            method="post"
-                                            as="button"
-                                        >
+                                        <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Cerrar Sesión
                                         </Dropdown.Link>
                                     </Dropdown.Content>
@@ -141,38 +153,24 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
 
+                        {/* Botón menú móvil */}
                         <div className="-me-2 flex items-center sm:hidden">
                             <button
                                 onClick={() =>
-                                    setShowingNavigationDropdown(
-                                        (previousState) => !previousState,
-                                    )
+                                    setShowingNavigationDropdown((prev) => !prev)
                                 }
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
+                                className="inline-flex items-center justify-center rounded-md p-2 text-white transition duration-150 ease-in-out hover:bg-white/10 focus:bg-white/10 focus:outline-none"
                             >
-                                <svg
-                                    className="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
+                                <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                     <path
-                                        className={
-                                            !showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
-                                        }
+                                        className={!showingNavigationDropdown ? 'inline-flex' : 'hidden'}
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
                                         d="M4 6h16M4 12h16M4 18h16"
                                     />
                                     <path
-                                        className={
-                                            showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
-                                        }
+                                        className={showingNavigationDropdown ? 'inline-flex' : 'hidden'}
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
@@ -184,83 +182,103 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </div>
 
+                {/* Menú móvil desplegable */}
                 <div
-                    className={
-                        (showingNavigationDropdown ? 'block' : 'hidden') +
-                        ' sm:hidden'
-                    }
+                    className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden bg-black/90 text-white backdrop-blur-md border-t border-white/10'}
                 >
-                    <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            href={route('dashboard')}
-                            active={route().current('dashboard')}
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
-                        {user.role === 'admin' && (
-                            <>
-                                <ResponsiveNavLink
-                                    href={route('products.index')}
-                                    active={route().current('products.index')}
-                                >
-                                    Prendas
-                                </ResponsiveNavLink>
-                                <ResponsiveNavLink
-                                    href={route('categories.index')}
-                                    active={route().current('categories.index')}
-                                >
-                                    Categorías
-                                </ResponsiveNavLink>
-                                <ResponsiveNavLink
-                                    href={route('colors.index')}
-                                    active={route().current('colors.index')}
-                                >
-                                    Colores
-                                </ResponsiveNavLink>
-                                <ResponsiveNavLink
-                                    href={route('sizes.index')}
-                                    active={route().current('sizes.index')}
-                                >
-                                    Talles
-                                </ResponsiveNavLink>
-                                <ResponsiveNavLink
-                                    href={route('admin.orders.index')}
-                                    active={route().current('admin.orders.index')}
-                                >
-                                    Órdenes
-                                </ResponsiveNavLink>
-                            </>
-                        )}
-                    </div>
-
-                    <div className="border-t border-gray-200 pb-1 pt-4">
-                        <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">
-                                {user.name}
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                {user.email}
-                            </div>
+                    <div className="space-y-1 pb-3 pt-2 px-4">
+                        <div className="text-sm text-white/70">
+                            {user.name} <span className="text-white/50">•</span> {user.email}
                         </div>
 
-                        <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                        <div className="mt-3 grid gap-2">
+                            <Link
+                                href={route('dashboard')}
+                                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                    route().current('dashboard')
+                                        ? 'bg-white text-black'
+                                        : 'text-white/90 hover:text-white hover:bg-white/10'
+                                }`}
+                            >
+                                Dashboard
+                            </Link>
+
+                            {user.role === 'admin' && (
+                                <>
+                                    <Link
+                                        href={route('products.index')}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            route().current('products.index')
+                                                ? 'bg-white text-black'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
+                                    >
+                                        Prendas
+                                    </Link>
+                                    <Link
+                                        href={route('categories.index')}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            route().current('categories.index')
+                                                ? 'bg-white text-black'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
+                                    >
+                                        Categorías
+                                    </Link>
+                                    <Link
+                                        href={route('colors.index')}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            route().current('colors.index')
+                                                ? 'bg-white text-black'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
+                                    >
+                                        Colores
+                                    </Link>
+                                    <Link
+                                        href={route('sizes.index')}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            route().current('sizes.index')
+                                                ? 'bg-white text-black'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
+                                    >
+                                        Talles
+                                    </Link>
+                                    <Link
+                                        href={route('admin.orders.index')}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            route().current('admin.orders.index')
+                                                ? 'bg-white text-black'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
+                                    >
+                                        Órdenes
+                                    </Link>
+                                </>
+                            )}
+
+                            <Link
+                                href={route('profile.edit')}
+                                className="px-3 py-2 rounded-md text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 transition-colors"
+                            >
                                 Perfil
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
+                            </Link>
+                            <Link
                                 method="post"
                                 href={route('logout')}
                                 as="button"
+                                className="px-3 py-2 rounded-md text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 transition-colors text-left"
                             >
                                 Cerrar Sesión
-                            </ResponsiveNavLink>
+                            </Link>
                         </div>
                     </div>
                 </div>
             </nav>
 
             {header && (
-                <header className="bg-white shadow">
+                <header className="bg-white border-b border-black/10">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                         {header}
                     </div>

@@ -33,10 +33,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
     } else if (type === 'checkbox') {
       const arr = data[name];
       const v = value.toString();
-      setData(name, checked
-        ? [...arr, v]
-        : arr.filter(i => i !== v)
-      );
+      setData(name, checked ? [...arr, v] : arr.filter(i => i !== v));
     } else {
       setData(name, value);
     }
@@ -103,10 +100,10 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
     <AuthenticatedLayout
       header={
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-800">Crear Producto</h2>
+          <h2 className="text-xl font-semibold text-black">Crear Producto</h2>
           <Link
             href={route('products.index')}
-            className="inline-flex px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+            className="inline-flex px-4 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition"
           >
             Volver a Productos
           </Link>
@@ -115,168 +112,189 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
     >
       <Head title="Crear Producto" />
 
-      <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6 p-6 bg-white shadow rounded">
-        {/* Nombre & Descripción */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Nombre</label>
-            <input
-              type="text"
-              name="name"
-              value={data.name}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded"
-              required
-            />
-            {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Descripción</label>
-            <textarea
-              name="description"
-              value={data.description}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded"
-            />
-            {errors.description && <p className="text-red-600 text-sm">{errors.description}</p>}
-          </div>
-        </div>
-
-        {/* Precio */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Precio</label>
-          <input
-            type="number"
-            name="price"
-            value={data.price}
-            onChange={handleChange}
-            className="mt-1 block w-full border-gray-300 rounded"
-            required
-          />
-          {errors.price && <p className="text-red-600 text-sm">{errors.price}</p>}
-        </div>
-
-        {/* Categorías */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Categorías</label>
-          <div className="mt-1 flex flex-wrap">
-            {categories.map(({ id, name }) => (
-              <CheckboxLabel
-                key={id}
-                id={id}
-                name="categories"
-                value={id}
-                label={name}
-                onChange={handleChange}
-                checked={data.categories.includes(id.toString())}
-              />
-            ))}
-          </div>
-          {errors.categories && <p className="text-red-600 text-sm">{errors.categories}</p>}
-        </div>
-
-        {/* Talles */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Talles</label>
-          <div className="mt-1 flex flex-wrap">
-            {sizes.map(size => (
-              <div key={size.id} className="mr-4 mb-4">
-                <CheckboxLabel
-                  id={size.id}
-                  name="sizes"
-                  value={size.id}
-                  label={size.name}
-                  onChange={() => handleSizeSelection(size.id)}
-                  checked={data.sizes.some(s => s.id === size.id)}
+      <div className="max-w-7xl mx-auto">
+        <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-8 p-6 bg-white/80 backdrop-blur-sm  rounded-2xl">
+          {/* Sección: Información básica */}
+          <section>
+            <h3 className="text-sm font-semibold text-neutral-700 mb-4">Información básica</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-neutral-800">Nombre</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={data.name}
+                  onChange={handleChange}
+                  className="mt-1 w-full rounded-xl border border-black/20 bg-white px-3 py-2 focus:outline-none focus:border-black focus:border-black"
+                  required
                 />
-                {data.sizes.some(s => s.id === size.id) && (
-                  <input
-                    type="number"
-                    value={data.sizes.find(s => s.id === size.id).stock}
-                    onChange={e => handleStockChange(e, size.id)}
-                    className="mt-1 block w-20 border-gray-300 rounded"
-                  />
-                )}
+                {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name}</p>}
               </div>
-            ))}
-          </div>
-          {errors.sizes && <p className="text-red-600 text-sm">{errors.sizes}</p>}
-        </div>
-
-        {/* Colores */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Colores</label>
-          <div className="mt-1 flex flex-wrap">
-            {colors.map(({ id, name }) => (
-              <CheckboxLabel
-                key={id}
-                id={id}
-                name="colors"
-                value={id}
-                label={name}
-                onChange={handleChange}
-                checked={data.colors.includes(id.toString())}
-              />
-            ))}
-          </div>
-          {errors.colors && <p className="text-red-600 text-sm">{errors.colors}</p>}
-        </div>
-
-        {/* Género */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Género</label>
-          <div className="mt-1 flex flex-wrap">
-            {genders.map(({ id, name }) => (
-              <RadioLabel
-                key={id}
-                id={id}
-                name="gender_id"
-                value={id}
-                label={name}
-                onChange={handleChange}
-                checked={data.gender_id == id}
-              />
-            ))}
-          </div>
-          {errors.gender_id && <p className="text-red-600 text-sm">{errors.gender_id}</p>}
-        </div>
-
-        {/* Imágenes */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[1, 2, 3].map(i => (
-            <div key={i}>
-              <label className="block text-sm font-medium text-gray-700">Imagen {i}</label>
-              <input
-                type="file"
-                name={`image_${i}`}
-                accept="image/*"
-                onChange={handleChange}
-                className="mt-1 block w-full"
-              />
-              {errors[`image_${i}`] && (
-                <p className="text-red-600 text-sm">{errors[`image_${i}`]}</p>
-              )}
-              {imagePreviews[`image_${i}`] && (
-                <img
-                  src={imagePreviews[`image_${i}`]}
-                  alt={`Preview ${i}`}
-                  className="mt-2 h-24 object-cover rounded"
+              <div>
+                <label className="block text-sm font-medium text-neutral-800">Precio</label>
+                <input
+                  type="number"
+                  name="price"
+                  value={data.price}
+                  onChange={handleChange}
+                  className="mt-1 w-full rounded-xl border border-black/20 bg-white px-3 py-2 focus:outline-none focus:ring-black focus:border-black"
+                  required
                 />
-              )}
+                {errors.price && <p className="text-red-600 text-sm mt-1">{errors.price}</p>}
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-neutral-800">Descripción</label>
+                <textarea
+                  name="description"
+                  value={data.description}
+                  onChange={handleChange}
+                  rows={3}
+                  className="mt-1 w-full rounded-xl border border-black/20 bg-white px-3 py-2 focus:outline-none focus:border-black focus:border-black"
+                />
+                {errors.description && <p className="text-red-600 text-sm mt-1">{errors.description}</p>}
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-neutral-800 mb-2">Género</label>
+                <div className="flex flex-wrap gap-3">
+                  {genders.map(({ id, name }) => (
+                    <RadioLabel
+                      key={id}
+                      id={id}
+                      name="gender_id"
+                      value={id}
+                      label={name}
+                      onChange={handleChange}
+                      checked={data.gender_id == id}
+                    />
+                  ))}
+                </div>
+                {errors.gender_id && <p className="text-red-600 text-sm mt-2">{errors.gender_id}</p>}
+              </div>
             </div>
-          ))}
-        </div>
+          </section>
 
-        {/* Submit */}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Crear Producto
-          </button>
-        </div>
-      </form>
+          {/* Sección: Categorías */}
+          <section className="rounded-xl border border-black/10 bg-white p-4">
+            <h3 className="text-sm font-semibold text-neutral-700 mb-3">Categorías</h3>
+            <div className="flex flex-wrap gap-2">
+              {categories.map(({ id, name }) => (
+                <CheckboxLabel
+                  key={id}
+                  id={id}
+                  name="categories"
+                  value={id}
+                  label={name}
+                  onChange={handleChange}
+                  checked={data.categories.includes(id.toString())}
+                />
+              ))}
+            </div>
+            {errors.categories && <p className="text-red-600 text-sm mt-2">{errors.categories}</p>}
+          </section>
+
+          {/* Sección: Talles con stock */}
+          <section className="rounded-xl border border-black/10 bg-white p-4">
+            <h3 className="text-sm font-semibold text-neutral-700 mb-3">Talles y stock</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {sizes.map(size => {
+                const selected = data.sizes.some(s => s.id === size.id);
+                const current = data.sizes.find(s => s.id === size.id);
+                return (
+                  <div key={size.id} className="rounded-lg border border-black/10 p-3">
+                    <div className="flex items-center justify-between">
+                      <CheckboxLabel
+                        id={size.id}
+                        name="sizes"
+                        value={size.id}
+                        label={size.name}
+                        onChange={() => handleSizeSelection(size.id)}
+                        checked={selected}
+                      />
+                      {selected && (
+                        <input
+                          type="number"
+                          min={0}
+                          value={current?.stock ?? 0}
+                          onChange={e => handleStockChange(e, size.id)}
+                          className="ml-3 w-24 rounded-lg border border-black/20 bg-white px-2 py-1 text-sm focus:outline-none focus:border-black focus:border-black"
+                          placeholder="Stock"
+                        />
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            {errors.sizes && <p className="text-red-600 text-sm mt-2">{errors.sizes}</p>}
+          </section>
+
+          {/* Sección: Colores */}
+          <section className="rounded-xl border border-black/10 bg-white p-4">
+            <h3 className="text-sm font-semibold text-neutral-700 mb-3">Colores</h3>
+            <div className="flex flex-wrap gap-2">
+              {colors.map(({ id, name }) => (
+                <CheckboxLabel
+                  key={id}
+                  id={id}
+                  name="colors"
+                  value={id}
+                  label={name}
+                  onChange={handleChange}
+                  checked={data.colors.includes(id.toString())}
+                />
+              ))}
+            </div>
+            {errors.colors && <p className="text-red-600 text-sm mt-2">{errors.colors}</p>}
+          </section>
+
+          {/* Sección: Imágenes */}
+          <section>
+            <h3 className="text-sm font-semibold text-neutral-700 mb-3">Imágenes</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="rounded-xl border border-black/10 bg-white p-4">
+                  <label className="block text-sm font-medium text-neutral-800">Imagen {i}</label>
+                  <input
+                    type="file"
+                    name={`image_${i}`}
+                    accept="image/*"
+                    onChange={handleChange}
+                    className="mt-2 block w-full text-sm file:mr-4 file:rounded-md file:border-0 file:bg-black file:px-4 file:py-2 file:text-white file:hover:bg-neutral-800 file:transition"
+                  />
+                  {errors[`image_${i}`] && (
+                    <p className="text-red-600 text-sm mt-2">{errors[`image_${i}`]}</p>
+                  )}
+                  {imagePreviews[`image_${i}`] && (
+                    <div className="mt-3 overflow-hidden rounded-lg border border-black/10">
+                      <img
+                        src={imagePreviews[`image_${i}`]}
+                        alt={`Preview ${i}`}
+                        className="h-40 w-full object-cover"
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Acciones */}
+          <div className="flex items-center justify-end gap-3">
+            <Link
+              href={route('products.index')}
+              className="inline-flex px-4 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition"
+            >
+              Cancelar
+            </Link>
+            <button
+              type="submit"
+              className="inline-flex px-5 py-2.5 rounded-lg bg-black text-white hover:bg-white hover:text-black border border-black transition"
+            >
+              Crear Producto
+            </button>
+          </div>
+        </form>
+      </div>
     </AuthenticatedLayout>
   );
 }
