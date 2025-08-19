@@ -17,6 +17,9 @@ use App\Http\Middleware\CheckRole;
 
 Route::get('/', [ProductController::class, 'showProducts'])->name('welcome');
 
+// Nueva ruta para el catálogo
+Route::get('/catalog', [ProductController::class, 'catalog'])->name('catalog.index');
+
 Route::get('/admin/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified', CheckRole::class . ':admin'])->name('dashboard');

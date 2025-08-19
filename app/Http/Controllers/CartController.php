@@ -18,8 +18,10 @@ class CartController extends Controller
             abort(403, 'Usuario no autenticado');
         }
 
-        // Usamos el método cart() para construir la consulta de relaciones
-        $cart = $user->cart()->with('items.product')->first();
+        // Usar user_id en lugar de $user->cart()
+        $cart = \App\Models\Cart::with('items.product')
+            ->where('user_id', $user->id)
+            ->first();
 
         return inertia('Cart/Index', ['cart' => $cart]);
     }

@@ -212,4 +212,48 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('products.index');
     }
+
+    public function catalog(Request $request)
+    {
+        $query = Product::with(['categories', 'sizes', 'colors', 'gender']);
+
+        if ($request->has('category')) {
+            $query->whereHas('categories', function ($q) use ($request) {
+                $q->where('name', $request->category);
+            });
+        }
+
+        if ($request->has('color')) {
+            $query->whereHas('colors', function ($q) use ($request) {
+                $q->where('name', $request->color);
+            });
+        }
+
+        if ($request->has('size')) {
+            $query->whereHas('sizes', function ($q) use ($request) {
+                $q->where('name', $request->size);
+            });
+        }
+
+        if ($request->has('gender')) {
+            $query->whereHas('gender', function ($q) use ($request) {
+                $q->where('name', $request->gender);
+            });
+        }
+
+        $products = $query->paginate(9);
+        $categories = Category::all();
+        $colors = Color::all();
+        $sizes = Size::all();
+        $genders = Gender::all();
+
+        $filters = [
+            'category' => $request->category,
+            'color' => $request->color,
+            'gender' => $request->gender,
+            'size' => $request->size,
+        ];
+
+        return Inertia::render('Ecommerce/ProductList', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters'));
+    }
 }

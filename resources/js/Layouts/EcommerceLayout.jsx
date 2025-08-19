@@ -20,7 +20,7 @@ const EcommerceLayout = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col bg-white text-black">
       <nav className="bg-black p-4">
-        <div className="container mx-auto flex justify-between items-center">
+        <div className="mx-auto flex justify-between items-center">
           <Link href="/" className="text-white text-lg font-bold">
             La Tienda de los Niños
           </Link>

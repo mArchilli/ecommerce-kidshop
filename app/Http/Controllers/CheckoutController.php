@@ -11,7 +11,9 @@ class CheckoutController extends Controller
 {
     public function index(Request $request)
     {
-        $cart = $request->user()->cart()->with('items.product')->first();
+        $cart = \App\Models\Cart::with('items.product')
+            ->where('user_id', $request->user()->id)
+            ->first();
 
         return Inertia::render('Cart/Checkout', [
             'cart' => $cart,
@@ -20,21 +22,23 @@ class CheckoutController extends Controller
 
     public function payment(Request $request)
     {
-        // Validar los datos de envío
+        // Validar los datos de envío (opcionales) y método requerido
         $validated = $request->validate([
-            'province' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:10',
-            'address' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'shipping_method' => 'required|string|in:Correo Argentino,Andreani,Retirar en el local',
+            'province' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'postal_code' => 'nullable|string|max:10',
+            'address' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'shipping_method' => 'required|string|in:Envio a Domicilio,Retirar en el local',
         ]);
 
         // Obtener el usuario autenticado
         $user = $request->user();
 
         // Obtener el carrito del usuario
-        $cart = $user->cart()->with('items.product')->first();
+        $cart = \App\Models\Cart::with('items.product')
+            ->where('user_id', $user->id)
+            ->first();
 
         // Verificar si el carrito está vacío
         if (!$cart || $cart->items->isEmpty()) {

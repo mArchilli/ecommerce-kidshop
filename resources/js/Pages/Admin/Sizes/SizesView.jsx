@@ -3,9 +3,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 
 export default function SizesView({ sizes }) {
-    useEffect(() => {
-        console.log(sizes);
-    }, [sizes]);
 
     return (
         <AuthenticatedLayout

@@ -21,8 +21,8 @@ const ProductFilter = ({ categories, colors, genders, onFilter, initialFilters =
   };
 
   return (
-    <div className="border border-black rounded-xl p-6 bg-white max-w-6xl  mx-auto mb-8">
-      <h2 className="text-2xl font-bold text-center mb-6">Filtros</h2>
+    <div className="rounded-xl p-6 bg-white max-w-6xl  mx-auto mb-8">
+      <h2 className="text-3xl font-bold text-center mb-6">Filtros</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="flex flex-col">
           <label className="mb-1 font-semibold text-black" htmlFor="category-select">Categoría</label>

@@ -3,9 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 
 export default function ColorsView({ colors }) {
-    useEffect(() => {
-        console.log(colors);
-    }, [colors]);
+    
 
     return (
         <AuthenticatedLayout

@@ -1,30 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import Hero from '../Pages/Ecommerce/Hero';
-import ProductList from '../Pages/Ecommerce/ProductList';
 
 const Welcome = ({ products, categories, colors, genders }) => {
-  const [activeSection, setActiveSection] = useState('home');
-
-  const renderSection = () => {
-    switch (activeSection) {
-      case 'home':
-        return <Hero />;
-      case 'products':
-        return (
-          <ProductList
-            products={products}
-            categories={categories}
-            colors={colors}
-            genders={genders}
-          />
-        );
-      default:
-        return <Hero />;
-    }
-  };
-
   return (
     <EcommerceLayout>
       <Head title="Bienvenido" />
@@ -33,34 +12,34 @@ const Welcome = ({ products, categories, colors, genders }) => {
           <div className="w-full">
             <ul className="flex space-x-4 justify-center">
               <li>
-                <button
-                  onClick={() => setActiveSection('home')}
-                  className={`px-4 py-2 rounded-md transition-colors duration-300 ${
-                    activeSection === 'home'
-                      ? 'bg-black text-white'
+                <Link
+                  href={route('welcome')}
+                  className={`px-2 py-1 rounded-md transition-colors duration-300 ${
+                    route().current('welcome')
+                      ? 'bg-white text-black'
                       : 'text-white hover:bg-black hover:text-white hover:border-white'
                   }`}
                 >
                   Inicio
-                </button>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => setActiveSection('products')}
-                  className={`px-4 py-2 rounded-md transition-colors duration-300 ${
-                    activeSection === 'products'
-                      ? 'bg-black text-white'
+                <Link
+                  href={route('catalog.index')}
+                  className={`px-2 py-1 rounded-md transition-colors duration-300 ${
+                    route().current('catalog.index')
+                      ? 'bg-white text-black'
                       : 'text-white hover:bg-black hover:text-white hover:border-white'
                   }`}
                 >
                   Catalogo
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
         </nav>
         <main className="flex-grow w-full">
-          {renderSection()}
+          <Hero />
         </main>
       </div>
     </EcommerceLayout>

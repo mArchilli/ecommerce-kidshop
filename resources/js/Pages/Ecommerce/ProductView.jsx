@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, router } from '@inertiajs/react';
 
 const ProductView = ({ product }) => {
   const { data, setData, post, processing, errors } = useForm({
@@ -58,7 +58,7 @@ const ProductView = ({ product }) => {
   };
 
   const handleGoBack = () => {
-    window.history.back();
+    router.visit(route('catalog.index'));
   };
 
   const handleImageClick = () => {
