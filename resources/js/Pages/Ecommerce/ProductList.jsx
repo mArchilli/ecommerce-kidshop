@@ -28,39 +28,8 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
 
   return (
     <EcommerceLayout>
-      {/* Nav de secciones Inicio / Catalogo */}
-      <nav className="bg-black p-4">
-        <div className="w-full">
-          <ul className="flex space-x-4 justify-center">
-            <li>
-              <Link
-                href={route('welcome')}
-                className={`px-2 py-1 rounded-md transition-colors duration-300 ${
-                  route().current('welcome')
-                    ? 'bg-white text-black'
-                    : 'text-white hover:bg-black hover:text-white hover:border-white'
-                }`}
-              >
-                Inicio
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={route('catalog.index')}
-                className={`px-2 py-1 rounded-md transition-colors duration-300 ${
-                  route().current('catalog.index')
-                    ? 'bg-white text-black'
-                    : 'text-white hover:bg-black hover:text-white hover:border-white'
-                }`}
-              >
-                Catalogo
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
 
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <h1 className="hidden text-3xl font-extrabold text-gray-900 sm:text-4xl my-6 text-center md:text-left">Catalogo de prendas</h1>
         <ProductFilter
           categories={categories}

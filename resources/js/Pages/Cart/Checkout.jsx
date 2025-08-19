@@ -54,184 +54,205 @@ const Checkout = ({ cart }) => {
         </div>
 
         {cart && cart.items && cart.items.length > 0 ? (
-          <>
-            {/* Información de envío: primero método, luego mensajes (sin formulario para Envío a Domicilio) */}
-            <div className="bg-white shadow-md rounded-lg mb-6 p-6">
-              <h2 className="text-xl font-semibold mb-4">Información de Envío</h2>
+          <div className="grid md:grid-cols-12 gap-6">
+            {/* Columna izquierda: Envío + Lista de productos */}
+            <section className="md:col-span-8 flex flex-col gap-6">
+              {/* Información de envío (se mantiene el formulario condicional) */}
+              <div className="bg-white shadow-md rounded-lg p-6">
+                <h2 className="text-xl font-semibold mb-4">Información de Envío</h2>
 
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold mb-2">Método de Envío (A cargo del comprador)</h3>
-                <p className="text-sm text-gray-500 mb-4">
-                  En caso de seleccionar Envío a Domicilio, nos contactaremos con usted luego de finalizada la compra para informar el importe.
-                </p>
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold mb-2">Método de Envío (A cargo del comprador)</h3>
+                  <p className="text-sm text-gray-500 mb-4">
+                    En caso de seleccionar Envío a Domicilio, nos contactaremos con usted luego de finalizada la compra para informar el importe.
+                  </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    aria-pressed={data.shipping_method === 'Envio a Domicilio'}
-                    onClick={() => setData('shipping_method', 'Envio a Domicilio')}
-                    className={`w-full flex items-center justify-center gap-2 rounded-lg px-4 py-3 border transition
-                      ${data.shipping_method === 'Envio a Domicilio'
-                        ? 'bg-black text-white border-black'
-                        : 'bg-white text-black border-gray-300 hover:bg-gray-50'}
-                      focus:outline-none focus:ring-2 focus:ring-black`}
-                  >
-                    {/* ícono camión */}
-                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7h11v8H3zM14 10h3l4 3v2h-7V10zM5.5 19a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm11 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                    </svg>
-                    <span>Envío a Domicilio</span>
-                  </button>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      aria-pressed={data.shipping_method === 'Envio a Domicilio'}
+                      onClick={() => setData('shipping_method', 'Envio a Domicilio')}
+                      className={`w-full flex items-center justify-center gap-2 rounded-lg px-4 py-3 border transition
+                        ${data.shipping_method === 'Envio a Domicilio'
+                          ? 'bg-black text-white border-black'
+                          : 'bg-white text-black border-gray-300 hover:bg-gray-50'}
+                        focus:outline-none focus:ring-2 focus:ring-black`}
+                    >
+                      {/* ícono camión */}
+                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7h11v8H3zM14 10h3l4 3v2h-7V10zM5.5 19a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm11 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                      </svg>
+                      <span>Envío a Domicilio</span>
+                    </button>
 
-                  {/* Botón Retiro en local */}
-                  <button
-                    type="button"
-                    aria-pressed={data.shipping_method === 'Retirar en el local'}
-                    onClick={() => setData('shipping_method', 'Retirar en el local')}
-                    className={`w-full flex items-center justify-center gap-2 rounded-lg px-4 py-3 border transition
-                      ${data.shipping_method === 'Retirar en el local'
-                        ? 'bg-black text-white border-black'
-                        : 'bg-white text-black border-gray-300 hover:bg-gray-50'}
-                      focus:outline-none focus:ring-2 focus:ring-black`}
-                  >
-                    {/* ícono tienda */}
-                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 10l1-4h14l1 4M5 10h14v9H5zM9 19v-5h6v5" />
-                    </svg>
-                    <span>Retirar en el local</span>
-                  </button>
+                    <button
+                      type="button"
+                      aria-pressed={data.shipping_method === 'Retirar en el local'}
+                      onClick={() => setData('shipping_method', 'Retirar en el local')}
+                      className={`w-full flex items-center justify-center gap-2 rounded-lg px-4 py-3 border transition
+                        ${data.shipping_method === 'Retirar en el local'
+                          ? 'bg-black text-white border-black'
+                          : 'bg-white text-black border-gray-300 hover:bg-gray-50'}
+                        focus:outline-none focus:ring-2 focus:ring-black`}
+                    >
+                      {/* ícono tienda */}
+                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 10l1-4h14l1 4M5 10h14v9H5zM9 19v-5h6v5" />
+                      </svg>
+                      <span>Retirar en el local</span>
+                    </button>
+                  </div>
+
+                  {errors.shipping_method && (
+                    <span className="text-red-500 text-sm mt-2 block">{errors.shipping_method}</span>
+                  )}
                 </div>
 
-                {errors.shipping_method && (
-                  <span className="text-red-500 text-sm mt-2 block">{errors.shipping_method}</span>
+                {/* Mensajes en vez de formulario */}
+                {data.shipping_method === 'Envio a Domicilio' && (
+                  <>
+                    <div className="mt-2 p-3 rounded-md bg-gray-50 text-sm text-gray-700">
+                      Te contactaremos luego de la compra para coordinar el envío y su costo.
+                    </div>
+
+                    {/* Formulario visible nuevamente si es Envío a Domicilio */}
+                    <form onSubmit={handleSubmit} className="mt-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">Provincia</label>
+                          <input
+                            type="text"
+                            value={data.province}
+                            onChange={(e) => setData('province', e.target.value)}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
+                          />
+                          {errors.province && <span className="text-red-500 text-sm">{errors.province}</span>}
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">Localidad</label>
+                          <input
+                            type="text"
+                            value={data.city}
+                            onChange={(e) => setData('city', e.target.value)}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
+                          />
+                          {errors.city && <span className="text-red-500 text-sm">{errors.city}</span>}
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">Código Postal</label>
+                          <input
+                            type="text"
+                            value={data.postal_code}
+                            onChange={(e) => setData('postal_code', e.target.value)}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
+                          />
+                          {errors.postal_code && <span className="text-red-500 text-sm">{errors.postal_code}</span>}
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">Dirección</label>
+                          <input
+                            type="text"
+                            value={data.address}
+                            onChange={(e) => setData('address', e.target.value)}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
+                          />
+                          {errors.address && <span className="text-red-500 text-sm">{errors.address}</span>}
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">Teléfono de Contacto</label>
+                          <input
+                            type="text"
+                            value={data.phone}
+                            onChange={(e) => setData('phone', e.target.value)}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
+                          />
+                          {errors.phone && <span className="text-red-500 text-sm">{errors.phone}</span>}
+                        </div>
+                      </div>
+                      {/* Sin botón aquí; se usa el de la card de resumen o Enter en inputs */}
+                    </form>
+                  </>
+                )}
+
+                {data.shipping_method === 'Retirar en el local' && (
+                  <div className="mt-2 p-3 rounded-md bg-gray-50 text-sm text-gray-700">
+                    Podrás retirar tu pedido en: Varela 505, Mariano Acosta, Buenos Aires.
+                  </div>
                 )}
               </div>
 
-              {/* Mensajes en vez de formulario */}
-              {data.shipping_method === 'Envio a Domicilio' && (
-                <>
-                  <div className="mt-2 p-3 rounded-md bg-gray-50 text-sm text-gray-700">
-                    Te contactaremos luego de la compra para coordinar el envío y su costo.
-                  </div>
-
-                  {/* Formulario visible nuevamente si es Envío a Domicilio */}
-                  <form onSubmit={handleSubmit} className="mt-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">Provincia</label>
-                        <input
-                          type="text"
-                          value={data.province}
-                          onChange={(e) => setData('province', e.target.value)}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
-                        />
-                        {errors.province && <span className="text-red-500 text-sm">{errors.province}</span>}
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">Localidad</label>
-                        <input
-                          type="text"
-                          value={data.city}
-                          onChange={(e) => setData('city', e.target.value)}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
-                        />
-                        {errors.city && <span className="text-red-500 text-sm">{errors.city}</span>}
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">Código Postal</label>
-                        <input
-                          type="text"
-                          value={data.postal_code}
-                          onChange={(e) => setData('postal_code', e.target.value)}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
-                        />
-                        {errors.postal_code && <span className="text-red-500 text-sm">{errors.postal_code}</span>}
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">Dirección</label>
-                        <input
-                          type="text"
-                          value={data.address}
-                          onChange={(e) => setData('address', e.target.value)}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
-                        />
-                        {errors.address && <span className="text-red-500 text-sm">{errors.address}</span>}
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">Teléfono de Contacto</label>
-                        <input
-                          type="text"
-                          value={data.phone}
-                          onChange={(e) => setData('phone', e.target.value)}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
-                        />
-                        {errors.phone && <span className="text-red-500 text-sm">{errors.phone}</span>}
+              {/* Lista de productos (estilo similar a Index) */}
+              <div className="bg-white border rounded-lg">
+                <h2 className="text-lg font-semibold p-4">Productos</h2>
+                <div className="divide-y divide-gray-200">
+                  {cart.items.map((item) => (
+                    <div key={item.id} className="p-4 flex items-center gap-4">
+                      <img
+                        src={
+                          item.product.images && item.product.images.length > 0
+                            ? `/storage/${item.product.images[0]}`
+                            : '/placeholder.svg'
+                        }
+                        alt={item.product.name}
+                        className="w-20 h-20 object-cover rounded-md border"
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <h3 className="text-sm font-semibold text-gray-900">{item.product.name}</h3>
+                            <p className="text-xs text-gray-500">Talle: {item.size || 'N/A'}</p>
+                            <p className="text-xs text-gray-500">Cantidad: {item.quantity}</p>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-sm text-gray-900">
+                              Precio: ${Number(item.product.price).toFixed(2)}
+                            </div>
+                            <div className="text-sm font-semibold text-gray-900">
+                              Total: ${(item.product.price * item.quantity).toFixed(2)}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    {/* Sin botón aquí; se usa el de la card de resumen o Enter en inputs */}
-                  </form>
-                </>
-              )}
-
-              {data.shipping_method === 'Retirar en el local' && (
-                <div className="mt-2 p-3 rounded-md bg-gray-50 text-sm text-gray-700">
-                  Podrás retirar tu pedido en: Varela 505, Mariano Acosta, Buenos Aires.
+                  ))}
                 </div>
-              )}
-            </div>
-
-            {/* Resumen de compra rediseñado (tarjetas) */}
-            <div className="bg-white shadow-md rounded-lg overflow-hidden">
-              <div className="divide-y divide-gray-200">
-                {cart.items.map((item) => (
-                  <div key={item.id} className="p-4 flex items-center gap-4">
-                    <img
-                      src={
-                        item.product.images && item.product.images.length > 0
-                          ? `/storage/${item.product.images[0]}`
-                          : '/placeholder.svg'
-                      }
-                      alt={item.product.name}
-                      className="w-20 h-20 object-cover rounded-md border"
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <h3 className="text-sm font-semibold text-gray-900">{item.product.name}</h3>
-                          <p className="text-xs text-gray-500">Talle: {item.size || 'N/A'}</p>
-                          <p className="text-xs text-gray-500">Cantidad: {item.quantity}</p>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-sm text-gray-900">
-                            Precio: ${Number(item.product.price).toFixed(2)}
-                          </div>
-                          <div className="text-sm font-semibold text-gray-900">
-                            Total: ${(item.product.price * item.quantity).toFixed(2)}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
               </div>
-              <div className="p-4">
-                <div className="flex flex-col md:justify-between gap-3">
-                  <h3 className="text-xl font-bold text-right flex-1">
-                    Total: ${total.toFixed(2)}
-                  </h3>
+            </section>
+
+            {/* Columna derecha: Resumen sticky + botón de pago */}
+            <aside className="md:col-span-4">
+              <div className="bg-white rounded-lg shadow p-6 md:sticky top-4">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">Resumen</h2>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Subtotal</span>
+                    <span className="font-medium">${total.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Envío</span>
+                    <span className="font-medium">
+                      {data.shipping_method === 'Retirar en el local' ? 'Sin costo' : 'A confirmar'}
+                    </span>
+                  </div>
+                  <div className="border-t pt-3 flex justify-between text-base">
+                    <span className="font-semibold">Total</span>
+                    <span className="font-semibold">${total.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <div className="mt-6">
                   <button
                     type="button"
                     onClick={proceedToPayment}
-                    className="w-full md:w-auto bg-black border border-black text-white px-4 py-2 rounded-md hover:bg-white hover:text-black transition duration-300"
+                    className="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-white hover:text-black border border-black transition duration-300"
                     disabled={processing}
                   >
                     Proceder al Pago
                   </button>
                 </div>
-                
               </div>
-            </div>
-          </>
+            </aside>
+          </div>
         ) : (
           <p className="text-center text-gray-700 mt-8">
             No hay productos en el carrito.
