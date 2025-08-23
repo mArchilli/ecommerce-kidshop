@@ -69,6 +69,12 @@ const Payment = ({ cart, preferenceId, shippingInfo }) => {
     'Hola! Quiero consultar por mi pedido y el envío.'
   )}`;
 
+  // Función para asegurar el prefijo correcto en la ruta de la imagen
+  const getImageSrc = (imgPath) => {
+    if (!imgPath) return '/placeholder.svg';
+    return imgPath.startsWith('images/') ? `/${imgPath}` : `/images/${imgPath}`;
+  };
+
   return (
     <EcommerceLayout>
       <Head title="Pago" />
@@ -102,7 +108,7 @@ const Payment = ({ cart, preferenceId, shippingInfo }) => {
                     <img
                       src={
                         item.product.images && item.product.images.length > 0
-                          ? `/storage/${item.product.images[0]}`
+                          ? getImageSrc(item.product.images[0])
                           : '/placeholder.svg'
                       }
                       alt={item.product.name}

@@ -32,6 +32,12 @@ const Checkout = ({ cart }) => {
   const total =
     cart?.items?.reduce((sum, item) => sum + item.product.price * item.quantity, 0) || 0;
 
+  // Función para asegurar el prefijo correcto en la ruta de la imagen
+  const getImageSrc = (imgPath) => {
+    if (!imgPath) return '/placeholder.svg';
+    return imgPath.startsWith('images/') ? `/${imgPath}` : `/images/${imgPath}`;
+  };
+
   return (
     <EcommerceLayout>
       <Head title="Resumen de Compra" />
@@ -190,7 +196,7 @@ const Checkout = ({ cart }) => {
                       <img
                         src={
                           item.product.images && item.product.images.length > 0
-                            ? `/storage/${item.product.images[0]}`
+                            ? getImageSrc(item.product.images[0])
                             : '/placeholder.svg'
                         }
                         alt={item.product.name}
