@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import ProductFilter from './ProductFilters';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const ProductList = ({ products, categories, colors, genders, filters = {} }) => {
   // products: objeto paginado de Laravel (data, links, meta)
@@ -32,6 +34,13 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
     return imgPath.startsWith('images/') ? `/${imgPath}` : `/images/${imgPath}`;
   };
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
   return (
     <EcommerceLayout>
 
@@ -46,11 +55,17 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
         />
         {products && products.data && products.data.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center max-w-6xl mx-auto">
-              {products.data.map((product) => (
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center max-w-6xl mx-auto"
+              data-aos="fade-up"
+              data-aos-delay="400"
+            >
+              {products.data.map((product, idx) => (
                 <div 
                   key={product.id} 
                   className="bg-white shadow-md rounded-lg overflow-hidden transition duration-300 transform hover:shadow-lg hover:scale-95"
+                  data-aos="fade-up"
+                  data-aos-delay="400"
                 >
                   <img 
                     src={product.images && product.images.length > 0 ? getImageSrc(product.images[0]) : '/placeholder.svg'} 

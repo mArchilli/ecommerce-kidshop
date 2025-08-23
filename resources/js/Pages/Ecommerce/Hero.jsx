@@ -29,15 +29,15 @@ const Hero = () => {
 
         {/* Text Content */}
         <div className="text-center px-4 relative z-10">
-          <h1 className="text-6xl font-bold text-white mb-6" data-aos="fade-up">
+          <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 font-patrick" data-aos="fade-up">
             La Tienda de los Niños
           </h1>
           <p
-            className="text-xl text-white mb-8 leading-relaxed"
+            className="text-2xl text-white mb-8 leading-relaxed font-patrick"
             data-aos="fade-up"
             data-aos-delay="200"
           >
-            Descubre los mejores productos con diseños increíbles y calidad insuperable. Explora nuestro catálogo y encuentra lo que buscas.
+            Descubre los mejores productos con diseños increíbles y calidad insuperable. Explora nuestro catálogo y encontra lo que buscas.
           </p>
         </div>
       </div>
