@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, router, usePage } from '@inertiajs/react';
+import { Link, router, usePage, Head } from '@inertiajs/react';
 import ProductFilter from './ProductFilters';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import AOS from 'aos';
@@ -43,6 +43,7 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
 
   return (
     <EcommerceLayout>
+      <Head title="Catálogo" />
 
       <div className="max-w-7xl mx-auto">
         <h1 className="hidden text-3xl font-extrabold text-gray-900 sm:text-4xl my-6 text-center md:text-left">Catalogo de prendas</h1>

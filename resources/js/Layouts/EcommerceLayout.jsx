@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage, Head } from '@inertiajs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faUser, faBars, faTimes, faUserShield } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';
@@ -25,6 +25,9 @@ const EcommerceLayout = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-black">
+      <Head>
+        <link rel="icon" type="image/png" href="/images/logo-tienda-de-ninios.png" />
+      </Head>
       <nav className="fixed top-0 left-0 right-0 z-[60] backdrop-blur-md backdrop-saturate-150 bg-black/60 border-b border-white/10">
         <div className="mx-auto max-w-7xl px-4 py-4 flex justify-between items-center relative z-[80]">
           {/* Logo: oculto en mobile */}
