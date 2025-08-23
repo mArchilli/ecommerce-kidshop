@@ -21,19 +21,19 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
 
     // Previsualizaciones para las 3 imágenes
     const [imagePreviews, setImagePreviews] = useState({
-        image_1: product.images && product.images[0] ? `/storage/${product.images[0]}` : null,
-        image_2: product.images && product.images[1] ? `/storage/${product.images[1]}` : null,
-        image_3: product.images && product.images[2] ? `/storage/${product.images[2]}` : null,
+        image_1: product.images && product.images[0] ? `/images/products/${product.images[0].replace(/^.*[\\/]/, '')}` : null,
+        image_2: product.images && product.images[1] ? `/images/products/${product.images[1].replace(/^.*[\\/]/, '')}` : null,
+        image_3: product.images && product.images[2] ? `/images/products/${product.images[2].replace(/^.*[\\/]/, '')}` : null,
     });
     const [selectedSizes, setSelectedSizes] = useState(product.sizes.map(size => size.id.toString()) || []);
 
-    useEffect(() => {
-        console.log('Product:', product);
-        console.log('Categories:', categories);
-        console.log('Sizes:', sizes);
-        console.log('Colors:', colors);
-        console.log('Genders:', genders); // Log para verificar los géneros
-    }, [product, categories, sizes, colors, genders]);
+    // useEffect(() => {
+    //     console.log('Product:', product);
+    //     console.log('Categories:', categories);
+    //     console.log('Sizes:', sizes);
+    //     console.log('Colors:', colors);
+    //     console.log('Genders:', genders); 
+    // }, [product, categories, sizes, colors, genders]);
 
     const handleChange = (e) => {
         const key = e.target.name;
@@ -124,7 +124,7 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                     </h2>
                     <Link
                         href={route('products.index')}
-                        className="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"
+                        className="inline-flex px-4 py-2 rounded-md border border-black text-black hover:bg-black hover:text-white transition"
                     >
                         Volver a Productos
                     </Link>
@@ -275,7 +275,15 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                                             {errors[`image_${i}`] && <div className="text-red-600">{errors[`image_${i}`]}</div>}
                                             {imagePreviews[`image_${i}`] && (
                                                 <div className="mt-2">
-                                                    <img src={imagePreviews[`image_${i}`]} alt={`Previsualización imagen ${i}`} className="max-w-xs h-auto rounded-md" />
+                                                    <img
+                                                        src={
+                                                            imagePreviews[`image_${i}`].startsWith('blob:')
+                                                                ? imagePreviews[`image_${i}`]
+                                                                : `/images/products/${imagePreviews[`image_${i}`].replace(/^.*[\\/]/, '')}`
+                                                        }
+                                                        alt={`Previsualización imagen ${i}`}
+                                                        className="max-w-xs h-72 rounded-md" // altura aumentada
+                                                    />
                                                 </div>
                                             )}
                                         </div>

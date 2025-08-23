@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head, Link, useForm, router } from '@inertiajs/react';
 
@@ -15,6 +15,9 @@ const ProductView = ({ product }) => {
   const [activeImage, setActiveImage] = useState(0);
   const [showQuantity, setShowQuantity] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [magnifier, setMagnifier] = useState({ visible: false, x: 0, y: 0, target: 'main' });
+  const imgRef = useRef(null);
+  const mainImgRef = useRef(null);
 
   const handleSizeClick = (size) => {
     setData('size', size.name);
@@ -75,6 +78,43 @@ const ProductView = ({ product }) => {
     return imgPath.startsWith('images/') ? `/${imgPath}` : `/images/${imgPath}`;
   };
 
+  // Cierra el modal si se hace click fuera de la imagen (solo desktop)
+  const handleModalClick = (e) => {
+    if (window.innerWidth >= 768 && e.target.classList.contains('modal-bg')) {
+      setIsPreviewOpen(false);
+      setIsZoomed(false);
+      setZoomPos({ x: 0, y: 0 });
+    }
+  };
+
+  // Zoom y desplazamiento
+  const getZoomScale = () => (window.innerWidth < 768 ? 1.3 : 2);
+
+  const handleMagnifierMove = (e) => {
+    if (window.innerWidth < 768) return;
+    const rect = imgRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setMagnifier({ visible: true, x, y, target: 'main' });
+  };
+
+  const handleMagnifierLeave = () => {
+    setMagnifier({ ...magnifier, visible: false });
+  };
+
+  // Magnifier para imagen principal (miniatura)
+  const handleMainMagnifierMove = (e) => {
+    if (window.innerWidth < 768) return;
+    const rect = mainImgRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setMagnifier({ visible: true, x, y, target: 'main' });
+  };
+
+  const handleMainMagnifierLeave = () => {
+    setMagnifier({ ...magnifier, visible: false });
+  };
+
   return (
     <EcommerceLayout>
       <Head title={product.name} />
@@ -96,13 +136,41 @@ const ProductView = ({ product }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Imágenes del producto */}
             <div className="space-y-4">
-              <div className="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden border border-gray-200">
+              <div
+                className="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden border border-gray-200 relative"
+                style={{ position: 'relative' }}
+              >
                 <img
+                  ref={mainImgRef}
                   src={orderedImages.length > 0 ? getImageSrc(orderedImages[activeImage]) : '/placeholder.svg'}
                   alt={product.name}
                   className="w-full h-auto object-center object-cover cursor-pointer"
                   onClick={handleImageClick}
+                  onMouseMove={window.innerWidth >= 768 ? handleMainMagnifierMove : undefined}
+                  onMouseLeave={window.innerWidth >= 768 ? handleMainMagnifierLeave : undefined}
+                  draggable={false}
+                  style={{ userSelect: 'none', cursor: window.innerWidth >= 768 ? 'none' : 'pointer' }}
                 />
+                {/* Lupa solo en desktop sobre la miniatura */}
+                {window.innerWidth >= 768 && magnifier.visible && magnifier.target === 'main' && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      pointerEvents: 'none',
+                      left: magnifier.x - 75,
+                      top: magnifier.y - 75,
+                      width: 150,
+                      height: 150,
+                      borderRadius: '50%',
+                      border: '2px solid #fff',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                      background: `url('${orderedImages.length > 0 ? getImageSrc(orderedImages[activeImage]) : '/placeholder.svg'}') no-repeat`,
+                      backgroundSize: `${mainImgRef.current ? mainImgRef.current.width * 2 : 0}px ${mainImgRef.current ? mainImgRef.current.height * 2 : 0}px`,
+                      backgroundPosition: `${-magnifier.x * 2 + 75}px ${-magnifier.y * 2 + 75}px`,
+                      zIndex: 10002,
+                    }}
+                  />
+                )}
               </div>
               <div className="grid grid-cols-4 gap-2">
                 {orderedImages.map((image, index) => (
@@ -285,19 +353,63 @@ const ProductView = ({ product }) => {
 
       {/* Modal de previsualización */}
       {isPreviewOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-          <div className="relative">
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 modal-bg"
+          style={{ zIndex: 9999 }}
+          onClick={handleModalClick}
+        >
+          <div className="relative flex items-center justify-center w-full h-full">
+            {/* Botón de cerrar */}
             <button
               onClick={handleClosePreview}
-              className="absolute top-0 right-0 m-4 text-white text-2xl"
+              className="fixed top-4 right-4 md:top-8 md:right-8 text-white bg-black bg-opacity-70 rounded-full p-2 md:p-3 z-[10001] hover:bg-opacity-90 transition"
+              style={{
+                fontSize: '2.5rem',
+                lineHeight: '2.5rem',
+                width: '3rem',
+                height: '3rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+              aria-label="Cerrar"
             >
               &times;
             </button>
-            <img
-              src={orderedImages.length > 0 ? getImageSrc(orderedImages[activeImage]) : '/placeholder.svg'}
-              alt={product.name}
-              className="max-w-full max-h-screen"
-            />
+            {/* Imagen sin lupa en el modal */}
+            <div
+              style={{
+                position: 'relative',
+                maxWidth: '90vw',
+                maxHeight: '80vh',
+                overflow: window.innerWidth < 768 ? 'auto' : 'hidden',
+                touchAction: window.innerWidth < 768 ? 'none' : 'auto',
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
+              <img
+                ref={imgRef}
+                src={orderedImages.length > 0 ? getImageSrc(orderedImages[activeImage]) : '/placeholder.svg'}
+                alt={product.name}
+                className="rounded-lg shadow-lg select-none"
+                style={{
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '90vw',
+                  maxHeight: '80vh',
+                  objectFit: 'contain',
+                  cursor: window.innerWidth >= 768 ? 'auto' : 'auto',
+                  userSelect: 'none',
+                  touchAction: window.innerWidth < 768 ? 'none' : 'auto',
+                }}
+                draggable={false}
+                // No magnifier handlers en el modal
+              />
+              {/* Lupa solo en desktop - ELIMINADA EN EL MODAL */}
+            </div>
           </div>
         </div>
       )}

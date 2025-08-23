@@ -15,13 +15,13 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
         gender_id: product.gender_id || '', // Agrega el estado para el género
     });
 
-    useEffect(() => {
-        console.log('Product:', product);
-        console.log('Categories:', categories);
-        console.log('Sizes:', sizes);
-        console.log('Colors:', colors);
-        console.log('Genders:', genders); // Log para verificar los géneros
-    }, [product, categories, sizes, colors, genders]);
+    // useEffect(() => {
+    //     console.log('Product:', product);
+    //     console.log('Categories:', categories);
+    //     console.log('Sizes:', sizes);
+    //     console.log('Colors:', colors);
+    //     console.log('Genders:', genders); 
+    // }, [product, categories, sizes, colors, genders]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -37,7 +37,7 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
                     </h2>
                     <Link
                         href={route('products.index')}
-                        className="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"
+                        className="inline-flex px-4 py-2 rounded-md border border-black text-black hover:bg-black hover:text-white transition"
                     >
                         Volver a Productos
                     </Link>
@@ -178,9 +178,9 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
                                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700">Imagen</label>
-                                        {product.image && (
+                                        {product.images && product.images[0] && (
                                             <div className="mt-2">
-                                                <img src={`/storage/${product.image}`} alt="Imagen del producto" className="max-w-xs h-auto rounded-md" />
+                                                <img src={`/images/products/${product.images[0].replace(/^.*[\\/]/, '')}`} alt="Imagen del producto" className="max-w-xs h-72 rounded-md" />
                                             </div>
                                         )}
                                     </div>

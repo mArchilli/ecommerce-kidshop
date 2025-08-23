@@ -99,10 +99,20 @@ class ProductController extends Controller
             'sizes.*.stock' => 'required|integer|min:0',
             'colors' => 'array',
             'gender_id' => 'required|exists:genders,id',
-            'image_1' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'image_2' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'image_3' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // Eliminar validación obligatoria de cada imagen individual
+            'image_1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        // Validar que al menos una imagen esté presente
+        if (
+            !$request->hasFile('image_1') &&
+            !$request->hasFile('image_2') &&
+            !$request->hasFile('image_3')
+        ) {
+            return redirect()->back()->withErrors(['images' => 'Debe cargar al menos una imagen.'])->withInput();
+        }
 
         $imageFields = ['image_1', 'image_2', 'image_3'];
         $imagePaths = [];

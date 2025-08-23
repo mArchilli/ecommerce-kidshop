@@ -85,9 +85,9 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
         formData.append('images[]', data[key]);
       }
     });
-    console.log('hasta aca llego');
+    // console.log('hasta aca llego');
     for (let pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
+        // console.log(pair[0], pair[1]);
         }
 
     post(route('products.store'), {
@@ -267,9 +267,13 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                   {imagePreviews[`image_${i}`] && (
                     <div className="mt-3 overflow-hidden rounded-md border border-black/10">
                       <img
-                        src={imagePreviews[`image_${i}`]}
+                        src={
+                          imagePreviews[`image_${i}`].startsWith('blob:')
+                            ? imagePreviews[`image_${i}`]
+                            : `/images/products/${imagePreviews[`image_${i}`].replace(/^.*[\\/]/, '')}`
+                        }
                         alt={`Preview ${i}`}
-                        className="h-40 w-full object-cover"
+                        className="h-72 w-full object-cover" // altura aumentada
                       />
                     </div>
                   )}
