@@ -26,6 +26,12 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
     });
   };
 
+  // Función para asegurar el prefijo correcto en la ruta de la imagen
+  const getImageSrc = (imgPath) => {
+    if (!imgPath) return '/placeholder.svg';
+    return imgPath.startsWith('images/') ? `/${imgPath}` : `/images/${imgPath}`;
+  };
+
   return (
     <EcommerceLayout>
 
@@ -47,7 +53,7 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
                   className="bg-white shadow-md rounded-lg overflow-hidden transition duration-300 transform hover:shadow-lg hover:scale-95"
                 >
                   <img 
-                    src={product.images && product.images.length > 0 ? `/storage/${product.images[0]}` : '/placeholder.svg'} 
+                    src={product.images && product.images.length > 0 ? getImageSrc(product.images[0]) : '/placeholder.svg'} 
                     alt={product.name} 
                     className="w-full h-64 object-cover" 
                   />

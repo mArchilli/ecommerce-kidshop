@@ -109,7 +109,10 @@ class ProductController extends Controller
         try {
             foreach ($imageFields as $field) {
                 if ($request->hasFile($field)) {
-                    $imagePaths[] = $request->file($field)->store('products', 'public');
+                    $file = $request->file($field);
+                    $filename = uniqid() . '_' . $file->getClientOriginalName();
+                    $file->move(public_path('images/products'), $filename);
+                    $imagePaths[] = 'images/products/' . $filename;
                 }
             }
         } catch (\Exception $e) {
@@ -164,13 +167,18 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             // Eliminar las imágenes antiguas
             foreach ($product->images as $image) {
-                Storage::disk('public')->delete($image);
+                $imagePath = public_path($image);
+                if (file_exists($imagePath)) {
+                    @unlink($imagePath);
+                }
             }
 
             // Guardar las nuevas imágenes
             $imagePaths = [];
-            foreach ($request->file('images') as $image) {
-                $imagePaths[] = $image->store('products', 'public');
+            foreach ($request->file('images') as $file) {
+                $filename = uniqid() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('images/products'), $filename);
+                $imagePaths[] = 'images/products/' . $filename;
             }
         }
 
@@ -206,7 +214,10 @@ class ProductController extends Controller
     {
         // Eliminar las imágenes del producto
         foreach ($product->images as $image) {
-            Storage::disk('public')->delete($image);
+            $imagePath = public_path($image);
+            if (file_exists($imagePath)) {
+                @unlink($imagePath);
+            }
         }
 
         $product->delete();

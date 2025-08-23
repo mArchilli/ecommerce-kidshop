@@ -69,6 +69,12 @@ const ProductView = ({ product }) => {
     setIsPreviewOpen(false);
   };
 
+  // Función para asegurar el prefijo correcto en la ruta de la imagen
+  const getImageSrc = (imgPath) => {
+    if (!imgPath) return '/placeholder.svg';
+    return imgPath.startsWith('images/') ? `/${imgPath}` : `/images/${imgPath}`;
+  };
+
   return (
     <EcommerceLayout>
       <Head title={product.name} />
@@ -92,7 +98,7 @@ const ProductView = ({ product }) => {
             <div className="space-y-4">
               <div className="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden border border-gray-200">
                 <img
-                  src={orderedImages.length > 0 ? `/storage/${orderedImages[activeImage]}` : '/placeholder.svg'}
+                  src={orderedImages.length > 0 ? getImageSrc(orderedImages[activeImage]) : '/placeholder.svg'}
                   alt={product.name}
                   className="w-full h-auto object-center object-cover cursor-pointer"
                   onClick={handleImageClick}
@@ -108,7 +114,7 @@ const ProductView = ({ product }) => {
                     }`}
                   >
                     <img
-                      src={`/storage/${image}`}
+                      src={getImageSrc(image)}
                       alt={`${product.name} - Vista ${index + 1}`}
                       className="w-full h-full object-center object-cover"
                     />
@@ -288,7 +294,7 @@ const ProductView = ({ product }) => {
               &times;
             </button>
             <img
-              src={orderedImages.length > 0 ? `/storage/${orderedImages[activeImage]}` : '/placeholder.svg'}
+              src={orderedImages.length > 0 ? getImageSrc(orderedImages[activeImage]) : '/placeholder.svg'}
               alt={product.name}
               className="max-w-full max-h-screen"
             />

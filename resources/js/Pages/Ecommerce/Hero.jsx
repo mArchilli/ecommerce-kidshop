@@ -20,7 +20,7 @@ const Hero = () => {
       <div
         className="h-screen w-full flex items-center justify-center bg-cover bg-center relative z-0"
         style={{
-          backgroundImage: "url('/images/landing/tienda-los-ninios-banner.jpg')",
+          backgroundImage: "url('/images/Landing/tienda-los-ninios-banner.jpg')",
         }}
         data-aos="fade-in"
       >
