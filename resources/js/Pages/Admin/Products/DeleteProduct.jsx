@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
-import RadioLabel from '@/Components/RadioLabel'; // Importa el componente RadioLabel
+import RadioLabel from '@/Components/RadioLabel';
 
 export default function DeleteProduct({ product, categories = [], sizes = [], colors = [], genders = [] }) {
     const { data, setData, delete: destroy, errors } = useForm({
@@ -12,16 +12,8 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
         categories: product.categories.map(category => category.id.toString()),
         sizes: product.sizes.map(size => ({ id: size.id, stock: size.pivot.stock })),
         colors: product.colors.map(color => color.id.toString()),
-        gender_id: product.gender_id || '', // Agrega el estado para el género
+        gender_id: product.gender_id || '',
     });
-
-    // useEffect(() => {
-    //     console.log('Product:', product);
-    //     console.log('Categories:', categories);
-    //     console.log('Sizes:', sizes);
-    //     console.log('Colors:', colors);
-    //     console.log('Genders:', genders); 
-    // }, [product, categories, sizes, colors, genders]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -32,175 +24,98 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between items-center">
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                        Eliminar Producto
-                    </h2>
+                    <h2 className="text-2xl font-bold text-red-600">Eliminar Producto</h2>
                     <Link
                         href={route('products.index')}
-                        className="inline-flex px-4 py-2 rounded-md border border-black text-black hover:bg-black hover:text-white transition"
+                        className="px-4 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition"
                     >
-                        Volver a Productos
+                        Volver
                     </Link>
                 </div>
             }
         >
             <Head title="Eliminar Producto" />
-
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Nombre</label>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            value={data.name}
-                                            readOnly
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
+            <div className="max-w-7xl mx-auto py-10">
+                <form onSubmit={handleSubmit} className="space-y-8">
+                    <div className="bg-white rounded-2xl shadow p-8 border-2 border-red-400">
+                        <h3 className="text-lg font-semibold text-red-600 mb-6 border-b pb-2">¿Estás seguro que deseas eliminar este producto?</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <span className="block text-xs text-neutral-500 mb-1">Nombre</span>
+                                <div className="text-lg font-bold">{data.name}</div>
+                            </div>
+                            <div>
+                                <span className="block text-xs text-neutral-500 mb-1">Descripción</span>
+                                <div className="text-neutral-700">{data.description}</div>
+                            </div>
+                            <div>
+                                <span className="block text-xs text-neutral-500 mb-1">Precio</span>
+                                <div className="text-neutral-700">${Number(data.price).toLocaleString('es-AR')}</div>
+                            </div>
+                            <div>
+                                <span className="block text-xs text-neutral-500 mb-1">Categorías</span>
+                                <div className="flex flex-wrap gap-2">
+                                    {categories.filter(c => data.categories.includes(c.id.toString())).map(c => (
+                                        <span key={c.id} className="bg-neutral-100 border px-2 py-1 rounded text-xs">{c.name}</span>
+                                    ))}
+                                </div>
+                            </div>
+                            <div>
+                                <span className="block text-xs text-neutral-500 mb-1">Talles y Stock</span>
+                                <div className="flex flex-wrap gap-2">
+                                    {sizes.filter(s => data.sizes.some(sz => sz.id === s.id)).map(s => (
+                                        <span key={s.id} className="bg-neutral-100 border px-2 py-1 rounded text-xs">
+                                            {s.name} ({data.sizes.find(sz => sz.id === s.id)?.stock || 0})
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                            <div>
+                                <span className="block text-xs text-neutral-500 mb-1">Colores</span>
+                                <div className="flex flex-wrap gap-2">
+                                    {colors.filter(c => data.colors.includes(c.id.toString())).map(c => (
+                                        <span key={c.id} className="bg-neutral-100 border px-2 py-1 rounded text-xs">{c.name}</span>
+                                    ))}
+                                </div>
+                            </div>
+                            <div>
+                                <span className="block text-xs text-neutral-500 mb-1">Género</span>
+                                <div className="flex flex-wrap gap-2">
+                                    {genders.filter(g => data.gender_id == g.id).map(g => (
+                                        <span key={g.id} className="bg-neutral-100 border px-2 py-1 rounded text-xs">{g.name}</span>
+                                    ))}
+                                </div>
+                            </div>
+                            <div>
+                                <span className="block text-xs text-neutral-500 mb-1">Imágenes</span>
+                                <div className="flex gap-4 mt-2">
+                                    {product.images && product.images.map((img, idx) => (
+                                        <img
+                                            key={idx}
+                                            src={`/images/products/${img.replace(/^.*[\\/]/, '')}`}
+                                            alt={`Imagen ${idx + 1}`}
+                                            className="h-24 w-24 object-cover rounded border"
                                         />
-                                        {errors.name && <div className="text-red-600">{errors.name}</div>}
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Descripción</label>
-                                        <textarea
-                                            name="description"
-                                            value={data.description}
-                                            readOnly
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
-                                        ></textarea>
-                                        {errors.description && <div className="text-red-600">{errors.description}</div>}
-                                    </div>
+                                    ))}
                                 </div>
-                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Precio</label>
-                                        <input
-                                            type="text"
-                                            name="price"
-                                            value={
-                                                data.price !== ''
-                                                    ? Number(data.price).toLocaleString('es-AR')
-                                                    : ''
-                                            }
-                                            readOnly
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
-                                        />
-                                        {errors.price && <div className="text-red-600">{errors.price}</div>}
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Categorías</label>
-                                        <div className="mt-1 flex flex-wrap">
-                                            {categories.map((category) => (
-                                                <CheckboxLabel
-                                                    key={category.id}
-                                                    id={category.id}
-                                                    name="categories"
-                                                    value={category.id}
-                                                    label={category.name}
-                                                    onChange={() => {}}
-                                                    checked={data.categories.includes(category.id.toString())}
-                                                    readOnly
-                                                />
-                                            ))}
-                                        </div>
-                                        {errors.categories && <div className="text-red-600">{errors.categories}</div>}
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Talles</label>
-                                        <div className="mt-1 flex flex-wrap">
-                                            {sizes.map((size) => (
-                                                <div key={size.id} className="mr-4 mb-4">
-                                                    <CheckboxLabel
-                                                        id={size.id}
-                                                        name="sizes"
-                                                        value={size.id}
-                                                        label={size.name}
-                                                        onChange={() => {}}
-                                                        checked={data.sizes.some(s => s.id === size.id)}
-                                                        readOnly
-                                                    />
-                                                    {data.sizes.some(s => s.id === size.id) && (
-                                                        <input
-                                                            type="number"
-                                                            name={`sizes[${size.id}].stock`}
-                                                            value={data.sizes.find(s => s.id === size.id).stock}
-                                                            readOnly
-                                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-100"
-                                                        />
-                                                    )}
-                                                </div>
-                                            ))}
-                                        </div>
-                                        {errors.sizes && <div className="text-red-600">{errors.sizes}</div>}
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Colores</label>
-                                        <div className="mt-1 flex flex-wrap">
-                                            {colors.map((color) => (
-                                                <CheckboxLabel
-                                                    key={color.id}
-                                                    id={color.id}
-                                                    name="colors"
-                                                    value={color.id}
-                                                    label={color.name}
-                                                    onChange={() => {}}
-                                                    checked={data.colors.includes(color.id.toString())}
-                                                    readOnly
-                                                />
-                                            ))}
-                                        </div>
-                                        {errors.colors && <div className="text-red-600">{errors.colors}</div>}
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Género</label>
-                                        <div className="mt-1 flex flex-wrap">
-                                            {genders.map((gender) => (
-                                                <RadioLabel
-                                                    key={gender.id}
-                                                    id={gender.id}
-                                                    name="gender_id"
-                                                    value={gender.id}
-                                                    label={gender.name}
-                                                    onChange={() => {}}
-                                                    checked={data.gender_id == gender.id}
-                                                    readOnly
-                                                />
-                                            ))}
-                                        </div>
-                                        {errors.gender_id && <div className="text-red-600">{errors.gender_id}</div>}
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Imagen</label>
-                                        {product.images && product.images[0] && (
-                                            <div className="mt-2">
-                                                <img src={`/images/products/${product.images[0].replace(/^.*[\\/]/, '')}`} alt="Imagen del producto" className="max-w-xs h-72 rounded-md" />
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="flex items-center justify-end mt-4">
-                                    <button
-                                        type="submit"
-                                        className="inline-flex items-center px-4 py-2 bg-red-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-red-900 focus:ring focus:ring-red-300 disabled:opacity-25 transition"
-                                    >
-                                        Eliminar Producto
-                                    </button>
-                                </div>
-                            </form>
+                            </div>
+                        </div>
+                        <div className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-8">
+                            <Link
+                                href={route('products.index')}
+                                className="w-full sm:w-auto px-4 py-2.5 rounded-lg text-center border border-black text-black hover:bg-black hover:text-white transition"
+                            >
+                                Cancelar
+                            </Link>
+                            <button
+                                type="submit"
+                                className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-red-600 text-white hover:bg-white hover:text-red-600 border border-red-600 transition font-semibold"
+                            >
+                                Eliminar Producto
+                            </button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </AuthenticatedLayout>
     );
