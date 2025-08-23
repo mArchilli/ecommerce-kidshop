@@ -35,9 +35,6 @@ export default function Login({ status, canResetPassword }) {
 
                     <div className="relative z-10 flex flex-col justify-center items-center p-12 text-center">
                         <div className="mb-8">
-                            <div className="w-24 h-24 mx-auto bg-white/15 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6">
-                                <span className="text-3xl font-bold">TdN</span>
-                            </div>
                             <h1 className="text-4xl font-bold mb-4">Bienvenido</h1>
                             <p className="text-lg text-neutral-200">
                                 Accede a tu cuenta para continuar

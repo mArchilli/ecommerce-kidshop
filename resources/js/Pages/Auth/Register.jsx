@@ -53,9 +53,6 @@ export default function Register() {
 
                         {/* Logo/título móvil */}
                         <div className="text-center mb-8 lg:hidden">
-                            <div className="w-16 h-16 bg-gradient-to-br from-black to-neutral-700 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                                <span className="text-white font-bold text-2xl">TdN</span>
-                            </div>
                             <h1 className="text-2xl font-bold text-neutral-900">Crear cuenta</h1>
                             <p className="text-neutral-600 mt-2">Regístrate para comenzar</p>
                         </div>
