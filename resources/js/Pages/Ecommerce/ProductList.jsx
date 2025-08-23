@@ -57,7 +57,7 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
         {products && products.data && products.data.length > 0 ? (
           <>
             <div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center max-w-6xl mx-auto"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center max-w-7xl mx-auto"
               data-aos="fade-up"
               data-aos-delay="400"
             >
@@ -126,7 +126,7 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
             </div>
           </>
         ) : (
-          <p className="text-center text-black mt-8">
+          <p className="text-center text-xl text-black mt-8 h-96">
             No hay productos para los filtros seleccionados.
           </p>
         )}

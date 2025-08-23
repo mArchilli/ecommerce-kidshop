@@ -68,19 +68,38 @@ const EcommerceLayout = ({ children }) => {
                 <>
                   {auth.user.role === 'admin' && (
                     <li>
-                      <Link href={route('dashboard')} className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors">
-                        <FontAwesomeIcon icon={faUserShield} /> Administrador
+                      <Link
+                        href={route('dashboard')}
+                        className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                        title="Panel de administración"
+                      >
+                        <FontAwesomeIcon icon={faUserShield} /> 
                       </Link>
                     </li>
                   )}
                   <li>
-                    <Link href={route('profile.edit')} className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors">
-                      <FontAwesomeIcon icon={faUser} /> Perfil
+                    <Link
+                      href={route('profile.edit')}
+                      className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      title="Mi perfil"
+                    >
+                      <FontAwesomeIcon icon={faUser} /> 
                     </Link>
                   </li>
-                  <li>
-                    <Link href={route('cart.index')} className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors">
-                      <FontAwesomeIcon icon={faShoppingCart} /> Carrito
+                  <li className="relative">
+                    <Link
+                      href={route('cart.index')}
+                      className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      title="Carrito"
+                    >
+                      <span className="relative inline-block">
+                        <FontAwesomeIcon icon={faShoppingCart} />
+                        {auth.cart_count > 0 && (
+                          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5 shadow border border-white">
+                            {auth.cart_count}
+                          </span>
+                        )}
+                      </span>
                     </Link>
                   </li>
                   <li>
@@ -89,6 +108,7 @@ const EcommerceLayout = ({ children }) => {
                       method="post"
                       as="button"
                       className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      title="Cerrar sesión"
                     >
                       Cerrar Sesión
                     </Link>
@@ -97,12 +117,20 @@ const EcommerceLayout = ({ children }) => {
               ) : (
                 <>
                   <li>
-                    <Link href={route('login')} className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors">
+                    <Link
+                      href={route('login')}
+                      className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      title="Ingresar"
+                    >
                       Iniciar sesión
                     </Link>
                   </li>
                   <li>
-                    <Link href={route('register')} className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors">
+                    <Link
+                      href={route('register')}
+                      className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      title="Registrarse"
+                    >
                       Registrarse
                     </Link>
                   </li>
@@ -136,8 +164,9 @@ const EcommerceLayout = ({ children }) => {
                         href={route('dashboard')}
                         className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors "
                         onClick={() => setIsMenuOpen(false)}
+                        title="Panel de administración"
                       >
-                        <FontAwesomeIcon icon={faUserShield} /> Administrador
+                        <FontAwesomeIcon icon={faUserShield} /> Administracion
                       </Link>
                     </li>
                   )}
@@ -146,17 +175,26 @@ const EcommerceLayout = ({ children }) => {
                       href={route('profile.edit')}
                       className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
+                      title="Mi perfil"
                     >
                       <FontAwesomeIcon icon={faUser} /> Perfil
                     </Link>
                   </li>
-                  <li>
+                  <li className="relative">
                     <Link
                       href={route('cart.index')}
                       className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
+                      title="Carrito"
                     >
-                      <FontAwesomeIcon icon={faShoppingCart} /> Carrito
+                      <span className="relative inline-block">
+                        <FontAwesomeIcon icon={faShoppingCart} /> Carrito
+                        {auth.cart_count > 0 && (
+                          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5 shadow border border-white">
+                            {auth.cart_count}
+                          </span>
+                        )}
+                      </span>
                     </Link>
                   </li>
                   <li>
@@ -166,6 +204,7 @@ const EcommerceLayout = ({ children }) => {
                       as="button"
                       className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors text-left w-full"
                       onClick={() => setIsMenuOpen(false)}
+                      title="Cerrar sesión"
                     >
                       Cerrar Sesión
                     </Link>
@@ -178,6 +217,7 @@ const EcommerceLayout = ({ children }) => {
                       href={route('login')}
                       className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
+                      title="Ingresar"
                     >
                       Ingresar
                     </Link>
@@ -187,6 +227,7 @@ const EcommerceLayout = ({ children }) => {
                       href={route('register')}
                       className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
+                      title="Registrarse"
                     >
                       Registrarse
                     </Link>

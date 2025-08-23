@@ -38,13 +38,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-neutral-300 hover:text-white transition-colors">
-                  Envíos y devoluciones
+                <a href={route('welcome')} className="text-neutral-300 hover:text-white transition-colors">
+                  Ubicacion
                 </a>
               </li>
               <li>
-                <a href="#" className="text-neutral-300 hover:text-white transition-colors">
-                  Preguntas frecuentes
+                <a href={route('welcome')} className="text-neutral-300 hover:text-white transition-colors">
+                  Correo
                 </a>
               </li>
             </ul>
