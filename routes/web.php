@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () {
     Route::put('cart/update/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::put('/cart/update-all', [CartController::class, 'updateAll'])->name('cart.updateAll');
     Route::delete('/cart/remove/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 });
 
 // Rutas para el proceso de checkout

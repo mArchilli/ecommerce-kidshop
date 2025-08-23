@@ -139,6 +139,8 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                   onChange={handleChange}
                   className="mt-1 w-full rounded-md border border-black/20 bg-white px-3 py-2 focus:outline-none focus:ring-black focus:border-black"
                   required
+                  min="0"
+                  step="1"
                 />
                 {errors.price && <p className="text-red-600 text-sm mt-1">{errors.price}</p>}
               </div>

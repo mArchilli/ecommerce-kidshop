@@ -82,4 +82,20 @@ class CartController extends Controller
 
         return back()->with('success', 'Carrito actualizado');
     }
+
+    // Vacía el carrito del usuario autenticado
+    public function clear()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            abort(403, 'Usuario no autenticado');
+        }
+
+        $cart = Cart::where('user_id', $user->id)->first();
+        if ($cart) {
+            $cart->items()->delete();
+        }
+
+        return back()->with('success', 'Carrito vaciado');
+    }
 }

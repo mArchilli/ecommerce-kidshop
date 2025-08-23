@@ -177,14 +177,10 @@ export default function ContactForm() {
             </div>
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-500">
-            <p>Nos pondremos en contacto contigo lo antes posible</p>
-          </div>
-
           {/* Información adicional para rellenar espacio en desktop */}
-          <div className="mt-8 border-t pt-6">
+          <div className="mt-8 border-t pt-6 h-full">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Información adicional</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
               <div className="p-4 rounded-lg border">
                 <div className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-gray-700 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -193,30 +189,11 @@ export default function ContactForm() {
                   </svg>
                   <div>
                     <p className="font-medium text-gray-900">Tiempo de respuesta</p>
-                    <p className="text-sm text-gray-600">Respondemos dentro de 24 h hábiles.</p>
+                    <p className="text-sm text-gray-600">Respondemos dentro de 24 h hábiles al correo proporcionado.</p>
                   </div>
                 </div>
               </div>
-
-              <div className="p-4 rounded-lg border">
-                <div className="flex items-start gap-3">
-                  <svg className="w-5 h-5 text-gray-700 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.52 3.48A11.94 11.94 0 0012 0C5.37 0 0 5.37 0 12c0 2.11.55 4.1 1.6 5.89L0 24l6.3-1.65A11.95 11.95 0 0012 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52z" />
-                  </svg>
-                  <div>
-                    <p className="font-medium text-gray-900">WhatsApp</p>
-                    <a
-                      href="https://wa.me/5491133973222?text=Hola,%20quiero%20hacer%20una%20consulta%20sobre%20sus%20productos."
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-green-700 hover:underline"
-                    >
-                      Chatear ahora
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
           </div>
 
         </div>

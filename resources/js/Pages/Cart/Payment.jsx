@@ -187,23 +187,11 @@ const Payment = ({ cart, preferenceId, shippingInfo }) => {
                       </p>
                       <p>Horarios de atención: Lunes a Sábado</p>
                     </div>
-                    <a
-                      href={whatsappHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center w-full bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-                    >
-                      <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.52 3.48A11.86 11.86 0 0012.06 0C5.46 0 .16 5.3.16 11.88a11.77 11.77 0 001.56 5.94L0 24l6.36-1.67a11.92 11.92 0 005.7 1.46h.01c6.58 0 11.88-5.3 11.88-11.86a11.77 11.77 0 00-3.43-8.45zM12.07 21.2h-.01a9.32 9.32 0 01-4.75-1.3l-.34-.2-3.77 1 1.01-3.67-.22-.38a9.35 9.35 0 01-1.42-4.96c0-5.16 4.2-9.35 9.37-9.35a9.3 9.3 0 016.61 2.73 9.3 9.3 0 012.74 6.6c0 5.16-4.2 9.35-9.33 9.35zm5.34-7.01c-.29-.14-1.7-.84-1.96-.93-.26-.09-.45-.14-.64.14-.19.29-.74.93-.9 1.12-.17.19-.33.21-.62.07-.29-.14-1.22-.45-2.33-1.43-.86-.76-1.44-1.7-1.61-1.98-.17-.29-.02-.44.13-.58.14-.14.29-.33.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.55-.88-2.12-.23-.56-.47-.49-.64-.5h-.55c-.19 0-.5.07-.76.36-.26.29-1 1-1 2.43s1.02 2.82 1.16 3.01c.14.19 2.01 3.08 4.87 4.32.68.29 1.21.46 1.62.59.68.22 1.3.19 1.79.12.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.33z" />
-                      </svg>
-                      Contactar por WhatsApp
-                    </a>
                   </>
                 ) : (
                   <div className="text-sm text-gray-700 space-y-1">
-                    <p>Podrás retirar tu pedido en el local.</p>
-                    <p>Dirección: Varela 505, Mariano Acosta, Buenos Aires</p>
-                    <p>Horarios: Lunes a Sábado</p>
+                    <p><strong>Dirección:</strong> Varela 505, Mariano Acosta, Buenos Aires</p>
+                    <p><strong>Horarios:</strong> Lunes a Sábado - 09:00 a 20:00</p>
                   </div>
                 )}
               </div>

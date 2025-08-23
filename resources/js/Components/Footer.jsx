@@ -60,10 +60,10 @@ export default function Footer() {
                 </a>
               </li>
               <li className="text-neutral-400">
-                Lun a Vie 9:00 a 19:30
+                Lun a Sab 9:00 a 20:00
               </li>
               <li className="text-neutral-400">
-                Varela 505, Mariano Acosta, Buenos Aires
+                Varela 505, Mariano Acosta, Buenos Aires.
               </li>
               <li className="flex items-center gap-3 pt-2">
                 {/* Redes sociales (SVG inline para evitar dependencias) */}

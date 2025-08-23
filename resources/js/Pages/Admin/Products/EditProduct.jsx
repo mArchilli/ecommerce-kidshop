@@ -166,12 +166,21 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700">Precio</label>
                                         <input
-                                            type="number"
+                                            type="text"
                                             name="price"
-                                            value={data.price}
-                                            onChange={handleChange}
+                                            value={
+                                                data.price !== ''
+                                                    ? Number(data.price).toLocaleString('es-AR')
+                                                    : ''
+                                            }
+                                            onChange={e => {
+                                                const raw = e.target.value.replace(/\./g, '').replace(/,/g, '');
+                                                setData('price', raw.replace(/\D/g, ''));
+                                            }}
                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                             required
+                                            inputMode="numeric"
+                                            pattern="[0-9]*"
                                         />
                                         {errors.price && <div className="text-red-600">{errors.price}</div>}
                                     </div>

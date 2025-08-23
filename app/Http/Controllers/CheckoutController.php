@@ -30,6 +30,7 @@ class CheckoutController extends Controller
             'address' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
             'shipping_method' => 'required|string|in:Envio a Domicilio,Retirar en el local',
+            'dni' => 'required|string|max:15',
         ]);
 
         // Obtener el usuario autenticado

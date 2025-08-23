@@ -30,7 +30,7 @@ export default function AboutUs() {
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="flex items-start gap-4 p-4 rounded-lg border">
                   <div className="flex items-center justify-center h-10 w-10 rounded-md bg-black text-white">
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="h-5 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
@@ -42,8 +42,8 @@ export default function AboutUs() {
 
                 <div className="flex items-start gap-4 p-4 rounded-lg border">
                   <div className="flex items-center justify-center h-10 w-10 rounded-md bg-black text-white">
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" />
+                    <svg className="h-5 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
                   <div>

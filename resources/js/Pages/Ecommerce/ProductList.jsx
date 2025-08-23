@@ -64,18 +64,23 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
               {products.data.map((product, idx) => (
                 <div 
                   key={product.id} 
-                  className="bg-white shadow-md rounded-lg overflow-hidden transition duration-300 transform hover:shadow-lg hover:scale-95"
+                  className="bg-white shadow-md rounded-lg overflow-hidden transition duration-300 transform hover:shadow-lg hover:scale-95 flex flex-col"
                   data-aos="fade-up"
                   data-aos-delay="400"
                 >
-                  <img 
-                    src={product.images && product.images.length > 0 ? getImageSrc(product.images[0]) : '/placeholder.svg'} 
-                    alt={product.name} 
-                    className="w-full h-64 object-cover" 
-                  />
-                  <div className="p-4">
+                  <div className="w-full">
+                    <img 
+                      src={product.images && product.images.length > 0 ? getImageSrc(product.images[0]) : '/placeholder.svg'} 
+                      alt={product.name} 
+                      className="w-full object-cover"
+                      style={{ display: 'block', height: 'auto', maxHeight: '350px', objectFit: 'cover' }}
+                    />
+                  </div>
+                  <div className="p-4 flex flex-col flex-1 justify-between">
                     <h3 className="text-lg font-semibold text-black">{product.name}</h3>
-                    <p className="mt-2 text-black">${Number(product.price).toFixed(2)}</p>
+                    <p className="mt-2 text-black">
+                      ${Number(product.price).toLocaleString('es-AR')}
+                    </p>
                     <div className="mt-2 flex flex-wrap gap-2">
                       <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
                         {product.gender.name}

@@ -37,16 +37,10 @@ const Cart = ({ cart }) => {
     );
   };
 
-  // Vaciar el carrito: setea todas las cantidades a 0 usando updateAll
+  // Vaciar el carrito: elimina todos los productos del carrito
   const clearCart = () => {
-    if (!cart || !cart.items) return;
-    const zeros = cart.items.reduce((acc, item) => {
-      acc[item.id] = 0;
-      return acc;
-    }, {});
-    Inertia.put(
-      route('cart.updateAll'),
-      { quantities: zeros },
+    Inertia.delete(
+      route('cart.clear'),
       {
         preserveScroll: true,
         preserveState: true,
@@ -142,49 +136,17 @@ const Cart = ({ cart }) => {
                           <div className="col-span-3">
                             <div className="text-sm text-gray-600">Precio</div>
                             <div className="text-sm font-medium text-gray-900">
-                              ${Number(item.product.price).toFixed(2)}
+                              ${Number(item.product.price).toLocaleString('es-AR')}
                             </div>
                           </div>
 
                           {/* Controles de cantidad */}
                           <div className="col-span-5">
                             <div className="text-sm text-gray-600 text-center">Cantidad</div>
-                            <div className="mt-1 flex items-center justify-center gap-2">
-                              <button
-                                type="button"
-                                aria-label="Disminuir cantidad"
-                                onClick={() => {
-                                  const current = parseInt(quantities[item.id] || 1, 10);
-                                  const newQty = Math.max(1, current - 1);
-                                  setQuantities({ ...quantities, [item.id]: newQty });
-                                  updateQuantity(item.id, newQty);
-                                }}
-                                className="w-14 h-7 rounded-md border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-gray-100"
-                              >
-                                -
-                              </button>
-                              <input
-                                type="number"
-                                name="quantity"
-                                value={quantities[item.id]}
-                                min="1"
-                                onChange={(e) => handleQuantityChange(item.id, e.target.value)}
-                                onBlur={() => updateQuantity(item.id)}
-                                className="w-20 p-2 border rounded-md text-center"
-                              />
-                              <button
-                                type="button"
-                                aria-label="Aumentar cantidad"
-                                onClick={() => {
-                                  const current = parseInt(quantities[item.id] || 1, 10);
-                                  const newQty = current + 1;
-                                  setQuantities({ ...quantities, [item.id]: newQty });
-                                  updateQuantity(item.id, newQty);
-                                }}
-                                className="w-14 h-7 rounded-md border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-gray-100"
-                              >
-                                +
-                              </button>
+                            <div className="flex items-center justify-center gap-2">
+                              <span className="text-center select-none">
+                                {quantities[item.id]}
+                              </span>
                             </div>
                           </div>
 
@@ -192,7 +154,7 @@ const Cart = ({ cart }) => {
                           <div className="col-span-4 text-right">
                             <div className="text-sm text-gray-600">Total</div>
                             <div className="text-base font-semibold text-gray-900">
-                              ${(item.product.price * (parseInt(quantities[item.id] || 0, 10))).toFixed(2)}
+                              ${(item.product.price * (parseInt(quantities[item.id] || 0, 10))).toLocaleString('es-AR')}
                             </div>
                           </div>
                         </div>
@@ -209,7 +171,7 @@ const Cart = ({ cart }) => {
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Subtotal</span>
-                      <span className="font-medium">${subtotal.toFixed(2)}</span>
+                      <span className="font-medium">${subtotal.toLocaleString('es-AR')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Envío</span>
@@ -217,7 +179,7 @@ const Cart = ({ cart }) => {
                     </div>
                     <div className="border-t pt-3 flex justify-between text-base">
                       <span className="font-semibold">Total</span>
-                      <span className="font-semibold">${subtotal.toFixed(2)}</span>
+                      <span className="font-semibold">${subtotal.toLocaleString('es-AR')}</span>
                     </div>
                   </div>
 

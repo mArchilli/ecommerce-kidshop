@@ -43,7 +43,7 @@ const Hero = () => {
       </div>
 
       {/* Other Sections */}
-      <div className="w-full px-4 py-8" data-aos="fade-up">
+      <div className="w-full px-4 py-8 bg-gray-100" data-aos="fade-up">
         <About />
       </div>
       
@@ -52,7 +52,7 @@ const Hero = () => {
       </div>
 
       {/* Nuevo layout con fondo suave y más respiro */}
-      <section className="w-full px-4 py-12 bg-gray-50" data-aos="fade-up" data-aos-delay="600">
+      <section className="w-full px-4 py-12 bg-gray-100" data-aos="fade-up" data-aos-delay="600">
         <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-stretch">
           <div className="order-1 lg:order-none h-full">
             <Map />
