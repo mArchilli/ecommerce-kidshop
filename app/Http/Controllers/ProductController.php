@@ -116,12 +116,14 @@ class ProductController extends Controller
 
         $imageFields = ['image_1', 'image_2', 'image_3'];
         $imagePaths = [];
+        $imagesBasePath = rtrim(env('PUBLIC_IMAGES_PATH', 'public/images/'), '/');
+        $productsPath = $imagesBasePath . '/products';
         try {
             foreach ($imageFields as $field) {
                 if ($request->hasFile($field)) {
                     $file = $request->file($field);
                     $filename = uniqid() . '_' . $file->getClientOriginalName();
-                    $file->move(public_path('images/products'), $filename);
+                    $file->move(public_path($productsPath), $filename);
                     $imagePaths[] = 'images/products/' . $filename;
                 }
             }
@@ -173,6 +175,8 @@ class ProductController extends Controller
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validar que cada elemento del array sea una imagen válida
         ]);
 
+        $imagesBasePath = rtrim(env('PUBLIC_IMAGES_PATH', 'public/images/'), '/');
+        $productsPath = $imagesBasePath . '/products';
         $imagePaths = $product->images;
         if ($request->hasFile('images')) {
             // Eliminar las imágenes antiguas
@@ -187,7 +191,7 @@ class ProductController extends Controller
             $imagePaths = [];
             foreach ($request->file('images') as $file) {
                 $filename = uniqid() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('images/products'), $filename);
+                $file->move(public_path($productsPath), $filename);
                 $imagePaths[] = 'images/products/' . $filename;
             }
         }

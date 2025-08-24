@@ -106,4 +106,11 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
+
 require __DIR__.'/auth.php';
+
+// Ruta catch-all para manejar 404 con Inertia
+use Inertia\Inertia as InertiaInertia;
+Route::fallback(function () {
+    return InertiaInertia::render('Errors/NotFound');
+});

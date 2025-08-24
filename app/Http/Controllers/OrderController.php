@@ -34,7 +34,8 @@ class OrderController extends Controller
     {
 
         return Inertia::render('Admin/Orders/OrdenDetails', [
-            'order' => $order->load('user', 'items.product'), 
+            'order' => $order->load('user', 'items.product'),
+            'csrf_token' => csrf_token(), // <-- Agregado
         ]);
     }
 

@@ -17,10 +17,12 @@ class DatabaseSeeder extends Seeder
             SizeSeeder::class,
             CategorySeeder::class,
             GenderSeeder::class,
+            //OrderSeeder::class,
             //ProductSeeder::class,
             //CategoryProductSeeder::class,
             //ColorProductSeeder::class,
             //ProductSizeSeeder::class,
+            
         ]);
     }
 }

@@ -19,9 +19,9 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
     });
 
     const [imagePreviews, setImagePreviews] = useState({
-        image_1: product.images && product.images[0] ? `/images/products/${product.images[0].replace(/^.*[\\/]/, '')}` : null,
-        image_2: product.images && product.images[1] ? `/images/products/${product.images[1].replace(/^.*[\\/]/, '')}` : null,
-        image_3: product.images && product.images[2] ? `/images/products/${product.images[2].replace(/^.*[\\/]/, '')}` : null,
+        image_1: product.images && product.images[0] ? `/${product.images[0]}` : null,
+        image_2: product.images && product.images[1] ? `/${product.images[1]}` : null,
+        image_3: product.images && product.images[2] ? `/${product.images[2]}` : null,
     });
     const [selectedSizes, setSelectedSizes] = useState(product.sizes.map(size => size.id.toString()) || []);
 

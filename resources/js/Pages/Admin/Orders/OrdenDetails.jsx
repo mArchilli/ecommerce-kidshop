@@ -2,7 +2,7 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 
-const OrderDetails = ({ order }) => {
+const OrderDetails = ({ order, csrf_token }) => {
     return (
         <AuthenticatedLayout
             header={
@@ -99,7 +99,7 @@ const OrderDetails = ({ order }) => {
                                 action={route('orders.updateShippingStatus', order.id)}
                                 className="inline"
                             >
-                                <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]').getAttribute('content')} />
+                                <input type="hidden" name="_token" value={csrf_token} />
                                 <input type="hidden" name="_method" value="PUT" />
                                 <input type="hidden" name="shipping_status" value="pending" />
                                 <button
@@ -116,7 +116,7 @@ const OrderDetails = ({ order }) => {
                                 action={route('orders.updateShippingStatus', order.id)}
                                 className="inline"
                             >
-                                <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]').getAttribute('content')} />
+                                <input type="hidden" name="_token" value={csrf_token} />
                                 <input type="hidden" name="_method" value="PUT" />
                                 <input type="hidden" name="shipping_status" value="dispatched" />
                                 <button
@@ -133,7 +133,7 @@ const OrderDetails = ({ order }) => {
                                 action={route('orders.updateShippingStatus', order.id)}
                                 className="inline"
                             >
-                                <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]').getAttribute('content')} />
+                                <input type="hidden" name="_token" value={csrf_token} />
                                 <input type="hidden" name="_method" value="PUT" />
                                 <input type="hidden" name="shipping_status" value="delivered" />
                                 <button

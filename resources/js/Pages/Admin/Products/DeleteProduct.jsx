@@ -92,7 +92,7 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
                                     {product.images && product.images.map((img, idx) => (
                                         <img
                                             key={idx}
-                                            src={`/images/products/${img.replace(/^.*[\\/]/, '')}`}
+                                            src={`/${img}`}
                                             alt={`Imagen ${idx + 1}`}
                                             className="h-24 w-24 object-cover rounded border"
                                         />
