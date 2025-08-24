@@ -11,22 +11,20 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        
-        $shippingStatus = $request->get('shipping_status', null);
+        // Nueva paginación independiente por estado (10 c/u)
+        $pendingOrders = Order::with('items.product', 'user')
+            ->where('shipping_status', 'pending')
+            ->latest()
+            ->paginate(10, ['*'], 'pending_page');
 
-        $ordersQuery = Order::with('items.product', 'user')->latest();
-
-        if ($shippingStatus) {
-            $ordersQuery->where('shipping_status', $shippingStatus);
-        }
-
-        $orders = $ordersQuery->get();
+        $dispatchedOrders = Order::with('items.product', 'user')
+            ->where('shipping_status', 'dispatched')
+            ->latest()
+            ->paginate(10, ['*'], 'dispatched_page');
 
         return Inertia::render('Admin/Orders/Index', [
-            'orders' => $orders,
-            'filters' => [
-                'shipping_status' => $shippingStatus,
-            ],
+            'pendingOrders' => $pendingOrders,
+            'dispatchedOrders' => $dispatchedOrders,
         ]);
     }
 

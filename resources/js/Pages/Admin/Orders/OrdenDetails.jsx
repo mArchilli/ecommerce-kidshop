@@ -127,23 +127,6 @@ const OrderDetails = ({ order, csrf_token }) => {
                                 </button>
                             </form>
                         )}
-                        {order.shipping_status !== 'delivered' && (
-                            <form
-                                method="POST"
-                                action={route('orders.updateShippingStatus', order.id)}
-                                className="inline"
-                            >
-                                <input type="hidden" name="_token" value={csrf_token} />
-                                <input type="hidden" name="_method" value="PUT" />
-                                <input type="hidden" name="shipping_status" value="delivered" />
-                                <button
-                                    type="submit"
-                                    className="inline-flex items-center px-4 py-2 rounded-lg border border-black text-black transition hover:bg-green-100"
-                                >
-                                    Marcar como Entregado
-                                </button>
-                            </form>
-                        )}
                     </div>
                 </section>
             </div>
