@@ -185,7 +185,7 @@ const Payment = ({ cart, preferenceId, shippingInfo }) => {
                       <p>
                         Dirección del local: Varela 505, Mariano Acosta, Buenos Aires
                       </p>
-                      <p>Horarios de atención: Lunes a Sábado</p>
+                      <p>Horarios de atención: Lunes a Sábado - 09:00 a 20:00</p>
                     </div>
                   </>
                 ) : (

@@ -2,27 +2,38 @@ import React from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head } from '@inertiajs/react';
 
-const Success = ({ cart, user }) => {
+const Success = ({ order, user }) => {
   const whatsappNumber = '5491159565176';
+  const itemsText = order?.items?.map(item => {
+    const unit = Number(item.price ?? item.product?.price ?? 0).toLocaleString('es-AR');
+    const subtotal = (Number(item.price ?? item.product?.price ?? 0) * item.quantity).toLocaleString('es-AR');
+    const size = item.size || '—';
+    return `- ${item.product?.name} | Talle: ${size} | Cant: ${item.quantity} | Unit: $${unit} | Subtotal: $${subtotal}`;
+  }).join('%0A') || '';
 
-  // Construir detalle de productos
-  const itemsText = cart?.items?.map(item =>
-    `- ${item.product.name} x${item.quantity} ($${Number(item.product.price).toLocaleString('es-AR')} c/u)`
-  ).join('%0A') || '';
+  const total = Number(order?.total || 0).toLocaleString('es-AR');
+  const orderId = order?.id ? `#${order.id}` : '';
+  const shippingMethod = order?.shipping_method || '—';
+  const dni = order?.dni || '—';
+  const phone = order?.phone || '—';
+  const direccionCompleta = shippingMethod === 'Envio a Domicilio'
+    ? [order?.address, order?.city, order?.province, order?.postal_code].filter(Boolean).join(', ')
+    : 'Retiro en el local';
 
-  // Calcular total
-  const total = cart?.items?.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0
-  ) || 0;
-
-  // Mensaje de WhatsApp con detalles del pedido
-  const whatsappMessage = encodeURIComponent(
-    `¡Hola! Realicé una compra en KidShop y quiero coordinar la entrega.\n` +
-    `Mi nombre es ${user.name}.\n\n` +
-    `Detalle del pedido:\n${itemsText}\n\n` +
-    `Total: $${total.toLocaleString('es-AR')}`
-  );
+  const whatsappMessage = encodeURIComponent([
+    '¡Hola! Realicé una compra en KidShop y quiero coordinar la entrega.',
+    `Mi nombre es ${user.name}.`,
+    orderId ? `Número de Orden: ${orderId}` : null,
+    `Método de Envío: ${shippingMethod}`,
+    `DNI: ${dni}`,
+    `Teléfono: ${phone}`,
+    `Dirección / Entrega: ${direccionCompleta}`,
+    '',
+    'Detalle del pedido:',
+    itemsText,
+    '',
+    `Total de la compra: $${total}`
+  ].filter(Boolean).join('\n'));
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
   return (
@@ -40,10 +51,37 @@ const Success = ({ cart, user }) => {
         <p className="text-lg text-gray-700 mb-2 text-center">
           Gracias por tu compra, <span className="font-bold">{user.name}</span>.
         </p>
+        {orderId && (
+          <p className="text-base text-gray-700 mb-2 text-center">Número de Orden: <span className="font-semibold">{orderId}</span></p>
+        )}
         <p className="text-base text-gray-600 mb-8 text-center">
           Nos pondremos en contacto contigo pronto para coordinar la entrega de tus productos.<br />
           Si necesitas contactarnos ahora, puedes hacerlo por WhatsApp.
         </p>
+        <div className="w-full max-w-xl bg-white rounded-lg border border-green-200 p-4 mb-8 text-sm text-gray-700 shadow">
+          <h2 className="font-semibold text-green-700 mb-2">Resumen de la compra</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4 text-xs sm:text-sm">
+            <div><span className="font-medium">Método de Envío:</span> {shippingMethod}</div>
+            <div><span className="font-medium">DNI:</span> {dni}</div>
+            <div><span className="font-medium">Teléfono:</span> {phone}</div>
+            <div><span className="font-medium">Dirección / Entrega:</span> {direccionCompleta}</div>
+          </div>
+          <ul className="space-y-1 max-h-56 overflow-y-auto pr-2">
+            {order?.items?.map(item => {
+              const unit = Number(item.price ?? item.product?.price ?? 0).toLocaleString('es-AR');
+              const subtotal = (Number(item.price ?? item.product?.price ?? 0) * item.quantity).toLocaleString('es-AR');
+              return (
+                <li key={item.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b last:border-b-0 border-gray-100 py-1">
+                  <span className="font-medium text-gray-800 text-sm">{item.product?.name}</span>
+                  <span className="text-xs text-gray-500">Talle: {item.size || '—'} | Cant: {item.quantity} | Unit: ${unit} | Subtotal: ${subtotal}</span>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="mt-4 flex justify-end">
+            <span className="text-sm font-semibold text-green-700">Total: ${total}</span>
+          </div>
+        </div>
         <div className="flex flex-col md:flex-row gap-4 w-full max-w-xs md:max-w-none md:w-auto justify-center">
           <a
             href={whatsappUrl}

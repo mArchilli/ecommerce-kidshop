@@ -36,8 +36,8 @@ class PaymentStatusController extends Controller
             return redirect()->route('checkout.index')->with('error', 'Tu carrito está vacío o expirado.');
         }
 
-        // Crear la orden
-        $order = $user->orders()->create([
+    // Crear la orden (pendiente de validación externa real del pago)
+    $order = $user->orders()->create([
             'payment_id' => $paymentId,
             'total' => $cart->items->sum(fn($item) => $item->product->price * $item->quantity),
             'status' => 'completed',
@@ -65,7 +65,10 @@ class PaymentStatusController extends Controller
         $cart->items()->delete();
         $cart->delete();
 
-        // Renderizar la vista de éxito
+        // Cargar relaciones necesarias para la vista
+        $order->load(['items.product', 'user']);
+
+        // Renderizar la vista de éxito con datos completos
         return Inertia::render('Cart/Success', [
             'message' => '¡Pago realizado con éxito!',
             'payment_id' => $paymentId,
