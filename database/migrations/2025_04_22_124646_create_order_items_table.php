@@ -13,6 +13,7 @@ class CreateOrderItemsTable extends Migration
             $table->foreignId('product_id')->constrained()->onDelete('cascade'); // Producto comprado
             $table->integer('quantity'); // Cantidad comprada
             $table->decimal('price', 10, 2); // Precio unitario del producto
+            $table->string('size')->nullable(); // Talle seleccionado
             $table->timestamps();
         });
     }

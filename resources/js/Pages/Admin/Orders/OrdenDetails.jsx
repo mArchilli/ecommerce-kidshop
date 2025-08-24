@@ -2,6 +2,21 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 
+const resolveDni = (order) =>
+    order?.dni ||
+    order?.user?.dni ||
+    order?.user?.profile?.dni ||
+    order?.billing_dni ||
+    '—';
+
+const resolveItemSize = (item) =>
+    item?.size ||
+    item?.pivot?.size ||
+    item?.selected_size ||
+    item?.size_selected ||
+    item?.product_size ||
+    '—';
+
 const OrderDetails = ({ order, csrf_token }) => {
     return (
         <AuthenticatedLayout
@@ -26,14 +41,14 @@ const OrderDetails = ({ order, csrf_token }) => {
                     {order.shipping_method === 'Retirar en el local' ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-neutral-800">
                             <p><strong>Método de Envío:</strong> {order.shipping_method}</p>
-                            <p><strong>DNI:</strong> {order.dni}</p>
+                            <p><strong>DNI:</strong> {resolveDni(order)}</p>
                             <p><strong>Nombre del Cliente:</strong> {order.user.name}</p>
                             <p><strong>Correo Electrónico:</strong> {order.user.email}</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-neutral-800">
                             <p><strong>Método de Envío:</strong> {order.shipping_method}</p>
-                            <p><strong>DNI:</strong> {order.dni}</p>
+                            <p><strong>DNI:</strong> {resolveDni(order)}</p>
                             <p><strong>Nombre del Cliente:</strong> {order.user.name}</p>
                             <p><strong>Correo Electrónico:</strong> {order.user.email}</p>
                             <p><strong>Provincia:</strong> {order.province}</p>
@@ -48,37 +63,54 @@ const OrderDetails = ({ order, csrf_token }) => {
                 {/* Resumen de productos */}
                 <section className="bg-white/80 backdrop-blur-sm border border-black/10 rounded-xl p-6 mt-6">
                     <h3 className="text-lg font-semibold text-black mb-4">Resumen de Productos</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {order.items.map((item) => (
-                            <div key={item.id} className="rounded-xl border border-black/10 bg-white p-4 flex flex-col items-center">
-                                <img
-                                    src={item.product.images && item.product.images.length > 0
-                                        ? (item.product.images[0].startsWith('images/') ? `/${item.product.images[0]}` : `/images/${item.product.images[0]}`)
-                                        : '/placeholder.svg'}
-                                    alt={item.product.name}
-                                    className="w-24 h-24 object-cover rounded-md border mb-3"
-                                />
-                                <h4 className="font-semibold text-black text-center">{item.product.name}</h4>
-                                <div className="mt-2 grid grid-cols-2 gap-2 text-sm w-full">
-                                    <div className="rounded-lg border border-black/10 bg-white p-2 text-center">
-                                        <p className="text-neutral-500">Cantidad</p>
-                                        <p className="font-medium text-neutral-900">{item.quantity}</p>
+                    <div className="space-y-4">
+                        {order.items.map((item) => {
+                            const size = resolveItemSize(item);
+                            const unitPrice = item.price ?? item.product?.price ?? 0;
+                            const subtotal = unitPrice * item.quantity;
+                            const firstImage = item.product?.images && item.product.images.length > 0 ? item.product.images[0] : null;
+                            const imgSrc = firstImage ? (firstImage.startsWith('images/') ? `/${firstImage}` : `/images/${firstImage}`) : '/placeholder.svg';
+                            return (
+                                <div key={item.id} className="flex flex-col sm:flex-row gap-4 rounded-xl border border-black/10 bg-white p-4 shadow-sm">
+                                    <div className="shrink-0">
+                                        <img
+                                            src={imgSrc}
+                                            alt={item.product?.name}
+                                            className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-lg border"
+                                        />
                                     </div>
-                                    <div className="rounded-lg border border-black/10 bg-white p-2 text-center">
-                                        <p className="text-neutral-500">Talle</p>
-                                        <p className="font-medium text-neutral-900">{item.size}</p>
+                                    <div className="flex-1 flex flex-col justify-between">
+                                        <div>
+                                            <h4 className="font-semibold text-black text-lg leading-snug mb-1">{item.product?.name}</h4>
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs sm:text-sm mt-2">
+                                                <div className="rounded-md border border-black/10 bg-neutral-50 px-3 py-2">
+                                                    <p className="text-neutral-500">Cantidad</p>
+                                                    <p className="font-medium text-neutral-900">{item.quantity}</p>
+                                                </div>
+                                                <div className="rounded-md border border-black/10 bg-neutral-50 px-3 py-2">
+                                                    <p className="text-neutral-500">Talle</p>
+                                                    <p className="font-medium text-neutral-900">{size}</p>
+                                                </div>
+                                                <div className="rounded-md border border-black/10 bg-neutral-50 px-3 py-2">
+                                                    <p className="text-neutral-500">Precio Unit.</p>
+                                                    <p className="font-medium text-neutral-900">${unitPrice.toLocaleString('es-AR')}</p>
+                                                </div>
+                                                <div className="rounded-md border border-black/10 bg-neutral-50 px-3 py-2">
+                                                    <p className="text-neutral-500">Subtotal</p>
+                                                    <p className="font-medium text-neutral-900">${subtotal.toLocaleString('es-AR')}</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="mt-2 text-sm text-neutral-700">
-                                    <span className="font-medium">Precio unitario: </span>
-                                    ${Number(item.product.price).toLocaleString('es-AR')}
-                                </div>
-                                <div className="text-sm text-neutral-700">
-                                    <span className="font-medium">Total: </span>
-                                    ${(item.product.price * item.quantity).toLocaleString('es-AR')}
-                                </div>
-                            </div>
-                        ))}
+                            );
+                        })}
+                    </div>
+                    <div className="mt-6 flex justify-end">
+                        <div className="w-full sm:w-auto rounded-xl border border-black/10 bg-neutral-900 text-white px-6 py-4 flex items-center justify-between gap-8">
+                            <span className="text-sm font-medium tracking-wide">Total de la Compra</span>
+                            <span className="text-lg font-semibold">${Number(order.total).toLocaleString('es-AR')}</span>
+                        </div>
                     </div>
                 </section>
 

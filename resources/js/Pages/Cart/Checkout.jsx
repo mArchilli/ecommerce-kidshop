@@ -19,6 +19,7 @@ const Checkout = ({ cart }) => {
   };
 
   const proceedToPayment = () => {
+    if (!data.shipping_method || !data.dni.trim()) return; // guard simple
     post(route('checkout.payment'));
   };
 
@@ -277,10 +278,10 @@ const Checkout = ({ cart }) => {
                   <button
                     type="button"
                     onClick={proceedToPayment}
-                    className="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-white hover:text-black border border-black transition duration-300"
-                    disabled={processing}
+                    className="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-white hover:text-black border border-black transition duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+                    disabled={processing || !data.shipping_method || !data.dni.trim()}
                   >
-                    Proceder al Pago
+                    {processing ? 'Procesando...' : 'Proceder al Pago'}
                   </button>
                 </div>
               </div>

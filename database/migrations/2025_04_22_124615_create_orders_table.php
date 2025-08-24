@@ -21,6 +21,7 @@ class CreateOrdersTable extends Migration
             $table->string('shipping_method')->nullable();
             $table->string('shipping_status')->default('pending');
             $table->string('external_reference')->nullable();
+            $table->string('dni')->nullable();
             $table->timestamps();
         });
     }

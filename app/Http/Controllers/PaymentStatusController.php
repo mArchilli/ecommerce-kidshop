@@ -17,10 +17,11 @@ class PaymentStatusController extends Controller
         $userId = $externalRef['user_id'] ?? null;
         $shippingInfo = $externalRef['shipping_info'] ?? null;
         $paymentId = $request->get('payment_id');
+    $dni = $shippingInfo['dni'] ?? null;
 
         // Validaciones básicas
-        if (!$paymentId || !$userId || !$shippingInfo) {
-            return redirect()->route('checkout.index')->with('error', 'Datos de pago inválidos o incompletos.');
+        if (!$paymentId || !$userId || !$shippingInfo || !$dni) {
+            return redirect()->route('checkout.index')->with('error', 'Datos de pago inválidos o incompletos (falta DNI).');
         }
 
         // Buscar al usuario
@@ -40,12 +41,13 @@ class PaymentStatusController extends Controller
             'payment_id' => $paymentId,
             'total' => $cart->items->sum(fn($item) => $item->product->price * $item->quantity),
             'status' => 'completed',
-            'province' => $shippingInfo['province'],
-            'city' => $shippingInfo['city'],
-            'postal_code' => $shippingInfo['postal_code'],
-            'address' => $shippingInfo['address'],
-            'phone' => $shippingInfo['phone'],
-            'shipping_method' => $shippingInfo['shipping_method'],
+            'province' => $shippingInfo['province'] ?? null,
+            'city' => $shippingInfo['city'] ?? null,
+            'postal_code' => $shippingInfo['postal_code'] ?? null,
+            'address' => $shippingInfo['address'] ?? null,
+            'phone' => $shippingInfo['phone'] ?? null,
+            'shipping_method' => $shippingInfo['shipping_method'] ?? null,
+            'dni' => $dni,
         ]);
 
         // Crear los detalles de la orden
@@ -54,7 +56,8 @@ class PaymentStatusController extends Controller
                 'product_id' => $item->product_id,
                 'quantity' => $item->quantity,
                 'price' => $item->product->price,
-                'status' => 'completed',
+                // 'status' => 'completed', // columna no definida en OrderItem (omitir)
+                'size' => $item->size ?? null,
             ]);
         }
 

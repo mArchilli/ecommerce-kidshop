@@ -24,6 +24,7 @@ class Order extends Model
         'phone',
         'shipping_method',
         'shipping_status',
+        'dni',
     ];
 
     public function user()
