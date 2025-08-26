@@ -261,7 +261,7 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                                             <img
                                                 src={imagePreviews[`image_${i}`]}
                                                 alt={`Preview ${i}`}
-                                                className="h-48 w-full object-cover"
+                                                className="h-full w-full object-cover"
                                             />
                                         </div>
                                     )}

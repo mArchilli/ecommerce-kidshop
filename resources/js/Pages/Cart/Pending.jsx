@@ -3,7 +3,7 @@ import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head } from '@inertiajs/react';
 
 const Pending = ({ cart, user }) => {
-  const whatsappNumber = '5491159565176';
+  const whatsappNumber = '5491172397202';
   const whatsappMessage = encodeURIComponent(
     `¡Hola! Mi pago en KidShop está pendiente. Mi nombre es ${user?.name || ''}. ¿Podrían ayudarme a verificar el estado?`
   );

@@ -17,10 +17,15 @@ const Chip = ({ label, selected, onClick }) => (
 
 const ANIMATION_DURATION = 500; // ms
 
-const ProductFilter = ({ categories, colors, genders, onFilter, initialFilters = {} }) => {
+const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, initialFilters = {} }) => {
   const [selectedCategory, setSelectedCategory] = useState(initialFilters.category || '');
   const [selectedColor, setSelectedColor] = useState(initialFilters.color || '');
   const [selectedGender, setSelectedGender] = useState(initialFilters.gender || '');
+  const [selectedSize, setSelectedSize] = useState(initialFilters.size || '');
+  const [searchTerm, setSearchTerm] = useState(initialFilters.q || '');
+  const [minPrice, setMinPrice] = useState(initialFilters.min_price || '');
+  const [maxPrice, setMaxPrice] = useState(initialFilters.max_price || '');
+  const [sort, setSort] = useState(initialFilters.sort || '');
   const [expanded, setExpanded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const contentRef = useRef(null);
@@ -47,9 +52,14 @@ const ProductFilter = ({ categories, colors, genders, onFilter, initialFilters =
 
   const handleFilterChange = () => {
     onFilter({
+      q: searchTerm,
+      min_price: minPrice,
+      max_price: maxPrice,
       category: selectedCategory,
       color: selectedColor,
       gender: selectedGender,
+      size: selectedSize,
+      sort,
     });
     setExpanded(false);
   };
@@ -58,21 +68,72 @@ const ProductFilter = ({ categories, colors, genders, onFilter, initialFilters =
     setSelectedCategory('');
     setSelectedColor('');
     setSelectedGender('');
-    onFilter({ category: '', color: '', gender: '' });
+    setSelectedSize('');
+    setSearchTerm('');
+    setMinPrice('');
+    setMaxPrice('');
+    setSort('');
+    onFilter({ q: '', min_price: '', max_price: '', category: '', color: '', gender: '', size: '', sort: '' });
     setExpanded(false);
+  };
+
+  const activeChips = [
+    { key: 'q', label: searchTerm },
+    { key: 'category', label: selectedCategory },
+    { key: 'color', label: selectedColor },
+    { key: 'gender', label: selectedGender },
+    { key: 'size', label: selectedSize },
+    { key: 'min_price', label: minPrice ? `Min: ${minPrice}` : '' },
+    { key: 'max_price', label: maxPrice ? `Max: ${maxPrice}` : '' },
+    { key: 'sort', label: sort ? `Orden: ${sort}` : '' },
+  ].filter(c => c.label);
+
+  const removeChip = (chipKey) => {
+    switch (chipKey) {
+      case 'q': setSearchTerm(''); break;
+      case 'category': setSelectedCategory(''); break;
+      case 'color': setSelectedColor(''); break;
+      case 'gender': setSelectedGender(''); break;
+      case 'size': setSelectedSize(''); break;
+      case 'min_price': setMinPrice(''); break;
+      case 'max_price': setMaxPrice(''); break;
+      case 'sort': setSort(''); break;
+    }
   };
 
   return (
     <div
-      className="rounded-2xl p-0 bg-white max-w-4xl mx-auto my-10 shadow border border-neutral-200"
-      data-aos="fade-up"
-      data-aos-delay="400"
+      className="sm:rounded-md p-0 bg-white max-w-7xl mx-auto sm:my-10 shadow border border-neutral-200"
+      // data-aos="fade-up"
+      // data-aos-delay="400"
     >
       {!expanded ? (
-        <div className="flex justify-center py-6">
+        <div className="flex flex-col gap-4 justify-center py-6 px-4">
+          {activeChips.length > 0 && (
+            <div className="flex flex-wrap gap-2 justify-center">
+              {activeChips.map(chip => (
+                <button
+                  key={chip.key}
+                  type="button"
+                  // onClick={() => { removeChip(chip.key); setTimeout(() => handleFilterChange(), 0); }}
+                  className="group flex items-center gap-2 px-3 py-1 rounded-full bg-black text-white text-xs font-medium hover:bg-neutral-700 transition"
+                >
+                  <span>{chip.label}</span>
+                  
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={handleClear}
+                className="px-3 py-1 rounded-full border text-xs font-medium bg-white text-black border-neutral-300 hover:bg-neutral-100"
+              >
+                Limpiar todo
+              </button>
+            </div>
+          )}
           <button
             type="button"
-            className="bg-black text-white px-8 py-2 rounded-lg border border-black font-semibold hover:bg-white hover:text-black transition"
+            className="mx-auto bg-black text-white px-8 py-2 rounded-lg border border-black font-semibold hover:bg-white hover:text-black transition"
             onClick={() => setExpanded(true)}
           >
             Mostrar filtros
@@ -101,6 +162,45 @@ const ProductFilter = ({ categories, colors, genders, onFilter, initialFilters =
               </button>
             </div>
             <div className="flex flex-col gap-8">
+              {/* Búsqueda */}
+              <div>
+                <div className="mb-2 font-semibold text-neutral-700">Buscar</div>
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Nombre o descripción"
+                  className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                />
+              </div>
+              {/* Rango de precio */}
+              <div>
+                <div className="mb-2 font-semibold text-neutral-700">Precio</div>
+                <div className="flex flex-wrap gap-4">
+                  <div className="flex-1 min-w-[120px]">
+                    <label className="block text-xs text-neutral-500 mb-1">Mín</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={minPrice}
+                      onChange={(e) => setMinPrice(e.target.value)}
+                      placeholder="0"
+                      className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-[120px]">
+                    <label className="block text-xs text-neutral-500 mb-1">Máx</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={maxPrice}
+                      onChange={(e) => setMaxPrice(e.target.value)}
+                      placeholder="99999"
+                      className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                    />
+                  </div>
+                </div>
+              </div>
               {/* Categorías */}
               <div>
                 <div className="mb-2 font-semibold text-neutral-700 flex items-center gap-2">
@@ -161,6 +261,53 @@ const ProductFilter = ({ categories, colors, genders, onFilter, initialFilters =
                       selected={selectedGender === gender.name}
                       onClick={() => setSelectedGender(gender.name)}
                     />
+                  ))}
+                </div>
+              </div>
+              {/* Talles */}
+              <div>
+                <div className="mb-2 font-semibold text-neutral-700 flex items-center gap-2">
+                  Talle
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Chip
+                    label="Todos"
+                    selected={selectedSize === ''}
+                    onClick={() => setSelectedSize('')}
+                  />
+                  {sizes.map((size) => (
+                    <Chip
+                      key={size.id}
+                      label={size.name}
+                      selected={selectedSize === size.name}
+                      onClick={() => setSelectedSize(size.name)}
+                    />
+                  ))}
+                </div>
+              </div>
+              {/* Orden */}
+              <div>
+                <div className="mb-2 font-semibold text-neutral-700">Ordenar</div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {[
+                    { value: '', label: 'Por defecto' },
+                    { value: 'price_asc', label: 'Precio ↑' },
+                    { value: 'price_desc', label: 'Precio ↓' },
+                    { value: 'newest', label: 'Nuevos' },
+                    { value: 'oldest', label: 'Antiguos' },
+                  ].map(opt => (
+                    <button
+                      key={opt.value || 'default'}
+                      type="button"
+                      onClick={() => setSort(opt.value)}
+                      className={`px-3 py-1 rounded-md border text-xs font-medium transition ${
+                        sort === opt.value
+                          ? 'bg-black text-white border-black'
+                          : 'bg-white text-black border-neutral-300 hover:bg-neutral-100'
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
                   ))}
                 </div>
               </div>

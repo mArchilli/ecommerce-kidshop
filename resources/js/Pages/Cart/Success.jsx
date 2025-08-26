@@ -3,7 +3,7 @@ import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head } from '@inertiajs/react';
 
 const Success = ({ order, user }) => {
-  const whatsappNumber = '5491159565176';
+  const whatsappNumber = '5491172397202';
   const itemsText = order?.items?.map(item => {
     const unit = Number(item.price ?? item.product?.price ?? 0).toLocaleString('es-AR');
     const subtotal = (Number(item.price ?? item.product?.price ?? 0) * item.quantity).toLocaleString('es-AR');

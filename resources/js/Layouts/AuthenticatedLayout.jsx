@@ -14,11 +14,6 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="flex h-16 items-center justify-between">
                         {/* Izquierda: Logo + navegación admin (desktop) */}
                         <div className="flex items-center">
-                            <div className="flex shrink-0 items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-white" />
-                                </Link>
-                            </div>
 
                             {user.role === 'admin' && (
                                 <div className="hidden sm:ms-10 sm:flex sm:space-x-2">

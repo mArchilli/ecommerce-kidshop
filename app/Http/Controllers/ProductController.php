@@ -48,7 +48,7 @@ class ProductController extends Controller
             });
         }        
 
-        $products = $query->paginate(9); // 9 productos por página
+    $products = $query->paginate(20); // 20 productos por página
         $categories = Category::all();
         $colors = Color::all();
         $sizes = Size::all();
@@ -242,41 +242,81 @@ class ProductController extends Controller
     {
         $query = Product::with(['categories', 'sizes', 'colors', 'gender']);
 
-        if ($request->has('category')) {
+        if ($request->filled('q')) {
+            $q = trim($request->q);
+            $query->where(function($sub) use ($q) {
+                $sub->where('name', 'like', "%{$q}%")
+                    ->orWhere('description', 'like', "%{$q}%");
+            });
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', (float)$request->min_price);
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', (float)$request->max_price);
+        }
+
+        if ($request->has('category') && $request->category !== '') {
             $query->whereHas('categories', function ($q) use ($request) {
                 $q->where('name', $request->category);
             });
         }
 
-        if ($request->has('color')) {
+        if ($request->has('color') && $request->color !== '') {
             $query->whereHas('colors', function ($q) use ($request) {
                 $q->where('name', $request->color);
             });
         }
 
-        if ($request->has('size')) {
+        if ($request->has('size') && $request->size !== '') {
             $query->whereHas('sizes', function ($q) use ($request) {
                 $q->where('name', $request->size);
             });
         }
 
-        if ($request->has('gender')) {
+        if ($request->has('gender') && $request->gender !== '') {
             $query->whereHas('gender', function ($q) use ($request) {
                 $q->where('name', $request->gender);
             });
         }
 
-        $products = $query->paginate(9);
+        // Ordenamiento
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'price_asc':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'price_desc':
+                    $query->orderBy('price', 'desc');
+                    break;
+                case 'newest':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                case 'oldest':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+            }
+        }
+
+    // Paginación (agregamos parámetros de filtros a los links manualmente para versiones sin withQueryString)
+    $products = $query->paginate(18);
+    $products->appends($request->except('page'));
         $categories = Category::all();
         $colors = Color::all();
         $sizes = Size::all();
         $genders = Gender::all();
 
         $filters = [
+            'q' => $request->q,
+            'min_price' => $request->min_price,
+            'max_price' => $request->max_price,
             'category' => $request->category,
             'color' => $request->color,
             'gender' => $request->gender,
             'size' => $request->size,
+            'sort' => $request->sort,
         ];
 
         return Inertia::render('Ecommerce/ProductList', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters'));

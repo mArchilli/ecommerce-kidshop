@@ -5,7 +5,7 @@ import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-const ProductList = ({ products, categories, colors, genders, filters = {} }) => {
+const ProductList = ({ products, categories, colors, genders, sizes = [], filters = {} }) => {
   // products: objeto paginado de Laravel (data, links, meta)
 
   // Handler para filtros: envía los filtros al backend usando Inertia
@@ -22,9 +22,17 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
 
   // Handler para paginación: mantiene los filtros en la URL
   const handlePagination = (url) => {
-    router.get(url, filters, {
-      preserveState: true,
+    if (!url) return;
+    // Extraemos query actual de la URL destino y fusionamos con filtros vigentes
+    const target = new URL(url, window.location.origin);
+    const params = new URLSearchParams(target.search);
+    // Reinsertamos filtros activos que no están presentes
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && !params.has(key)) params.set(key, value);
+    });
+    router.get(`${route('catalog.index')}?${params.toString()}`, {}, {
       preserveScroll: true,
+      replace: false,
     });
   };
 
@@ -45,12 +53,13 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
     <EcommerceLayout>
       <Head title="Catálogo" />
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto" data-aos="fade-up" data-aos-delay="400">
         <h1 className="hidden text-3xl font-extrabold text-gray-900 sm:text-4xl my-6 text-center md:text-left">Catalogo de prendas</h1>
         <ProductFilter
           categories={categories}
           colors={colors}
           genders={genders}
+          sizes={sizes}
           onFilter={handleFilter}
           initialFilters={filters}
         />
@@ -58,8 +67,8 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
           <>
             <div
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center max-w-7xl mx-auto"
-              data-aos="fade-up"
-              data-aos-delay="400"
+              // data-aos="fade-up"
+              // data-aos-delay="400"
             >
               {products.data.map((product, idx) => (
                 <div 
@@ -72,8 +81,8 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
                     <img 
                       src={product.images && product.images.length > 0 ? getImageSrc(product.images[0]) : '/placeholder.svg'} 
                       alt={product.name} 
-                      className="w-full object-cover"
-                      style={{ display: 'block', height: 'auto', maxHeight: '350px', objectFit: 'cover' }}
+                      className="w-full h-full object-cover"
+                      
                     />
                   </div>
                   <div className="p-4 flex flex-col flex-1 justify-between">
@@ -101,12 +110,37 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
                           {color.name}
                         </span>
                       ))}
+                      {product.sizes && product.sizes.length > 0 && (() => {
+                        const maxChips = 4;
+                        const sizesShown = product.sizes.slice(0, maxChips);
+                        const remaining = product.sizes.length - maxChips;
+                        return (
+                          <>
+                            {sizesShown.map(size => (
+                              <span
+                                key={`size-${product.id}-${size.id}`}
+                                className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-semibold"
+                              >
+                                {size.name}
+                              </span>
+                            ))}
+                            {remaining > 0 && (
+                              <span
+                                title={product.sizes.slice(maxChips).map(s => s.name).join(', ')}
+                                className="bg-emerald-200 text-emerald-900 px-3 py-1 rounded-full text-xs font-semibold"
+                              >
+                                +{remaining}
+                              </span>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
                     <Link 
                       href={`/products/${product.id}`} 
                       className="w-full sm:w-auto mt-4 text-center inline-block bg-black text-white px-4 py-2 rounded-md border border-black transition duration-300 hover:bg-white hover:text-black"
                     >
-                      Ver Producto
+                      Ver Prenda
                     </Link>
                   </div>
                 </div>
@@ -114,21 +148,38 @@ const ProductList = ({ products, categories, colors, genders, filters = {} }) =>
             </div>
             {/* Paginación */}
             <div className="flex justify-center my-8">
-              {products.links.map((link, idx) => (
-                <button
-                  key={idx}
-                  disabled={!link.url}
-                  onClick={() => link.url && handlePagination(link.url)}
-                  className={`mx-1 px-3 py-1 rounded ${link.active ? 'bg-black text-white' : 'bg-gray-200 text-black'} ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  dangerouslySetInnerHTML={{ __html: link.label }}
-                />
-              ))}
+              {products.links.map((link, idx) => {
+                // Normalizamos etiquetas (Laravel incluye &laquo; &raquo;)
+                const label = link.label
+                  .replace('&laquo;', '«')
+                  .replace('&raquo;', '»')
+                  .replace(/&.*?;/g, (m) => m); // fallback
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    disabled={!link.url || link.active}
+                    onClick={() => handlePagination(link.url)}
+                    className={`mx-1 px-3 py-1 rounded border text-sm transition ${
+                      link.active
+                        ? 'bg-black text-white border-black'
+                        : link.url
+                          ? 'bg-white text-black border-gray-300 hover:bg-black hover:text-white'
+                          : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
             </div>
           </>
         ) : (
-          <p className="text-center text-xl text-black mt-8 h-96">
-            No hay productos para los filtros seleccionados.
-          </p>
+          <div className='m-4 sm:m-1'>
+            <p className="text-center text-xl text-black mt-8 h-96">
+              No hay prendas para los filtros seleccionados.
+            </p>
+          </div>
         )}
       </div>
     </EcommerceLayout>
