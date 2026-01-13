@@ -80,14 +80,14 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
   return (
     <AuthenticatedLayout
       header={
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <span className="text-4xl animate-bounce">🌟</span>
-            <h2 className="text-2xl font-bold text-black">👕 Nuevo Producto</h2>
+        <div className="flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="text-3xl sm:text-4xl animate-bounce">🌟</span>
+            <h2 className="text-lg sm:text-2xl font-bold text-black">👕 Nuevo Producto</h2>
           </div>
           <Link
             href={route('products.index')}
-            className="px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition-all duration-300 shadow-md hover:shadow-xl"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition-all duration-300 shadow-md hover:shadow-xl"
             style={{ backgroundColor: '#9B59B6' }}
           >
             ← Volver
@@ -96,17 +96,17 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
       }
     >
       <Head title="Crear Producto" />
-      <div className="max-w-7xl mx-auto py-10">
-        <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-8">
+      <div className="max-w-7xl mx-auto py-6 sm:py-10 px-4">
+        <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6 sm:space-y-8">
           {/* Información básica */}
-          <div className="bg-gradient-to-br from-white to-green-50 rounded-2xl border-4 border-white shadow-lg p-6 hover:shadow-xl transition-shadow">
-            <div className="mb-6 pb-4 border-b-4 border-white rounded-xl p-4 bg-gradient-to-r from-green-500 to-green-600 shadow-md">
-              <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                <span className="text-2xl">📝</span>
+          <div className="bg-gradient-to-br from-white to-green-50 rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow">
+            <div className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b-4 border-white rounded-xl p-3 sm:p-4 bg-gradient-to-r from-green-500 to-green-600 shadow-md">
+              <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                <span className="text-xl sm:text-2xl">📝</span>
                 Información Básica
               </h3>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label className="block text-sm font-bold mb-2 text-neutral-700 flex items-center gap-2">
                   <span className="text-lg">📛</span>
@@ -177,9 +177,9 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
           </div>
 
           {/* Categorías y Colores */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-white to-green-50 rounded-2xl border-4 border-white shadow-lg p-6 hover:shadow-xl transition-all">
-              <div className="mb-4 pb-3 border-b-4 border-white rounded-xl p-3 bg-gradient-to-r from-green-500 to-green-600 shadow-md">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+            <div className="bg-gradient-to-br from-white to-green-50 rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6 hover:shadow-xl transition-all">
+              <div className="mb-3 sm:mb-4 pb-2 sm:pb-3 border-b-4 border-white rounded-xl p-3 bg-gradient-to-r from-green-500 to-green-600 shadow-md">
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
                   <span className="text-xl">📂</span>
                   Categorías

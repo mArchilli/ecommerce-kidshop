@@ -97,16 +97,16 @@ export default function ProductsView({ products }) {
     return (
         <AuthenticatedLayout
             header={
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4">
                     
                     <div>
-                        <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                        <h2 className="text-lg sm:text-xl font-semibold leading-tight text-gray-800">
                             👕 Prendas
                         </h2>
                     </div>
                     <Link
                         href={route('products.create')}
-                        className="inline-flex items-center px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                        className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
                         style={{ backgroundColor: '#65DA4D' }}
                     >
                         ➕ Crear Prenda
@@ -116,21 +116,21 @@ export default function ProductsView({ products }) {
         >
             <Head title="Prendas" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="py-8 sm:py-12">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     {/* Buscador y botón de filtros */}
-                    <div className="mb-6 px-6">
-                        <div className="bg-gradient-to-r from-white to-neutral-50 rounded-2xl border-4 border-white shadow-lg p-6">
-                            <div className="flex flex-col lg:flex-row gap-4 items-center">
+                    <div className="mb-4 sm:mb-6">
+                        <div className="bg-gradient-to-r from-white to-neutral-50 rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6">
+                            <div className="flex flex-col gap-3 sm:gap-4">
                                 {/* Buscador */}
-                                <div className="flex-1 w-full">
+                                <div className="w-full">
                                     <div className="relative">
                                         <input
                                             type="text"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
                                             placeholder="🔍 Buscar por nombre o descripción..."
-                                            className="w-full border-2 border-neutral-300 rounded-xl px-5 py-3 text-base font-semibold focus:outline-none focus:ring-4 focus:ring-cyan-200 focus:border-cyan-400 pr-10"
+                                            className="w-full border-2 border-neutral-300 rounded-xl px-4 sm:px-5 py-3 text-sm sm:text-base font-semibold focus:outline-none focus:ring-4 focus:ring-cyan-200 focus:border-cyan-400 pr-10"
                                             style={{ backgroundColor: '#f8f9fa' }}
                                         />
                                         {searchTerm && (
@@ -144,44 +144,46 @@ export default function ProductsView({ products }) {
                                     </div>
                                 </div>
                                 
-                                {/* Botón de filtros */}
-                                <button
-                                    onClick={() => setShowFilters(!showFilters)}
-                                    className="px-8 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md relative"
-                                    style={{ backgroundColor: '#29C9F4' }}
-                                >
-                                    {showFilters ? '❌ Ocultar Filtros' : '🔧 Mostrar Filtros'}
-                                    {activeFiltersCount > 0 && (
-                                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-                                            {activeFiltersCount}
-                                        </span>
-                                    )}
-                                </button>
-
-                                {/* Botón limpiar filtros */}
-                                {activeFiltersCount > 0 && (
+                                {/* Botones de filtros */}
+                                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
                                     <button
-                                        onClick={clearAllFilters}
-                                        className="px-8 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
-                                        style={{ backgroundColor: '#FC1C1D' }}
+                                        onClick={() => setShowFilters(!showFilters)}
+                                        className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md relative"
+                                        style={{ backgroundColor: '#29C9F4' }}
                                     >
-                                        🗑️ Limpiar
+                                        {showFilters ? '❌ Ocultar Filtros' : '🔧 Mostrar Filtros'}
+                                        {activeFiltersCount > 0 && (
+                                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                                                {activeFiltersCount}
+                                            </span>
+                                        )}
                                     </button>
-                                )}
+
+                                    {/* Botón limpiar filtros */}
+                                    {activeFiltersCount > 0 && (
+                                        <button
+                                            onClick={clearAllFilters}
+                                            className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                                            style={{ backgroundColor: '#FC1C1D' }}
+                                        >
+                                            🗑️ Limpiar
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Panel de filtros expandible */}
                     {showFilters && (
-                        <div className="mb-6 px-6 animate-fadeIn">
-                            <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-8">
-                                <h3 className="text-2xl font-bold mb-6 flex items-center gap-2" style={{ color: '#29C9F4' }}>
-                                    <span className="text-3xl">🔧</span>
+                        <div className="mb-4 sm:mb-6 animate-fadeIn">
+                            <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6 lg:p-8">
+                                <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 flex items-center gap-2" style={{ color: '#29C9F4' }}>
+                                    <span className="text-2xl sm:text-3xl">🔧</span>
                                     Filtros Avanzados
                                 </h3>
                                 
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                                     {/* Filtro por Categoría */}
                                     <div className="bg-gradient-to-r from-green-50 to-lime-50 p-5 rounded-xl border-2 border-green-200">
                                         <label className="block text-sm font-bold mb-2 flex items-center gap-2" style={{ color: '#65DA4D' }}>
@@ -291,16 +293,16 @@ export default function ProductsView({ products }) {
                     )}
 
                     {/* Resumen de resultados */}
-                    <div className="mb-4 px-6">
-                        <p className="text-base font-bold text-gray-700">
+                    <div className="mb-4 px-0">
+                        <p className="text-sm sm:text-base font-bold text-gray-700">
                             📊 Mostrando {filteredProducts.length} de {products.length} productos
                         </p>
                     </div>
 
                     <div className="overflow-hidden bg-white rounded-2xl border-4 border-white shadow-lg">
-                        <div className="p-8 text-gray-900">
+                        <div className="p-4 sm:p-6 lg:p-8 text-gray-900">
                             {filteredProducts.length > 0 ? (
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                                 {filteredProducts.map((product) => {
                                     const getImageSrc = (imgPath) => {
                                         if (!imgPath) return '/placeholder.svg';

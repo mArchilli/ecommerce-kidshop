@@ -24,7 +24,7 @@ export default function Dashboard() {
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-black">
+                <h2 className="text-lg sm:text-xl font-semibold leading-tight text-black">
                     Panel de Administración
                 </h2>
             }
@@ -32,41 +32,41 @@ export default function Dashboard() {
             <Head title="Dashboard" />
             <style>{floatingAnimation}</style>
 
-            <div className="py-10">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-8">
+            <div className="py-6 sm:py-10">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
                     {/* Bienvenida */}
                     <section 
                         className="rounded-2xl border-4 border-white shadow-lg overflow-hidden relative"
                         style={{ backgroundColor: '#29C9F4' }}
                     >
                         {/* Elementos decorativos */}
-                        <div className="absolute top-4 right-4 text-6xl opacity-20 animate-floating">
+                        <div className="absolute top-2 right-2 sm:top-4 sm:right-4 text-4xl sm:text-6xl opacity-20 animate-floating">
                             ⭐
                         </div>
-                        <div className="absolute bottom-4 right-20 text-4xl opacity-20 animate-floating-delayed">
+                        <div className="absolute bottom-2 right-10 sm:bottom-4 sm:right-20 text-3xl sm:text-4xl opacity-20 animate-floating-delayed">
                             ☁️
                         </div>
-                        <div className="absolute top-1/2 right-40 text-5xl opacity-20 animate-floating-slow">
+                        <div className="absolute top-1/2 right-20 sm:right-40 text-4xl sm:text-5xl opacity-20 animate-floating-slow">
                             🎈
                         </div>
                         
-                        <div className="px-6 py-8 sm:px-8 relative z-10">
-                            <h3 className="text-3xl font-bold text-white drop-shadow-md">
+                        <div className="px-4 py-6 sm:px-6 sm:py-8 lg:px-8 relative z-10">
+                            <h3 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">
                                 ¡Hola, {auth.user.name}! 👋
                             </h3>
-                            <p className="mt-3 text-lg text-white/95 font-medium">
+                            <p className="mt-2 sm:mt-3 text-base sm:text-lg text-white/95 font-medium">
                                 Gestioná el catálogo, categorías, colores y talles desde un solo lugar.
                             </p>
-                            <div className="mt-6 flex flex-wrap gap-3">
+                            <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
                                 <Link
                                     href={route('products.index')}
-                                    className="inline-flex items-center px-6 py-3 rounded-xl bg-white text-black font-bold hover:scale-105 transform transition shadow-md hover:shadow-xl"
+                                    className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-black font-bold hover:scale-105 transform transition shadow-md hover:shadow-xl"
                                 >
                                     🛍️ Ir a Prendas
                                 </Link>
                                 <Link
                                     href={route('admin.orders.index')}
-                                    className="inline-flex items-center px-6 py-3 rounded-xl border-3 border-white text-white font-bold hover:bg-white hover:text-black transform transition shadow-md hover:shadow-xl"
+                                    className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl border-3 border-white text-white font-bold hover:bg-white hover:text-black transform transition shadow-md hover:shadow-xl"
                                     style={{ borderWidth: '3px' }}
                                 >
                                     📦 Ver Órdenes 
@@ -76,40 +76,40 @@ export default function Dashboard() {
                     </section>
 
                     {/* Métricas rápidas */}
-                    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6">
                         <div 
-                            className="rounded-2xl border-4 border-white bg-gradient-to-br from-[#29C9F4] to-[#1ea8d1] p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating cursor-pointer"
+                            className="rounded-2xl border-4 border-white bg-gradient-to-br from-[#29C9F4] to-[#1ea8d1] p-4 sm:p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating cursor-pointer"
                         >
-                            <div className="text-sm text-white/90 font-semibold">👕 Prendas</div>
-                            <div className="mt-2 text-4xl font-black text-white drop-shadow-md">{productCount || 0}</div>
+                            <div className="text-xs sm:text-sm text-white/90 font-semibold">👕 Prendas</div>
+                            <div className="mt-1 sm:mt-2 text-3xl sm:text-4xl font-black text-white drop-shadow-md">{productCount || 0}</div>
                         </div>
                         <div 
-                            className="rounded-2xl border-4 border-white p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-delayed cursor-pointer"
+                            className="rounded-2xl border-4 border-white p-4 sm:p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-delayed cursor-pointer"
                             style={{ backgroundColor: '#65DA4D' }}
                         >
-                            <div className="text-sm text-white/90 font-semibold">📂 Categorías</div>
-                            <div className="mt-2 text-4xl font-black text-white drop-shadow-md">{categoryCount || 0}</div>
+                            <div className="text-xs sm:text-sm text-white/90 font-semibold">📂 Categorías</div>
+                            <div className="mt-1 sm:mt-2 text-3xl sm:text-4xl font-black text-white drop-shadow-md">{categoryCount || 0}</div>
                         </div>
                         <div 
-                            className="rounded-2xl border-4 border-white p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-slow cursor-pointer"
+                            className="rounded-2xl border-4 border-white p-4 sm:p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-slow cursor-pointer"
                             style={{ backgroundColor: '#FC1C1D' }}
                         >
-                            <div className="text-sm text-white/90 font-semibold">🌈 Colores</div>
-                            <div className="mt-2 text-4xl font-black text-white drop-shadow-md">{colorCount || 0}</div>
+                            <div className="text-xs sm:text-sm text-white/90 font-semibold">🌈 Colores</div>
+                            <div className="mt-1 sm:mt-2 text-3xl sm:text-4xl font-black text-white drop-shadow-md">{colorCount || 0}</div>
                         </div>
                         <div 
-                            className="rounded-2xl border-4 border-white p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating cursor-pointer"
+                            className="rounded-2xl border-4 border-white p-4 sm:p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating cursor-pointer"
                             style={{ backgroundColor: '#FFB800' }}
                         >
-                            <div className="text-sm text-white/90 font-semibold">📏 Talles</div>
-                            <div className="mt-2 text-4xl font-black text-white drop-shadow-md">{sizeCount || 0}</div>
+                            <div className="text-xs sm:text-sm text-white/90 font-semibold">📏 Talles</div>
+                            <div className="mt-1 sm:mt-2 text-3xl sm:text-4xl font-black text-white drop-shadow-md">{sizeCount || 0}</div>
                         </div>
                         <div 
-                            className="rounded-2xl border-4 border-white p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-delayed cursor-pointer"
+                            className="col-span-2 sm:col-span-1 rounded-2xl border-4 border-white p-4 sm:p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-delayed cursor-pointer"
                             style={{ backgroundColor: '#9B59B6' }}
                         >
-                            <div className="text-sm text-white/90 font-semibold">📦 Órdenes</div>
-                            <div className="mt-2 text-4xl font-black text-white drop-shadow-md">{orderCount || 0}</div>
+                            <div className="text-xs sm:text-sm text-white/90 font-semibold">📦 Órdenes</div>
+                            <div className="mt-1 sm:mt-2 text-3xl sm:text-4xl font-black text-white drop-shadow-md">{orderCount || 0}</div>
                         </div>
                     </section>
 
@@ -174,10 +174,10 @@ export default function Dashboard() {
 
                     {/* Accesos rápidos */}
                     <section>
-                        <h4 className="mb-6 text-xl font-bold text-gray-800">
+                        <h4 className="mb-4 sm:mb-6 text-lg sm:text-xl font-bold text-gray-800 px-4 sm:px-0">
                             🚀 Accesos rápidos
                         </h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                             <Link
                                 href={route('products.index')}
                                 className="group rounded-2xl border-4 border-white bg-white p-6 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-2xl"

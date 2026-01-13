@@ -11,19 +11,52 @@ export default function AuthenticatedLayout({ header, children }) {
         const saved = localStorage.getItem('sidebarCollapsed');
         return saved ? JSON.parse(saved) : false;
     });
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     // Guardar estado en localStorage cuando cambie
     useEffect(() => {
         localStorage.setItem('sidebarCollapsed', JSON.stringify(sidebarCollapsed));
     }, [sidebarCollapsed]);
 
+    // Cerrar menu mobile al cambiar de ruta
+    useEffect(() => {
+        setMobileMenuOpen(false);
+    }, [usePage().url]);
+
     return (
         <div className="min-h-screen text-black" style={{ backgroundColor: '#F0F4F8' }}>
+            {/* Botón hamburguesa para mobile */}
+            {user.role === 'admin' && (
+                <button
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    className="fixed top-4 left-4 z-50 lg:hidden bg-white rounded-lg p-3 shadow-lg hover:shadow-xl transition-all"
+                    style={{ backgroundColor: '#29C9F4' }}
+                >
+                    <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {mobileMenuOpen ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        ) : (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                        )}
+                    </svg>
+                </button>
+            )}
+
+            {/* Overlay para cerrar menu en mobile */}
+            {user.role === 'admin' && mobileMenuOpen && (
+                <div 
+                    className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+                    onClick={() => setMobileMenuOpen(false)}
+                />
+            )}
+
             {/* Sidebar para admin */}
             {user.role === 'admin' && (
                 <aside
                     className={`fixed left-0 top-0 h-full border-r border-gray-200 z-50 transition-all duration-300 ${
                         sidebarCollapsed ? 'w-16' : 'w-64'
+                    } ${
+                        mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
                     }`}
                     style={{ backgroundColor: '#29C9F4' }}
                 >
@@ -34,7 +67,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         )}
                         <button
                             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                            className={`text-white p-2 rounded-md hover:bg-white/10 transition ${
+                            className={`hidden lg:block text-white p-2 rounded-md hover:bg-white/10 transition ${
                                 sidebarCollapsed ? 'mx-auto' : ''
                             }`}
                             title={sidebarCollapsed ? 'Expandir' : 'Colapsar'}
@@ -311,7 +344,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
             {/* Navbar superior (solo para no-admin) */}
             <nav className={`sticky top-0 z-40 backdrop-blur-md bg-black/70 border-b border-white/10 ${
-                user.role === 'admin' ? (sidebarCollapsed ? 'ml-16' : 'ml-64') : ''
+                user.role === 'admin' ? 'lg:ml-64 lg:' + (sidebarCollapsed ? 'ml-16' : 'ml-64') : ''
             }`}>
                
 
@@ -416,10 +449,10 @@ export default function AuthenticatedLayout({ header, children }) {
             </nav>
 
             {/* Contenedor principal con margen izquierdo para admin */}
-            <div className={user.role === 'admin' ? (sidebarCollapsed ? 'ml-16' : 'ml-64') : ''}>
+            <div className={user.role === 'admin' ? `lg:${sidebarCollapsed ? 'ml-16' : 'ml-64'}` : ''}>
                 {header && (
                     <header className="bg-white border-b border-black/10">
-                        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
                             {header}
                         </div>
                     </header>

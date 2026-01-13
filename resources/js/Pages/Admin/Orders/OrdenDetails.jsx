@@ -21,28 +21,28 @@ const OrderDetails = ({ order, csrf_token }) => {
     return (
         <AuthenticatedLayout
             header={
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col-reverse sm:flex-row items-start sm:items-center justify-between gap-3">
                     <Link
                         href={route('admin.orders.index')}
-                        className="inline-flex items-center px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                        className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
                         style={{ backgroundColor: '#9B59B6' }}
                     >
                         ← Volver a Órdenes
                     </Link>
-                    <h2 className="text-xl font-semibold text-black">📦 Orden #{order.id}</h2>
+                    <h2 className="text-lg sm:text-xl font-semibold text-black">📦 Orden #{order.id}</h2>
                 </div>
             }
         >
             <Head title={`Orden #${order.id}`} />
 
-            <div className="max-w-7xl mx-auto px-4 py-10">
+            <div className="max-w-7xl mx-auto px-4 py-6 sm:py-10">
                 {/* Información de envío */}
-                <section className="bg-white rounded-2xl border-4 border-white shadow-lg p-6">
-                    <div className="mb-6 pb-4 border-b-4 border-white rounded-xl p-4" style={{ backgroundColor: '#29C9F4' }}>
-                        <h3 className="text-2xl font-bold text-white">🚚 Información de Envío</h3>
+                <section className="bg-white rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6">
+                    <div className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b-4 border-white rounded-xl p-3 sm:p-4" style={{ backgroundColor: '#29C9F4' }}>
+                        <h3 className="text-xl sm:text-2xl font-bold text-white">🚚 Información de Envío</h3>
                     </div>
                     {order.shipping_method === 'Retirar en el local' ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-base text-neutral-800">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm sm:text-base text-neutral-800">
                             <p className="bg-neutral-50 p-4 rounded-xl border-2 border-neutral-200"><strong className="text-neutral-600">📦 Método de Envío:</strong> <span className="font-bold">{order.shipping_method}</span></p>
                             <p className="bg-neutral-50 p-4 rounded-xl border-2 border-neutral-200"><strong className="text-neutral-600">🆔 DNI:</strong> <span className="font-bold">{resolveDni(order)}</span></p>
                             <p className="bg-neutral-50 p-4 rounded-xl border-2 border-neutral-200"><strong className="text-neutral-600">👤 Nombre del Cliente:</strong> <span className="font-bold">{order.user.name}</span></p>
@@ -120,24 +120,24 @@ const OrderDetails = ({ order, csrf_token }) => {
                 </section>
 
                 {/* Estado del envío */}
-                <section className="bg-white rounded-2xl border-4 border-white shadow-lg p-6 mt-6">
-                    <div className="mb-6 pb-4 border-b-4 border-white rounded-xl p-4" style={{ backgroundColor: '#FC1C1D' }}>
-                        <h3 className="text-2xl font-bold text-white">📊 Estado del Envío</h3>
+                <section className="bg-white rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6 mt-6">
+                    <div className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b-4 border-white rounded-xl p-3 sm:p-4" style={{ backgroundColor: '#FC1C1D' }}>
+                        <h3 className="text-xl sm:text-2xl font-bold text-white">📊 Estado del Envío</h3>
                     </div>
 
                     {/* Timeline visual */}
-                    <div className="mb-8">
-                        <div className="flex items-center justify-between max-w-3xl mx-auto">
+                    <div className="mb-6 sm:mb-8 overflow-x-auto">
+                        <div className="flex items-center justify-between min-w-[600px] sm:min-w-0 max-w-3xl mx-auto px-4 sm:px-0">
                             {/* Paso 1: Recibida */}
                             <div className="flex flex-col items-center flex-1">
-                                <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold shadow-lg transition-all duration-300 ${
+                                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg transition-all duration-300 ${
                                     ['pending', 'dispatched', 'delivered'].includes(order.shipping_status) 
                                         ? 'bg-green-500 text-white scale-110' 
                                         : 'bg-gray-300 text-gray-600'
                                 }`}>
                                     {['pending', 'dispatched', 'delivered'].includes(order.shipping_status) ? '✓' : '1'}
                                 </div>
-                                <p className="mt-2 text-sm font-bold text-center" style={{ 
+                                <p className="mt-2 text-xs sm:text-sm font-bold text-center" style={{ 
                                     color: ['pending', 'dispatched', 'delivered'].includes(order.shipping_status) ? '#65DA4D' : '#9CA3AF' 
                                 }}>
                                     📥 Recibida
@@ -145,7 +145,7 @@ const OrderDetails = ({ order, csrf_token }) => {
                             </div>
 
                             {/* Línea conectora 1 */}
-                            <div className={`h-1 flex-1 mx-2 rounded transition-all duration-300 ${
+                            <div className={`h-1 flex-1 mx-1 sm:mx-2 rounded transition-all duration-300 ${
                                 ['dispatched', 'delivered'].includes(order.shipping_status) 
                                     ? 'bg-green-500' 
                                     : 'bg-gray-300'
@@ -153,7 +153,7 @@ const OrderDetails = ({ order, csrf_token }) => {
 
                             {/* Paso 2: Procesando */}
                             <div className="flex flex-col items-center flex-1">
-                                <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold shadow-lg transition-all duration-300 ${
+                                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg transition-all duration-300 ${
                                     order.shipping_status === 'pending'
                                         ? 'bg-yellow-500 text-white scale-110 animate-pulse'
                                         : ['dispatched', 'delivered'].includes(order.shipping_status)
@@ -162,7 +162,7 @@ const OrderDetails = ({ order, csrf_token }) => {
                                 }`}>
                                     {order.shipping_status === 'pending' ? '⏳' : ['dispatched', 'delivered'].includes(order.shipping_status) ? '✓' : '2'}
                                 </div>
-                                <p className="mt-2 text-sm font-bold text-center" style={{ 
+                                <p className="mt-2 text-xs sm:text-sm font-bold text-center" style={{ 
                                     color: order.shipping_status === 'pending' ? '#FFB800' : ['dispatched', 'delivered'].includes(order.shipping_status) ? '#65DA4D' : '#9CA3AF' 
                                 }}>
                                     ⏰ Procesando
@@ -170,7 +170,7 @@ const OrderDetails = ({ order, csrf_token }) => {
                             </div>
 
                             {/* Línea conectora 2 */}
-                            <div className={`h-1 flex-1 mx-2 rounded transition-all duration-300 ${
+                            <div className={`h-1 flex-1 mx-1 sm:mx-2 rounded transition-all duration-300 ${
                                 ['delivered'].includes(order.shipping_status) 
                                     ? 'bg-green-500' 
                                     : order.shipping_status === 'dispatched'
@@ -180,7 +180,7 @@ const OrderDetails = ({ order, csrf_token }) => {
 
                             {/* Paso 3: En Camino */}
                             <div className="flex flex-col items-center flex-1">
-                                <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold shadow-lg transition-all duration-300 ${
+                                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg transition-all duration-300 ${
                                     order.shipping_status === 'dispatched'
                                         ? 'bg-cyan-500 text-white scale-110 animate-pulse'
                                         : order.shipping_status === 'delivered'
@@ -189,7 +189,7 @@ const OrderDetails = ({ order, csrf_token }) => {
                                 }`}>
                                     {order.shipping_status === 'dispatched' ? '🚚' : order.shipping_status === 'delivered' ? '✓' : '3'}
                                 </div>
-                                <p className="mt-2 text-sm font-bold text-center" style={{ 
+                                <p className="mt-2 text-xs sm:text-sm font-bold text-center" style={{ 
                                     color: order.shipping_status === 'dispatched' ? '#29C9F4' : order.shipping_status === 'delivered' ? '#65DA4D' : '#9CA3AF' 
                                 }}>
                                     🚚 En Camino
@@ -197,7 +197,7 @@ const OrderDetails = ({ order, csrf_token }) => {
                             </div>
 
                             {/* Línea conectora 3 */}
-                            <div className={`h-1 flex-1 mx-2 rounded transition-all duration-300 ${
+                            <div className={`h-1 flex-1 mx-1 sm:mx-2 rounded transition-all duration-300 ${
                                 order.shipping_status === 'delivered' 
                                     ? 'bg-green-500' 
                                     : 'bg-gray-300'
@@ -205,14 +205,14 @@ const OrderDetails = ({ order, csrf_token }) => {
 
                             {/* Paso 4: Entregada */}
                             <div className="flex flex-col items-center flex-1">
-                                <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold shadow-lg transition-all duration-300 ${
+                                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg transition-all duration-300 ${
                                     order.shipping_status === 'delivered'
                                         ? 'bg-green-500 text-white scale-110 animate-bounce'
                                         : 'bg-gray-300 text-gray-600'
                                 }`}>
                                     {order.shipping_status === 'delivered' ? '🎉' : '4'}
                                 </div>
-                                <p className="mt-2 text-sm font-bold text-center" style={{ 
+                                <p className="mt-2 text-xs sm:text-sm font-bold text-center" style={{ 
                                     color: order.shipping_status === 'delivered' ? '#65DA4D' : '#9CA3AF' 
                                 }}>
                                     ✅ Entregada
@@ -230,7 +230,7 @@ const OrderDetails = ({ order, csrf_token }) => {
                         </p>
                     </div>
 
-                    <div className="flex flex-wrap gap-4">
+                    <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
                         {order.shipping_status !== 'pending' && (
                             <form
                                 method="POST"
