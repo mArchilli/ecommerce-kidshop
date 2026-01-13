@@ -186,7 +186,7 @@ export default function ProductsView({ products }) {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                                     {/* Filtro por Categoría */}
                                     <div className="bg-gradient-to-r from-green-50 to-lime-50 p-5 rounded-xl border-2 border-green-200">
-                                        <label className="block text-sm font-bold mb-2 flex items-center gap-2" style={{ color: '#65DA4D' }}>
+                                        <label className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#65DA4D' }}>
                                             <span className="text-xl">📂</span>
                                             Categoría
                                         </label>
@@ -204,7 +204,7 @@ export default function ProductsView({ products }) {
 
                                     {/* Filtro por Color */}
                                     <div className="bg-gradient-to-r from-red-50 to-pink-50 p-5 rounded-xl border-2 border-red-200">
-                                        <label className="block text-sm font-bold mb-2 flex items-center gap-2" style={{ color: '#FC1C1D' }}>
+                                        <label className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#FC1C1D' }}>
                                             <span className="text-xl">🎨</span>
                                             Color
                                         </label>
@@ -222,7 +222,7 @@ export default function ProductsView({ products }) {
 
                                     {/* Filtro por Talle */}
                                     <div className="bg-gradient-to-r from-yellow-50 to-amber-50 p-5 rounded-xl border-2 border-yellow-200">
-                                        <label className="block text-sm font-bold mb-2 flex items-center gap-2" style={{ color: '#FFB800' }}>
+                                        <label className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#FFB800' }}>
                                             <span className="text-xl">📏</span>
                                             Talle
                                         </label>
@@ -240,7 +240,7 @@ export default function ProductsView({ products }) {
 
                                     {/* Filtro por Género */}
                                     <div className="bg-gradient-to-r from-purple-50 to-violet-50 p-5 rounded-xl border-2 border-purple-200">
-                                        <label className="block text-sm font-bold mb-2 flex items-center gap-2" style={{ color: '#9B59B6' }}>
+                                        <label className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#9B59B6' }}>
                                             <span className="text-xl">👶</span>
                                             Género
                                         </label>
@@ -258,7 +258,7 @@ export default function ProductsView({ products }) {
 
                                     {/* Filtro por Precio Mínimo */}
                                     <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-5 rounded-xl border-2 border-cyan-200">
-                                        <label className="block text-sm font-bold mb-2 flex items-center gap-2" style={{ color: '#29C9F4' }}>
+                                        <label className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#29C9F4' }}>
                                             <span className="text-xl">💵</span>
                                             Precio Mínimo
                                         </label>
@@ -274,7 +274,7 @@ export default function ProductsView({ products }) {
 
                                     {/* Filtro por Precio Máximo */}
                                     <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-5 rounded-xl border-2 border-cyan-200">
-                                        <label className="block text-sm font-bold mb-2 flex items-center gap-2" style={{ color: '#29C9F4' }}>
+                                        <label className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#29C9F4' }}>
                                             <span className="text-xl">💰</span>
                                             Precio Máximo
                                         </label>
@@ -295,7 +295,7 @@ export default function ProductsView({ products }) {
                     {/* Resumen de resultados */}
                     <div className="mb-4 px-0">
                         <p className="text-sm sm:text-base font-bold text-gray-700">
-                            📊 Mostrando {filteredProducts.length} de {products.length} productos
+                            📊 Mostrando {filteredProducts.length} de {products.length} prendas
                         </p>
                     </div>
 
@@ -441,21 +441,30 @@ export default function ProductsView({ products }) {
                                                 </div>
 
                                                 {/* Botones de acción */}
-                                                <div className="flex gap-3 mt-auto">
+                                                <div className="flex flex-col gap-2 mt-auto">
                                                     <Link
-                                                        href={route('products.edit', product.id)}
-                                                        className="flex-1 inline-flex items-center justify-center px-4 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
-                                                        style={{ backgroundColor: '#29C9F4' }}
+                                                        href={route('products.show', product.id)}
+                                                        className="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                                                        style={{ backgroundColor: '#9B59B6' }}
                                                     >
-                                                        ✏️ Editar
+                                                        👁️ Ver Producto
                                                     </Link>
-                                                    <Link
-                                                        href={route('products.delete', product.id)}
-                                                        className="flex-1 inline-flex items-center justify-center px-4 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
-                                                        style={{ backgroundColor: '#FC1C1D' }}
-                                                    >
-                                                        🗑️ Eliminar
-                                                    </Link>
+                                                    <div className="flex gap-2">
+                                                        <Link
+                                                            href={route('products.edit', product.id)}
+                                                            className="flex-1 inline-flex items-center justify-center px-4 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                                                            style={{ backgroundColor: '#29C9F4' }}
+                                                        >
+                                                            ✏️ Editar
+                                                        </Link>
+                                                        <Link
+                                                            href={route('products.delete', product.id)}
+                                                            className="flex-1 inline-flex items-center justify-center px-4 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                                                            style={{ backgroundColor: '#FC1C1D' }}
+                                                        >
+                                                            🗑️ Eliminar
+                                                        </Link>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
