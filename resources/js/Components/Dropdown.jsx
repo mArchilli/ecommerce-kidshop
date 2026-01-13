@@ -39,16 +39,21 @@ const Content = ({
     align = 'right',
     width = '48',
     contentClasses = 'py-1 bg-white',
+    openUpward = false,
     children,
 }) => {
     const { open, setOpen } = useContext(DropDownContext);
 
-    let alignmentClasses = 'origin-top';
+    let alignmentClasses = openUpward ? 'origin-bottom' : 'origin-top';
 
     if (align === 'left') {
-        alignmentClasses = 'ltr:origin-top-left rtl:origin-top-right start-0';
+        alignmentClasses = openUpward 
+            ? 'ltr:origin-bottom-left rtl:origin-bottom-right start-0'
+            : 'ltr:origin-top-left rtl:origin-top-right start-0';
     } else if (align === 'right') {
-        alignmentClasses = 'ltr:origin-top-right rtl:origin-top-left end-0';
+        alignmentClasses = openUpward
+            ? 'ltr:origin-bottom-right rtl:origin-bottom-left end-0'
+            : 'ltr:origin-top-right rtl:origin-top-left end-0';
     }
 
     let widthClasses = '';
@@ -56,6 +61,8 @@ const Content = ({
     if (width === '48') {
         widthClasses = 'w-48';
     }
+
+    const positionClasses = openUpward ? 'bottom-full mb-2' : 'mt-2';
 
     return (
         <>
@@ -69,7 +76,7 @@ const Content = ({
                 leaveTo="opacity-0 scale-95"
             >
                 <div
-                    className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
+                    className={`absolute z-50 ${positionClasses} rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
                     onClick={() => setOpen(false)}
                 >
                     <div
