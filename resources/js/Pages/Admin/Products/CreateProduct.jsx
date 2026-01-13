@@ -81,10 +81,13 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
     <AuthenticatedLayout
       header={
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-black">👕 Nuevo Producto</h2>
+          <div className="flex items-center gap-3">
+            <span className="text-4xl animate-bounce">🌟</span>
+            <h2 className="text-2xl font-bold text-black">👕 Nuevo Producto</h2>
+          </div>
           <Link
             href={route('products.index')}
-            className="px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+            className="px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition-all duration-300 shadow-md hover:shadow-xl"
             style={{ backgroundColor: '#9B59B6' }}
           >
             ← Volver
@@ -96,50 +99,62 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
       <div className="max-w-7xl mx-auto py-10">
         <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-8">
           {/* Información básica */}
-          <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-6">
-            <div className="mb-6 pb-4 border-b-4 border-white rounded-xl p-4" style={{ backgroundColor: '#65DA4D' }}>
-              <h3 className="text-xl font-bold text-white">📝 Información Básica</h3>
+          <div className="bg-gradient-to-br from-white to-green-50 rounded-2xl border-4 border-white shadow-lg p-6 hover:shadow-xl transition-shadow">
+            <div className="mb-6 pb-4 border-b-4 border-white rounded-xl p-4 bg-gradient-to-r from-green-500 to-green-600 shadow-md">
+              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <span className="text-2xl">📝</span>
+                Información Básica
+              </h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-bold mb-2 text-neutral-700">📛 Nombre</label>
+                <label className="block text-sm font-bold mb-2 text-neutral-700 flex items-center gap-2">
+                  <span className="text-lg">📛</span>
+                  Nombre
+                </label>
                 <input
                   type="text"
                   name="name"
                   value={data.name}
                   onChange={handleChange}
-                  className="w-full rounded-xl border-2 border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
+                  className="w-full rounded-xl border-2 border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-4 focus:ring-green-200 focus:border-green-400 hover:border-green-300 transition-all"
                   required
-                  placeholder="Ej: Remera estampada"
+                  placeholder="✨ Ej: Remera estampada"
                 />
-                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                {errors.name && <p className="text-red-500 text-xs mt-1 font-bold">{errors.name}</p>}
               </div>
               <div>
-                <label className="block text-sm font-bold mb-2 text-neutral-700">💰 Precio</label>
+                <label className="block text-sm font-bold mb-2 text-neutral-700 flex items-center gap-2">
+                  <span className="text-lg">💰</span>
+                  Precio
+                </label>
                 <input
                   type="number"
                   name="price"
                   value={data.price}
                   onChange={handleChange}
-                  className="w-full rounded-xl border-2 border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
+                  className="w-full rounded-xl border-2 border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-4 focus:ring-green-200 focus:border-green-400 hover:border-green-300 transition-all"
                   required
                   min="0"
                   step="1"
-                  placeholder="Ej: 3500"
+                  placeholder="💵 Ej: 3500"
                 />
-                {errors.price && <p className="text-red-500 text-xs mt-1">{errors.price}</p>}
+                {errors.price && <p className="text-red-500 text-xs mt-1 font-bold">{errors.price}</p>}
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-bold mb-2 text-neutral-700">📄 Descripción</label>
+                <label className="block text-sm font-bold mb-2 text-neutral-700 flex items-center gap-2">
+                  <span className="text-lg">📄</span>
+                  Descripción
+                </label>
                 <textarea
                   name="description"
                   value={data.description}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full rounded-xl border-2 border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400"
-                  placeholder="Describe el producto..."
+                  className="w-full rounded-xl border-2 border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-4 focus:ring-green-200 focus:border-green-400 hover:border-green-300 transition-all"
+                  placeholder="✍️ Describe el producto de forma atractiva..."
                 />
-                {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
+                {errors.description && <p className="text-red-500 text-xs mt-1 font-bold">{errors.description}</p>}
               </div>
               <div className="md:col-span-2">
                 <label className="block text-sm font-bold mb-3 text-neutral-700">👶 Género</label>
@@ -163,9 +178,12 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
 
           {/* Categorías y Colores */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-6">
-              <div className="mb-4 pb-3 border-b-4 border-white rounded-xl p-3" style={{ backgroundColor: '#65DA4D' }}>
-                <h3 className="text-lg font-bold text-white">📂 Categorías</h3>
+            <div className="bg-gradient-to-br from-white to-green-50 rounded-2xl border-4 border-white shadow-lg p-6 hover:shadow-xl transition-all">
+              <div className="mb-4 pb-3 border-b-4 border-white rounded-xl p-3 bg-gradient-to-r from-green-500 to-green-600 shadow-md">
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <span className="text-xl">📂</span>
+                  Categorías
+                </h3>
               </div>
               <div className="flex flex-wrap gap-2">
                 {categories.map(({ id, name }) => (
@@ -180,11 +198,14 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                   />
                 ))}
               </div>
-              {errors.categories && <p className="text-red-500 text-xs mt-2">{errors.categories}</p>}
+              {errors.categories && <p className="text-red-500 text-xs mt-2 font-bold">{errors.categories}</p>}
             </div>
-            <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-6">
-              <div className="mb-4 pb-3 border-b-4 border-white rounded-xl p-3" style={{ backgroundColor: '#FC1C1D' }}>
-                <h3 className="text-lg font-bold text-white">🎨 Colores</h3>
+            <div className="bg-gradient-to-br from-white to-red-50 rounded-2xl border-4 border-white shadow-lg p-6 hover:shadow-xl transition-all">
+              <div className="mb-4 pb-3 border-b-4 border-white rounded-xl p-3 bg-gradient-to-r from-red-500 to-red-600 shadow-md">
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <span className="text-xl">🎨</span>
+                  Colores
+                </h3>
               </div>
               <div className="flex flex-wrap gap-2">
                 {colors.map(({ id, name }) => (

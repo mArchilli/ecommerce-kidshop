@@ -23,14 +23,22 @@ export default function SizesView({ sizes }) {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     {/* Grid de tarjetas */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {sizes.map(size => (
+                        {sizes.map((size, index) => (
                             <div 
                                 key={size.id} 
-                                className="rounded-2xl border-4 border-white bg-white p-6 flex flex-col h-full shadow-lg hover:shadow-2xl transform hover:scale-105 transition"
+                                className={`rounded-2xl border-4 border-white p-6 flex flex-col h-full shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 ${
+                                    index % 2 === 0 ? 'bg-gradient-to-br from-white to-yellow-50' : 'bg-gradient-to-br from-white to-orange-50'
+                                }`}
                                 style={{ borderColor: '#FFB800' }}
                             >
-                                <div className="text-3xl mb-3">📏</div>
-                                <h3 className="text-xl font-bold mb-4" style={{ color: '#FFB800' }}>{size.name}</h3>
+                                <div className="text-5xl mb-3 hover:scale-125 transition-transform duration-300 cursor-pointer">📏</div>
+                                <h3 className="text-xl font-bold mb-2" style={{ color: '#FFB800' }}>{size.name}</h3>
+                                {/* Indicador visual del talle */}
+                                <div className="mb-4">
+                                    <span className="inline-flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                                        📊 Talle {size.name}
+                                    </span>
+                                </div>
                                 <div className="mt-auto flex gap-3">
                                     <Link
                                         href={route('sizes.edit', size.id)}

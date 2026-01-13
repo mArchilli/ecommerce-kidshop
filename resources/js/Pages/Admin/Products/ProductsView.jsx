@@ -312,7 +312,7 @@ export default function ProductsView({ products }) {
                                     );
 
                                     return (
-                                        <div key={product.id} className="rounded-2xl border-4 border-white bg-gradient-to-br from-white to-neutral-50 flex flex-col h-full shadow-lg hover:scale-[1.02] transform transition overflow-hidden">
+                                        <div key={product.id} className="rounded-2xl border-4 border-white bg-gradient-to-br from-white to-neutral-50 flex flex-col h-full shadow-lg hover:scale-[1.02] transform transition-all duration-300 overflow-hidden group">
                                             {/* Imagen del producto */}
                                             <div className="relative w-full h-64 bg-neutral-100 overflow-hidden">
                                                 <img 
@@ -321,10 +321,10 @@ export default function ProductsView({ products }) {
                                                         : '/placeholder.svg'
                                                     }
                                                     alt={product.name}
-                                                    className="w-full h-full object-cover"
+                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                 />
                                                 {/* Badge de stock total */}
-                                                <div className="absolute top-3 right-3 px-3 py-1.5 rounded-xl font-bold text-white shadow-lg" 
+                                                <div className="absolute top-3 right-3 px-3 py-1.5 rounded-xl font-bold text-white shadow-lg animate-pulse" 
                                                     style={{ backgroundColor: totalStock > 0 ? '#65DA4D' : '#FC1C1D' }}>
                                                     📦 Stock: {totalStock}
                                                 </div>
@@ -333,13 +333,41 @@ export default function ProductsView({ products }) {
                                                     style={{ backgroundColor: '#FFB800' }}>
                                                     💰 ${Number(product.price).toLocaleString('es-AR')}
                                                 </div>
+                                                {/* Badge de BAJO STOCK */}
+                                                {totalStock > 0 && totalStock <= 5 && (
+                                                    <div className="absolute top-3 left-3 px-3 py-1.5 rounded-xl font-bold text-white shadow-lg animate-pulse" 
+                                                        style={{ backgroundColor: '#FC1C1D' }}>
+                                                        ⚠️ BAJO STOCK
+                                                    </div>
+                                                )}
                                             </div>
 
                                             {/* Contenido de la card */}
                                             <div className="p-6 flex flex-col flex-1">
+                                                {/* Barra de stock visual */}
+                                                <div className="mb-3">
+                                                    <div className="flex items-center justify-between mb-1">
+                                                        <span className="text-xs font-bold text-gray-600">Stock Total</span>
+                                                        <span className="text-xs font-bold" style={{ 
+                                                            color: totalStock > 10 ? '#65DA4D' : totalStock > 5 ? '#FFB800' : '#FC1C1D' 
+                                                        }}>
+                                                            {totalStock} unidades
+                                                        </span>
+                                                    </div>
+                                                    <div className="w-full bg-gray-200 rounded-full h-2">
+                                                        <div 
+                                                            className="h-2 rounded-full transition-all duration-500"
+                                                            style={{ 
+                                                                width: `${Math.min((totalStock / 50) * 100, 100)}%`,
+                                                                backgroundColor: totalStock > 10 ? '#65DA4D' : totalStock > 5 ? '#FFB800' : '#FC1C1D'
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                
                                                 {/* Título y género */}
                                                 <div className="mb-3">
-                                                    <h3 className="text-xl font-bold text-black mb-2">{product.name}</h3>
+                                                    <h3 className="text-xl font-bold text-black mb-2 group-hover:scale-105 transition-transform">{product.name}</h3>
                                                     {product.gender && (
                                                         <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-sm border-2 text-white font-bold shadow-sm"
                                                             style={{ backgroundColor: '#9B59B6', borderColor: '#9B59B6' }}>

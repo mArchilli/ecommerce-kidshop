@@ -23,14 +23,22 @@ export default function CategoriesView({ categories }) {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     {/* Grid de tarjetas */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {categories.map(category => (
+                        {categories.map((category, index) => (
                             <div 
                                 key={category.id} 
-                                className="rounded-2xl border-4 border-white bg-white p-6 flex flex-col h-full shadow-lg hover:shadow-2xl transform hover:scale-105 transition"
+                                className={`rounded-2xl border-4 border-white p-6 flex flex-col h-full shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 ${
+                                    index % 2 === 0 ? 'bg-gradient-to-br from-white to-cyan-50' : 'bg-gradient-to-br from-white to-green-50'
+                                }`}
                                 style={{ borderColor: '#29C9F4' }}
                             >
-                                <div className="text-3xl mb-3">📂</div>
-                                <h3 className="text-xl font-bold mb-4" style={{ color: '#29C9F4' }}>{category.name}</h3>
+                                <div className="text-5xl mb-3 hover:scale-125 transition-transform duration-300 cursor-pointer">📂</div>
+                                <h3 className="text-xl font-bold mb-2" style={{ color: '#29C9F4' }}>{category.name}</h3>
+                                {/* Contador de productos */}
+                                {category.products_count !== undefined && (
+                                    <span className="inline-flex items-center gap-1 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold mb-4 w-fit">
+                                        👕 {category.products_count} {category.products_count === 1 ? 'producto' : 'productos'}
+                                    </span>
+                                )}
                                 <div className="mt-auto flex gap-3">
                                     <Link
                                         href={route('categories.edit', category.id)}

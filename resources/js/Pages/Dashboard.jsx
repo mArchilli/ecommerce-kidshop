@@ -4,6 +4,23 @@ import { Head, Link, usePage } from '@inertiajs/react';
 export default function Dashboard() {
     const { auth, productCount, categoryCount, sizeCount, colorCount, orderCount, pendingOrders } = usePage().props;
 
+    // Estilos para animaciones
+    const floatingAnimation = `
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        .animate-floating-delayed {
+            animation: floating 3s ease-in-out 0.5s infinite;
+        }
+        .animate-floating-slow {
+            animation: floating 4s ease-in-out 1s infinite;
+        }
+    `;
+
     return (
         <AuthenticatedLayout
             header={
@@ -13,15 +30,27 @@ export default function Dashboard() {
             }
         >
             <Head title="Dashboard" />
+            <style>{floatingAnimation}</style>
 
             <div className="py-10">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-8">
                     {/* Bienvenida */}
                     <section 
-                        className="rounded-2xl border-4 border-white shadow-lg overflow-hidden"
+                        className="rounded-2xl border-4 border-white shadow-lg overflow-hidden relative"
                         style={{ backgroundColor: '#29C9F4' }}
                     >
-                        <div className="px-6 py-8 sm:px-8">
+                        {/* Elementos decorativos */}
+                        <div className="absolute top-4 right-4 text-6xl opacity-20 animate-floating">
+                            ⭐
+                        </div>
+                        <div className="absolute bottom-4 right-20 text-4xl opacity-20 animate-floating-delayed">
+                            ☁️
+                        </div>
+                        <div className="absolute top-1/2 right-40 text-5xl opacity-20 animate-floating-slow">
+                            🎈
+                        </div>
+                        
+                        <div className="px-6 py-8 sm:px-8 relative z-10">
                             <h3 className="text-3xl font-bold text-white drop-shadow-md">
                                 ¡Hola, {auth.user.name}! 👋
                             </h3>
@@ -49,34 +78,34 @@ export default function Dashboard() {
                     {/* Métricas rápidas */}
                     <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                         <div 
-                            className="rounded-2xl border-4 border-white bg-gradient-to-br from-[#29C9F4] to-[#1ea8d1] p-6 shadow-lg transform hover:scale-105 transition"
+                            className="rounded-2xl border-4 border-white bg-gradient-to-br from-[#29C9F4] to-[#1ea8d1] p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating cursor-pointer"
                         >
                             <div className="text-sm text-white/90 font-semibold">👕 Prendas</div>
                             <div className="mt-2 text-4xl font-black text-white drop-shadow-md">{productCount || 0}</div>
                         </div>
                         <div 
-                            className="rounded-2xl border-4 border-white p-6 shadow-lg transform hover:scale-105 transition"
+                            className="rounded-2xl border-4 border-white p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-delayed cursor-pointer"
                             style={{ backgroundColor: '#65DA4D' }}
                         >
                             <div className="text-sm text-white/90 font-semibold">📂 Categorías</div>
                             <div className="mt-2 text-4xl font-black text-white drop-shadow-md">{categoryCount || 0}</div>
                         </div>
                         <div 
-                            className="rounded-2xl border-4 border-white p-6 shadow-lg transform hover:scale-105 transition"
+                            className="rounded-2xl border-4 border-white p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-slow cursor-pointer"
                             style={{ backgroundColor: '#FC1C1D' }}
                         >
                             <div className="text-sm text-white/90 font-semibold">🌈 Colores</div>
                             <div className="mt-2 text-4xl font-black text-white drop-shadow-md">{colorCount || 0}</div>
                         </div>
                         <div 
-                            className="rounded-2xl border-4 border-white p-6 shadow-lg transform hover:scale-105 transition"
+                            className="rounded-2xl border-4 border-white p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating cursor-pointer"
                             style={{ backgroundColor: '#FFB800' }}
                         >
                             <div className="text-sm text-white/90 font-semibold">📏 Talles</div>
                             <div className="mt-2 text-4xl font-black text-white drop-shadow-md">{sizeCount || 0}</div>
                         </div>
                         <div 
-                            className="rounded-2xl border-4 border-white p-6 shadow-lg transform hover:scale-105 transition"
+                            className="rounded-2xl border-4 border-white p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-delayed cursor-pointer"
                             style={{ backgroundColor: '#9B59B6' }}
                         >
                             <div className="text-sm text-white/90 font-semibold">📦 Órdenes</div>
@@ -151,10 +180,10 @@ export default function Dashboard() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             <Link
                                 href={route('products.index')}
-                                className="group rounded-2xl border-4 border-white bg-white p-6 hover:scale-105 transform transition shadow-lg hover:shadow-2xl"
+                                className="group rounded-2xl border-4 border-white bg-white p-6 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-2xl"
                                 style={{ borderColor: '#29C9F4' }}
                             >
-                                <div className="text-3xl mb-3">👕</div>
+                                <div className="text-5xl mb-3 group-hover:scale-125 transition-transform duration-300">👕</div>
                                 <div className="font-bold text-lg" style={{ color: '#29C9F4' }}>Prendas</div>
                                 <p className="mt-2 text-sm text-gray-600">
                                     Gestiona el catálogo y sus variantes.
@@ -163,10 +192,10 @@ export default function Dashboard() {
 
                             <Link
                                 href={route('categories.index')}
-                                className="group rounded-2xl border-4 border-white bg-white p-6 hover:scale-105 transform transition shadow-lg hover:shadow-2xl"
+                                className="group rounded-2xl border-4 border-white bg-white p-6 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-2xl"
                                 style={{ borderColor: '#65DA4D' }}
                             >
-                                <div className="text-3xl mb-3">📂</div>
+                                <div className="text-5xl mb-3 group-hover:scale-125 transition-transform duration-300">📂</div>
                                 <div className="font-bold text-lg" style={{ color: '#65DA4D' }}>Categorías</div>
                                 <p className="mt-2 text-sm text-gray-600">
                                     Organiza productos por categorías.
@@ -175,10 +204,10 @@ export default function Dashboard() {
 
                             <Link
                                 href={route('colors.index')}
-                                className="group rounded-2xl border-4 border-white bg-white p-6 hover:scale-105 transform transition shadow-lg hover:shadow-2xl"
+                                className="group rounded-2xl border-4 border-white bg-white p-6 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-2xl"
                                 style={{ borderColor: '#FC1C1D' }}
                             >
-                                <div className="text-3xl mb-3">🎨</div>
+                                <div className="text-5xl mb-3 group-hover:scale-125 transition-transform duration-300">🎨</div>
                                 <div className="font-bold text-lg" style={{ color: '#FC1C1D' }}>Colores</div>
                                 <p className="mt-2 text-sm text-gray-600">
                                     Define paletas disponibles.
@@ -187,10 +216,10 @@ export default function Dashboard() {
 
                             <Link
                                 href={route('sizes.index')}
-                                className="group rounded-2xl border-4 border-white bg-white p-6 hover:scale-105 transform transition shadow-lg hover:shadow-2xl"
+                                className="group rounded-2xl border-4 border-white bg-white p-6 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-2xl"
                                 style={{ borderColor: '#FFB800' }}
                             >
-                                <div className="text-3xl mb-3">📏</div>
+                                <div className="text-5xl mb-3 group-hover:scale-125 transition-transform duration-300">📏</div>
                                 <div className="font-bold text-lg" style={{ color: '#FFB800' }}>Talles</div>
                                 <p className="mt-2 text-sm text-gray-600">
                                     Administra talles y stock.

@@ -124,6 +124,103 @@ const OrderDetails = ({ order, csrf_token }) => {
                     <div className="mb-6 pb-4 border-b-4 border-white rounded-xl p-4" style={{ backgroundColor: '#FC1C1D' }}>
                         <h3 className="text-2xl font-bold text-white">📊 Estado del Envío</h3>
                     </div>
+
+                    {/* Timeline visual */}
+                    <div className="mb-8">
+                        <div className="flex items-center justify-between max-w-3xl mx-auto">
+                            {/* Paso 1: Recibida */}
+                            <div className="flex flex-col items-center flex-1">
+                                <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold shadow-lg transition-all duration-300 ${
+                                    ['pending', 'dispatched', 'delivered'].includes(order.shipping_status) 
+                                        ? 'bg-green-500 text-white scale-110' 
+                                        : 'bg-gray-300 text-gray-600'
+                                }`}>
+                                    {['pending', 'dispatched', 'delivered'].includes(order.shipping_status) ? '✓' : '1'}
+                                </div>
+                                <p className="mt-2 text-sm font-bold text-center" style={{ 
+                                    color: ['pending', 'dispatched', 'delivered'].includes(order.shipping_status) ? '#65DA4D' : '#9CA3AF' 
+                                }}>
+                                    📥 Recibida
+                                </p>
+                            </div>
+
+                            {/* Línea conectora 1 */}
+                            <div className={`h-1 flex-1 mx-2 rounded transition-all duration-300 ${
+                                ['dispatched', 'delivered'].includes(order.shipping_status) 
+                                    ? 'bg-green-500' 
+                                    : 'bg-gray-300'
+                            }`} />
+
+                            {/* Paso 2: Procesando */}
+                            <div className="flex flex-col items-center flex-1">
+                                <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold shadow-lg transition-all duration-300 ${
+                                    order.shipping_status === 'pending'
+                                        ? 'bg-yellow-500 text-white scale-110 animate-pulse'
+                                        : ['dispatched', 'delivered'].includes(order.shipping_status)
+                                        ? 'bg-green-500 text-white scale-110'
+                                        : 'bg-gray-300 text-gray-600'
+                                }`}>
+                                    {order.shipping_status === 'pending' ? '⏳' : ['dispatched', 'delivered'].includes(order.shipping_status) ? '✓' : '2'}
+                                </div>
+                                <p className="mt-2 text-sm font-bold text-center" style={{ 
+                                    color: order.shipping_status === 'pending' ? '#FFB800' : ['dispatched', 'delivered'].includes(order.shipping_status) ? '#65DA4D' : '#9CA3AF' 
+                                }}>
+                                    ⏰ Procesando
+                                </p>
+                            </div>
+
+                            {/* Línea conectora 2 */}
+                            <div className={`h-1 flex-1 mx-2 rounded transition-all duration-300 ${
+                                ['delivered'].includes(order.shipping_status) 
+                                    ? 'bg-green-500' 
+                                    : order.shipping_status === 'dispatched'
+                                    ? 'bg-cyan-500'
+                                    : 'bg-gray-300'
+                            }`} />
+
+                            {/* Paso 3: En Camino */}
+                            <div className="flex flex-col items-center flex-1">
+                                <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold shadow-lg transition-all duration-300 ${
+                                    order.shipping_status === 'dispatched'
+                                        ? 'bg-cyan-500 text-white scale-110 animate-pulse'
+                                        : order.shipping_status === 'delivered'
+                                        ? 'bg-green-500 text-white scale-110'
+                                        : 'bg-gray-300 text-gray-600'
+                                }`}>
+                                    {order.shipping_status === 'dispatched' ? '🚚' : order.shipping_status === 'delivered' ? '✓' : '3'}
+                                </div>
+                                <p className="mt-2 text-sm font-bold text-center" style={{ 
+                                    color: order.shipping_status === 'dispatched' ? '#29C9F4' : order.shipping_status === 'delivered' ? '#65DA4D' : '#9CA3AF' 
+                                }}>
+                                    🚚 En Camino
+                                </p>
+                            </div>
+
+                            {/* Línea conectora 3 */}
+                            <div className={`h-1 flex-1 mx-2 rounded transition-all duration-300 ${
+                                order.shipping_status === 'delivered' 
+                                    ? 'bg-green-500' 
+                                    : 'bg-gray-300'
+                            }`} />
+
+                            {/* Paso 4: Entregada */}
+                            <div className="flex flex-col items-center flex-1">
+                                <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold shadow-lg transition-all duration-300 ${
+                                    order.shipping_status === 'delivered'
+                                        ? 'bg-green-500 text-white scale-110 animate-bounce'
+                                        : 'bg-gray-300 text-gray-600'
+                                }`}>
+                                    {order.shipping_status === 'delivered' ? '🎉' : '4'}
+                                </div>
+                                <p className="mt-2 text-sm font-bold text-center" style={{ 
+                                    color: order.shipping_status === 'delivered' ? '#65DA4D' : '#9CA3AF' 
+                                }}>
+                                    ✅ Entregada
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="mb-6 p-6 rounded-xl border-4" style={{ borderColor: order.shipping_status === 'pending' ? '#FFB800' : order.shipping_status === 'dispatched' ? '#29C9F4' : '#65DA4D', backgroundColor: order.shipping_status === 'pending' ? '#FFF9E6' : order.shipping_status === 'dispatched' ? '#E6F7FF' : '#E8F8E8' }}>
                         <p className="text-lg font-bold text-neutral-800">
                             <strong>Estado Actual:</strong>{' '}

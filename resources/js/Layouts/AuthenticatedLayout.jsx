@@ -18,7 +18,7 @@ export default function AuthenticatedLayout({ header, children }) {
     }, [sidebarCollapsed]);
 
     return (
-        <div className="min-h-screen bg-white text-black">
+        <div className="min-h-screen text-black" style={{ backgroundColor: '#F0F4F8' }}>
             {/* Sidebar para admin */}
             {user.role === 'admin' && (
                 <aside
@@ -68,15 +68,15 @@ export default function AuthenticatedLayout({ header, children }) {
                     <nav className="p-4 space-y-2">
                         <Link
                             href={route('dashboard')}
-                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 group ${
                                 route().current('dashboard')
                                     ? 'bg-white text-black'
-                                    : 'text-white/90 hover:text-white hover:bg-white/10'
+                                    : 'text-white/90 hover:text-white hover:bg-white/10 hover:scale-105'
                             } ${sidebarCollapsed ? 'justify-center' : ''}`}
                             title={sidebarCollapsed ? 'Dashboard' : ''}
                         >
                             <svg
-                                className="h-5 w-5 flex-shrink-0"
+                                className="h-5 w-5 flex-shrink-0 group-hover:rotate-12 transition-transform"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -93,15 +93,15 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <Link
                             href={route('products.index')}
-                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 group ${
                                 route().current('products.index')
                                     ? 'bg-white text-black'
-                                    : 'text-white/90 hover:text-white hover:bg-white/10'
+                                    : 'text-white/90 hover:text-white hover:bg-white/10 hover:scale-105'
                             } ${sidebarCollapsed ? 'justify-center' : ''}`}
                             title={sidebarCollapsed ? 'Prendas' : ''}
                         >
                             <svg
-                                className="h-5 w-5 flex-shrink-0"
+                                className="h-5 w-5 flex-shrink-0 group-hover:rotate-12 transition-transform"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -118,15 +118,15 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <Link
                             href={route('categories.index')}
-                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 group ${
                                 route().current('categories.index')
                                     ? 'bg-white text-black'
-                                    : 'text-white/90 hover:text-white hover:bg-white/10'
+                                    : 'text-white/90 hover:text-white hover:bg-white/10 hover:scale-105'
                             } ${sidebarCollapsed ? 'justify-center' : ''}`}
                             title={sidebarCollapsed ? 'Categorías' : ''}
                         >
                             <svg
-                                className="h-5 w-5 flex-shrink-0"
+                                className="h-5 w-5 flex-shrink-0 group-hover:rotate-12 transition-transform"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -143,15 +143,15 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <Link
                             href={route('colors.index')}
-                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 group ${
                                 route().current('colors.index')
                                     ? 'bg-white text-black'
-                                    : 'text-white/90 hover:text-white hover:bg-white/10'
+                                    : 'text-white/90 hover:text-white hover:bg-white/10 hover:scale-105'
                             } ${sidebarCollapsed ? 'justify-center' : ''}`}
                             title={sidebarCollapsed ? 'Colores' : ''}
                         >
                             <svg
-                                className="h-5 w-5 flex-shrink-0"
+                                className="h-5 w-5 flex-shrink-0 group-hover:rotate-12 transition-transform"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -168,15 +168,15 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <Link
                             href={route('sizes.index')}
-                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 group ${
                                 route().current('sizes.index')
                                     ? 'bg-white text-black'
-                                    : 'text-white/90 hover:text-white hover:bg-white/10'
+                                    : 'text-white/90 hover:text-white hover:bg-white/10 hover:scale-105'
                             } ${sidebarCollapsed ? 'justify-center' : ''}`}
                             title={sidebarCollapsed ? 'Talles' : ''}
                         >
                             <svg
-                                className="h-5 w-5 flex-shrink-0"
+                                className="h-5 w-5 flex-shrink-0 group-hover:rotate-12 transition-transform"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -193,15 +193,15 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <Link
                             href={route('admin.orders.index')}
-                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 group relative ${
                                 route().current('admin.orders.index')
                                     ? 'bg-white text-black'
-                                    : 'text-white/90 hover:text-white hover:bg-white/10'
+                                    : 'text-white/90 hover:text-white hover:bg-white/10 hover:scale-105'
                             } ${sidebarCollapsed ? 'justify-center' : ''}`}
                             title={sidebarCollapsed ? 'Órdenes' : ''}
                         >
                             <svg
-                                className="h-5 w-5 flex-shrink-0"
+                                className="h-5 w-5 flex-shrink-0 group-hover:rotate-12 transition-transform"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -213,7 +213,18 @@ export default function AuthenticatedLayout({ header, children }) {
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                 />
                             </svg>
-                            {!sidebarCollapsed && <span>Órdenes</span>}
+                            {!sidebarCollapsed && (
+                                <span className="flex-1">Órdenes</span>
+                            )}
+                            {/* Badge de notificaciones - solo mostrar si hay órdenes pendientes */}
+                            {usePage().props.pendingOrders && usePage().props.pendingOrders.length > 0 && (
+                                <span 
+                                    className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold animate-pulse"
+                                    title={`${usePage().props.pendingOrders.length} órdenes pendientes`}
+                                >
+                                    {usePage().props.pendingOrders.length}
+                                </span>
+                            )}
                         </Link>
 
                         <div className="pt-4 border-t border-white/20">
