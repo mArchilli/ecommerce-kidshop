@@ -97,12 +97,13 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold text-black">Editar Producto</h2>
+                    <h2 className="text-2xl font-bold text-black">✏️ Editar Producto</h2>
                     <Link
                         href={route('products.index')}
-                        className="px-4 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition"
+                        className="px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                        style={{ backgroundColor: '#9B59B6' }}
                     >
-                        Volver
+                        ← Volver
                     </Link>
                 </div>
             }
@@ -111,29 +112,31 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
             <div className="max-w-7xl mx-auto py-10">
                 <form onSubmit={handleSubmit} className="space-y-8" encType="multipart/form-data">
                     {/* Información básica */}
-                    <div className="bg-white rounded-2xl shadow p-6 border border-neutral-200">
-                        <h3 className="text-lg font-semibold text-neutral-800 mb-6 border-b pb-2">Información Básica</h3>
+                    <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-6">
+                        <div className="mb-6 pb-4 border-b-4 border-white rounded-xl p-4" style={{ backgroundColor: '#29C9F4' }}>
+                            <h3 className="text-xl font-bold text-white">📝 Información Básica</h3>
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium mb-1">Nombre</label>
+                                <label className="block text-sm font-bold mb-2 text-neutral-700">📛 Nombre</label>
                                 <input
                                     type="text"
                                     name="name"
                                     value={data.name}
                                     onChange={handleChange}
-                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                                    className="w-full rounded-xl border-2 border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
                                     required
                                 />
                                 {errors.name && <div className="text-red-500 text-xs mt-1">{errors.name}</div>}
                             </div>
                             <div>
-                                <label className="block text-sm font-medium mb-1">Precio</label>
+                                <label className="block text-sm font-bold mb-2 text-neutral-700">💰 Precio</label>
                                 <input
                                     type="number"
                                     name="price"
                                     value={data.price}
                                     onChange={handleChange}
-                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                                    className="w-full rounded-xl border-2 border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
                                     required
                                     min="0"
                                     step="1"
@@ -141,18 +144,18 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                                 {errors.price && <div className="text-red-500 text-xs mt-1">{errors.price}</div>}
                             </div>
                             <div className="md:col-span-2">
-                                <label className="block text-sm font-medium mb-1">Descripción</label>
+                                <label className="block text-sm font-bold mb-2 text-neutral-700">📄 Descripción</label>
                                 <textarea
                                     name="description"
                                     value={data.description}
                                     onChange={handleChange}
-                                    rows={3}
-                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                                    rows={4}
+                                    className="w-full rounded-xl border-2 border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
                                 />
                                 {errors.description && <div className="text-red-500 text-xs mt-1">{errors.description}</div>}
                             </div>
                             <div className="md:col-span-2">
-                                <label className="block text-sm font-medium mb-2">Género</label>
+                                <label className="block text-sm font-bold mb-3 text-neutral-700">👶 Género</label>
                                 <div className="flex gap-4">
                                     {genders.map((gender) => (
                                         <RadioLabel
@@ -173,8 +176,10 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
 
                     {/* Categorías y Colores */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="bg-white rounded-2xl shadow p-6 border border-neutral-200">
-                            <h3 className="text-base font-semibold text-neutral-800 mb-4">Categorías</h3>
+                        <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-6">
+                            <div className="mb-4 pb-3 border-b-4 border-white rounded-xl p-3" style={{ backgroundColor: '#65DA4D' }}>
+                                <h3 className="text-lg font-bold text-white">📂 Categorías</h3>
+                            </div>
                             <div className="flex flex-wrap gap-2">
                                 {categories.map((category) => (
                                     <CheckboxLabel
@@ -190,8 +195,10 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                             </div>
                             {errors.categories && <div className="text-red-500 text-xs mt-2">{errors.categories}</div>}
                         </div>
-                        <div className="bg-white rounded-2xl shadow p-6 border border-neutral-200">
-                            <h3 className="text-base font-semibold text-neutral-800 mb-4">Colores</h3>
+                        <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-6">
+                            <div className="mb-4 pb-3 border-b-4 border-white rounded-xl p-3" style={{ backgroundColor: '#FC1C1D' }}>
+                                <h3 className="text-lg font-bold text-white">🎨 Colores</h3>
+                            </div>
                             <div className="flex flex-wrap gap-2">
                                 {colors.map((color) => (
                                     <CheckboxLabel
@@ -210,8 +217,10 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                     </div>
 
                     {/* Talles y stock */}
-                    <div className="bg-white rounded-2xl shadow p-6 border border-neutral-200">
-                        <h3 className="text-base font-semibold text-neutral-800 mb-4">Talles y Stock</h3>
+                    <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-6">
+                        <div className="mb-4 pb-3 border-b-4 border-white rounded-xl p-3" style={{ backgroundColor: '#FFB800' }}>
+                            <h3 className="text-lg font-bold text-white">📏 Talles y Stock</h3>
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {sizes.map(size => (
                                 <div key={size.id} className="flex items-center gap-3 border-b pb-2 mb-2">
@@ -240,28 +249,31 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                     </div>
 
                     {/* Imágenes */}
-                    <div className="bg-white rounded-2xl shadow p-6 border border-neutral-200">
-                        <h3 className="text-base font-semibold text-neutral-800 mb-4">Imágenes</h3>
+                    <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-6">
+                        <div className="mb-4 pb-3 border-b-4 border-white rounded-xl p-3" style={{ backgroundColor: '#29C9F4' }}>
+                            <h3 className="text-lg font-bold text-white">🖼️ Imágenes</h3>
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {[1, 2, 3].map(i => (
                                 <div key={i} className="flex flex-col items-center">
-                                    <label className="block text-sm font-medium mb-2">Imagen {i}</label>
+                                    <label className="block text-sm font-bold mb-3 text-neutral-700">Imagen {i}</label>
                                     <input
                                         type="file"
                                         name={`image_${i}`}
                                         accept="image/*"
                                         onChange={handleChange}
-                                        className="block w-full text-sm file:mr-4 file:rounded-lg file:border-0 file:bg-black file:px-4 file:py-2 file:text-white file:hover:bg-neutral-800 file:transition"
+                                        className="block w-full text-sm file:mr-4 file:rounded-xl file:border-0 file:px-6 file:py-3 file:text-white file:font-bold file:hover:scale-105 file:transition file:shadow-md"
                                     />
+                                    <style>{`input[type="file"]::file-selector-button { background-color: #9B59B6; }`}</style>
                                     {errors[`image_${i}`] && (
                                         <div className="text-red-500 text-xs mt-2">{errors[`image_${i}`]}</div>
                                     )}
                                     {imagePreviews[`image_${i}`] && (
-                                        <div className="mt-3 overflow-hidden rounded-lg border border-neutral-200 w-full">
+                                        <div className="mt-4 overflow-hidden rounded-2xl border-4 border-white w-full shadow-md">
                                             <img
                                                 src={imagePreviews[`image_${i}`]}
                                                 alt={`Preview ${i}`}
-                                                className="h-full w-full object-cover"
+                                                className="h-48 w-full object-cover"
                                             />
                                         </div>
                                     )}
@@ -274,15 +286,17 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                     <div className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-6">
                         <Link
                             href={route('products.index')}
-                            className="w-full sm:w-auto px-4 py-2.5 rounded-lg text-center border border-black text-black hover:bg-black hover:text-white transition"
+                            className="w-full sm:w-auto px-6 py-3 rounded-xl text-center font-bold text-white hover:scale-105 transform transition shadow-md"
+                            style={{ backgroundColor: '#9B59B6' }}
                         >
                             Cancelar
                         </Link>
                         <button
                             type="submit"
-                            className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-white hover:text-blue-600 border border-blue-600 transition font-semibold"
+                            className="w-full sm:w-auto px-8 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                            style={{ backgroundColor: '#29C9F4' }}
                         >
-                            Actualizar Producto
+                            💾 Actualizar Producto
                         </button>
                     </div>
                 </form>

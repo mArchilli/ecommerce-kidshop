@@ -21,7 +21,18 @@ Route::get('/', [ProductController::class, 'showProducts'])->name('welcome');
 Route::get('/catalog', [ProductController::class, 'catalog'])->name('catalog.index');
 
 Route::get('/admin/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard', [
+        'productCount' => \App\Models\Product::count(),
+        'categoryCount' => \App\Models\Category::count(),
+        'sizeCount' => \App\Models\Size::count(),
+        'colorCount' => \App\Models\Color::count(),
+        'orderCount' => \App\Models\Order::count(),
+        'pendingOrders' => \App\Models\Order::where('shipping_status', 'pendiente')
+            ->with(['user', 'items'])
+            ->latest()
+            ->take(5)
+            ->get(),
+    ]);
 })->middleware(['auth', 'verified', CheckRole::class . ':admin'])->name('dashboard');
 
 Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(function () {

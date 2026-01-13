@@ -1,19 +1,44 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const Chip = ({ label, selected, onClick }) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={`px-4 py-1 rounded-full border text-sm font-medium transition
-      ${selected
-        ? 'bg-black text-white border-black shadow'
-        : 'bg-white text-black border-neutral-300 hover:bg-neutral-100'}
-    `}
-    aria-pressed={selected}
-  >
-    {label}
-  </button>
-);
+const Chip = ({ label, selected, onClick, color = 'default' }) => {
+  const colorStyles = {
+    default: selected 
+      ? 'bg-black text-white border-black shadow-md transform scale-105' 
+      : 'bg-white text-black border-neutral-300 hover:bg-neutral-50',
+    category: selected 
+      ? 'text-white border-white shadow-lg transform scale-105' 
+      : 'bg-white border-2 hover:bg-green-50',
+    color: selected 
+      ? 'text-white border-white shadow-lg transform scale-105' 
+      : 'bg-white border-2 hover:bg-red-50',
+    gender: selected 
+      ? 'text-white border-white shadow-lg transform scale-105' 
+      : 'bg-white border-2 hover:bg-purple-50',
+    size: selected 
+      ? 'text-white border-white shadow-lg transform scale-105' 
+      : 'bg-white border-2 hover:bg-yellow-50',
+  };
+  
+  const selectedBg = {
+    category: '#65DA4D',
+    color: '#FC1C1D',
+    gender: '#9B59B6',
+    size: '#FFB800',
+    default: '#000',
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`px-5 py-2.5 rounded-xl border-2 text-sm font-bold transition-all duration-200 hover:scale-105 ${colorStyles[color]}`}
+      style={selected ? { backgroundColor: selectedBg[color] } : {}}
+      aria-pressed={selected}
+    >
+      {label}
+    </button>
+  );
+};
 
 const ANIMATION_DURATION = 500; // ms
 
@@ -103,40 +128,39 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
 
   return (
     <div
-      className="sm:rounded-md p-0 bg-white max-w-7xl mx-auto sm:my-10 shadow border border-neutral-200"
-      // data-aos="fade-up"
-      // data-aos-delay="400"
+      className="sm:rounded-2xl p-0 bg-gradient-to-br from-white to-neutral-50 max-w-7xl mx-auto sm:my-10 shadow-xl border-4 border-white"
     >
       {!expanded ? (
-        <div className="flex flex-col gap-4 justify-center py-6 px-4">
+        <div className="flex flex-col gap-4 justify-center py-8 px-6">
           {activeChips.length > 0 && (
-            <div className="flex flex-wrap gap-2 justify-center">
+            <div className="flex flex-wrap gap-3 justify-center">
               {activeChips.map(chip => (
                 <button
                   key={chip.key}
                   type="button"
-                  // onClick={() => { removeChip(chip.key); setTimeout(() => handleFilterChange(), 0); }}
-                  className="group flex items-center gap-2 px-3 py-1 rounded-full bg-black text-white text-xs font-medium hover:bg-neutral-700 transition"
+                  className="group flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-bold hover:scale-105 transition-all shadow-md"
+                  style={{ backgroundColor: '#29C9F4' }}
                 >
                   <span>{chip.label}</span>
-                  
                 </button>
               ))}
               <button
                 type="button"
                 onClick={handleClear}
-                className="px-3 py-1 rounded-full border text-xs font-medium bg-white text-black border-neutral-300 hover:bg-neutral-100"
+                className="px-5 py-2.5 rounded-xl border-2 text-sm font-bold text-white hover:scale-105 transition-all shadow-md"
+                style={{ backgroundColor: '#FC1C1D', borderColor: '#FC1C1D' }}
               >
-                Limpiar todo
+                🗑️ Limpiar todo
               </button>
             </div>
           )}
           <button
             type="button"
-            className="mx-auto bg-black text-white px-8 py-2 rounded-lg border border-black font-semibold hover:bg-white hover:text-black transition"
+            className="mx-auto text-white px-10 py-4 rounded-xl border-4 border-white font-bold text-lg hover:scale-105 transition-all shadow-lg"
+            style={{ backgroundColor: '#29C9F4' }}
             onClick={() => setExpanded(true)}
           >
-            Mostrar filtros
+            🔍 Mostrar filtros
           </button>
         </div>
       ) : null}
@@ -149,12 +173,16 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
             opacity: expanded ? 1 : 0,
           }}
         >
-          <div className="p-8">
+          <div className="p-8 bg-white rounded-2xl">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-bold text-center">Filtrar productos</h2>
+              <h2 className="text-3xl font-bold text-center flex items-center gap-3">
+                <span className="text-4xl">🔍</span>
+                <span style={{ color: '#29C9F4' }}>Filtrar productos</span>
+              </h2>
               <button
                 type="button"
-                className="text-neutral-500 hover:text-black text-2xl font-bold px-2"
+                className="text-white hover:scale-110 text-3xl font-bold px-4 py-2 rounded-xl transition-all"
+                style={{ backgroundColor: '#FC1C1D' }}
                 onClick={() => setExpanded(false)}
                 aria-label="Cerrar filtros"
               >
@@ -163,54 +191,62 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
             </div>
             <div className="flex flex-col gap-8">
               {/* Búsqueda */}
-              <div>
-                <div className="mb-2 font-semibold text-neutral-700">Buscar</div>
+              <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-6 rounded-2xl border-4 border-white shadow-md">
+                <div className="mb-3 font-bold text-lg flex items-center gap-2" style={{ color: '#29C9F4' }}>
+                  <span className="text-2xl">🔎</span>
+                  Buscar
+                </div>
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Nombre o descripción"
-                  className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                  placeholder="Busca por nombre o descripción..."
+                  className="w-full rounded-xl border-2 border-cyan-300 px-5 py-3 text-base font-semibold focus:outline-none focus:ring-4 focus:ring-cyan-200 focus:border-cyan-400"
                 />
               </div>
               {/* Rango de precio */}
-              <div>
-                <div className="mb-2 font-semibold text-neutral-700">Precio</div>
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl border-4 border-white shadow-md">
+                <div className="mb-3 font-bold text-lg flex items-center gap-2" style={{ color: '#65DA4D' }}>
+                  <span className="text-2xl">💰</span>
+                  Precio
+                </div>
                 <div className="flex flex-wrap gap-4">
                   <div className="flex-1 min-w-[120px]">
-                    <label className="block text-xs text-neutral-500 mb-1">Mín</label>
+                    <label className="block text-sm font-bold text-neutral-600 mb-2">Mínimo</label>
                     <input
                       type="number"
                       min="0"
                       value={minPrice}
                       onChange={(e) => setMinPrice(e.target.value)}
-                      placeholder="0"
-                      className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                      placeholder="$ 0"
+                      className="w-full rounded-xl border-2 border-green-300 px-4 py-3 text-base font-semibold focus:outline-none focus:ring-4 focus:ring-green-200 focus:border-green-400"
                     />
                   </div>
                   <div className="flex-1 min-w-[120px]">
-                    <label className="block text-xs text-neutral-500 mb-1">Máx</label>
+                    <label className="block text-sm font-bold text-neutral-600 mb-2">Máximo</label>
                     <input
                       type="number"
                       min="0"
                       value={maxPrice}
                       onChange={(e) => setMaxPrice(e.target.value)}
-                      placeholder="99999"
-                      className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                      placeholder="$ 99999"
+                      className="w-full rounded-xl border-2 border-green-300 px-4 py-3 text-base font-semibold focus:outline-none focus:ring-4 focus:ring-green-200 focus:border-green-400"
                     />
                   </div>
                 </div>
               </div>
               {/* Categorías */}
-              <div>
-                <div className="mb-2 font-semibold text-neutral-700 flex items-center gap-2">
+              <div className="bg-gradient-to-r from-green-50 to-lime-50 p-6 rounded-2xl border-4 border-white shadow-md">
+                <div className="mb-4 font-bold text-lg flex items-center gap-2" style={{ color: '#65DA4D' }}>
+                  <span className="text-2xl">📂</span>
                   Categoría
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                   <Chip
                     label="Todas"
                     selected={selectedCategory === ''}
                     onClick={() => setSelectedCategory('')}
+                    color="category"
                   />
                   {categories.map((category) => (
                     <Chip
@@ -218,20 +254,23 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
                       label={category.name}
                       selected={selectedCategory === category.name}
                       onClick={() => setSelectedCategory(category.name)}
+                      color="category"
                     />
                   ))}
                 </div>
               </div>
               {/* Colores */}
-              <div>
-                <div className="mb-2 font-semibold text-neutral-700 flex items-center gap-2">
+              <div className="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-2xl border-4 border-white shadow-md">
+                <div className="mb-4 font-bold text-lg flex items-center gap-2" style={{ color: '#FC1C1D' }}>
+                  <span className="text-2xl">🎨</span>
                   Color
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                   <Chip
                     label="Todos"
                     selected={selectedColor === ''}
                     onClick={() => setSelectedColor('')}
+                    color="color"
                   />
                   {colors.map((color) => (
                     <Chip
@@ -239,20 +278,23 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
                       label={color.name}
                       selected={selectedColor === color.name}
                       onClick={() => setSelectedColor(color.name)}
+                      color="color"
                     />
                   ))}
                 </div>
               </div>
               {/* Género */}
-              <div>
-                <div className="mb-2 font-semibold text-neutral-700 flex items-center gap-2">
+              <div className="bg-gradient-to-r from-purple-50 to-violet-50 p-6 rounded-2xl border-4 border-white shadow-md">
+                <div className="mb-4 font-bold text-lg flex items-center gap-2" style={{ color: '#9B59B6' }}>
+                  <span className="text-2xl">👶</span>
                   Género
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                   <Chip
                     label="Todos"
                     selected={selectedGender === ''}
                     onClick={() => setSelectedGender('')}
+                    color="gender"
                   />
                   {genders.map((gender) => (
                     <Chip
@@ -260,20 +302,23 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
                       label={gender.name}
                       selected={selectedGender === gender.name}
                       onClick={() => setSelectedGender(gender.name)}
+                      color="gender"
                     />
                   ))}
                 </div>
               </div>
               {/* Talles */}
-              <div>
-                <div className="mb-2 font-semibold text-neutral-700 flex items-center gap-2">
+              <div className="bg-gradient-to-r from-yellow-50 to-amber-50 p-6 rounded-2xl border-4 border-white shadow-md">
+                <div className="mb-4 font-bold text-lg flex items-center gap-2" style={{ color: '#FFB800' }}>
+                  <span className="text-2xl">📏</span>
                   Talle
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3">
                   <Chip
                     label="Todos"
                     selected={selectedSize === ''}
                     onClick={() => setSelectedSize('')}
+                    color="size"
                   />
                   {sizes.map((size) => (
                     <Chip
@@ -281,30 +326,35 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
                       label={size.name}
                       selected={selectedSize === size.name}
                       onClick={() => setSelectedSize(size.name)}
+                      color="size"
                     />
                   ))}
                 </div>
               </div>
               {/* Orden */}
-              <div>
-                <div className="mb-2 font-semibold text-neutral-700">Ordenar</div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="bg-gradient-to-r from-cyan-50 to-sky-50 p-6 rounded-2xl border-4 border-white shadow-md">
+                <div className="mb-4 font-bold text-lg flex items-center gap-2" style={{ color: '#29C9F4' }}>
+                  <span className="text-2xl">↕️</span>
+                  Ordenar
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {[
                     { value: '', label: 'Por defecto' },
-                    { value: 'price_asc', label: 'Precio ↑' },
-                    { value: 'price_desc', label: 'Precio ↓' },
-                    { value: 'newest', label: 'Nuevos' },
-                    { value: 'oldest', label: 'Antiguos' },
+                    { value: 'price_asc', label: '💵 Precio ↑' },
+                    { value: 'price_desc', label: '💰 Precio ↓' },
+                    { value: 'newest', label: '✨ Nuevos' },
+                    { value: 'oldest', label: '📅 Antiguos' },
                   ].map(opt => (
                     <button
                       key={opt.value || 'default'}
                       type="button"
                       onClick={() => setSort(opt.value)}
-                      className={`px-3 py-1 rounded-md border text-xs font-medium transition ${
+                      className={`px-4 py-3 rounded-xl border-2 text-sm font-bold transition-all hover:scale-105 ${
                         sort === opt.value
-                          ? 'bg-black text-white border-black'
-                          : 'bg-white text-black border-neutral-300 hover:bg-neutral-100'
+                          ? 'text-white border-white shadow-lg scale-105'
+                          : 'bg-white text-black border-cyan-300 hover:bg-cyan-50'
                       }`}
+                      style={sort === opt.value ? { backgroundColor: '#29C9F4' } : {}}
                     >
                       {opt.label}
                     </button>
@@ -312,27 +362,29 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
                 </div>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-10">
               <button
                 type="button"
                 onClick={handleFilterChange}
-                className="bg-black text-white px-8 py-2 rounded-lg border border-black font-semibold hover:bg-white hover:text-black transition"
+                className="text-white px-10 py-4 rounded-xl border-4 border-white font-bold text-lg hover:scale-105 transition-all shadow-lg"
+                style={{ backgroundColor: '#65DA4D' }}
               >
-                Aplicar Filtros
+                ✅ Aplicar Filtros
               </button>
               <button
                 type="button"
                 onClick={handleClear}
-                className="bg-white text-black px-8 py-2 rounded-lg border border-black font-semibold hover:bg-black hover:text-white transition"
+                className="text-white px-10 py-4 rounded-xl border-4 border-white font-bold text-lg hover:scale-105 transition-all shadow-lg"
+                style={{ backgroundColor: '#FC1C1D' }}
               >
-                Limpiar Filtros
+                🗑️ Limpiar Filtros
               </button>
               <button
                 type="button"
                 onClick={() => setExpanded(false)}
-                className="bg-neutral-100 text-black px-8 py-2 rounded-lg border border-neutral-300 font-semibold hover:bg-neutral-200 transition"
+                className="bg-white text-black px-10 py-4 rounded-xl border-4 border-neutral-300 font-bold text-lg hover:scale-105 transition-all shadow-lg hover:bg-neutral-50"
               >
-                Ocultar filtros
+                ❌ Cerrar
               </button>
             </div>
           </div>

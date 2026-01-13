@@ -24,12 +24,13 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold text-red-600">Eliminar Producto</h2>
+                    <h2 className="text-2xl font-bold text-white px-6 py-3 rounded-xl" style={{ backgroundColor: '#FC1C1D' }}>⚠️ Eliminar Producto</h2>
                     <Link
                         href={route('products.index')}
-                        className="px-4 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition"
+                        className="px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                        style={{ backgroundColor: '#9B59B6' }}
                     >
-                        Volver
+                        ← Volver
                     </Link>
                 </div>
             }
@@ -37,64 +38,67 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
             <Head title="Eliminar Producto" />
             <div className="max-w-7xl mx-auto py-10">
                 <form onSubmit={handleSubmit} className="space-y-8">
-                    <div className="bg-white rounded-2xl shadow p-8 border-2 border-red-400">
-                        <h3 className="text-lg font-semibold text-red-600 mb-6 border-b pb-2">¿Estás seguro que deseas eliminar este producto?</h3>
-                        <div className="space-y-4">
-                            <div>
-                                <span className="block text-xs text-neutral-500 mb-1">Nombre</span>
-                                <div className="text-lg font-bold">{data.name}</div>
+                    <div className="bg-white rounded-2xl border-4 shadow-lg p-8" style={{ borderColor: '#FC1C1D' }}>
+                        <div className="mb-8 p-6 rounded-xl" style={{ backgroundColor: '#FFF0F0', borderLeft: '6px solid #FC1C1D' }}>
+                            <h3 className="text-xl font-bold mb-2" style={{ color: '#FC1C1D' }}>⚠️ ¿Estás seguro que deseas eliminar este producto?</h3>
+                            <p className="text-sm text-neutral-600">Esta acción no se puede deshacer.</p>
+                        </div>
+                        <div className="space-y-5">
+                            <div className="bg-neutral-50 p-5 rounded-xl border-2 border-neutral-200">
+                                <span className="block text-sm font-bold mb-2 text-neutral-600">📛 Nombre</span>
+                                <div className="text-xl font-bold text-black">{data.name}</div>
                             </div>
-                            <div>
-                                <span className="block text-xs text-neutral-500 mb-1">Descripción</span>
-                                <div className="text-neutral-700">{data.description}</div>
+                            <div className="bg-neutral-50 p-5 rounded-xl border-2 border-neutral-200">
+                                <span className="block text-sm font-bold mb-2 text-neutral-600">📄 Descripción</span>
+                                <div className="text-base text-neutral-700">{data.description}</div>
                             </div>
-                            <div>
-                                <span className="block text-xs text-neutral-500 mb-1">Precio</span>
-                                <div className="text-neutral-700">${Number(data.price).toLocaleString('es-AR')}</div>
+                            <div className="bg-neutral-50 p-5 rounded-xl border-2 border-neutral-200">
+                                <span className="block text-sm font-bold mb-2 text-neutral-600">💰 Precio</span>
+                                <div className="text-xl font-bold text-green-600">${Number(data.price).toLocaleString('es-AR')}</div>
                             </div>
-                            <div>
-                                <span className="block text-xs text-neutral-500 mb-1">Categorías</span>
+                            <div className="bg-neutral-50 p-5 rounded-xl border-2 border-neutral-200">
+                                <span className="block text-sm font-bold mb-3 text-neutral-600">📂 Categorías</span>
                                 <div className="flex flex-wrap gap-2">
                                     {categories.filter(c => data.categories.includes(c.id.toString())).map(c => (
-                                        <span key={c.id} className="bg-neutral-100 border px-2 py-1 rounded text-xs">{c.name}</span>
+                                        <span key={c.id} className="px-4 py-2 rounded-xl text-sm font-bold text-white shadow-md" style={{ backgroundColor: '#65DA4D' }}>{c.name}</span>
                                     ))}
                                 </div>
                             </div>
-                            <div>
-                                <span className="block text-xs text-neutral-500 mb-1">Talles y Stock</span>
+                            <div className="bg-neutral-50 p-5 rounded-xl border-2 border-neutral-200">
+                                <span className="block text-sm font-bold mb-3 text-neutral-600">📏 Talles y Stock</span>
                                 <div className="flex flex-wrap gap-2">
                                     {sizes.filter(s => data.sizes.some(sz => sz.id === s.id)).map(s => (
-                                        <span key={s.id} className="bg-neutral-100 border px-2 py-1 rounded text-xs">
+                                        <span key={s.id} className="px-4 py-2 rounded-xl text-sm font-bold text-black shadow-md" style={{ backgroundColor: '#FFF9E6', border: '2px solid #FFB800' }}>
                                             {s.name} ({data.sizes.find(sz => sz.id === s.id)?.stock || 0})
                                         </span>
                                     ))}
                                 </div>
                             </div>
-                            <div>
-                                <span className="block text-xs text-neutral-500 mb-1">Colores</span>
+                            <div className="bg-neutral-50 p-5 rounded-xl border-2 border-neutral-200">
+                                <span className="block text-sm font-bold mb-3 text-neutral-600">🎨 Colores</span>
                                 <div className="flex flex-wrap gap-2">
                                     {colors.filter(c => data.colors.includes(c.id.toString())).map(c => (
-                                        <span key={c.id} className="bg-neutral-100 border px-2 py-1 rounded text-xs">{c.name}</span>
+                                        <span key={c.id} className="px-4 py-2 rounded-xl text-sm font-bold text-white shadow-md" style={{ backgroundColor: '#FC1C1D' }}>{c.name}</span>
                                     ))}
                                 </div>
                             </div>
-                            <div>
-                                <span className="block text-xs text-neutral-500 mb-1">Género</span>
+                            <div className="bg-neutral-50 p-5 rounded-xl border-2 border-neutral-200">
+                                <span className="block text-sm font-bold mb-3 text-neutral-600">👶 Género</span>
                                 <div className="flex flex-wrap gap-2">
                                     {genders.filter(g => data.gender_id == g.id).map(g => (
-                                        <span key={g.id} className="bg-neutral-100 border px-2 py-1 rounded text-xs">{g.name}</span>
+                                        <span key={g.id} className="px-4 py-2 rounded-xl text-sm font-bold text-white shadow-md" style={{ backgroundColor: '#29C9F4' }}>{g.name}</span>
                                     ))}
                                 </div>
                             </div>
-                            <div>
-                                <span className="block text-xs text-neutral-500 mb-1">Imágenes</span>
-                                <div className="flex gap-4 mt-2">
+                            <div className="bg-neutral-50 p-5 rounded-xl border-2 border-neutral-200">
+                                <span className="block text-sm font-bold mb-3 text-neutral-600">🖼️ Imágenes</span>
+                                <div className="flex gap-4 mt-3">
                                     {product.images && product.images.map((img, idx) => (
                                         <img
                                             key={idx}
                                             src={`/${img}`}
                                             alt={`Imagen ${idx + 1}`}
-                                            className="h-24 w-24 object-cover rounded border"
+                                            className="h-32 w-32 object-cover rounded-xl border-4 border-white shadow-md"
                                         />
                                     ))}
                                 </div>
@@ -103,15 +107,17 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
                         <div className="flex flex-col sm:flex-row items-center justify-end gap-4 mt-8">
                             <Link
                                 href={route('products.index')}
-                                className="w-full sm:w-auto px-4 py-2.5 rounded-lg text-center border border-black text-black hover:bg-black hover:text-white transition"
+                                className="w-full sm:w-auto px-6 py-3 rounded-xl text-center font-bold text-white hover:scale-105 transform transition shadow-md"
+                                style={{ backgroundColor: '#9B59B6' }}
                             >
                                 Cancelar
                             </Link>
                             <button
                                 type="submit"
-                                className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-red-600 text-white hover:bg-white hover:text-red-600 border border-red-600 transition font-semibold"
+                                className="w-full sm:w-auto px-8 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                                style={{ backgroundColor: '#FC1C1D' }}
                             >
-                                Eliminar Producto
+                                🗑️ Eliminar Producto
                             </button>
                         </div>
                     </div>
