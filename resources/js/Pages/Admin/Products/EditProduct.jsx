@@ -24,6 +24,9 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
         image_3: product.images && product.images[2] ? `/${product.images[2]}` : null,
     });
     const [selectedSizes, setSelectedSizes] = useState(product.sizes.map(size => size.id.toString()) || []);
+    const [searchCategory, setSearchCategory] = useState('');
+    const [searchColor, setSearchColor] = useState('');
+    const [searchSize, setSearchSize] = useState('');
 
     const handleChange = (e) => {
         const key = e.target.name;
@@ -59,16 +62,20 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
     };
 
     const handleStockChange = (e, sizeId) => {
+        const inputValue = e.target.value;
+        const newStock = inputValue === '' ? 0 : parseInt(inputValue, 10);
+        
         const newSizes = data.sizes.map(size =>
-            size.id === sizeId ? { ...size, stock: parseInt(e.target.value) || 0 } : size
+            size.id == sizeId ? { ...size, stock: newStock } : size
         );
         setData('sizes', newSizes);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        // Filtrar solo los talles seleccionados con su stock actual
         const selectedSizesWithStock = data.sizes.filter(size => selectedSizes.includes(size.id.toString()));
-        setData('sizes', selectedSizesWithStock);
+        
         const formData = new FormData();
         formData.append('name', data.name);
         formData.append('description', data.description);
@@ -76,15 +83,20 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
         formData.append('gender_id', data.gender_id);
         data.categories.forEach(c => formData.append('categories[]', c));
         data.colors.forEach(c => formData.append('colors[]', c));
-        data.sizes.forEach((s, i) => {
+        
+        // Usar la variable filtrada directamente en lugar de data.sizes
+        selectedSizesWithStock.forEach((s, i) => {
             formData.append(`sizes[${i}][id]`, s.id);
             formData.append(`sizes[${i}][stock]`, s.stock);
         });
+        
+        // Enviar imágenes con el formato que espera el backend (images[])
         ['image_1', 'image_2', 'image_3'].forEach(key => {
             if (data[key]) {
-                formData.append(key, data[key]);
+                formData.append('images[]', data[key]);
             }
         });
+        
         post(route('products.update', product.id), {
             data: formData,
             headers: {
@@ -180,8 +192,18 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                             <div className="mb-4 pb-3 border-b-4 border-white rounded-xl p-3" style={{ backgroundColor: '#65DA4D' }}>
                                 <h3 className="text-lg font-bold text-white">📂 Categorías</h3>
                             </div>
+                            {/* Barra de búsqueda */}
+                            <div className="mb-4">
+                                <input
+                                    type="text"
+                                    value={searchCategory}
+                                    onChange={(e) => setSearchCategory(e.target.value)}
+                                    placeholder="🔍 Buscar categoría..."
+                                    className="w-full rounded-lg border-2 border-green-300 px-4 py-2 text-sm focus:outline-none focus:ring-4 focus:ring-green-200 focus:border-green-400 transition-all"
+                                />
+                            </div>
                             <div className="flex flex-wrap gap-2">
-                                {categories.map((category) => (
+                                {categories.filter(category => category.name.toLowerCase().includes(searchCategory.toLowerCase())).map((category) => (
                                     <CheckboxLabel
                                         key={category.id}
                                         id={category.id}
@@ -199,8 +221,18 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                             <div className="mb-4 pb-3 border-b-4 border-white rounded-xl p-3" style={{ backgroundColor: '#FC1C1D' }}>
                                 <h3 className="text-lg font-bold text-white">🎨 Colores</h3>
                             </div>
+                            {/* Barra de búsqueda */}
+                            <div className="mb-4">
+                                <input
+                                    type="text"
+                                    value={searchColor}
+                                    onChange={(e) => setSearchColor(e.target.value)}
+                                    placeholder="🔍 Buscar color..."
+                                    className="w-full rounded-lg border-2 border-red-300 px-4 py-2 text-sm focus:outline-none focus:ring-4 focus:ring-red-200 focus:border-red-400 transition-all"
+                                />
+                            </div>
                             <div className="flex flex-wrap gap-2">
-                                {colors.map((color) => (
+                                {colors.filter(color => color.name.toLowerCase().includes(searchColor.toLowerCase())).map((color) => (
                                     <CheckboxLabel
                                         key={color.id}
                                         id={color.id}
@@ -217,35 +249,107 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                     </div>
 
                     {/* Talles y stock */}
-                    <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-6">
-                        <div className="mb-4 pb-3 border-b-4 border-white rounded-xl p-3" style={{ backgroundColor: '#FFB800' }}>
-                            <h3 className="text-lg font-bold text-white">📏 Talles y Stock</h3>
+                    <div className="bg-gradient-to-br from-white to-yellow-50 rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow">
+                        <div className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b-4 border-white rounded-xl p-3 sm:p-4 bg-gradient-to-r from-yellow-500 to-amber-500 shadow-md">
+                            <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                                <span className="text-xl sm:text-2xl">📏</span>
+                                Talles y Stock
+                            </h3>
+                            <p className="text-xs sm:text-sm text-white/90 mt-1">Selecciona los talles disponibles y asigna su stock</p>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {sizes.map(size => (
-                                <div key={size.id} className="flex items-center gap-3 border-b pb-2 mb-2">
-                                    <CheckboxLabel
-                                        id={size.id}
-                                        name="sizes"
-                                        value={size.id}
-                                        label={size.name}
-                                        onChange={() => handleSizeSelection(size.id)}
-                                        checked={selectedSizes.includes(size.id.toString())}
-                                    />
-                                    {selectedSizes.includes(size.id.toString()) && (
-                                        <input
-                                            type="number"
-                                            min={0}
-                                            value={data.sizes.find(s => s.id === size.id)?.stock || 0}
-                                            onChange={e => handleStockChange(e, size.id)}
-                                            className="w-24 rounded-md border border-neutral-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-black"
-                                            placeholder="Stock"
-                                        />
-                                    )}
+                        {/* Barra de búsqueda */}
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                value={searchSize}
+                                onChange={(e) => setSearchSize(e.target.value)}
+                                placeholder="🔍 Buscar talle..."
+                                className="w-full rounded-lg border-2 border-yellow-300 px-4 py-2 text-sm focus:outline-none focus:ring-4 focus:ring-yellow-200 focus:border-yellow-400 transition-all"
+                            />
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+                            {sizes.filter(size => size.name.toLowerCase().includes(searchSize.toLowerCase())).map(size => {
+                                const selected = selectedSizes.includes(size.id.toString());
+                                const current = data.sizes.find(s => s.id === size.id);
+                                return (
+                                    <div 
+                                        key={size.id} 
+                                        className={`relative rounded-xl border-3 p-4 transition-all duration-200 hover:scale-105 cursor-pointer ${
+                                            selected 
+                                                ? 'border-yellow-400 bg-gradient-to-br from-yellow-50 to-amber-50 shadow-lg' 
+                                                : 'border-gray-200 bg-white hover:border-yellow-300 shadow-sm hover:shadow-md'
+                                        }`}
+                                        onClick={() => handleSizeSelection(size.id)}
+                                    >
+                                        {/* Checkbox en esquina */}
+                                        <div className="absolute top-2 right-2">
+                                            <input
+                                                type="checkbox"
+                                                checked={selected}
+                                                onChange={() => handleSizeSelection(size.id)}
+                                                className="h-5 w-5 rounded-md cursor-pointer transition"
+                                                style={{ accentColor: '#FFB800' }}
+                                                onClick={(e) => e.stopPropagation()}
+                                            />
+                                        </div>
+                                        
+                                        {/* Nombre del talle */}
+                                        <div className="mb-3 pr-8">
+                                            <div className="text-2xl font-black" style={{ color: selected ? '#FFB800' : '#6B7280' }}>
+                                                {size.name}
+                                            </div>
+                                            <div className="text-xs text-gray-500 font-semibold mt-1">
+                                                {selected ? '✓ Disponible' : 'Click para activar'}
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Input de stock */}
+                                        {selected && (
+                                            <div className="mt-3 pt-3 border-t-2 border-yellow-200" onClick={(e) => e.stopPropagation()}>
+                                                <label className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: '#FFB800' }}>
+                                                    <span>📦</span>
+                                                    Stock disponible
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    min={0}
+                                                    value={current?.stock ?? 0}
+                                                    onChange={e => handleStockChange(e, size.id)}
+                                                    className="w-full rounded-lg border-2 border-yellow-300 px-3 py-2 text-sm font-bold text-center focus:outline-none focus:ring-4 focus:ring-yellow-200 focus:border-yellow-400 transition-all"
+                                                    placeholder="0"
+                                                    style={{ backgroundColor: '#FFFBEB' }}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        {errors.sizes && <p className="text-red-500 text-xs mt-4 font-bold bg-red-50 p-3 rounded-lg border-2 border-red-200">{errors.sizes}</p>}
+                        
+                        {/* Resumen de talles seleccionados */}
+                        {data.sizes.length > 0 && (
+                            <div className="mt-6 p-4 bg-white rounded-xl border-2 border-yellow-200">
+                                <div className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#FFB800' }}>
+                                    <span className="text-lg">✅</span>
+                                    Resumen: {data.sizes.length} {data.sizes.length === 1 ? 'talle seleccionado' : 'talles seleccionados'}
                                 </div>
-                            ))}
-                        </div>
-                        {errors.sizes && <div className="text-red-500 text-xs mt-2">{errors.sizes}</div>}
+                                <div className="flex flex-wrap gap-2">
+                                    {data.sizes.map(s => {
+                                        const sizeInfo = sizes.find(sz => sz.id === s.id);
+                                        return (
+                                            <span 
+                                                key={s.id}
+                                                className="inline-flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-bold text-white shadow-sm"
+                                                style={{ backgroundColor: '#FFB800' }}
+                                            >
+                                                {sizeInfo?.name}: {s.stock} unidades
+                                            </span>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Imágenes */}
