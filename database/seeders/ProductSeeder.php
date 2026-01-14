@@ -14,61 +14,206 @@ class ProductSeeder extends Seeder
     public function run()
     {
         // Obtener categorías, talles, colores y géneros
-        $categories = Category::whereIn('name', ['Camisetas', 'Pantalones', 'Chaquetas'])->get();
-        $sizes = Size::whereIn('name', ['S', 'M', 'L'])->get();
-        $colors = Color::whereIn('name', ['Azul', 'Negro', 'Rojo'])->get();
-        $genders = Gender::whereIn('name', ['Niños', 'Niñas', 'Unisex'])->get();
+        $categories = Category::all();
+        $sizes = Size::all();
+        $colors = Color::all();
+        $genders = Gender::all();
 
-        // Crear productos y asociarlos con categorías, talles, colores y géneros
-        $product1 = Product::create([
-            'name' => 'Camiseta de Niño',
-            'description' => 'Camiseta de algodón para niño, color azul.',
-            'price' => 15.99,
-            'images' => [
-                'images/products/camiseta_nino_azul_1.jpg',
-                'images/products/camiseta_nino_azul_2.jpg',
-                'images/products/camiseta_nino_azul_3.jpg',
-            ], // Imágenes por defecto
-            'gender_id' => $genders->where('name', 'Niños')->first()->id,
-        ]);
-        $product1->categories()->attach($categories->where('name', 'Camisetas')->pluck('id'));
-        $product1->sizes()->attach([
-            $sizes->where('name', 'M')->first()->id => ['stock' => 50]
-        ]);
-        $product1->colors()->attach($colors->where('name', 'Azul')->pluck('id'));
+        // Array de productos destacados
+        $featuredProducts = [
+            [
+                'name' => 'Remera Estampada Dinosaurios',
+                'description' => 'Remera 100% algodón con estampado de dinosaurios. Ideal para el día a día, cómoda y divertida.',
+                'price' => 4500,
+                'images' => ['images/products/remera_dinosaurios.jpg'],
+                'is_featured' => true,
+                'gender' => 'Niños',
+                'categories' => ['Remeras', 'Casual'],
+                'colors' => ['Verde', 'Azul'],
+                'sizes' => [
+                    ['name' => '2', 'stock' => 15],
+                    ['name' => '4', 'stock' => 20],
+                    ['name' => '6', 'stock' => 18],
+                    ['name' => '8', 'stock' => 12],
+                ]
+            ],
+            [
+                'name' => 'Vestido Floreado Primavera',
+                'description' => 'Hermoso vestido con estampado floral. Perfecto para ocasiones especiales o paseos al aire libre.',
+                'price' => 6800,
+                'images' => ['images/products/vestido_flores.jpg'],
+                'is_featured' => true,
+                'gender' => 'Niñas',
+                'categories' => ['Vestidos', 'Elegante'],
+                'colors' => ['Rosa', 'Blanco'],
+                'sizes' => [
+                    ['name' => '2', 'stock' => 10],
+                    ['name' => '4', 'stock' => 15],
+                    ['name' => '6', 'stock' => 12],
+                ]
+            ],
+            [
+                'name' => 'Jogger Deportivo Unicolor',
+                'description' => 'Pantalón jogger súper cómodo, ideal para actividades deportivas o uso casual.',
+                'price' => 5200,
+                'images' => ['images/products/jogger_deportivo.jpg'],
+                'is_featured' => true,
+                'gender' => 'Unisex',
+                'categories' => ['Pantalones', 'Deportivo'],
+                'colors' => ['Negro', 'Gris', 'Azul'],
+                'sizes' => [
+                    ['name' => '4', 'stock' => 25],
+                    ['name' => '6', 'stock' => 30],
+                    ['name' => '8', 'stock' => 20],
+                    ['name' => '10', 'stock' => 15],
+                ]
+            ],
+            [
+                'name' => 'Buzo con Capucha Superhéroes',
+                'description' => 'Buzo abrigado con capucha y estampado de superhéroes. Interior de algodón suave.',
+                'price' => 7500,
+                'images' => ['images/products/buzo_superheroes.jpg'],
+                'is_featured' => true,
+                'gender' => 'Niños',
+                'categories' => ['Buzos', 'Abrigo'],
+                'colors' => ['Rojo', 'Azul', 'Negro'],
+                'sizes' => [
+                    ['name' => '4', 'stock' => 18],
+                    ['name' => '6', 'stock' => 22],
+                    ['name' => '8', 'stock' => 16],
+                ]
+            ],
+            [
+                'name' => 'Conjunto Deportivo Unicornio',
+                'description' => 'Set de remera y calza con diseño de unicornios. Tela elástica y respirable.',
+                'price' => 8900,
+                'images' => ['images/products/conjunto_unicornio.jpg'],
+                'is_featured' => true,
+                'gender' => 'Niñas',
+                'categories' => ['Conjuntos', 'Deportivo'],
+                'colors' => ['Rosa', 'Violeta', 'Blanco'],
+                'sizes' => [
+                    ['name' => '2', 'stock' => 12],
+                    ['name' => '4', 'stock' => 18],
+                    ['name' => '6', 'stock' => 15],
+                ]
+            ],
+            [
+                'name' => 'Campera Jean Clásica',
+                'description' => 'Campera de jean resistente y atemporal. Con bolsillos frontales y botones metálicos.',
+                'price' => 9500,
+                'images' => ['images/products/campera_jean.jpg'],
+                'is_featured' => true,
+                'gender' => 'Unisex',
+                'categories' => ['Camperas', 'Casual'],
+                'colors' => ['Azul'],
+                'sizes' => [
+                    ['name' => '6', 'stock' => 20],
+                    ['name' => '8', 'stock' => 25],
+                    ['name' => '10', 'stock' => 18],
+                    ['name' => '12', 'stock' => 14],
+                ]
+            ],
+            [
+                'name' => 'Short Cargo Veraniego',
+                'description' => 'Short cargo con múltiples bolsillos. Tela liviana y fresca para el verano.',
+                'price' => 4200,
+                'images' => ['images/products/short_cargo.jpg'],
+                'is_featured' => true,
+                'gender' => 'Niños',
+                'categories' => ['Shorts', 'Verano'],
+                'colors' => ['Beige', 'Verde', 'Negro'],
+                'sizes' => [
+                    ['name' => '4', 'stock' => 22],
+                    ['name' => '6', 'stock' => 28],
+                    ['name' => '8', 'stock' => 20],
+                ]
+            ],
+            [
+                'name' => 'Pollera Tul Princesa',
+                'description' => 'Pollera de tul con detalles brillantes. Perfecta para fiestas y eventos especiales.',
+                'price' => 6200,
+                'images' => ['images/products/pollera_tul.jpg'],
+                'is_featured' => true,
+                'gender' => 'Niñas',
+                'categories' => ['Polleras', 'Elegante'],
+                'colors' => ['Rosa', 'Violeta', 'Blanco'],
+                'sizes' => [
+                    ['name' => '2', 'stock' => 10],
+                    ['name' => '4', 'stock' => 14],
+                    ['name' => '6', 'stock' => 12],
+                ]
+            ],
+            [
+                'name' => 'Musculosa Deportiva Rayas',
+                'description' => 'Musculosa liviana con diseño a rayas. Perfecta para días calurosos.',
+                'price' => 3500,
+                'images' => ['images/products/musculosa_rayas.jpg'],
+                'is_featured' => true,
+                'gender' => 'Unisex',
+                'categories' => ['Remeras', 'Verano'],
+                'colors' => ['Blanco', 'Azul', 'Rojo'],
+                'sizes' => [
+                    ['name' => '2', 'stock' => 30],
+                    ['name' => '4', 'stock' => 35],
+                    ['name' => '6', 'stock' => 25],
+                    ['name' => '8', 'stock' => 20],
+                ]
+            ],
+            [
+                'name' => 'Enterito Polar Animales',
+                'description' => 'Enterito de polar súper abrigado con diseño de animales. Ideal para dormir o estar en casa.',
+                'price' => 8500,
+                'images' => ['images/products/enterito_polar.jpg'],
+                'is_featured' => true,
+                'gender' => 'Unisex',
+                'categories' => ['Pijamas', 'Abrigo'],
+                'colors' => ['Gris', 'Azul', 'Rosa'],
+                'sizes' => [
+                    ['name' => '2', 'stock' => 15],
+                    ['name' => '4', 'stock' => 20],
+                    ['name' => '6', 'stock' => 18],
+                    ['name' => '8', 'stock' => 12],
+                ]
+            ],
+        ];
 
-        $product2 = Product::create([
-            'name' => 'Pantalones de Niño',
-            'description' => 'Pantalones de mezclilla para niño, color negro.',
-            'price' => 25.99,
-            'images' => [
-                'images/products/pantalones_nino_negro_1.jpg',
-                'images/products/pantalones_nino_negro_2.jpg',
-                'images/products/pantalones_nino_negro_3.jpg',
-            ], // Imágenes por defecto
-            'gender_id' => $genders->where('name', 'Niños')->first()->id,
-        ]);
-        $product2->categories()->attach($categories->where('name', 'Pantalones')->pluck('id'));
-        $product2->sizes()->attach([
-            $sizes->where('name', 'L')->first()->id => ['stock' => 30]
-        ]);
-        $product2->colors()->attach($colors->where('name', 'Negro')->pluck('id'));
+        // Crear los productos
+        foreach ($featuredProducts as $productData) {
+            // Buscar el género
+            $gender = $genders->firstWhere('name', $productData['gender']);
+            
+            if (!$gender) continue;
 
-        $product3 = Product::create([
-            'name' => 'Chaqueta de Niño',
-            'description' => 'Chaqueta de invierno para niño, color rojo.',
-            'price' => 45.99,
-            'images' => [
-                'images/products/chaqueta_nino_rojo_1.jpg',
-                'images/products/chaqueta_nino_rojo_2.jpg',
-                'images/products/chaqueta_nino_rojo_3.jpg',
-            ], // Imágenes por defecto
-            'gender_id' => $genders->where('name', 'Niños')->first()->id,
-        ]);
-        $product3->categories()->attach($categories->where('name', 'Chaquetas')->pluck('id'));
-        $product3->sizes()->attach([
-            $sizes->where('name', 'S')->first()->id => ['stock' => 20]
-        ]);
-        $product3->colors()->attach($colors->where('name', 'Rojo')->pluck('id'));
+            // Crear el producto
+            $product = Product::create([
+                'name' => $productData['name'],
+                'description' => $productData['description'],
+                'price' => $productData['price'],
+                'images' => $productData['images'],
+                'is_featured' => $productData['is_featured'],
+                'gender_id' => $gender->id,
+            ]);
+
+            // Asociar categorías
+            $categoryIds = $categories->whereIn('name', $productData['categories'])->pluck('id')->toArray();
+            if (!empty($categoryIds)) {
+                $product->categories()->attach($categoryIds);
+            }
+
+            // Asociar colores
+            $colorIds = $colors->whereIn('name', $productData['colors'])->pluck('id')->toArray();
+            if (!empty($colorIds)) {
+                $product->colors()->attach($colorIds);
+            }
+
+            // Asociar talles con stock
+            foreach ($productData['sizes'] as $sizeData) {
+                $size = $sizes->firstWhere('name', $sizeData['name']);
+                if ($size) {
+                    $product->sizes()->attach($size->id, ['stock' => $sizeData['stock']]);
+                }
+            }
+        }
     }
 }
