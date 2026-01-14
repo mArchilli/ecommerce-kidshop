@@ -24,21 +24,21 @@ const EcommerceLayout = ({ children }) => {
   }, [isMenuOpen]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-black">
+    <div className="min-h-screen flex flex-col bg-white text-black overflow-x-hidden">
       <Head>
         <link rel="icon" type="image/png" href="/images/logo-tienda-de-ninios.png" />
       </Head>
-      <nav className="fixed top-0 left-0 right-0 z-[60] backdrop-blur-md backdrop-saturate-150 bg-black/60 border-b border-white/10">
-        <div className="mx-auto max-w-7xl px-4 py-4 flex justify-between items-center relative z-[80]">
+      <nav className="fixed top-0 left-0 right-0 z-[60] backdrop-blur-md backdrop-saturate-150 bg-black/60 border-b border-white/10 overflow-x-hidden">
+        <div className="mx-auto max-w-7xl w-full px-4 py-4 flex justify-between items-center relative z-[80]">
           {/* Logo: oculto en mobile */}
           <Link
             href="/"
-            className="text-white/90 hover:text-white text-lg font-bold transition-colors hidden md:block"
+            className="text-white/90 hover:text-white text-lg font-bold transition-colors hidden md:block flex-shrink-0"
           >
             La Tienda de los Niños
           </Link>
           {/* Botones Inicio/Catálogo SIEMPRE visibles */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <Link
               href={route('welcome')}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
@@ -61,8 +61,8 @@ const EcommerceLayout = ({ children }) => {
             </Link>
           </div>
           {/* Menú escritorio */}
-          <div className="hidden md:flex items-center">
-            <ul className="flex flex-row space-x-4 items-center">
+          <div className="hidden md:flex items-center flex-shrink-0">
+            <ul className="flex flex-row gap-4 items-center">
               {/* Menú usuario */}
               {auth.user ? (
                 <>
@@ -140,7 +140,7 @@ const EcommerceLayout = ({ children }) => {
           </div>
           {/* Botón menú hamburguesa */}
           <button
-            className="text-white text-2xl md:hidden"
+            className="text-white text-2xl md:hidden flex-shrink-0 p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-menu"
@@ -152,9 +152,9 @@ const EcommerceLayout = ({ children }) => {
         {isMenuOpen && (
           <div
             id="mobile-menu"
-            className="fixed inset-x-0 top-[64px] bottom-0 z-[70] bg-black/60 backdrop-blur-md backdrop-saturate-150 border-t border-white/10 md:hidden"
+            className="fixed inset-x-0 top-[64px] bottom-0 z-[70] bg-black/60 backdrop-blur-md backdrop-saturate-150 border-t border-white/10 md:hidden overflow-y-auto overflow-x-hidden"
           >
-            <ul className="flex flex-col p-4 space-y-2 bg-black/60 backdrop-blur-md backdrop-saturate-150 border-t border-white/10">
+            <ul className="flex flex-col p-4 space-y-2 bg-black/60 backdrop-blur-md backdrop-saturate-150 border-t border-white/10 w-full">
               {/* Menú usuario */}
               {auth.user ? (
                 <>

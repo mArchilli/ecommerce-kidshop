@@ -344,7 +344,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
             {/* Navbar superior (solo para no-admin) */}
             <nav className={`sticky top-0 z-40 backdrop-blur-md bg-black/70 border-b border-white/10 ${
-                user.role === 'admin' ? 'lg:ml-64 lg:' + (sidebarCollapsed ? 'ml-16' : 'ml-64') : ''
+                user.role === 'admin' ? (sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64') : ''
             }`}>
                
 
