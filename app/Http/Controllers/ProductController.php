@@ -99,6 +99,7 @@ class ProductController extends Controller
             'sizes.*.stock' => 'required|integer|min:0',
             'colors' => 'array',
             'gender_id' => 'required|exists:genders,id',
+            'is_featured' => 'nullable|boolean',
             // Eliminar validación obligatoria de cada imagen individual
             'image_1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'image_2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -131,7 +132,7 @@ class ProductController extends Controller
             return redirect()->back()->withErrors(['images' => 'Error al guardar las imágenes.']);
         }
 
-        $product = Product::create($request->only(['name', 'description', 'price', 'gender_id']) + ['images' => $imagePaths]);
+        $product = Product::create($request->only(['name', 'description', 'price', 'gender_id', 'is_featured']) + ['images' => $imagePaths]);
         $product->categories()->sync($request->categories);
         $product->colors()->sync($request->colors);
 
@@ -171,6 +172,7 @@ class ProductController extends Controller
             'sizes.*.stock' => 'required|integer|min:0',
             'colors' => 'array',
             'gender_id' => 'required|exists:genders,id',
+            'is_featured' => 'nullable|boolean',
             'images' => 'nullable|array|max:4', // Validar que sea un array con un máximo de 4 elementos
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validar que cada elemento del array sea una imagen válida
         ]);
@@ -196,7 +198,7 @@ class ProductController extends Controller
             }
         }
 
-        $product->update($request->only(['name', 'description', 'price', 'gender_id']) + ['images' => $imagePaths]);
+        $product->update($request->only(['name', 'description', 'price', 'gender_id', 'is_featured']) + ['images' => $imagePaths]);
         $product->categories()->sync($request->categories);
         $product->colors()->sync($request->colors);
 
@@ -320,5 +322,13 @@ class ProductController extends Controller
         ];
 
         return Inertia::render('Ecommerce/ProductList', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters'));
+    }
+
+    public function toggleFeatured(Product $product)
+    {
+        $product->is_featured = !$product->is_featured;
+        $product->save();
+
+        return redirect()->back()->with('success', 'Estado de destacado actualizado correctamente');
     }
 }

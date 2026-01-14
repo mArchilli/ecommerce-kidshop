@@ -13,6 +13,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
     sizes: [],
     colors: [],
     gender_id: '',
+    is_featured: false,
     image_1: null,
     image_2: null,
     image_3: null,
@@ -34,9 +35,13 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
         [name]: file ? URL.createObjectURL(file) : null,
       }));
     } else if (type === 'checkbox') {
-      const arr = data[name];
-      const v = value.toString();
-      setData(name, checked ? [...arr, v] : arr.filter(i => i !== v));
+      if (name === 'is_featured') {
+        setData(name, checked);
+      } else {
+        const arr = data[name];
+        const v = value.toString();
+        setData(name, checked ? [...arr, v] : arr.filter(i => i !== v));
+      }
     } else {
       setData(name, value);
     }
@@ -66,6 +71,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
     formData.append('description', data.description);
     formData.append('price', data.price);
     formData.append('gender_id', data.gender_id);
+    formData.append('is_featured', data.is_featured ? '1' : '0');
     data.categories.forEach(c => formData.append('categories[]', c));
     data.colors.forEach(c => formData.append('colors[]', c));
     data.sizes.forEach((s, i) => {
@@ -175,6 +181,25 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                   ))}
                 </div>
                 {errors.gender_id && <p className="text-red-500 text-xs mt-2">{errors.gender_id}</p>}
+              </div>
+              <div className="md:col-span-2">
+                <label className="flex items-center gap-3 cursor-pointer p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-xl border-2 border-yellow-200 hover:border-yellow-400 transition-all">
+                  <input
+                    type="checkbox"
+                    name="is_featured"
+                    checked={data.is_featured}
+                    onChange={handleChange}
+                    className="h-5 w-5 rounded cursor-pointer"
+                    style={{ accentColor: '#FFB800' }}
+                  />
+                  <div>
+                    <span className="text-base font-bold flex items-center gap-2" style={{ color: '#FFB800' }}>
+                      <span className="text-xl">⭐</span>
+                      Producto Destacado
+                    </span>
+                    <p className="text-xs text-gray-600 mt-1">Este producto aparecerá en la sección destacada</p>
+                  </div>
+                </label>
               </div>
             </div>
           </div>

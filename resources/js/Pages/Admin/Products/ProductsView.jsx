@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 
 export default function ProductsView({ products }) {
     // Obtener valores únicos para filtros
@@ -93,6 +93,14 @@ export default function ProductsView({ products }) {
     useEffect(() => {
         //console.log(products);
     }, [products]);
+
+    const handleToggleFeatured = (productId, e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        router.post(route('products.toggleFeatured', productId), {}, {
+            preserveScroll: true,
+        });
+    };
 
     return (
         <AuthenticatedLayout
@@ -335,6 +343,26 @@ export default function ProductsView({ products }) {
                                                     style={{ backgroundColor: '#FFB800' }}>
                                                     💰 ${Number(product.price).toLocaleString('es-AR')}
                                                 </div>
+                                                {/* Estrella de destacado */}
+                                                <button
+                                                    onClick={(e) => handleToggleFeatured(product.id, e)}
+                                                    className="absolute bottom-3 right-3 p-2 rounded-full hover:scale-110 transform transition-all duration-200 shadow-lg"
+                                                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
+                                                    title={product.is_featured ? 'Quitar de destacados' : 'Marcar como destacado'}
+                                                >
+                                                    <svg 
+                                                        xmlns="http://www.w3.org/2000/svg" 
+                                                        viewBox="0 0 24 24" 
+                                                        className="w-6 h-6"
+                                                        style={{
+                                                            fill: product.is_featured ? '#FFB800' : 'none',
+                                                            stroke: product.is_featured ? '#FFB800' : '#9CA3AF',
+                                                            strokeWidth: 2
+                                                        }}
+                                                    >
+                                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                                    </svg>
+                                                </button>
                                                 {/* Badge de BAJO STOCK */}
                                                 {totalStock > 0 && totalStock <= 5 && (
                                                     <div className="absolute top-3 left-3 px-3 py-1.5 rounded-xl font-bold text-white shadow-lg animate-pulse" 

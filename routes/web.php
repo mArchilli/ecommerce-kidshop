@@ -43,6 +43,7 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
     Route::post('/admin/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::get('/admin/products/{product}/delete', [ProductController::class, 'delete'])->name('products.delete');
     Route::delete('/admin/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::post('/admin/products/{product}/toggle-featured', [ProductController::class, 'toggleFeatured'])->name('products.toggleFeatured');
 });
 
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
