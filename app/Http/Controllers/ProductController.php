@@ -16,13 +16,13 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['categories', 'sizes', 'colors', 'gender'])->get();
+        $products = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer'])->get();
         return Inertia::render('Admin/Products/ProductsView', ['products' => $products]);
     }
 
     public function showProducts(Request $request)
     {
-        $query = Product::with(['categories', 'sizes', 'colors', 'gender']);
+        $query = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer']);
 
         if ($request->has('category')) {
             $query->whereHas('categories', function ($q) use ($request) {
@@ -67,7 +67,7 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $product->load(['categories', 'sizes', 'colors', 'gender']);
+        $product->load(['categories', 'sizes', 'colors', 'gender', 'activeOffer']);
         return Inertia::render('Ecommerce/ProductView', [
             'product' => $product,
         ]);

@@ -37,4 +37,36 @@ class Product extends Model
     {
         return $this->belongsTo(Gender::class);
     }
+
+    public function offer()
+    {
+        return $this->hasOne(Offer::class);
+    }
+
+    public function activeOffer()
+    {
+        return $this->hasOne(Offer::class)->where('is_active', true);
+    }
+
+    public function hasActiveOffer()
+    {
+        return $this->activeOffer()->exists();
+    }
+
+    public function getOfferPrice()
+    {
+        $offer = $this->activeOffer;
+        
+        if (!$offer || !$offer->isValid()) {
+            return null;
+        }
+
+        return $offer->discount_price;
+    }
+
+    public function getCurrentPrice()
+    {
+        $offerPrice = $this->getOfferPrice();
+        return $offerPrice ?? $this->price;
+    }
 }

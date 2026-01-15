@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\PaymentStatusController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
@@ -27,6 +28,8 @@ Route::get('/admin/dashboard', function () {
         'sizeCount' => \App\Models\Size::count(),
         'colorCount' => \App\Models\Color::count(),
         'orderCount' => \App\Models\Order::count(),
+        'offerCount' => \App\Models\Offer::count(),
+        'activeOfferCount' => \App\Models\Offer::where('is_active', true)->count(),
         'pendingOrders' => \App\Models\Order::where('shipping_status', 'pendiente')
             ->with(['user', 'items'])
             ->latest()
@@ -76,6 +79,15 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
     Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders.index');
     Route::get('/admin/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::put('/admin/orders/{order}/shipping-status', [OrderController::class, 'updateShippingStatus'])->name('orders.updateShippingStatus');
+
+    Route::get('/admin/offers', [OfferController::class, 'index'])->name('offers.index');
+    Route::get('/admin/offers/create', [OfferController::class, 'create'])->name('offers.create');
+    Route::post('/admin/offers', [OfferController::class, 'store'])->name('offers.store');
+    Route::get('/admin/offers/{offer}/edit', [OfferController::class, 'edit'])->name('offers.edit');
+    Route::put('/admin/offers/{offer}', [OfferController::class, 'update'])->name('offers.update');
+    Route::delete('/admin/offers/{offer}', [OfferController::class, 'destroy'])->name('offers.destroy');
+    Route::get('/admin/offers/{offer}/delete', [OfferController::class, 'delete'])->name('offers.delete');
+    Route::post('/admin/offers/{offer}/toggle-active', [OfferController::class, 'toggleActive'])->name('offers.toggleActive');
 });
 
 Route::middleware('auth')->group(function () {

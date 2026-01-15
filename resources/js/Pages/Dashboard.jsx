@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 export default function Dashboard() {
-    const { auth, productCount, categoryCount, sizeCount, colorCount, orderCount, pendingOrders } = usePage().props;
+    const { auth, productCount, categoryCount, sizeCount, colorCount, orderCount, offerCount, activeOfferCount, pendingOrders } = usePage().props;
 
     // Estilos para animaciones
     const floatingAnimation = `
@@ -103,6 +103,13 @@ export default function Dashboard() {
                         >
                             <div className="text-xs sm:text-sm text-white/90 font-semibold">📏 Talles</div>
                             <div className="mt-1 sm:mt-2 text-3xl sm:text-4xl font-black text-white drop-shadow-md">{sizeCount || 0}</div>
+                        </div>
+                        <div 
+                            className="rounded-2xl border-4 border-white p-4 sm:p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-slow cursor-pointer"
+                            style={{ backgroundColor: '#FF6B9D' }}
+                        >
+                            <div className="text-xs sm:text-sm text-white/90 font-semibold">🏷️ Ofertas</div>
+                            <div className="mt-1 sm:mt-2 text-3xl sm:text-4xl font-black text-white drop-shadow-md">{activeOfferCount || 0}/{offerCount || 0}</div>
                         </div>
                         <div 
                             className="col-span-2 sm:col-span-1 rounded-2xl border-4 border-white p-4 sm:p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-delayed cursor-pointer"

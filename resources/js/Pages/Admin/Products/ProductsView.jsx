@@ -325,6 +325,13 @@ export default function ProductsView({ products }) {
                                         <div key={product.id} className="rounded-2xl border-4 border-white bg-gradient-to-br from-white to-neutral-50 flex flex-col h-full shadow-lg hover:scale-[1.02] transform transition-all duration-300 overflow-hidden group">
                                             {/* Imagen del producto */}
                                             <div className="relative w-full h-64 bg-neutral-100 overflow-hidden">
+                                                {/* Badge de OFERTA ACTIVA */}
+                                                {product.active_offer && product.active_offer.is_active && (
+                                                    <div className="absolute top-3 left-3 px-3 py-1.5 rounded-xl font-bold text-white shadow-lg animate-pulse z-20" 
+                                                        style={{ backgroundColor: '#FF6B9D' }}>
+                                                        🏷️ OFERTA {product.active_offer.discount_percentage}% OFF
+                                                    </div>
+                                                )}
                                                 <img 
                                                     src={product.images && product.images.length > 0 
                                                         ? getImageSrc(product.images[0]) 
@@ -339,9 +346,24 @@ export default function ProductsView({ products }) {
                                                     📦 Stock: {totalStock}
                                                 </div>
                                                 {/* Badge de precio */}
-                                                <div className="absolute bottom-3 left-3 px-4 py-2 rounded-xl font-bold text-white shadow-lg" 
-                                                    style={{ backgroundColor: '#FFB800' }}>
-                                                    💰 ${Number(product.price).toLocaleString('es-AR')}
+                                                <div className="absolute bottom-3 left-3 z-10">
+                                                    {product.active_offer && product.active_offer.is_active ? (
+                                                        <div className="flex flex-col gap-1">
+                                                            <div className="px-3 py-1 rounded-lg font-bold text-white shadow-lg text-xs" 
+                                                                style={{ backgroundColor: '#9CA3AF' }}>
+                                                                <span className="line-through">${Number(product.price).toLocaleString('es-AR')}</span>
+                                                            </div>
+                                                            <div className="px-4 py-2 rounded-xl font-bold text-white shadow-lg" 
+                                                                style={{ backgroundColor: '#FF6B9D' }}>
+                                                                💰 ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="px-4 py-2 rounded-xl font-bold text-white shadow-lg" 
+                                                            style={{ backgroundColor: '#FFB800' }}>
+                                                            💰 ${Number(product.price).toLocaleString('es-AR')}
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 {/* Estrella de destacado */}
                                                 <button
@@ -398,13 +420,43 @@ export default function ProductsView({ products }) {
                                                 {/* Título y género */}
                                                 <div className="mb-3">
                                                     <h3 className="text-xl font-bold text-black mb-2 group-hover:scale-105 transition-transform">{product.name}</h3>
-                                                    {product.gender && (
-                                                        <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-sm border-2 text-white font-bold shadow-sm"
-                                                            style={{ backgroundColor: '#9B59B6', borderColor: '#9B59B6' }}>
-                                                            👶 {product.gender.name}
-                                                        </span>
-                                                    )}
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {product.gender && (
+                                                            <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-sm border-2 text-white font-bold shadow-sm"
+                                                                style={{ backgroundColor: '#9B59B6', borderColor: '#9B59B6' }}>
+                                                                👶 {product.gender.name}
+                                                            </span>
+                                                        )}
+                                                        {product.active_offer && product.active_offer.is_active && (
+                                                            <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-sm border-2 text-white font-bold shadow-sm animate-pulse"
+                                                                style={{ backgroundColor: '#FF6B9D', borderColor: '#FF6B9D' }}>
+                                                                🏷️ En Oferta
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                 </div>
+
+                                                {/* Información de oferta */}
+                                                {product.active_offer && product.active_offer.is_active && (
+                                                    <div className="mb-3 p-3 rounded-xl border-2" style={{ backgroundColor: '#FFF0F5', borderColor: '#FF6B9D' }}>
+                                                        <p className="text-xs font-bold mb-1" style={{ color: '#FF6B9D' }}>📢 Oferta Activa</p>
+                                                        <p className="text-sm font-semibold text-gray-800">{product.active_offer.name}</p>
+                                                        <div className="flex items-center gap-2 mt-2">
+                                                            <span className="text-gray-500 line-through text-sm">${Number(product.price).toLocaleString('es-AR')}</span>
+                                                            <span className="text-lg font-bold" style={{ color: '#FF6B9D' }}>${Number(product.active_offer.discount_price).toLocaleString('es-AR')}</span>
+                                                            <span className="text-xs font-bold px-2 py-1 rounded-full text-white" style={{ backgroundColor: '#FF6B9D' }}>
+                                                                -{product.active_offer.discount_percentage}%
+                                                            </span>
+                                                        </div>
+                                                        {(product.active_offer.start_date || product.active_offer.end_date) && (
+                                                            <p className="text-xs text-gray-600 mt-1">
+                                                                📅 {product.active_offer.start_date ? new Date(product.active_offer.start_date).toLocaleDateString('es-AR') : 'Desde ya'}
+                                                                {' → '}
+                                                                {product.active_offer.end_date ? new Date(product.active_offer.end_date).toLocaleDateString('es-AR') : 'Sin límite'}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                )}
 
                                                 {/* Descripción */}
                                                 {product.description && (
@@ -493,6 +545,36 @@ export default function ProductsView({ products }) {
                                                             🗑️ Eliminar
                                                         </Link>
                                                     </div>
+                                                    
+                                                    {/* Botones de gestión de ofertas */}
+                                                    {product.active_offer && product.active_offer.is_active ? (
+                                                        <div className="flex gap-2 pt-2 border-t border-gray-200">
+                                                            <Link
+                                                                href={route('offers.edit', product.active_offer.id)}
+                                                                className="flex-1 inline-flex items-center justify-center px-4 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                                                                style={{ backgroundColor: '#FF6B9D' }}
+                                                            >
+                                                                ✏️ Editar Oferta
+                                                            </Link>
+                                                            <Link
+                                                                href={route('offers.delete', product.active_offer.id)}
+                                                                className="flex-1 inline-flex items-center justify-center px-4 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                                                                style={{ backgroundColor: '#DC2626' }}
+                                                            >
+                                                                🗑️ Quitar Oferta
+                                                            </Link>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="pt-2 border-t border-gray-200">
+                                                            <Link
+                                                                href={route('offers.create', { product_id: product.id })}
+                                                                className="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                                                                style={{ backgroundColor: '#FF6B9D' }}
+                                                            >
+                                                                🏷️ Crear Oferta
+                                                            </Link>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
