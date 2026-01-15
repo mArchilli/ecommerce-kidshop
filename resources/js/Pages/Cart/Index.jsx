@@ -60,7 +60,7 @@ const Cart = ({ cart }) => {
   // Subtotal del carrito
   const subtotal =
     cart?.items?.reduce(
-      (total, item) => total + item.product.price * (parseInt(quantities[item.id] || 0, 10)),
+      (total, item) => total + item.unit_price * (parseInt(quantities[item.id] || 0, 10)),
       0
     ) || 0;
 
@@ -135,9 +135,20 @@ const Cart = ({ cart }) => {
                           {/* Precio unitario */}
                           <div className="col-span-3">
                             <div className="text-sm text-gray-600">Precio</div>
-                            <div className="text-sm font-medium text-gray-900">
-                              ${Number(item.product.price).toLocaleString('es-AR')}
-                            </div>
+                            {item.unit_price < item.product.price ? (
+                              <div className="flex flex-col">
+                                <div className="text-sm font-bold" style={{ color: '#FF6B9D' }}>
+                                  ${Number(item.unit_price).toLocaleString('es-AR')}
+                                </div>
+                                <div className="text-xs text-gray-500 line-through">
+                                  ${Number(item.product.price).toLocaleString('es-AR')}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="text-sm font-medium text-gray-900">
+                                ${Number(item.unit_price).toLocaleString('es-AR')}
+                              </div>
+                            )}
                           </div>
 
                           {/* Controles de cantidad */}
@@ -154,7 +165,7 @@ const Cart = ({ cart }) => {
                           <div className="col-span-4 text-right">
                             <div className="text-sm text-gray-600">Total</div>
                             <div className="text-base font-semibold text-gray-900">
-                              ${(item.product.price * (parseInt(quantities[item.id] || 0, 10))).toLocaleString('es-AR')}
+                              ${(item.unit_price * (parseInt(quantities[item.id] || 0, 10))).toLocaleString('es-AR')}
                             </div>
                           </div>
                         </div>

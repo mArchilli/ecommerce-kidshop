@@ -11,9 +11,9 @@ const ProductsOffers = ({ products = [] }) => {
   // Manejar productos paginados o array directo
   const productsList = products?.data || products || [];
   
-  // Filtrar productos con ofertas activas
+  // Filtrar productos con ofertas activas (puede venir como active_offer o activeOffer)
   const offeredProducts = Array.isArray(productsList) 
-    ? productsList.filter(product => product.active_offer) 
+    ? productsList.filter(product => product.active_offer || product.activeOffer) 
     : [];
 
   // Si no hay productos en oferta, no mostrar nada
@@ -141,6 +141,11 @@ const ProductsOffers = ({ products = [] }) => {
     return imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
   };
 
+  // Helper para obtener la oferta activa (soporta ambos formatos)
+  const getActiveOffer = (product) => {
+    return product.active_offer || product.activeOffer;
+  };
+
   return (
     <section className="w-full px-4 py-12 bg-gradient-to-br from-pink-50 via-white to-pink-50">
       <div className="max-w-7xl mx-auto">
@@ -254,11 +259,11 @@ const ProductsOffers = ({ products = [] }) => {
                             />
                             
                             {/* Badge de oferta con descuento */}
-                            {product.active_offer && (
+                            {getActiveOffer(product) && (
                               <div className="absolute top-3 right-3">
                                 <div className="rounded-full px-3 py-2 shadow-lg font-bold text-white text-sm"
                                   style={{ backgroundColor: '#FF6B9D' }}>
-                                  -{Math.round(product.active_offer.discount_percentage)}% OFF
+                                  -{Math.round(getActiveOffer(product).discount_percentage)}% OFF
                                 </div>
                               </div>
                             )}
@@ -282,10 +287,10 @@ const ProductsOffers = ({ products = [] }) => {
 
                             {/* Precios con oferta */}
                             <div className="flex items-center gap-2 mb-3">
-                              {product.active_offer ? (
+                              {getActiveOffer(product) ? (
                                 <>
                                   <span className="text-xl font-black" style={{ color: '#FF6B9D' }}>
-                                    ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
+                                    ${Number(getActiveOffer(product).discount_price).toLocaleString('es-AR')}
                                   </span>
                                   <span className="text-sm text-gray-500 line-through">
                                     ${Number(product.price).toLocaleString('es-AR')}
@@ -358,11 +363,11 @@ const ProductsOffers = ({ products = [] }) => {
                         />
                         
                         {/* Badge de oferta con descuento */}
-                        {product.active_offer && (
+                        {getActiveOffer(product) && (
                           <div className="absolute top-3 right-3">
                             <div className="rounded-full px-3 py-2 shadow-lg font-bold text-white text-sm"
                               style={{ backgroundColor: '#FF6B9D' }}>
-                              -{Math.round(product.active_offer.discount_percentage)}% OFF
+                              -{Math.round(getActiveOffer(product).discount_percentage)}% OFF
                             </div>
                           </div>
                         )}
@@ -386,10 +391,10 @@ const ProductsOffers = ({ products = [] }) => {
 
                         {/* Precios con oferta */}
                         <div className="flex items-center gap-2 mb-3">
-                          {product.active_offer ? (
+                          {getActiveOffer(product) ? (
                             <>
                               <span className="text-xl font-black" style={{ color: '#FF6B9D' }}>
-                                ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
+                                ${Number(getActiveOffer(product).discount_price).toLocaleString('es-AR')}
                               </span>
                               <span className="text-sm text-gray-500 line-through">
                                 ${Number(product.price).toLocaleString('es-AR')}

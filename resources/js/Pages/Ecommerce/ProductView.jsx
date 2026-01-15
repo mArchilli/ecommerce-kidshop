@@ -195,9 +195,32 @@ const ProductView = ({ product }) => {
             <div className="space-y-6">
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
-                <p className="mt-3 text-3xl text-gray-900">
-                  ${Number(product.price).toLocaleString('es-AR')}
-                </p>
+                
+                {/* Badge de oferta */}
+                {product.active_offer && (
+                  <div className="mt-2 inline-block">
+                    <span className="rounded-full px-4 py-2 shadow-lg font-bold text-white text-sm"
+                      style={{ backgroundColor: '#FF6B9D' }}>
+                      🔥 ¡{Math.round(product.active_offer.discount_percentage)}% OFF!
+                    </span>
+                  </div>
+                )}
+
+                {/* Precios con o sin oferta */}
+                {product.active_offer ? (
+                  <div className="mt-3 flex items-center gap-3">
+                    <p className="text-4xl font-black" style={{ color: '#FF6B9D' }}>
+                      ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
+                    </p>
+                    <p className="text-2xl text-gray-500 line-through">
+                      ${Number(product.price).toLocaleString('es-AR')}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="mt-3 text-3xl text-gray-900">
+                    ${Number(product.price).toLocaleString('es-AR')}
+                  </p>
+                )}
               </div>
 
               {/* Categorías, Colores y Género como etiquetas */}

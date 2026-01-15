@@ -242,7 +242,7 @@ class ProductController extends Controller
 
     public function catalog(Request $request)
     {
-        $query = Product::with(['categories', 'sizes', 'colors', 'gender']);
+        $query = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer']);
 
         if ($request->filled('q')) {
             $q = trim($request->q);

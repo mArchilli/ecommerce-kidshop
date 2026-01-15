@@ -77,19 +77,57 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                   data-aos="fade-up"
                   data-aos-delay="400"
                 >
-                  <div className="w-full">
+                  <div className="w-full relative">
                     <img 
                       src={product.images && product.images.length > 0 ? getImageSrc(product.images[0]) : '/placeholder.svg'} 
                       alt={product.name} 
                       className="w-full h-full object-cover"
-                      
                     />
+                    
+                    {/* Badge de oferta con descuento */}
+                    {product.active_offer && (
+                      <div className="absolute top-3 right-3">
+                        <div className="rounded-full px-3 py-2 shadow-lg font-bold text-white text-sm"
+                          style={{ backgroundColor: '#FF6B9D' }}>
+                          -{Math.round(product.active_offer.discount_percentage)}% OFF
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Badge de producto destacado */}
+                    {product.is_featured && (
+                      <div className="absolute top-3 left-3">
+                        <div className="bg-white rounded-full p-2 shadow-lg">
+                          <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            viewBox="0 0 24 24" 
+                            className="w-5 h-5"
+                            style={{ fill: '#FFB800' }}
+                          >
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                          </svg>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="p-4 flex flex-col flex-1 justify-between">
                     <h3 className="text-lg font-semibold text-black">{product.name}</h3>
-                    <p className="mt-2 text-black">
-                      ${Number(product.price).toLocaleString('es-AR')}
-                    </p>
+                    
+                    {/* Precios con o sin oferta */}
+                    {product.active_offer ? (
+                      <div className="mt-2 flex items-center gap-2">
+                        <p className="text-xl font-black" style={{ color: '#FF6B9D' }}>
+                          ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
+                        </p>
+                        <p className="text-sm text-gray-500 line-through">
+                          ${Number(product.price).toLocaleString('es-AR')}
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="mt-2 text-black">
+                        ${Number(product.price).toLocaleString('es-AR')}
+                      </p>
+                    )}
                     <div className="mt-2 flex flex-wrap gap-2">
                       <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
                         {product.gender.name}

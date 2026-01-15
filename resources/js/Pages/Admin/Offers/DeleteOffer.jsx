@@ -7,9 +7,7 @@ export default function DeleteOffer({ offer }) {
 
     const handleDelete = (e) => {
         e.preventDefault();
-        if (confirm('¿Estás seguro de que deseas eliminar esta oferta? Esta acción no se puede deshacer.')) {
-            destroy(route('offers.destroy', offer.id));
-        }
+        destroy(route('offers.destroy', offer.id));
     };
 
     return (

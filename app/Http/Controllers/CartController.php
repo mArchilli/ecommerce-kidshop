@@ -18,8 +18,8 @@ class CartController extends Controller
             abort(403, 'Usuario no autenticado');
         }
 
-        // Usar user_id en lugar de $user->cart()
-        $cart = \App\Models\Cart::with('items.product')
+        // Usar user_id en lugar de $user->cart() y cargar la oferta activa del producto
+        $cart = \App\Models\Cart::with(['items.product.activeOffer'])
             ->where('user_id', $user->id)
             ->first();
 
@@ -36,16 +36,35 @@ class CartController extends Controller
 
         $cart = Auth::user()->cart ?? Cart::create(['user_id' => Auth::id()]);
 
+        // Recargar el producto con la oferta activa
+        $product = Product::with('activeOffer')->find($product->id);
+        
+        // Determinar el precio actual (con oferta si aplica)
+        $currentPrice = $product->activeOffer 
+            ? $product->activeOffer->discount_price 
+            : $product->price;
+
+        \Log::info('Adding product to cart', [
+            'product_id' => $product->id,
+            'product_price' => $product->price,
+            'has_active_offer' => $product->activeOffer ? 'yes' : 'no',
+            'offer_price' => $product->activeOffer ? $product->activeOffer->discount_price : 'N/A',
+            'calculated_price' => $currentPrice
+        ]);
+
         $cartItem = $cart->items()->where('product_id', $product->id)->first();
 
         if ($cartItem) {
             $cartItem->quantity += $request->quantity;
+            // Actualizar el precio por si cambió la oferta
+            $cartItem->price = $currentPrice;
             $cartItem->save();
         } else {
             $cart->items()->create([
                 'product_id' => $product->id,
                 'quantity' => $request->quantity,
                 'size' => $request->size,
+                'price' => $currentPrice,
             ]);
         }
 
