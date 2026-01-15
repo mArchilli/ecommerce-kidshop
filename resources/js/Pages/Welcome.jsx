@@ -5,6 +5,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Hero from '../Pages/Ecommerce/Hero';
 import FeaturedProducts from '../Pages/Ecommerce/FeaturedProducts';
+import ProductsOffers from '../Pages/Ecommerce/ProductsOffers';
 import About from '../Pages/Ecommerce/About';
 import PaymentMethods from '../Pages/Ecommerce/PaymentMethods';
 import Map from '../Pages/Ecommerce/Map';
@@ -28,6 +29,9 @@ const Welcome = ({ products, categories, colors, genders }) => {
 
           {/* Featured Products Section */}
           <FeaturedProducts products={products} />
+
+          {/* Products Offers Section */}
+          <ProductsOffers products={products} />
 
           {/* About Section */}
           <div className="w-full px-4 py-8 bg-gray-100" data-aos="fade-up">
