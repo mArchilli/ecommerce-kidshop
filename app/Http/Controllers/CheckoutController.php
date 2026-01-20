@@ -57,7 +57,7 @@ class CheckoutController extends Controller
             return [
                 'title' => $item->product->name,
                 'quantity' => (int) $item->quantity,
-                'unit_price' => (float) $item->product->price,
+                'unit_price' => (float) $item->unit_price,
             ];
         })->toArray();
 

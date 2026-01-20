@@ -32,7 +32,7 @@ const Checkout = ({ cart }) => {
   };
 
   const total =
-    cart?.items?.reduce((sum, item) => sum + item.product.price * item.quantity, 0) || 0;
+    cart?.items?.reduce((sum, item) => sum + item.unit_price * item.quantity, 0) || 0;
 
   // Función para asegurar el prefijo correcto en la ruta de la imagen
   const getImageSrc = (imgPath) => {
@@ -239,10 +239,21 @@ const Checkout = ({ cart }) => {
                           </div>
                           <div className="text-right">
                             <div className="text-sm text-gray-900">
-                              Precio: ${Number(item.product.price).toFixed(2)}
+                              {item.unit_price < item.product.price ? (
+                                <div className="flex flex-col items-end">
+                                  <div className="text-sm font-bold" style={{ color: '#FF6B9D' }}>
+                                    Precio: ${Number(item.unit_price).toLocaleString('es-AR')}
+                                  </div>
+                                  <div className="text-xs text-gray-500 line-through">
+                                    ${Number(item.product.price).toLocaleString('es-AR')}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div>Precio: ${Number(item.unit_price).toLocaleString('es-AR')}</div>
+                              )}
                             </div>
-                            <div className="text-sm font-semibold text-gray-900">
-                              Total: ${(item.product.price * item.quantity).toFixed(2)}
+                            <div className="text-sm font-semibold text-gray-900 mt-1">
+                              Total: ${(item.unit_price * item.quantity).toLocaleString('es-AR')}
                             </div>
                           </div>
                         </div>

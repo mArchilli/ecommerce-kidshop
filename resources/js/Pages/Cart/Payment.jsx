@@ -62,7 +62,7 @@ const Payment = ({ cart, preferenceId, shippingInfo }) => {
   };
 
   const total =
-    cart?.items?.reduce((sum, item) => sum + item.product.price * item.quantity, 0) || 0;
+    cart?.items?.reduce((sum, item) => sum + item.unit_price * item.quantity, 0) || 0;
 
   // Link de WhatsApp (sin número, abre chat para elegir contacto)
   const whatsappHref = `https://wa.me/?text=${encodeURIComponent(
@@ -121,9 +121,20 @@ const Payment = ({ cart, preferenceId, shippingInfo }) => {
                         </h3>
                         <div className="text-right">
                           <div className="text-sm text-gray-600">Precio</div>
-                          <div className="text-sm font-medium text-gray-900">
-                            ${Number(item.product.price).toFixed(2)}
-                          </div>
+                          {item.unit_price < item.product.price ? (
+                            <div className="flex flex-col items-end">
+                              <div className="text-sm font-bold" style={{ color: '#FF6B9D' }}>
+                                ${Number(item.unit_price).toLocaleString('es-AR')}
+                              </div>
+                              <div className="text-xs text-gray-500 line-through">
+                                ${Number(item.product.price).toLocaleString('es-AR')}
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-sm font-medium text-gray-900">
+                              ${Number(item.unit_price).toLocaleString('es-AR')}
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -139,7 +150,7 @@ const Payment = ({ cart, preferenceId, shippingInfo }) => {
                         <div className="col-span-4 text-right">
                           <div className="text-sm text-gray-600">Total</div>
                           <div className="text-base font-semibold text-gray-900">
-                            ${(item.product.price * item.quantity).toFixed(2)}
+                            ${(item.unit_price * item.quantity).toLocaleString('es-AR')}
                           </div>
                         </div>
                       </div>
@@ -156,12 +167,12 @@ const Payment = ({ cart, preferenceId, shippingInfo }) => {
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Resumen</h2>
                 <div className="flex justify-between text-sm mb-2">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${total.toFixed(2)}</span>
+                  <span className="font-medium">${total.toLocaleString('es-AR')}</span>
                 </div>
                 {/* Puedes agregar descuentos/envío estimado si aplica */}
                 <div className="border-t pt-3 flex justify-between text-base">
                   <span className="font-semibold">Total</span>
-                  <span className="font-semibold">${total.toFixed(2)}</span>
+                  <span className="font-semibold">${total.toLocaleString('es-AR')}</span>
                 </div>
 
                 <div className="mt-6">
