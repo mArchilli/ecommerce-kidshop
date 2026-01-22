@@ -25,33 +25,37 @@ export default function UpdateProfileInformation({
     };
 
     return (
-        <section className={className}>
-            <div className="flex items-center gap-4">
+        <section className={`bg-gradient-to-br from-white to-purple-50 rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow ${className}`}>
+            <div className="flex items-center gap-4 mb-4">
                 <Link
-                        href={route('welcome')}
-                        className="mb-3 inline-flex items-center px-4 py-2 bg-gray-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-300 transition"
-                    >
-                        Volver a la tienda
-                    </Link>
+                    href={route('welcome')}
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition-all duration-300 shadow-md hover:shadow-xl"
+                    style={{ backgroundColor: '#9B59B6' }}
+                >
+                    ← Volver a la tienda
+                </Link>
             </div>
             
-            <header>
-                <h2 className="text-lg font-medium text-gray-900">
+            <header className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b-4 border-white rounded-xl p-3 sm:p-4 bg-gradient-to-r from-purple-500 to-purple-600 shadow-md">
+                <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                    <span className="text-xl sm:text-2xl">👤</span>
                     Información del Perfil
                 </h2>
-
-                <p className="mt-1 text-sm text-gray-600">
+                <p className="mt-1 text-sm text-purple-100">
                     Actualiza la información del perfil y la dirección de correo electrónico de tu cuenta.
                 </p>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="Nombre" />
+                    <label className="flex items-center gap-2 text-sm font-bold mb-2 text-neutral-700">
+                        <span className="text-lg">📛</span>
+                        Nombre
+                    </label>
 
                     <TextInput
                         id="name"
-                        className="mt-1 block w-full"
+                        className="w-full rounded-xl border-2 border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-4 focus:ring-purple-200 focus:border-purple-400 hover:border-purple-300 transition-all"
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
                         required
@@ -59,34 +63,37 @@ export default function UpdateProfileInformation({
                         autoComplete="name"
                     />
 
-                    <InputError className="mt-2" message={errors.name} />
+                    <InputError className="mt-2 text-red-500 text-xs font-bold" message={errors.name} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Correo Electrónico" />
+                    <label className="flex items-center gap-2 text-sm font-bold mb-2 text-neutral-700">
+                        <span className="text-lg">📧</span>
+                        Correo Electrónico
+                    </label>
 
                     <TextInput
                         id="email"
                         type="email"
-                        className="mt-1 block w-full"
+                        className="w-full rounded-xl border-2 border-neutral-300 px-4 py-3 text-base focus:outline-none focus:ring-4 focus:ring-purple-200 focus:border-purple-400 hover:border-purple-300 transition-all"
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
                         required
                         autoComplete="username"
                     />
 
-                    <InputError className="mt-2" message={errors.email} />
+                    <InputError className="mt-2 text-red-500 text-xs font-bold" message={errors.email} />
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (
-                    <div>
-                        <p className="mt-2 text-sm text-gray-800">
-                            Tu dirección de correo electrónico no está verificada.
+                    <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4">
+                        <p className="text-sm text-yellow-800">
+                            ⚠️ Tu dirección de correo electrónico no está verificada.
                             <Link
                                 href={route('verification.send')}
                                 method="post"
                                 as="button"
-                                className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                className="ml-2 rounded-md text-sm text-purple-600 underline hover:text-purple-800 font-bold focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                             >
                                 Haz clic aquí para reenviar el correo de verificación.
                             </Link>
@@ -94,14 +101,21 @@ export default function UpdateProfileInformation({
 
                         {status === 'verification-link-sent' && (
                             <div className="mt-2 text-sm font-medium text-green-600">
-                                Se ha enviado un nuevo enlace de verificación a tu dirección de correo electrónico.
+                                ✅ Se ha enviado un nuevo enlace de verificación a tu dirección de correo electrónico.
                             </div>
                         )}
                     </div>
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Guardar</PrimaryButton>
+                    <button
+                        type="submit"
+                        disabled={processing}
+                        className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition-all duration-300 shadow-md hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                        style={{ backgroundColor: '#27AE60' }}
+                    >
+                        💾 Guardar
+                    </button>
 
                     <Transition
                         show={recentlySuccessful}
@@ -110,8 +124,8 @@ export default function UpdateProfileInformation({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">
-                            Guardado.
+                        <p className="text-sm text-green-600 font-bold">
+                            ✅ Guardado.
                         </p>
                     </Transition>
                 </div>

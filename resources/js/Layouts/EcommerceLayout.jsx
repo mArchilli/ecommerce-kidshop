@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, usePage, Head } from '@inertiajs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faUser, faBars, faTimes, faUserShield } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart, faUser, faBars, faTimes, faUserShield, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from '@/Components/Footer';
@@ -84,6 +84,15 @@ const EcommerceLayout = ({ children }) => {
                       title="Mi perfil"
                     >
                       <FontAwesomeIcon icon={faUser} /> 
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={route('user.orders.index')}
+                      className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      title="Mis compras"
+                    >
+                      <FontAwesomeIcon icon={faClipboardList} /> 
                     </Link>
                   </li>
                   <li className="relative">
@@ -178,6 +187,16 @@ const EcommerceLayout = ({ children }) => {
                       title="Mi perfil"
                     >
                       <FontAwesomeIcon icon={faUser} /> Perfil
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={route('user.orders.index')}
+                      className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                      title="Mis compras"
+                    >
+                      <FontAwesomeIcon icon={faClipboardList} /> Mis Compras
                     </Link>
                   </li>
                   <li className="relative">

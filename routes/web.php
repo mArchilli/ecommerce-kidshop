@@ -10,6 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\UserOrderController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -103,6 +104,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/cart/update-all', [CartController::class, 'updateAll'])->name('cart.updateAll');
     Route::delete('/cart/remove/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
     Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+    
+    // Rutas para el historial de compras del usuario
+    Route::get('/mis-compras', [UserOrderController::class, 'index'])->name('user.orders.index');
+    Route::get('/mis-compras/{order}', [UserOrderController::class, 'show'])->name('user.orders.show');
 });
 
 // Rutas para el proceso de checkout
