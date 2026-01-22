@@ -25,6 +25,11 @@ class Order extends Model
         'shipping_method',
         'shipping_status',
         'dni',
+        'first_name',
+        'last_name',
+        'email',
+        'observations',
+        'courier_company',
     ];
 
     public function user()

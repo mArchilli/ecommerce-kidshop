@@ -57,8 +57,8 @@ const Payment = ({ cart, preferenceId, shippingInfo }) => {
   }, [sdkLoaded, preferenceId]);
 
   const handleGoBack = () => {
-    if (window.history.length > 1) window.history.back();
-    else router.visit(route('catalog.index'));
+    // Usar router.visit para obtener datos frescos del servidor (incluyendo shippingInfo guardado)
+    router.visit(route('checkout.index'));
   };
 
   const total =
@@ -186,25 +186,43 @@ const Payment = ({ cart, preferenceId, shippingInfo }) => {
 
               {/* Info de envío seleccionada */}
               <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-md font-semibold text-gray-900 mb-3">Método de Envío</h3>
-                <p className="text-sm text-gray-800 mb-2">{shippingInfo?.shipping_method}</p>
+                <h3 className="text-md font-semibold text-gray-900 mb-3">Datos del Comprador</h3>
+                <div className="text-sm text-gray-700 space-y-2 mb-4">
+                  <p><strong>Nombre:</strong> {shippingInfo?.first_name} {shippingInfo?.last_name}</p>
+                  <p><strong>Correo:</strong> {shippingInfo?.email}</p>
+                  <p><strong>DNI:</strong> {shippingInfo?.dni}</p>
+                </div>
 
-                {shippingInfo?.shipping_method === 'Envio a Domicilio' ? (
-                  <>
-                    <div className="text-sm text-gray-700 space-y-1 mb-4">
-                      <p>Nos contactaremos luego de la compra para coordinar el envío y su costo.</p>
-                      <p>
-                        Dirección del local: Varela 505, Mariano Acosta, Buenos Aires
-                      </p>
-                      <p>Horarios de atención: Lunes a Sábado - 09:00 a 20:00</p>
-                    </div>
-                  </>
-                ) : (
-                  <div className="text-sm text-gray-700 space-y-1">
-                    <p><strong>Dirección:</strong> Varela 505, Mariano Acosta, Buenos Aires</p>
-                    <p><strong>Horarios:</strong> Lunes a Sábado - 09:00 a 20:00</p>
-                  </div>
-                )}
+                <h3 className="text-md font-semibold text-gray-900 mb-3 pt-3 border-t">Información de Envío</h3>
+                <p className="text-sm font-medium text-gray-800 mb-2">{shippingInfo?.shipping_method}</p>
+                
+                <div className="text-sm text-gray-700 space-y-2">
+                  <p><strong>Provincia:</strong> {shippingInfo?.province}</p>
+                  <p><strong>Localidad:</strong> {shippingInfo?.city}</p>
+                  <p><strong>Código Postal:</strong> {shippingInfo?.postal_code}</p>
+                  
+                  {shippingInfo?.shipping_method === 'Envio a Domicilio' && (
+                    <>
+                      {shippingInfo?.address && (
+                        <p><strong>Dirección:</strong> {shippingInfo?.address}</p>
+                      )}
+                      {shippingInfo?.phone && (
+                        <p><strong>Teléfono:</strong> {shippingInfo?.phone}</p>
+                      )}
+                      {shippingInfo?.observations && (
+                        <p><strong>Observaciones:</strong> {shippingInfo?.observations}</p>
+                      )}
+                    </>
+                  )}
+                  
+                  {shippingInfo?.shipping_method === 'Envio a Sucursal' && shippingInfo?.courier_company && (
+                    <p><strong>Empresa de Correo:</strong> {shippingInfo?.courier_company}</p>
+                  )}
+                </div>
+
+                <div className="mt-4 pt-3 border-t text-sm text-gray-600">
+                  <p>Nos comunicaremos con usted para informarle el importe del envío.</p>
+                </div>
               </div>
             </aside>
           </div>

@@ -15,8 +15,12 @@ class CheckoutController extends Controller
             ->where('user_id', $request->user()->id)
             ->first();
 
+        // Obtener la información de envío guardada en sesión (si existe)
+        $shippingInfo = $request->session()->get('shipping_info', null);
+
         return Inertia::render('Cart/Checkout', [
             'cart' => $cart,
+            'savedShippingInfo' => $shippingInfo,
         ]);
     }
 
@@ -24,13 +28,18 @@ class CheckoutController extends Controller
     {
         // Validar los datos de envío (opcionales) y método requerido
         $validated = $request->validate([
-            'province' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:255',
-            'postal_code' => 'nullable|string|max:10',
+            'province' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'postal_code' => 'required|string|max:10',
             'address' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
-            'shipping_method' => 'required|string|in:Envio a Domicilio,Retirar en el local',
+            'shipping_method' => 'required|string|in:Envio a Domicilio,Envio a Sucursal',
             'dni' => 'required|string|max:15',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'observations' => 'nullable|string|max:1000',
+            'courier_company' => 'nullable|string|in:Correo Argentino,Andreani,Via Cargo,Consultar con la tienda',
         ]);
 
         // Obtener el usuario autenticado
@@ -92,12 +101,19 @@ class CheckoutController extends Controller
     {
         // Obtener la información de envío de la sesión
         $shippingInfo = $request->session()->get('shipping_info');
-
-        // Aquí puedes guardar la orden en la base de datos
-        // ...
+        
+        // Obtener el usuario autenticado
+        $user = $request->user();
+        
+        // Obtener el carrito del usuario con los items y productos
+        $cart = \App\Models\Cart::with('items.product')
+            ->where('user_id', $user->id)
+            ->first();
 
         return Inertia::render('Cart/Success', [
             'shippingInfo' => $shippingInfo,
+            'user' => $user,
+            'cart' => $cart,
         ]);
     }
 
