@@ -307,26 +307,32 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
               ))}
             </div>
             {/* Paginación */}
-            <div className="flex justify-center my-8">
+            <div className="flex flex-wrap justify-center items-center gap-2 my-10" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
               {products.links.map((link, idx) => {
                 // Normalizamos etiquetas (Laravel incluye &laquo; &raquo;)
-                const label = link.label
-                  .replace('&laquo;', '«')
-                  .replace('&raquo;', '»')
-                  .replace(/&.*?;/g, (m) => m); // fallback
+                let label = link.label
+                  .replace('&laquo;', '←')
+                  .replace('&raquo;', '→')
+                  .replace(/&.*?;/g, (m) => m);
+                
+                // Reemplazar flechas por emojis en primer y último botón
+                if (idx === 0) label = '⬅️ Anterior';
+                if (idx === products.links.length - 1) label = 'Siguiente ➡️';
+                
                 return (
                   <button
                     key={idx}
                     type="button"
                     disabled={!link.url || link.active}
                     onClick={() => handlePagination(link.url)}
-                    className={`mx-1 px-3 py-1 rounded border text-sm transition ${
+                    className={`px-4 py-3 rounded-2xl font-bold text-base transition-all duration-300 shadow-md border-3 ${
                       link.active
-                        ? 'bg-black text-white border-black'
+                        ? 'text-white border-white shadow-xl scale-110 transform'
                         : link.url
-                          ? 'bg-white text-black border-gray-300 hover:bg-black hover:text-white'
-                          : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                          ? 'bg-white text-gray-700 border-purple-200 hover:border-purple-400 hover:scale-105 hover:shadow-lg'
+                          : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-50'
                     }`}
+                    style={link.active ? { backgroundColor: '#65DA4D' } : {}}
                   >
                     {label}
                   </button>
