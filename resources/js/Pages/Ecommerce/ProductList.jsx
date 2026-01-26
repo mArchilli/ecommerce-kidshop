@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, router, usePage, Head } from '@inertiajs/react';
 import ProductFilter from './ProductFilters';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
@@ -10,9 +10,11 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
 
   // Handler para filtros: envía los filtros al backend usando Inertia
   const handleFilter = (selectedFilters) => {
-    // Eliminar filtros vacíos antes de enviarlos al backend
+    // Merge con parámetros actuales para no perder filtros cuando se aplica búsqueda/orden
+    const baseParams = Object.fromEntries(new URLSearchParams(window.location.search));
+    const merged = { ...baseParams, ...selectedFilters, q: searchTerm, sort };
     const cleanFilters = Object.fromEntries(
-      Object.entries(selectedFilters).filter(([_, v]) => v !== '' && v !== null && v !== undefined)
+      Object.entries(merged).filter(([_, v]) => v !== '' && v !== null && v !== undefined)
     );
     router.get(route('catalog.index'), cleanFilters, {
       preserveState: true,
@@ -26,8 +28,8 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
     // Extraemos query actual de la URL destino y fusionamos con filtros vigentes
     const target = new URL(url, window.location.origin);
     const params = new URLSearchParams(target.search);
-    // Reinsertamos filtros activos que no están presentes
-    Object.entries(filters).forEach(([key, value]) => {
+    // Reinsertamos filtros activos que no están presentes (incluye búsqueda y orden actuales)
+    Object.entries({ ...filters, q: searchTerm, sort }).forEach(([key, value]) => {
       if (value && !params.has(key)) params.set(key, value);
     });
     router.get(`${route('catalog.index')}?${params.toString()}`, {}, {
@@ -42,6 +44,9 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
     return imgPath.startsWith('images/') ? `/${imgPath}` : `/images/${imgPath}`;
   };
 
+  const [searchTerm, setSearchTerm] = useState(filters.q || '');
+  const [sort, setSort] = useState(filters.sort || '');
+
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -53,8 +58,74 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
     <EcommerceLayout>
       <Head title="Catálogo" />
 
-      <div className="max-w-7xl mx-auto" data-aos="fade-up" data-aos-delay="400">
+      <div className="max-w-7xl mx-auto px-4" data-aos="fade-up" data-aos-delay="400">
         <h1 className="hidden text-3xl font-extrabold text-gray-900 sm:text-4xl my-6 text-center md:text-left">Catalogo de prendas</h1>
+        
+        {/* Barra de búsqueda y orden (responsive) */}
+        <div className="w-full my-6 space-y-4">
+          {/* Fila con búsqueda y orden */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            {/* Barra de búsqueda */}
+            <div className="flex-1 flex gap-2">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleFilter({}); }}
+                placeholder="Busca por nombre o descripción..."
+                className="flex-1 rounded-xl border-2 border-cyan-300 px-4 py-3 text-sm sm:text-base font-semibold focus:outline-none focus:ring-4 focus:ring-cyan-200 focus:border-cyan-400"
+              />
+              <button
+                type="button"
+                onClick={() => handleFilter({})}
+                className="text-white px-4 sm:px-6 py-3 rounded-xl bg-cyan-500 font-bold hover:opacity-90 text-lg"
+              >
+                🔍
+              </button>
+            </div>
+
+            {/* Botones de orden */}
+          <div className="mt-4 sm:mt-0">
+            <div className="hidden sm:flex gap-2 flex-wrap">
+              {[
+                { value: '', label: 'Por defecto' },
+                { value: 'price_asc', label: '💵 Precio ↑' },
+                { value: 'price_desc', label: '💰 Precio ↓' },
+                { value: 'newest', label: '✨ Nuevos' },
+                { value: 'oldest', label: '📅 Antiguos' },
+              ].map(opt => (
+                <button
+                  key={opt.value || 'default'}
+                  type="button"
+                  onClick={() => { setSort(opt.value); handleFilter({}); }}
+                  className={`px-4 py-3 rounded-xl border-2 text-sm font-bold transition-all hover:scale-105 ${
+                    sort === opt.value
+                      ? 'text-white border-white shadow-lg scale-105 bg-cyan-500'
+                      : 'bg-white text-black border-cyan-300 hover:bg-cyan-50'
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+            <div className="flex sm:hidden w-full">
+              <select
+                value={sort}
+                onChange={(e) => { setSort(e.target.value); handleFilter({}); }}
+                className="w-full rounded-xl border-2 border-cyan-300 px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-cyan-200 focus:border-cyan-400"
+              >
+                <option value="">↕️ Ordenar por...</option>
+                <option value="price_asc">💵 Precio: menor a mayor</option>
+                <option value="price_desc">💰 Precio: mayor a menor</option>
+                <option value="newest">✨ Más nuevos</option>
+                <option value="oldest">📅 Más antiguos</option>
+              </select>
+            </div>
+          </div>
+          </div>
+        </div>
+        
+        {/* Menú de filtros detallado (desplegable, no modal) */}
         <ProductFilter
           categories={categories}
           colors={colors}
@@ -62,6 +133,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
           sizes={sizes}
           onFilter={handleFilter}
           initialFilters={filters}
+          compact={false}
         />
         {products && products.data && products.data.length > 0 ? (
           <>
