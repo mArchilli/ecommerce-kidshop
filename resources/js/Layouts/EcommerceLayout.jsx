@@ -28,33 +28,40 @@ const EcommerceLayout = ({ children }) => {
       <Head>
         <link rel="icon" type="image/png" href="/images/logo-tienda-de-ninios.png" />
       </Head>
-      <nav className="fixed top-0 left-0 right-0 z-[60] backdrop-blur-md backdrop-saturate-150 bg-black/60 border-b border-white/10 overflow-x-hidden">
-        <div className="mx-auto max-w-7xl w-full px-4 py-4 flex justify-between items-center relative z-[80]">
-          {/* Logo: oculto en mobile */}
+      <nav className="fixed top-0 left-0 right-0 z-[60] backdrop-blur-md backdrop-saturate-150 bg-white/90 border-b border-gray-200 shadow-sm overflow-x-hidden">
+        <div className="mx-auto max-w-7xl w-full px-4 py-3 flex justify-between items-center relative z-[80]">
+          {/* Logo */}
           <Link
             href="/"
-            className="text-white/90 hover:text-white text-lg font-bold transition-colors hidden md:block flex-shrink-0"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity flex-shrink-0"
           >
-            La Tienda de los Niños
+            <img 
+              src="/images/logo.png" 
+              alt="La Tienda de los Niños" 
+              className="h-12 w-auto"
+            />
+            <span className="text-gray-800 text-xl font-bold hidden lg:block">
+              La Tienda de los Niños
+            </span>
           </Link>
-          {/* Botones Inicio/Catálogo SIEMPRE visibles */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          {/* Botones Inicio/Catálogo */}
+          <div className="flex items-center gap-3 flex-shrink-0">
             <Link
               href={route('welcome')}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-sm ${
                 route().current('welcome')
-                  ? 'bg-black/80 text-white border-black'
-                  : 'text-white border-black hover:bg-black hover:text-white'
+                  ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-400 hover:text-white hover:shadow-md'
               }`}
             >
               Inicio
             </Link>
             <Link
               href={route('catalog.index')}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all border ${
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-sm ${
                 route().current('catalog.index')
-                  ? 'bg-black text-white border-black'
-                  : 'text-white border-black hover:bg-black hover:text-white'
+                  ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-400 hover:text-white hover:shadow-md'
               }`}
             >
               Catálogo
@@ -70,7 +77,7 @@ const EcommerceLayout = ({ children }) => {
                     <li>
                       <Link
                         href={route('dashboard')}
-                        className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                        className="text-gray-700 block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
                         title="Panel de administración"
                       >
                         <FontAwesomeIcon icon={faUserShield} /> 
@@ -80,7 +87,7 @@ const EcommerceLayout = ({ children }) => {
                   <li>
                     <Link
                       href={route('profile.edit')}
-                      className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      className="text-gray-700 block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       title="Mi perfil"
                     >
                       <FontAwesomeIcon icon={faUser} /> 
@@ -89,7 +96,7 @@ const EcommerceLayout = ({ children }) => {
                   <li>
                     <Link
                       href={route('user.orders.index')}
-                      className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      className="text-gray-700 block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       title="Mis compras"
                     >
                       <FontAwesomeIcon icon={faClipboardList} /> 
@@ -98,7 +105,7 @@ const EcommerceLayout = ({ children }) => {
                   <li className="relative">
                     <Link
                       href={route('cart.index')}
-                      className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      className="text-gray-700 block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       title="Carrito"
                     >
                       <span className="relative inline-block">
@@ -116,7 +123,7 @@ const EcommerceLayout = ({ children }) => {
                       href={route('logout')}
                       method="post"
                       as="button"
-                      className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      className="text-gray-700 block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       title="Cerrar sesión"
                     >
                       Cerrar Sesión
@@ -128,7 +135,7 @@ const EcommerceLayout = ({ children }) => {
                   <li>
                     <Link
                       href={route('login')}
-                      className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      className="px-5 py-2 rounded-full text-sm font-semibold bg-gray-100 text-gray-700 hover:bg-blue-500 hover:text-white transition-all shadow-sm"
                       title="Ingresar"
                     >
                       Iniciar sesión
@@ -137,7 +144,7 @@ const EcommerceLayout = ({ children }) => {
                   <li>
                     <Link
                       href={route('register')}
-                      className="text-white block py-2 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      className="px-5 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-blue-500 to-cyan-400 text-white hover:from-blue-600 hover:to-cyan-500 transition-all shadow-md"
                       title="Registrarse"
                     >
                       Registrarse
@@ -149,7 +156,7 @@ const EcommerceLayout = ({ children }) => {
           </div>
           {/* Botón menú hamburguesa */}
           <button
-            className="text-white text-2xl md:hidden flex-shrink-0 p-2"
+            className="text-gray-700 text-2xl md:hidden flex-shrink-0 p-2 hover:text-blue-600 transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-menu"
@@ -161,9 +168,9 @@ const EcommerceLayout = ({ children }) => {
         {isMenuOpen && (
           <div
             id="mobile-menu"
-            className="fixed inset-x-0 top-[64px] bottom-0 z-[70] bg-black/60 backdrop-blur-md backdrop-saturate-150 border-t border-white/10 md:hidden overflow-y-auto overflow-x-hidden"
+            className="fixed inset-x-0 top-[64px] bottom-0 z-[70] bg-white/95 backdrop-blur-md backdrop-saturate-150 border-t border-gray-200 md:hidden overflow-y-auto overflow-x-hidden"
           >
-            <ul className="flex flex-col p-4 space-y-2 bg-black/60 backdrop-blur-md backdrop-saturate-150 border-t border-white/10 w-full">
+            <ul className="flex flex-col p-4 space-y-2 bg-white/95 backdrop-blur-md backdrop-saturate-150 border-t border-gray-200 w-full">
               {/* Menú usuario */}
               {auth.user ? (
                 <>
@@ -171,7 +178,7 @@ const EcommerceLayout = ({ children }) => {
                     <li>
                       <Link
                         href={route('dashboard')}
-                        className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors "
+                        className="text-gray-700 block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors "
                         onClick={() => setIsMenuOpen(false)}
                         title="Panel de administración"
                       >
@@ -182,7 +189,7 @@ const EcommerceLayout = ({ children }) => {
                   <li>
                     <Link
                       href={route('profile.edit')}
-                      className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      className="text-gray-700 block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                       title="Mi perfil"
                     >
@@ -192,7 +199,7 @@ const EcommerceLayout = ({ children }) => {
                   <li>
                     <Link
                       href={route('user.orders.index')}
-                      className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      className="text-gray-700 block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                       title="Mis compras"
                     >
@@ -202,7 +209,7 @@ const EcommerceLayout = ({ children }) => {
                   <li className="relative">
                     <Link
                       href={route('cart.index')}
-                      className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      className="text-gray-700 block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                       title="Carrito"
                     >
@@ -221,7 +228,7 @@ const EcommerceLayout = ({ children }) => {
                       href={route('logout')}
                       method="post"
                       as="button"
-                      className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors text-left w-full"
+                      className="text-gray-700 block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors text-left w-full"
                       onClick={() => setIsMenuOpen(false)}
                       title="Cerrar sesión"
                     >
@@ -234,17 +241,17 @@ const EcommerceLayout = ({ children }) => {
                   <li>
                     <Link
                       href={route('login')}
-                      className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-500 hover:text-white transition-all text-center font-semibold"
                       onClick={() => setIsMenuOpen(false)}
                       title="Ingresar"
                     >
-                      Ingresar
+                      Iniciar sesión
                     </Link>
                   </li>
                   <li>
                     <Link
                       href={route('register')}
-                      className="text-white block py-3 px-4 rounded-lg hover:bg-white/10 transition-colors"
+                      className="text-white block py-3 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 transition-all text-center font-semibold shadow-md"
                       onClick={() => setIsMenuOpen(false)}
                       title="Registrarse"
                     >

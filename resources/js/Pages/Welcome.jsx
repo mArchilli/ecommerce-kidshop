@@ -5,11 +5,11 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Hero from '../Pages/Ecommerce/Hero';
 import FeaturedProducts from '../Pages/Ecommerce/FeaturedProducts';
+import CategoryExplorer from '../Pages/Ecommerce/CategoryExplorer';
 import ProductsOffers from '../Pages/Ecommerce/ProductsOffers';
 import About from '../Pages/Ecommerce/About';
 import PaymentMethods from '../Pages/Ecommerce/PaymentMethods';
-import Map from '../Pages/Ecommerce/Map';
-import Contact from '../Pages/Ecommerce/Contact';
+import WhatsAppCTA from '../Pages/Ecommerce/WhatsAppCTA';
 
 const Welcome = ({ products, categories, colors, genders }) => {
   useEffect(() => {
@@ -30,6 +30,9 @@ const Welcome = ({ products, categories, colors, genders }) => {
           {/* Featured Products Section */}
           <FeaturedProducts products={products} />
 
+          {/* Category Explorer Section */}
+          <CategoryExplorer />
+
           {/* Products Offers Section */}
           <ProductsOffers products={products} />
 
@@ -43,17 +46,8 @@ const Welcome = ({ products, categories, colors, genders }) => {
             <PaymentMethods />
           </div>
 
-          {/* Map and Contact Section */}
-          <section className="w-full px-4 py-12 bg-gray-100" data-aos="fade-up" data-aos-delay="400">
-            <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-stretch">
-              <div className="order-1 lg:order-none h-full" data-aos="fade-right" data-aos-delay="600">
-                <Map />
-              </div>
-              <div className="order-2 lg:order-none h-full" data-aos="fade-left" data-aos-delay="600">
-                <Contact />
-              </div>
-            </div>
-          </section>
+          {/* WhatsApp Contact Section */}
+          <WhatsAppCTA />
         </main>
       </div>
     </EcommerceLayout>
