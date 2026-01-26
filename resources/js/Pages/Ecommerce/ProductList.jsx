@@ -139,41 +139,40 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
           <>
             <div
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center max-w-7xl mx-auto"
-              // data-aos="fade-up"
-              // data-aos-delay="400"
             >
               {products.data.map((product, idx) => (
                 <div 
                   key={product.id} 
-                  className="bg-white shadow-md rounded-lg overflow-hidden transition duration-300 transform hover:shadow-lg hover:scale-95 flex flex-col"
+                  className="bg-gradient-to-br from-white to-neutral-50 shadow-lg rounded-3xl overflow-hidden transition-all duration-300 transform hover:shadow-2xl hover:scale-105 flex flex-col border-4 border-white"
                   data-aos="fade-up"
-                  data-aos-delay="400"
+                  data-aos-delay="200"
+                  style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}
                 >
-                  <div className="w-full relative">
+                  <div className="w-full relative aspect-square bg-gradient-to-br from-cyan-50 to-purple-50">
                     <img 
                       src={product.images && product.images.length > 0 ? getImageSrc(product.images[0]) : '/placeholder.svg'} 
                       alt={product.name} 
                       className="w-full h-full object-cover"
                     />
                     
-                    {/* Badge de oferta con descuento */}
+                    {/* Badge de oferta con descuento - más grande y llamativo */}
                     {product.active_offer && (
-                      <div className="absolute top-3 right-3">
-                        <div className="rounded-full px-3 py-2 shadow-lg font-bold text-white text-sm"
+                      <div className="absolute top-3 right-3 z-10">
+                        <div className="rounded-2xl px-4 py-2 shadow-xl font-black text-white text-base animate-pulse border-4 border-white"
                           style={{ backgroundColor: '#FF6B9D' }}>
-                          -{Math.round(product.active_offer.discount_percentage)}% OFF
+                          🎉 -{Math.round(product.active_offer.discount_percentage)}%
                         </div>
                       </div>
                     )}
 
                     {/* Badge de producto destacado */}
                     {product.is_featured && (
-                      <div className="absolute top-3 left-3">
-                        <div className="bg-white rounded-full p-2 shadow-lg">
+                      <div className="absolute top-3 left-3 z-10">
+                        <div className="bg-gradient-to-br from-yellow-300 to-yellow-400 rounded-2xl p-2 shadow-xl border-4 border-white">
                           <svg 
                             xmlns="http://www.w3.org/2000/svg" 
                             viewBox="0 0 24 24" 
-                            className="w-5 h-5"
+                            className="w-6 h-6"
                             style={{ fill: '#FFB800' }}
                           >
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -182,76 +181,127 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                       </div>
                     )}
                   </div>
-                  <div className="p-4 flex flex-col flex-1 justify-between">
-                    <h3 className="text-lg font-semibold text-black">{product.name}</h3>
+                  
+                  <div className="p-5 flex flex-col flex-1 justify-between" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
+                    {/* Título del producto */}
+                    <h3 className="text-xl font-black text-gray-900 mb-3">
+                      {product.name}
+                    </h3>
                     
-                    {/* Precios con o sin oferta */}
-                    {product.active_offer ? (
-                      <div className="mt-2 flex items-center gap-2">
-                        <p className="text-xl font-black" style={{ color: '#FF6B9D' }}>
-                          ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
-                        </p>
-                        <p className="text-sm text-gray-500 line-through">
-                          ${Number(product.price).toLocaleString('es-AR')}
-                        </p>
+                    {/* Género con icono */}
+                    <div className="mb-3">
+                      <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border-2 border-purple-200 shadow-md"
+                        style={{ backgroundColor: '#f3e8ff' }}>
+                        <span className="text-lg">👶</span>
+                        <span className="font-bold text-sm" style={{ color: '#9B59B6' }}>
+                          {product.gender.name}
+                        </span>
                       </div>
-                    ) : (
-                      <p className="mt-2 text-black">
-                        ${Number(product.price).toLocaleString('es-AR')}
-                      </p>
-                    )}
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
-                        {product.gender.name}
-                      </span>
-                      {product.categories.map((category, idx) => (
-                        <span 
-                          key={`${category.id}-${idx}`} 
-                          className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold"
-                        >
-                          {category.name}
-                        </span>
-                      ))}
-                      {product.colors.map((color, idx) => (
-                        <span 
-                          key={`${color.id}-${idx}`} 
-                          className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold"
-                        >
-                          {color.name}
-                        </span>
-                      ))}
-                      {product.sizes && product.sizes.length > 0 && (() => {
-                        const maxChips = 4;
-                        const sizesShown = product.sizes.slice(0, maxChips);
-                        const remaining = product.sizes.length - maxChips;
-                        return (
-                          <>
-                            {sizesShown.map(size => (
-                              <span
-                                key={`size-${product.id}-${size.id}`}
-                                className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-semibold"
-                              >
-                                {size.name}
-                              </span>
-                            ))}
-                            {remaining > 0 && (
-                              <span
-                                title={product.sizes.slice(maxChips).map(s => s.name).join(', ')}
-                                className="bg-emerald-200 text-emerald-900 px-3 py-1 rounded-full text-xs font-semibold"
-                              >
-                                +{remaining}
-                              </span>
-                            )}
-                          </>
-                        );
-                      })()}
                     </div>
-                    <Link 
-                      href={`/products/${product.id}`} 
-                      className="w-full sm:w-auto mt-4 text-center inline-block bg-black text-white px-4 py-2 rounded-md border border-black transition duration-300 hover:bg-white hover:text-black"
-                    >
-                      Ver Prenda
-                    </Link>
+
+                    {/* Categorías con iconos */}
+                    {product.categories && product.categories.length > 0 && (
+                      <div className="mb-3">
+                        <div className="flex items-center gap-1 mb-2">
+                          <span className="text-sm font-bold text-gray-600">📂 Categorías:</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {product.categories.map((category, idx) => (
+                            <span 
+                              key={`${category.id}-${idx}`} 
+                              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white shadow-md border-2 border-green-200"
+                              style={{ backgroundColor: '#65DA4D' }}
+                            >
+                              {category.name}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Colores disponibles */}
+                    {product.colors && product.colors.length > 0 && (
+                      <div className="mb-3">
+                        <div className="flex items-center gap-1 mb-2">
+                          <span className="text-sm font-bold text-gray-600">🎨 Colores:</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {product.colors.map((color, idx) => (
+                            <span 
+                              key={`${color.id}-${idx}`} 
+                              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white shadow-md border-2 border-red-200"
+                              style={{ backgroundColor: '#FC1C1D' }}
+                            >
+                              {color.name}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Talles disponibles */}
+                    {product.sizes && product.sizes.length > 0 && (
+                      <div className="mb-4">
+                        <div className="flex items-center gap-1 mb-2">
+                          <span className="text-sm font-bold text-gray-600">📏 Talles:</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {product.sizes.slice(0, 6).map((size, idx) => (
+                            <span
+                              key={`size-${product.id}-${size.id}`}
+                              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white shadow-md border-2 border-yellow-200"
+                              style={{ backgroundColor: '#FFB800' }}
+                            >
+                              {size.name}
+                            </span>
+                          ))}
+                          {product.sizes.length > 6 && (
+                            <span
+                              title={product.sizes.slice(6).map(s => s.name).join(', ')}
+                              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white shadow-md border-2 border-yellow-200 cursor-help"
+                              style={{ backgroundColor: '#FFB800' }}
+                            >
+                              +{product.sizes.length - 6}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Precios con diseño mejorado */}
+                    <div className="mt-auto pt-4 border-t-2 border-dashed border-gray-200">
+                      {product.active_offer ? (
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex flex-col">
+                            <p className="text-sm text-gray-500 font-semibold mb-1">Precio anterior:</p>
+                            <p className="text-lg text-gray-400 line-through font-bold">
+                              ${Number(product.price).toLocaleString('es-AR')}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm font-bold mb-1" style={{ color: '#FF6B9D' }}>¡OFERTA!</p>
+                            <p className="text-3xl font-black" style={{ color: '#FF6B9D' }}>
+                              ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
+                            </p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="mb-3">
+                          <p className="text-sm text-gray-600 font-semibold mb-1">Precio:</p>
+                          <p className="text-3xl font-black text-gray-900">
+                            ${Number(product.price).toLocaleString('es-AR')}
+                          </p>
+                        </div>
+                      )}
+                      
+                      <Link 
+                        href={`/products/${product.id}`} 
+                        className="w-full block text-center text-white px-6 py-4 rounded-2xl font-black text-lg transition-all duration-300 hover:scale-105 shadow-lg border-4 border-white"
+                        style={{ backgroundColor: '#65DA4D' }}
+                      >
+                        👀 Ver Producto
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ))}

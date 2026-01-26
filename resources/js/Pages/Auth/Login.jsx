@@ -26,41 +26,50 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout full>
             <Head title="Iniciar sesión" />
 
-            <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-white flex">
+            <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-purple-50 to-pink-50 flex">
                 {/* Columna izquierda (info) */}
-                <div className="hidden lg:flex lg:w-1/2 justify-center bg-gradient-to-br from-neutral-900 to-neutral-800 relative overflow-hidden text-white">
-                    <div className="absolute inset-0 bg-black/10"></div>
-                    <div className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
-                    <div className="absolute bottom-20 right-20 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
+                <div className="hidden lg:flex lg:w-1/2 justify-center bg-gradient-to-br from-purple-400 via-pink-400 to-cyan-400 relative overflow-hidden text-white">
+                    <div className="absolute inset-0 bg-white/5"></div>
+                    <div className="absolute top-20 left-20 w-32 h-32 bg-yellow-300/30 rounded-full blur-xl animate-pulse"></div>
+                    <div className="absolute bottom-20 right-20 w-40 h-40 bg-green-300/30 rounded-full blur-2xl animate-pulse"></div>
+                    <div className="absolute top-40 right-40 w-24 h-24 bg-red-300/30 rounded-full blur-xl"></div>
 
-                    <div className="relative z-10 flex flex-col justify-center items-center p-12 text-center">
+                    <div className="relative z-10 flex flex-col justify-center items-center p-12 text-center" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
                         <div className="mb-8">
-                            <h1 className="text-4xl font-bold mb-4">Bienvenido</h1>
-                            <p className="text-lg text-neutral-200">
+                            {/* Logo de la tienda */}
+                            <div className="mb-6">
+                                <img 
+                                    src="/images/logo.png" 
+                                    alt="Logo La Tienda de los Niños" 
+                                    className="w-64 h-32 mx-auto drop-shadow-2xl"
+                                />
+                            </div>
+                            <h1 className="text-5xl font-black mb-4 drop-shadow-lg">¡Hola! 👋</h1>
+                            <p className="text-xl font-semibold">
                                 Accede a tu cuenta para continuar
                             </p>
                         </div>
 
                         <div className="space-y-4 max-w-md w-full">
-                            <div className="flex items-center space-x-4 bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center text-sm font-semibold">
-                                    1
+                            <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-2xl p-5 border-2 border-white/30 shadow-xl">
+                                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg">
+                                    🛡️
                                 </div>
                                 <div className="text-left">
-                                    <h3 className="font-semibold">Compra segura</h3>
-                                    <p className="text-sm text-neutral-200">
+                                    <h3 className="font-black text-lg">Compra segura</h3>
+                                    <p className="text-sm">
                                         Tus datos están protegidos
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex items-center space-x-4 bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center text-sm font-semibold">
-                                    2
+                            <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-2xl p-5 border-2 border-white/30 shadow-xl">
+                                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg">
+                                    ⚡
                                 </div>
                                 <div className="text-left">
-                                    <h3 className="font-semibold">Experiencia simple</h3>
-                                    <p className="text-sm text-neutral-200">
-                                        Acceso rápido y sin fricción
+                                    <h3 className="font-black text-lg">Acceso rápido</h3>
+                                    <p className="text-sm">
+                                        Experiencia simple y divertida
                                     </p>
                                 </div>
                             </div>
@@ -82,14 +91,18 @@ export default function Login({ status, canResetPassword }) {
                         </div>
 
                         {/* Logo/título móvil */}
-                        <div className="text-center mb-8 lg:hidden">
-                            <div className="w-16 h-16 bg-gradient-to-br from-black to-neutral-700 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                                <span className="text-white font-bold text-2xl">KS</span>
+                        <div className="text-center mb-8 lg:hidden" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
+                            <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl border-4 border-purple-300 p-2">
+                                <img 
+                                    src="/images/logo.png" 
+                                    alt="Logo" 
+                                    className="w-full h-full object-contain"
+                                />
                             </div>
-                            <h1 className="text-2xl font-bold text-neutral-900">
-                                Kidshop
+                            <h1 className="text-3xl font-black text-gray-900">
+                                La Tienda de los Niños
                             </h1>
-                            <p className="text-neutral-600 mt-2">Acceso a tu cuenta</p>
+                            <p className="text-purple-600 mt-2 font-bold">¡Bienvenido de nuevo! 🎉</p>
                         </div>
 
                         {/* Status (mensajes) */}
@@ -100,15 +113,15 @@ export default function Login({ status, canResetPassword }) {
                         )}
 
                         {/* Card del formulario */}
-                        <div className="bg-white/80 backdrop-blur-sm shadow-2xl border-0 rounded-2xl transition-all duration-500">
+                        <div className="bg-white/90 backdrop-blur-md shadow-2xl border-4 border-white rounded-3xl transition-all duration-500" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
                             <div className="p-8">
                                 <form onSubmit={submit} className="space-y-6">
                                     {/* Email */}
                                     <div className="group">
                                         <InputLabel
                                             htmlFor="email"
-                                            value="Correo electrónico"
-                                            className="block text-sm font-medium text-neutral-700 mb-2 group-focus-within:text-black transition-colors duration-300"
+                                            value="📧 Correo electrónico"
+                                            className="block text-sm font-bold text-gray-700 mb-2 transition-colors duration-300"
                                         />
                                         <div className="relative">
                                             <TextInput
@@ -116,7 +129,7 @@ export default function Login({ status, canResetPassword }) {
                                                 type="email"
                                                 name="email"
                                                 value={data.email}
-                                                className="w-full px-4 py-4 bg-neutral-50 border-2 border-neutral-200 rounded-xl focus:outline-none focus:ring-0 focus:border-black focus:bg-white transition-all duration-300 transform focus:scale-[1.01] hover:border-neutral-300"
+                                                className="w-full px-4 py-4 bg-gradient-to-r from-cyan-50 to-purple-50 border-3 border-purple-200 rounded-2xl focus:outline-none focus:ring-0 focus:border-purple-400 focus:bg-white transition-all duration-300 transform focus:scale-[1.02] hover:border-purple-300 font-semibold"
                                                 autoComplete="username"
                                                 isFocused={true}
                                                 onChange={(e) => setData('email', e.target.value)}
@@ -131,8 +144,8 @@ export default function Login({ status, canResetPassword }) {
                                     <div className="group">
                                         <InputLabel
                                             htmlFor="password"
-                                            value="Contraseña"
-                                            className="block text-sm font-medium text-neutral-700 mb-2 group-focus-within:text-black transition-colors duration-300"
+                                            value="🔒 Contraseña"
+                                            className="block text-sm font-bold text-gray-700 mb-2 transition-colors duration-300"
                                         />
                                         <div className="relative">
                                             <TextInput
@@ -140,7 +153,7 @@ export default function Login({ status, canResetPassword }) {
                                                 type={showPassword ? 'text' : 'password'}
                                                 name="password"
                                                 value={data.password}
-                                                className="w-full px-4 py-4 pr-12 bg-neutral-50 border-2 border-neutral-200 rounded-xl focus:outline-none focus:ring-0 focus:border-black focus:bg-white transition-all duration-300 transform focus:scale-[1.01] hover:border-neutral-300"
+                                                className="w-full px-4 py-4 pr-12 bg-gradient-to-r from-pink-50 to-yellow-50 border-3 border-pink-200 rounded-2xl focus:outline-none focus:ring-0 focus:border-pink-400 focus:bg-white transition-all duration-300 transform focus:scale-[1.02] hover:border-pink-300 font-semibold"
                                                 autoComplete="current-password"
                                                 onChange={(e) => setData('password', e.target.value)}
                                                 placeholder="••••••••"
@@ -148,7 +161,7 @@ export default function Login({ status, canResetPassword }) {
                                             <button
                                                 type="button"
                                                 onClick={() => setShowPassword((v) => !v)}
-                                                className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black transition-all duration-300 text-sm"
+                                                className="absolute right-4 top-1/2 -translate-y-1/2 text-purple-400 hover:text-purple-600 transition-all duration-300 text-sm font-bold"
                                                 aria-label={
                                                     showPassword
                                                         ? 'Ocultar contraseña'
@@ -172,7 +185,7 @@ export default function Login({ status, canResetPassword }) {
                                                     setData('remember', e.target.checked)
                                                 }
                                             />
-                                            <span className="ml-3 text-sm text-neutral-600 hover:text-neutral-900 transition-colors duration-300">
+                                            <span className="ml-3 text-sm text-gray-700 hover:text-purple-600 transition-colors duration-300 font-semibold">
                                                 Recordar sesión
                                             </span>
                                         </label>
@@ -180,7 +193,7 @@ export default function Login({ status, canResetPassword }) {
                                         {canResetPassword && (
                                             <Link
                                                 href={route('password.request')}
-                                                className="text-sm text-neutral-800 hover:text-black transition-all duration-300 hover:underline"
+                                                className="text-sm text-purple-600 hover:text-purple-800 transition-all duration-300 hover:underline font-bold"
                                             >
                                                 ¿Olvidaste tu contraseña?
                                             </Link>
@@ -189,10 +202,11 @@ export default function Login({ status, canResetPassword }) {
 
                                     {/* Botón */}
                                     <PrimaryButton
-                                        className="w-full bg-black hover:bg-white  hover:text-black border border-black text-white py-4 text-base rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.01] hover:-translate-y-0.5 transition-all duration-300 justify-center"
+                                        className="w-full text-white py-4 text-lg font-black rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 justify-center border-4 border-white"
+                                        style={{ backgroundColor: '#65DA4D' }}
                                         disabled={processing}
                                     >
-                                        Iniciar sesión
+                                        🚀 Iniciar sesión
                                     </PrimaryButton>
                                 </form>
 
