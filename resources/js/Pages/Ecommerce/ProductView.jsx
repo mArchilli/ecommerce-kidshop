@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head, Link, useForm, router } from '@inertiajs/react';
 
-const ProductView = ({ product }) => {
+const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => {
   const { data, setData, post, processing, errors } = useForm({
     quantity: 1,
     size: ''
@@ -388,6 +388,126 @@ const ProductView = ({ product }) => {
               
             </div>
           </div>
+
+          {/* Sección de Productos Relacionados */}
+          {relatedProducts && relatedProducts.length > 0 && (
+            <div className="mt-16 mb-12">
+              <div className="text-center mb-8">
+                <h2 className="text-4xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent inline-block mb-3">
+                  ¡Te puede interesar! 🎯
+                </h2>
+                <p className="text-lg font-bold text-gray-600">Otros productos que te encantarán</p>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {relatedProducts.slice(0, 4).map((relatedProduct) => (
+                  <Link
+                    key={relatedProduct.id}
+                    href={`/products/${relatedProduct.id}`}
+                    className="group"
+                  >
+                    <div className="bg-white rounded-3xl border-4 border-white shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
+                      <div className="relative aspect-square bg-gradient-to-br from-cyan-50 to-purple-50">
+                        <img
+                          src={getImageSrc(relatedProduct.images?.[0])}
+                          alt={relatedProduct.name}
+                          className="w-full h-full object-cover"
+                        />
+                        {relatedProduct.active_offer && (
+                          <div className="absolute top-2 right-2">
+                            <span className="rounded-xl px-3 py-1 shadow-lg font-black text-white text-xs border-2 border-white"
+                              style={{ backgroundColor: '#FF6B9D' }}>
+                              -{Math.round(relatedProduct.active_offer.discount_percentage)}%
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-black text-lg text-gray-900 mb-2 line-clamp-2 group-hover:text-cyan-600 transition-colors">
+                          {relatedProduct.name}
+                        </h3>
+                        {relatedProduct.active_offer ? (
+                          <div className="flex items-baseline gap-2">
+                            <p className="text-2xl font-black" style={{ color: '#FF6B9D' }}>
+                              ${Number(relatedProduct.active_offer.discount_price).toLocaleString('es-AR')}
+                            </p>
+                            <p className="text-sm text-gray-400 line-through">
+                              ${Number(relatedProduct.price).toLocaleString('es-AR')}
+                            </p>
+                          </div>
+                        ) : (
+                          <p className="text-2xl font-black" style={{ color: '#29C9F4' }}>
+                            ${Number(relatedProduct.price).toLocaleString('es-AR')}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Sección de Productos en Oferta */}
+          {offersProducts && offersProducts.length > 0 && (
+            <div className="mt-16 mb-12">
+              <div className="text-center mb-8 animate-wiggle">
+                <h2 className="text-4xl font-black bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent inline-block mb-3">
+                  ¡SÚPER OFERTAS! 🔥
+                </h2>
+                <p className="text-lg font-bold text-gray-600">¡Aprovechá estos descuentos increíbles!</p>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {offersProducts.slice(0, 4).map((offerProduct) => (
+                  <Link
+                    key={offerProduct.id}
+                    href={`/products/${offerProduct.id}`}
+                    className="group"
+                  >
+                    <div className="bg-gradient-to-br from-pink-50 to-red-50 rounded-3xl border-4 shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
+                      style={{ borderColor: '#FF6B9D' }}>
+                      <div className="relative aspect-square bg-gradient-to-br from-pink-100 to-red-100">
+                        <img
+                          src={getImageSrc(offerProduct.images?.[0])}
+                          alt={offerProduct.name}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-2 right-2 animate-pulse">
+                          <span className="rounded-2xl px-4 py-2 shadow-xl font-black text-white text-base border-4 border-white flex items-center gap-1"
+                            style={{ backgroundColor: '#FF6B9D' }}>
+                            <span className="text-xl">🎉</span>
+                            -{Math.round(offerProduct.active_offer.discount_percentage)}%
+                          </span>
+                        </div>
+                        <div className="absolute top-2 left-2">
+                          <span className="text-3xl animate-bounce">🔥</span>
+                        </div>
+                      </div>
+                      <div className="p-4 bg-white">
+                        <h3 className="font-black text-lg text-gray-900 mb-2 line-clamp-2 group-hover:text-pink-600 transition-colors">
+                          {offerProduct.name}
+                        </h3>
+                        <div className="flex flex-col gap-1">
+                          <p className="text-2xl font-black" style={{ color: '#FF6B9D' }}>
+                            ${Number(offerProduct.active_offer.discount_price).toLocaleString('es-AR')}
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm text-gray-400 line-through font-bold">
+                              ${Number(offerProduct.price).toLocaleString('es-AR')}
+                            </p>
+                            <span className="text-xs font-black text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                              Ahorrás ${(Number(offerProduct.price) - Number(offerProduct.active_offer.discount_price)).toLocaleString('es-AR')}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

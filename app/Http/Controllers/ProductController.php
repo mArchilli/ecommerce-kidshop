@@ -68,8 +68,36 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product->load(['categories', 'sizes', 'colors', 'gender', 'activeOffer']);
+        
+        // Productos relacionados: misma categoría o género, excluyendo el actual
+        $relatedProducts = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer'])
+            ->where('id', '!=', $product->id)
+            ->where(function($query) use ($product) {
+                // Productos del mismo género
+                $query->where('gender_id', $product->gender_id);
+                
+                // O productos con categorías similares
+                if ($product->categories->isNotEmpty()) {
+                    $categoryIds = $product->categories->pluck('id');
+                    $query->orWhereHas('categories', function($q) use ($categoryIds) {
+                        $q->whereIn('categories.id', $categoryIds);
+                    });
+                }
+            })
+            ->take(4)
+            ->get();
+        
+        // Productos en oferta (excluyendo el actual)
+        $offersProducts = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer'])
+            ->where('id', '!=', $product->id)
+            ->whereHas('activeOffer')
+            ->take(4)
+            ->get();
+        
         return Inertia::render('Ecommerce/ProductView', [
             'product' => $product,
+            'relatedProducts' => $relatedProducts,
+            'offersProducts' => $offersProducts,
         ]);
     }
 
