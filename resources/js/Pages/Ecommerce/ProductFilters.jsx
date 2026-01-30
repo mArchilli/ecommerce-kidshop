@@ -3,36 +3,27 @@ import React, { useState, useRef, useEffect } from 'react';
 const Chip = ({ label, selected, onClick, color = 'default' }) => {
   const colorStyles = {
     default: selected 
-      ? 'bg-black text-white border-black shadow-md transform scale-105' 
-      : 'bg-white text-black border-neutral-300 hover:bg-neutral-50',
+      ? 'bg-gray-900 text-white border-gray-900 shadow-md' 
+      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50',
     category: selected 
-      ? 'text-white border-white shadow-lg transform scale-105' 
-      : 'bg-white border-2 hover:bg-green-50',
+      ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-transparent shadow-md' 
+      : 'bg-white text-gray-700 border-gray-300 hover:bg-blue-50',
     color: selected 
-      ? 'text-white border-white shadow-lg transform scale-105' 
-      : 'bg-white border-2 hover:bg-red-50',
+      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md' 
+      : 'bg-white text-gray-700 border-gray-300 hover:bg-purple-50',
     gender: selected 
-      ? 'text-white border-white shadow-lg transform scale-105' 
-      : 'bg-white border-2 hover:bg-purple-50',
+      ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white border-transparent shadow-md' 
+      : 'bg-white text-gray-700 border-gray-300 hover:bg-purple-50',
     size: selected 
-      ? 'text-white border-white shadow-lg transform scale-105' 
-      : 'bg-white border-2 hover:bg-yellow-50',
-  };
-  
-  const selectedBg = {
-    category: '#65DA4D',
-    color: '#FC1C1D',
-    gender: '#9B59B6',
-    size: '#FFB800',
-    default: '#000',
+      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white border-transparent shadow-md' 
+      : 'bg-white text-gray-700 border-gray-300 hover:bg-amber-50',
   };
 
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl border-2 text-xs sm:text-sm font-bold transition-all duration-200 hover:scale-105 ${colorStyles[color]}`}
-      style={selected ? { backgroundColor: selectedBg[color] } : {}}
+      className={`px-3 sm:px-4 py-2 rounded-lg border text-xs sm:text-sm font-semibold transition-all hover:shadow-md ${colorStyles[color]}`}
       aria-pressed={selected}
     >
       {label}
@@ -107,44 +98,42 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
   const FilterContent = () => (
     <div className="flex flex-col gap-4 sm:gap-8">
       {/* Filtro de Precio */}
-      <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-3 sm:p-6 rounded-xl sm:rounded-2xl border-2 sm:border-4 border-white shadow-md">
-        <div className="mb-2 sm:mb-3 font-bold text-base sm:text-lg flex items-center gap-2" style={{ color: '#65DA4D' }}>
-          <span className="text-xl sm:text-2xl">💰</span>
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm">
+        <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
           Precio
         </div>
-        <div className="flex flex-wrap gap-2 sm:gap-4">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
           <div className="flex-1 min-w-[100px] sm:min-w-[120px]">
-            <label className="block text-xs sm:text-sm font-bold text-neutral-600 mb-1 sm:mb-2">Mínimo</label>
+            <label className="block text-xs font-medium text-gray-600 mb-1.5">Mínimo</label>
             <input
               type="number"
               min="0"
               value={minPrice}
               onChange={(e) => setMinPrice(e.target.value)}
               placeholder="$ 0"
-              className="w-full rounded-lg sm:rounded-xl border-2 border-green-300 px-2 sm:px-4 py-2 sm:py-3 text-sm sm:text-base font-semibold focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-green-200 focus:border-green-400"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
             />
           </div>
           <div className="flex-1 min-w-[100px] sm:min-w-[120px]">
-            <label className="block text-xs sm:text-sm font-bold text-neutral-600 mb-1 sm:mb-2">Máximo</label>
+            <label className="block text-xs font-medium text-gray-600 mb-1.5">Máximo</label>
             <input
               type="number"
               min="0"
               value={maxPrice}
               onChange={(e) => setMaxPrice(e.target.value)}
               placeholder="$ 99999"
-              className="w-full rounded-lg sm:rounded-xl border-2 border-green-300 px-2 sm:px-4 py-2 sm:py-3 text-sm sm:text-base font-semibold focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-green-200 focus:border-green-400"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
             />
           </div>
         </div>
       </div>
 
       {/* Filtro de Categoría */}
-      <div className="bg-gradient-to-r from-green-50 to-lime-50 p-3 sm:p-6 rounded-xl sm:rounded-2xl border-2 sm:border-4 border-white shadow-md">
-        <div className="mb-2 sm:mb-4 font-bold text-base sm:text-lg flex items-center gap-2" style={{ color: '#65DA4D' }}>
-          <span className="text-xl sm:text-2xl">📂</span>
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm">
+        <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
           Categoría
         </div>
-        <div className="flex flex-wrap gap-2 sm:gap-3">
+        <div className="flex flex-wrap gap-2">
           <Chip
             label="Todas"
             selected={selectedCategory === ''}
@@ -164,12 +153,11 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
       </div>
 
       {/* Filtro de Color */}
-      <div className="bg-gradient-to-r from-red-50 to-pink-50 p-3 sm:p-6 rounded-xl sm:rounded-2xl border-2 sm:border-4 border-white shadow-md">
-        <div className="mb-2 sm:mb-4 font-bold text-base sm:text-lg flex items-center gap-2" style={{ color: '#FC1C1D' }}>
-          <span className="text-xl sm:text-2xl">🎨</span>
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm">
+        <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
           Color
         </div>
-        <div className="flex flex-wrap gap-2 sm:gap-3">
+        <div className="flex flex-wrap gap-2">
           <Chip
             label="Todos"
             selected={selectedColor === ''}
@@ -189,12 +177,11 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
       </div>
 
       {/* Filtro de Género */}
-      <div className="bg-gradient-to-r from-purple-50 to-violet-50 p-3 sm:p-6 rounded-xl sm:rounded-2xl border-2 sm:border-4 border-white shadow-md">
-        <div className="mb-2 sm:mb-4 font-bold text-base sm:text-lg flex items-center gap-2" style={{ color: '#9B59B6' }}>
-          <span className="text-xl sm:text-2xl">👶</span>
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm">
+        <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
           Género
         </div>
-        <div className="flex flex-wrap gap-2 sm:gap-3">
+        <div className="flex flex-wrap gap-2">
           <Chip
             label="Todos"
             selected={selectedGender === ''}
@@ -214,12 +201,11 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
       </div>
 
       {/* Filtro de Talle */}
-      <div className="bg-gradient-to-r from-yellow-50 to-amber-50 p-3 sm:p-6 rounded-xl sm:rounded-2xl border-2 sm:border-4 border-white shadow-md">
-        <div className="mb-2 sm:mb-4 font-bold text-base sm:text-lg flex items-center gap-2" style={{ color: '#FFB800' }}>
-          <span className="text-xl sm:text-2xl">📏</span>
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm">
+        <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
           Talle
         </div>
-        <div className="flex flex-wrap gap-2 sm:gap-3">
+        <div className="flex flex-wrap gap-2">
           <Chip
             label="Todos"
             selected={selectedSize === ''}
@@ -244,21 +230,20 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
     <div
       className={
         compact
-          ? 'rounded-2xl p-0 bg-white shadow-md max-w-full mx-auto my-2'
-          : 'sm:rounded-2xl p-0 bg-gradient-to-br from-white to-neutral-50 max-w-7xl mx-auto sm:my-10 shadow-xl border-4 border-white'
+          ? 'rounded-xl p-0 bg-white shadow-sm max-w-full mx-auto my-2 border border-gray-200'
+          : 'sm:rounded-xl p-0 bg-white max-w-7xl mx-auto sm:my-8 shadow-md border border-gray-200'
       }
     >
       {/* Vista colapsada */}
       {!expanded ? (
-        <div className={compact ? 'flex items-center gap-3 p-3' : 'flex flex-col gap-4 justify-center py-6 sm:py-8 px-4 sm:px-6'}>
+        <div className={compact ? 'flex items-center gap-3 p-3' : 'flex flex-col gap-4 justify-center py-5 sm:py-6 px-4 sm:px-6'}>
           {activeChips.length > 0 && (
-            <div className="flex flex-wrap gap-3 justify-center">
+            <div className="flex flex-wrap gap-2 justify-center">
               {activeChips.map(chip => (
                 <button
                   key={chip.key}
                   type="button"
-                  className="group flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-bold hover:scale-105 transition-all shadow-md"
-                  style={{ backgroundColor: '#29C9F4' }}
+                  className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs sm:text-sm font-semibold hover:shadow-md transition-all"
                 >
                   <span>{chip.label}</span>
                 </button>
@@ -266,21 +251,19 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
               <button
                 type="button"
                 onClick={handleClear}
-                className="px-5 py-2.5 rounded-xl border-2 text-sm font-bold text-white hover:scale-105 transition-all shadow-md"
-                style={{ backgroundColor: '#FC1C1D', borderColor: '#FC1C1D' }}
+                className="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-gradient-to-r from-red-500 to-rose-500 text-white hover:shadow-md transition-all"
               >
-                🗑️ Limpiar todo
+                Limpiar todo
               </button>
             </div>
           )}
           <button
             type="button"
-            className={compact ? 'ml-auto text-white px-4 py-2 rounded-lg font-bold text-sm shadow-md' : 'mx-auto text-white px-6 sm:px-10 py-3 sm:py-4 rounded-xl border-4 border-white font-bold text-base sm:text-lg hover:scale-105 transition-all shadow-lg w-full sm:w-auto'}
-            style={{ backgroundColor: '#29C9F4' }}
+            className={compact ? 'ml-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm shadow-sm hover:shadow-md transition-all' : 'mx-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-md transition-all w-full sm:w-auto'}
             onClick={() => setExpanded(true)}
             aria-expanded={expanded}
           >
-            🔍 {compact ? 'Filtros' : 'Mostrar filtros'}
+            {compact ? 'Filtros' : 'Mostrar filtros'}
           </button>
         </div>
       ) : null}
@@ -303,24 +286,22 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
               <div ref={contentRef} className="space-y-6">
                 <FilterContent />
               </div>
-              <div className="flex justify-center gap-4 mt-6">
+              <div className="flex justify-center gap-3 sm:gap-4 mt-6">
                 <button 
                   onClick={handleFilterChange} 
-                  className="text-white px-8 py-3 rounded-xl font-bold text-lg hover:scale-105 transition-all shadow-md"
-                  style={{ backgroundColor: '#65DA4D' }}
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
                 >
-                  ✓ Aplicar filtros
+                  Aplicar filtros
                 </button>
                 <button 
                   onClick={handleClear} 
-                  className="text-white px-8 py-3 rounded-xl font-bold text-lg hover:scale-105 transition-all shadow-md"
-                  style={{ backgroundColor: '#FC1C1D' }}
+                  className="bg-gradient-to-r from-red-500 to-rose-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
                 >
-                  🗑️ Limpiar
+                  Limpiar
                 </button>
                 <button 
                   onClick={() => setExpanded(false)} 
-                  className="text-neutral-700 px-8 py-3 rounded-xl font-bold text-lg hover:scale-105 transition-all shadow-md border-2 border-neutral-300 bg-white"
+                  className="text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-md transition-all border border-gray-300 bg-white"
                 >
                   Cerrar
                 </button>
@@ -340,24 +321,22 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
           >
             <div className="p-4 sm:p-8 space-y-4 sm:space-y-6">
               <FilterContent />
-              <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 pt-4">
                 <button 
                   onClick={handleFilterChange} 
-                  className="text-white px-6 sm:px-10 py-3 sm:py-4 rounded-xl border-2 sm:border-4 border-white font-bold text-base sm:text-lg hover:scale-105 transition-all shadow-lg"
-                  style={{ backgroundColor: '#65DA4D' }}
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
                 >
-                  ✓ Aplicar filtros
+                  Aplicar filtros
                 </button>
                 <button 
                   onClick={handleClear} 
-                  className="text-white px-6 sm:px-10 py-3 sm:py-4 rounded-xl border-2 sm:border-4 border-white font-bold text-base sm:text-lg hover:scale-105 transition-all shadow-lg"
-                  style={{ backgroundColor: '#FC1C1D' }}
+                  className="bg-gradient-to-r from-red-500 to-rose-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
                 >
-                  🗑️ Limpiar todo
+                  Limpiar todo
                 </button>
                 <button 
                   onClick={() => setExpanded(false)} 
-                  className="text-neutral-700 px-6 sm:px-10 py-3 sm:py-4 rounded-xl border-2 sm:border-4 border-neutral-300 bg-white font-bold text-base sm:text-lg hover:scale-105 transition-all shadow-lg"
+                  className="text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-md transition-all border border-gray-300 bg-white"
                 >
                   Cerrar
                 </button>

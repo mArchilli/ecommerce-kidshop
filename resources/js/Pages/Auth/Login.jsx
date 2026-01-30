@@ -26,13 +26,13 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout full>
             <Head title="Iniciar sesión" />
 
-            <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-purple-50 to-pink-50 flex">
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex">
                 {/* Columna izquierda (info) */}
-                <div className="hidden lg:flex lg:w-1/2 justify-center bg-gradient-to-br from-purple-400 via-pink-400 to-cyan-400 relative overflow-hidden text-white">
+                <div className="hidden lg:flex lg:w-1/2 justify-center bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 relative overflow-hidden text-white">
                     <div className="absolute inset-0 bg-white/5"></div>
-                    <div className="absolute top-20 left-20 w-32 h-32 bg-yellow-300/30 rounded-full blur-xl animate-pulse"></div>
-                    <div className="absolute bottom-20 right-20 w-40 h-40 bg-green-300/30 rounded-full blur-2xl animate-pulse"></div>
-                    <div className="absolute top-40 right-40 w-24 h-24 bg-red-300/30 rounded-full blur-xl"></div>
+                    <div className="absolute top-20 left-20 w-32 h-32 bg-purple-300/30 rounded-full blur-xl animate-pulse"></div>
+                    <div className="absolute bottom-20 right-20 w-40 h-40 bg-pink-300/30 rounded-full blur-2xl animate-pulse"></div>
+                    <div className="absolute top-40 right-40 w-24 h-24 bg-blue-300/30 rounded-full blur-xl"></div>
 
                     <div className="relative z-10 flex flex-col justify-center items-center p-12 text-center" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
                         <div className="mb-8">
@@ -44,7 +44,7 @@ export default function Login({ status, canResetPassword }) {
                                     className="w-64 h-32 mx-auto drop-shadow-2xl"
                                 />
                             </div>
-                            <h1 className="text-5xl font-black mb-4 drop-shadow-lg">¡Hola! 👋</h1>
+                            <h1 className="text-5xl font-black mb-4 drop-shadow-lg">¡Hola!</h1>
                             <p className="text-xl font-semibold">
                                 Accede a tu cuenta para continuar
                             </p>
@@ -53,7 +53,9 @@ export default function Login({ status, canResetPassword }) {
                         <div className="space-y-4 max-w-md w-full">
                             <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-2xl p-5 border-2 border-white/30 shadow-xl">
                                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg">
-                                    🛡️
+                                    <svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
                                 </div>
                                 <div className="text-left">
                                     <h3 className="font-black text-lg">Compra segura</h3>
@@ -64,7 +66,9 @@ export default function Login({ status, canResetPassword }) {
                             </div>
                             <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-2xl p-5 border-2 border-white/30 shadow-xl">
                                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg">
-                                    ⚡
+                                    <svg className="w-6 h-6 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
                                 </div>
                                 <div className="text-left">
                                     <h3 className="font-black text-lg">Acceso rápido</h3>
@@ -102,7 +106,7 @@ export default function Login({ status, canResetPassword }) {
                             <h1 className="text-3xl font-black text-gray-900">
                                 La Tienda de los Niños
                             </h1>
-                            <p className="text-purple-600 mt-2 font-bold">¡Bienvenido de nuevo! 🎉</p>
+                            <p className="text-purple-600 mt-2 font-bold">¡Bienvenido de nuevo!</p>
                         </div>
 
                         {/* Status (mensajes) */}
@@ -120,7 +124,7 @@ export default function Login({ status, canResetPassword }) {
                                     <div className="group">
                                         <InputLabel
                                             htmlFor="email"
-                                            value="📧 Correo electrónico"
+                                            value="Correo electrónico"
                                             className="block text-sm font-bold text-gray-700 mb-2 transition-colors duration-300"
                                         />
                                         <div className="relative">
@@ -129,7 +133,7 @@ export default function Login({ status, canResetPassword }) {
                                                 type="email"
                                                 name="email"
                                                 value={data.email}
-                                                className="w-full px-4 py-4 bg-gradient-to-r from-cyan-50 to-purple-50 border-3 border-purple-200 rounded-2xl focus:outline-none focus:ring-0 focus:border-purple-400 focus:bg-white transition-all duration-300 transform focus:scale-[1.02] hover:border-purple-300 font-semibold"
+                                                className="w-full px-4 py-4 bg-purple-50 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                                 autoComplete="username"
                                                 isFocused={true}
                                                 onChange={(e) => setData('email', e.target.value)}
@@ -144,7 +148,7 @@ export default function Login({ status, canResetPassword }) {
                                     <div className="group">
                                         <InputLabel
                                             htmlFor="password"
-                                            value="🔒 Contraseña"
+                                            value="Contraseña"
                                             className="block text-sm font-bold text-gray-700 mb-2 transition-colors duration-300"
                                         />
                                         <div className="relative">
@@ -153,7 +157,7 @@ export default function Login({ status, canResetPassword }) {
                                                 type={showPassword ? 'text' : 'password'}
                                                 name="password"
                                                 value={data.password}
-                                                className="w-full px-4 py-4 pr-12 bg-gradient-to-r from-pink-50 to-yellow-50 border-3 border-pink-200 rounded-2xl focus:outline-none focus:ring-0 focus:border-pink-400 focus:bg-white transition-all duration-300 transform focus:scale-[1.02] hover:border-pink-300 font-semibold"
+                                                className="w-full px-4 py-4 pr-12 bg-purple-50 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                                 autoComplete="current-password"
                                                 onChange={(e) => setData('password', e.target.value)}
                                                 placeholder="••••••••"
@@ -202,16 +206,24 @@ export default function Login({ status, canResetPassword }) {
 
                                     {/* Botón */}
                                     <PrimaryButton
-                                        className="w-full text-white py-4 text-lg font-black rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 justify-center border-4 border-white"
-                                        style={{ backgroundColor: '#65DA4D' }}
+                                        className="w-full text-white py-4 text-lg font-black rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 justify-center bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border-0"
                                         disabled={processing}
                                     >
-                                        🚀 Iniciar sesión
+                                        Iniciar sesión
                                     </PrimaryButton>
                                 </form>
 
                                 {/* Info adicional */}
-                                <div className="mt-8 pt-6 border-t border-neutral-200">
+                                <div className="mt-8 pt-6 border-t border-neutral-200 space-y-3">
+                                    <p className="text-center text-sm text-gray-600">
+                                        ¿No tenés una cuenta?{' '}
+                                        <Link
+                                            href={route('register')}
+                                            className="text-purple-600 hover:text-purple-800 font-bold transition-colors hover:underline"
+                                        >
+                                            Registrate
+                                        </Link>
+                                    </p>
                                     <p className="text-center text-sm text-neutral-600">
                                         ¿Necesitas ayuda con el acceso?{' '}
                                         <a

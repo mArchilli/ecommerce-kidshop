@@ -7,6 +7,18 @@ export default function FAQ() {
 
   const faqs = [
     {
+      question: '¿Cómo comprar?',
+      answer: (
+        <>
+          1. Dale click en <a href="/register" className="text-cyan-600 hover:text-cyan-700 underline font-semibold">registrarse</a> o si ya tenés una cuenta <a href="/login" className="text-cyan-600 hover:text-cyan-700 underline font-semibold">iniciá sesión</a><br />
+          2. Completá tus datos de registro<br />
+          3. Ya podés añadir productos al carrito, una vez que elijas todo lo que vas a comprar clickeá en finalizar compra<br />
+          4. Vas a poder pagar con cualquier método de pago. <strong className="underline">Las compras dentro del sitio están protegidas por Mercado Pago</strong><br />
+          5. ¡Listo! Ya compraste en la tienda de los niños. Te vamos a contactar para realizar el envío.
+        </>
+      )
+    },
+    {
       question: '¿Realizan envíos al interior?',
       answer: 'Sí realizamos envíos a todo el país a través de vía cargo, correo argentino y Andreani.'
     },
@@ -77,9 +89,9 @@ export default function FAQ() {
               >
                 <div className="px-6 pb-5 pt-2">
                   <div className="w-full h-px bg-gradient-to-r from-purple-300 via-pink-300 to-cyan-300 mb-4"></div>
-                  <p className="text-gray-700 leading-relaxed">
+                  <div className="text-gray-700 leading-relaxed">
                     {faq.answer}
-                  </p>
+                  </div>
                 </div>
               </div>
             </div>

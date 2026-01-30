@@ -37,7 +37,7 @@ export default function Register() {
         <GuestLayout full>
             <Head title="Crear cuenta" />
 
-            <div className="min-h-screen bg-gradient-to-br from-green-50 via-yellow-50 to-pink-50 flex">
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex">
                 {/* Columna izquierda (formulario) */}
                 <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
                     <div className="w-full max-w-md">
@@ -53,7 +53,7 @@ export default function Register() {
 
                         {/* Logo/título móvil */}
                         <div className="text-center mb-8 lg:hidden" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
-                            <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl border-4 border-green-300 p-2">
+                            <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl border-4 border-purple-300 p-2">
                                 <img 
                                     src="/images/logo.png" 
                                     alt="Logo" 
@@ -61,7 +61,7 @@ export default function Register() {
                                 />
                             </div>
                             <h1 className="text-3xl font-black text-gray-900">Crear cuenta</h1>
-                            <p className="text-green-600 mt-2 font-bold">¡Únete a la familia! 🎈</p>
+                            <p className="text-purple-600 mt-2 font-bold">¡Únete a la familia!</p>
                         </div>
 
                         {/* Card del formulario */}
@@ -72,14 +72,14 @@ export default function Register() {
                                     <div className="group">
                                         <InputLabel
                                             htmlFor="name"
-                                            value="👶 Nombre"
+                                            value="Nombre"
                                             className="block text-sm font-bold text-gray-700 mb-2"
                                         />
                                         <TextInput
                                             id="name"
                                             name="name"
                                             value={data.name}
-                                            className="w-full px-4 py-4 bg-gradient-to-r from-green-50 to-yellow-50 border-3 border-green-200 rounded-2xl focus:outline-none focus:ring-0 focus:border-green-400 focus:bg-white transition-all duration-300 hover:border-green-300 font-semibold"
+                                            className="w-full px-4 py-4 bg-purple-50 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                             autoComplete="name"
                                             isFocused={true}
                                             onChange={(e) => setData('name', e.target.value)}
@@ -92,7 +92,7 @@ export default function Register() {
                                     <div className="group">
                                         <InputLabel
                                             htmlFor="email"
-                                            value="📧 Correo electrónico"
+                                            value="Correo electrónico"
                                             className="block text-sm font-bold text-gray-700 mb-2"
                                         />
                                         <TextInput
@@ -100,7 +100,7 @@ export default function Register() {
                                             type="email"
                                             name="email"
                                             value={data.email}
-                                            className="w-full px-4 py-4 bg-gradient-to-r from-cyan-50 to-purple-50 border-3 border-cyan-200 rounded-2xl focus:outline-none focus:ring-0 focus:border-cyan-400 focus:bg-white transition-all duration-300 hover:border-cyan-300 font-semibold"
+                                            className="w-full px-4 py-4 bg-purple-50 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                             autoComplete="username"
                                             onChange={(e) => setData('email', e.target.value)}
                                             required
@@ -112,7 +112,7 @@ export default function Register() {
                                     <div className="group">
                                         <InputLabel
                                             htmlFor="password"
-                                            value="🔒 Contraseña"
+                                            value="Contraseña"
                                             className="block text-sm font-bold text-gray-700 mb-2"
                                         />
                                         <div className="relative">
@@ -121,7 +121,7 @@ export default function Register() {
                                                 type={showPassword ? 'text' : 'password'}
                                                 name="password"
                                                 value={data.password}
-                                                className="w-full px-4 py-4 pr-12 bg-gradient-to-r from-pink-50 to-yellow-50 border-3 border-pink-200 rounded-2xl focus:outline-none focus:ring-0 focus:border-pink-400 focus:bg-white transition-all duration-300 hover:border-pink-300 font-semibold"
+                                                className="w-full px-4 py-4 pr-12 bg-purple-50 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                                 autoComplete="new-password"
                                                 onChange={(e) => setData('password', e.target.value)}
                                                 required
@@ -142,7 +142,7 @@ export default function Register() {
                                     <div className="group">
                                         <InputLabel
                                             htmlFor="password_confirmation"
-                                            value="✔️ Confirmar contraseña"
+                                            value="Confirmar contraseña"
                                             className="block text-sm font-bold text-gray-700 mb-2"
                                         />
                                         <div className="relative">
@@ -151,7 +151,7 @@ export default function Register() {
                                                 type={showPasswordConfirm ? 'text' : 'password'}
                                                 name="password_confirmation"
                                                 value={data.password_confirmation}
-                                                className="w-full px-4 py-4 pr-12 bg-gradient-to-r from-purple-50 to-pink-50 border-3 border-purple-200 rounded-2xl focus:outline-none focus:ring-0 focus:border-purple-400 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
+                                                className="w-full px-4 py-4 pr-12 bg-purple-50 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                                 autoComplete="new-password"
                                                 onChange={(e) =>
                                                     setData('password_confirmation', e.target.value)
@@ -187,11 +187,10 @@ export default function Register() {
                                         </Link>
 
                                         <PrimaryButton
-                                            className="text-white py-4 px-8 rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-4 border-white font-black text-lg order-1 sm:order-2 w-full sm:w-auto"
-                                            style={{ backgroundColor: '#65DA4D' }}
+                                            className="text-white py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 font-black text-lg order-1 sm:order-2 w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border-0"
                                             disabled={processing}
                                         >
-                                            ✨ Crear cuenta
+                                            Crear cuenta
                                         </PrimaryButton>
                                     </div>
                                 </form>
@@ -208,11 +207,11 @@ export default function Register() {
                 </div>
 
                 {/* Columna derecha (info) */}
-                <div className="hidden lg:flex lg:w-1/2 justify-center bg-gradient-to-br from-green-400 via-yellow-400 to-pink-400 relative overflow-hidden text-white">
+                <div className="hidden lg:flex lg:w-1/2 justify-center bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 relative overflow-hidden text-white">
                     <div className="absolute inset-0 bg-white/5"></div>
-                    <div className="absolute top-20 left-20 w-32 h-32 bg-cyan-300/30 rounded-full blur-xl animate-pulse"></div>
-                    <div className="absolute bottom-20 right-20 w-40 h-40 bg-purple-300/30 rounded-full blur-2xl animate-pulse"></div>
-                    <div className="absolute top-40 right-40 w-24 h-24 bg-pink-300/30 rounded-full blur-xl"></div>
+                    <div className="absolute top-20 left-20 w-32 h-32 bg-purple-300/30 rounded-full blur-xl animate-pulse"></div>
+                    <div className="absolute bottom-20 right-20 w-40 h-40 bg-pink-300/30 rounded-full blur-2xl animate-pulse"></div>
+                    <div className="absolute top-40 right-40 w-24 h-24 bg-blue-300/30 rounded-full blur-xl"></div>
 
                     <div className="relative z-10 flex flex-col justify-center items-center p-12 text-center" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
                         <div className="mb-8">
@@ -224,7 +223,7 @@ export default function Register() {
                                     className="w-64 h-32 mx-auto drop-shadow-2xl"
                                 />
                             </div>
-                            <h2 className="text-5xl font-black mb-4 drop-shadow-lg">¡Bienvenido! 🎉</h2>
+                            <h2 className="text-5xl font-black mb-4 drop-shadow-lg">¡Bienvenido!</h2>
                             <p className="text-xl font-semibold">
                                 Crea tu cuenta y comienza la aventura
                             </p>
@@ -233,7 +232,9 @@ export default function Register() {
                         <div className="space-y-4 max-w-md w-full">
                             <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-2xl p-5 border-2 border-white/30 shadow-xl">
                                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg">
-                                    🛒
+                                    <svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
                                 </div>
                                 <div className="text-left">
                                     <h3 className="font-black text-lg">Compras seguras</h3>
@@ -242,7 +243,9 @@ export default function Register() {
                             </div>
                             <div className="flex items-center space-x-4 bg-white/20 backdrop-blur-sm rounded-2xl p-5 border-2 border-white/30 shadow-xl">
                                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg">
-                                    🎈
+                                    <svg className="w-6 h-6 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                                    </svg>
                                 </div>
                                 <div className="text-left">
                                     <h3 className="font-black text-lg">Ofertas exclusivas</h3>

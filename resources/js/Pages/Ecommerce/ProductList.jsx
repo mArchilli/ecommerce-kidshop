@@ -78,9 +78,9 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
               <button
                 type="button"
                 onClick={() => handleFilter({})}
-                className="text-white px-4 sm:px-6 py-3 rounded-xl bg-cyan-500 font-bold hover:opacity-90 text-lg"
+                className="text-white px-4 sm:px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 font-bold hover:shadow-lg transition-all duration-200 text-sm"
               >
-                🔍
+                Buscar
               </button>
             </div>
 
@@ -89,19 +89,19 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
             <div className="hidden sm:flex gap-2 flex-wrap">
               {[
                 { value: '', label: 'Por defecto' },
-                { value: 'price_asc', label: '💵 Precio ↑' },
-                { value: 'price_desc', label: '💰 Precio ↓' },
-                { value: 'newest', label: '✨ Nuevos' },
-                { value: 'oldest', label: '📅 Antiguos' },
+                { value: 'price_asc', label: 'Precio ↑' },
+                { value: 'price_desc', label: 'Precio ↓' },
+                { value: 'newest', label: 'Nuevos' },
+                { value: 'oldest', label: 'Antiguos' },
               ].map(opt => (
                 <button
                   key={opt.value || 'default'}
                   type="button"
                   onClick={() => { setSort(opt.value); handleFilter({}); }}
-                  className={`px-4 py-3 rounded-xl border-2 text-sm font-bold transition-all hover:scale-105 ${
+                  className={`px-4 py-2.5 rounded-lg border text-sm font-semibold transition-all ${
                     sort === opt.value
-                      ? 'text-white border-white shadow-lg scale-105 bg-cyan-500'
-                      : 'bg-white text-black border-cyan-300 hover:bg-cyan-50'
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
                   }`}
                 >
                   {opt.label}
@@ -112,13 +112,13 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
               <select
                 value={sort}
                 onChange={(e) => { setSort(e.target.value); handleFilter({}); }}
-                className="w-full rounded-xl border-2 border-cyan-300 px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-cyan-200 focus:border-cyan-400"
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
               >
-                <option value="">↕️ Ordenar por...</option>
-                <option value="price_asc">💵 Precio: menor a mayor</option>
-                <option value="price_desc">💰 Precio: mayor a menor</option>
-                <option value="newest">✨ Más nuevos</option>
-                <option value="oldest">📅 Más antiguos</option>
+                <option value="">Ordenar por...</option>
+                <option value="price_asc">Precio: menor a mayor</option>
+                <option value="price_desc">Precio: mayor a menor</option>
+                <option value="newest">Más nuevos</option>
+                <option value="oldest">Más antiguos</option>
               </select>
             </div>
           </div>
@@ -143,10 +143,9 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
               {products.data.map((product, idx) => (
                 <div 
                   key={product.id} 
-                  className="bg-gradient-to-br from-white to-neutral-50 shadow-lg rounded-3xl overflow-hidden transition-all duration-300 transform hover:shadow-2xl hover:scale-105 flex flex-col border-4 border-white"
+                  className="bg-white shadow-md rounded-2xl overflow-hidden transition-all duration-300 transform hover:shadow-xl hover:-translate-y-1 flex flex-col border border-gray-100"
                   data-aos="fade-up"
                   data-aos-delay="200"
-                  style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}
                 >
                   <div className="w-full relative aspect-square bg-gradient-to-br from-cyan-50 to-purple-50">
                     <img 
@@ -158,9 +157,9 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                     {/* Badge de oferta con descuento - más grande y llamativo */}
                     {product.active_offer && (
                       <div className="absolute top-3 right-3 z-10">
-                        <div className="rounded-2xl px-4 py-2 shadow-xl font-black text-white text-base animate-pulse border-4 border-white"
-                          style={{ backgroundColor: '#FF6B9D' }}>
-                          🎉 -{Math.round(product.active_offer.discount_percentage)}%
+                        <div className="rounded-lg px-3 py-1.5 shadow-lg font-bold text-white text-sm bg-gradient-to-r from-pink-500 to-rose-500"
+                        >
+                          -{Math.round(product.active_offer.discount_percentage)}% OFF
                         </div>
                       </div>
                     )}
@@ -188,29 +187,24 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                       {product.name}
                     </h3>
                     
-                    {/* Género con icono */}
+                    {/* Género */}
                     <div className="mb-3">
-                      <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border-2 border-purple-200 shadow-md"
-                        style={{ backgroundColor: '#f3e8ff' }}>
-                        <span className="text-lg">👶</span>
-                        <span className="font-bold text-sm" style={{ color: '#9B59B6' }}>
-                          {product.gender.name}
-                        </span>
-                      </div>
+                      <span className="inline-block px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                        {product.gender.name}
+                      </span>
                     </div>
 
-                    {/* Categorías con iconos */}
+                    {/* Categorías */}
                     {product.categories && product.categories.length > 0 && (
                       <div className="mb-3">
                         <div className="flex items-center gap-1 mb-2">
-                          <span className="text-sm font-bold text-gray-600">📂 Categorías:</span>
+                          <span className="text-xs font-semibold text-gray-500 uppercase">Categorías</span>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1.5">
                           {product.categories.map((category, idx) => (
                             <span 
                               key={`${category.id}-${idx}`} 
-                              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white shadow-md border-2 border-green-200"
-                              style={{ backgroundColor: '#65DA4D' }}
+                              className="px-2.5 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700"
                             >
                               {category.name}
                             </span>
@@ -223,14 +217,13 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                     {product.colors && product.colors.length > 0 && (
                       <div className="mb-3">
                         <div className="flex items-center gap-1 mb-2">
-                          <span className="text-sm font-bold text-gray-600">🎨 Colores:</span>
+                          <span className="text-xs font-semibold text-gray-500 uppercase">Colores</span>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1.5">
                           {product.colors.map((color, idx) => (
                             <span 
                               key={`${color.id}-${idx}`} 
-                              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white shadow-md border-2 border-red-200"
-                              style={{ backgroundColor: '#FC1C1D' }}
+                              className="px-2.5 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-700"
                             >
                               {color.name}
                             </span>
@@ -243,14 +236,13 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                     {product.sizes && product.sizes.length > 0 && (
                       <div className="mb-4">
                         <div className="flex items-center gap-1 mb-2">
-                          <span className="text-sm font-bold text-gray-600">📏 Talles:</span>
+                          <span className="text-xs font-semibold text-gray-500 uppercase">Talles</span>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1.5">
                           {product.sizes.slice(0, 6).map((size, idx) => (
                             <span
                               key={`size-${product.id}-${size.id}`}
-                              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white shadow-md border-2 border-yellow-200"
-                              style={{ backgroundColor: '#FFB800' }}
+                              className="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-100 text-amber-700"
                             >
                               {size.name}
                             </span>
@@ -258,8 +250,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                           {product.sizes.length > 6 && (
                             <span
                               title={product.sizes.slice(6).map(s => s.name).join(', ')}
-                              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white shadow-md border-2 border-yellow-200 cursor-help"
-                              style={{ backgroundColor: '#FFB800' }}
+                              className="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-100 text-amber-700 cursor-help"
                             >
                               +{product.sizes.length - 6}
                             </span>
@@ -268,27 +259,25 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                       </div>
                     )}
                     
-                    {/* Precios con diseño mejorado */}
-                    <div className="mt-auto pt-4 border-t-2 border-dashed border-gray-200">
+                    {/* Precios */}
+                    <div className="mt-auto pt-4 border-t border-gray-200">
                       {product.active_offer ? (
-                        <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-end justify-between mb-3">
                           <div className="flex flex-col">
-                            <p className="text-sm text-gray-500 font-semibold mb-1">Precio anterior:</p>
-                            <p className="text-lg text-gray-400 line-through font-bold">
+                            <p className="text-xs text-gray-500 mb-0.5">Antes:</p>
+                            <p className="text-base text-gray-400 line-through font-medium">
                               ${Number(product.price).toLocaleString('es-AR')}
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm font-bold mb-1" style={{ color: '#FF6B9D' }}>¡OFERTA!</p>
-                            <p className="text-3xl font-black" style={{ color: '#FF6B9D' }}>
+                            <p className="text-2xl font-bold text-pink-600">
                               ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
                             </p>
                           </div>
                         </div>
                       ) : (
                         <div className="mb-3">
-                          <p className="text-sm text-gray-600 font-semibold mb-1">Precio:</p>
-                          <p className="text-3xl font-black text-gray-900">
+                          <p className="text-2xl font-bold text-gray-900">
                             ${Number(product.price).toLocaleString('es-AR')}
                           </p>
                         </div>
@@ -296,10 +285,9 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                       
                       <Link 
                         href={`/products/${product.id}`} 
-                        className="w-full block text-center text-white px-6 py-4 rounded-2xl font-black text-lg transition-all duration-300 hover:scale-105 shadow-lg border-4 border-white"
-                        style={{ backgroundColor: '#65DA4D' }}
+                        className="w-full block text-center text-white px-6 py-3 rounded-lg font-semibold text-base transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                       >
-                        👀 Ver Producto
+                        Ver Producto
                       </Link>
                     </div>
                   </div>
@@ -315,9 +303,9 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                   .replace('&raquo;', '→')
                   .replace(/&.*?;/g, (m) => m);
                 
-                // Reemplazar flechas por emojis en primer y último botón
-                if (idx === 0) label = '⬅️ Anterior';
-                if (idx === products.links.length - 1) label = 'Siguiente ➡️';
+                // Mantener etiquetas simples
+                if (idx === 0) label = '← Anterior';
+                if (idx === products.links.length - 1) label = 'Siguiente →';
                 
                 return (
                   <button
@@ -325,14 +313,13 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                     type="button"
                     disabled={!link.url || link.active}
                     onClick={() => handlePagination(link.url)}
-                    className={`px-4 py-3 rounded-2xl font-bold text-base transition-all duration-300 shadow-md border-3 ${
+                    className={`px-4 py-2 rounded-lg font-medium text-sm transition-all border ${
                       link.active
-                        ? 'text-white border-white shadow-xl scale-110 transform'
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
                         : link.url
-                          ? 'bg-white text-gray-700 border-purple-200 hover:border-purple-400 hover:scale-105 hover:shadow-lg'
+                          ? 'bg-white text-gray-700 border-gray-300 hover:border-purple-400 hover:bg-purple-50'
                           : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-50'
                     }`}
-                    style={link.active ? { backgroundColor: '#65DA4D' } : {}}
                   >
                     {label}
                   </button>

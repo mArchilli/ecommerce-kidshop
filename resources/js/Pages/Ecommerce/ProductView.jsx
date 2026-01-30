@@ -112,41 +112,31 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
       <Head title={product.name} />
       <style>{floatingAnimation}</style>
       
-      {/* Fondo con gradiente infantil */}
-      <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-pink-50 to-sky-50 relative overflow-hidden">
-        {/* Elementos decorativos flotantes */}
-        <div className="absolute top-10 left-10 text-6xl opacity-20 animate-floating pointer-events-none hidden md:block">⭐</div>
-        <div className="absolute top-40 right-20 text-5xl opacity-20 animate-floating pointer-events-none hidden md:block" style={{ animationDelay: '1s' }}>🎈</div>
-        <div className="absolute bottom-20 left-1/4 text-4xl opacity-20 animate-floating pointer-events-none hidden md:block" style={{ animationDelay: '0.5s' }}>☁️</div>
-        <div className="absolute bottom-40 right-1/3 text-5xl opacity-20 animate-floating pointer-events-none hidden md:block" style={{ animationDelay: '1.5s' }}>🌟</div>
+      {/* Fondo con gradiente suave */}
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 relative overflow-hidden">
 
         <div className="max-w-7xl mx-auto px-4 py-6 sm:py-10 lg:px-8 relative z-10">
-          {/* Botón para volver atrás - Rediseñado */}
+          {/* Botón para volver atrás */}
           <div className="mb-6">
             <button
               onClick={handleGoBack}
-              className="inline-flex items-center px-5 py-3 rounded-xl font-bold shadow-lg transform hover:scale-105 transition-all duration-300 border-3"
-              style={{ 
-                backgroundColor: '#29C9F4',
-                color: 'white',
-                borderWidth: '3px',
-                borderColor: 'white'
-              }}
+              className="inline-flex items-center px-5 py-2.5 rounded-lg font-semibold bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md hover:shadow-lg transition-all duration-200"
             >
-              <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+              <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-               Volver al Catálogo
+              Volver al Catálogo
             </button>
           </div>
 
           {/* Notificación de añadido al carrito */}
           {addedToCart && (
             <div className="fixed top-20 right-4 z-50 animate-bounce-in">
-              <div className="rounded-2xl border-4 border-white shadow-2xl px-6 py-4 flex items-center gap-3"
-                style={{ backgroundColor: '#65DA4D' }}>
-                <span className="text-3xl">✅</span>
-                <div className="text-white font-bold">
+              <div className="rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 shadow-2xl px-6 py-4 flex items-center gap-3 text-white">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <div className="font-semibold">
                   ¡Añadido al carrito!
                 </div>
               </div>
@@ -154,39 +144,37 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
           )}
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
-            {/* Sección de imágenes - Rediseñada */}
+            {/* Selección de imágenes */}
             <div className="space-y-4">
-              {/* Imagen principal con marco divertido */}
+              {/* Imagen principal */}
               <div
-                className="relative rounded-3xl overflow-hidden border-4 border-white shadow-2xl bg-white p-2 transform hover:scale-[1.02] transition-transform duration-300"
+                className="relative rounded-2xl overflow-hidden border border-gray-200 shadow-lg bg-white hover:shadow-xl transition-shadow duration-300"
                 style={{ aspectRatio: '1/1' }}
               >
-                <div className="rounded-2xl overflow-hidden h-full">
-                  <img
-                    ref={mainImgRef}
-                    src={orderedImages.length > 0 ? getImageSrc(orderedImages[activeImage]) : '/placeholder.svg'}
-                    alt={product.name}
-                    className="w-full h-full object-cover object-center cursor-zoom-in"
-                    onClick={handleImageClick}
-                    draggable={false}
-                  />
-                </div>
+                <img
+                  ref={mainImgRef}
+                  src={orderedImages.length > 0 ? getImageSrc(orderedImages[activeImage]) : '/placeholder.svg'}
+                  alt={product.name}
+                  className="w-full h-full object-cover object-center cursor-zoom-in"
+                  onClick={handleImageClick}
+                  draggable={false}
+                />
                 {/* Badge de zoom */}
-                <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border-2 border-pink-300">
-                  <span className="text-sm font-bold" style={{ color: '#FF6B9D' }}>🔍 Click para ampliar</span>
+                <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1.5 shadow-md">
+                  <span className="text-xs font-semibold text-gray-700">Click para ampliar</span>
                 </div>
               </div>
 
-              {/* Miniaturas con estilo infantil */}
+              {/* Miniaturas */}
               <div className="grid grid-cols-3 gap-3">
                 {orderedImages.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveImage(index)}
-                    className={`relative rounded-2xl overflow-hidden border-4 transition-all duration-300 transform hover:scale-105 ${
+                    className={`relative rounded-lg overflow-hidden border-2 transition-all duration-200 ${
                       activeImage === index 
-                        ? "border-pink-400 shadow-lg scale-105" 
-                        : "border-white shadow-md hover:border-cyan-300"
+                        ? "border-purple-500 shadow-md ring-2 ring-purple-200" 
+                        : "border-gray-200 hover:border-purple-300"
                     }`}
                     style={{ aspectRatio: '1/1' }}
                   >
@@ -195,53 +183,46 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                       alt={`${product.name} - Vista ${index + 1}`}
                       className="w-full h-full object-cover object-center"
                     />
-                    {activeImage === index && (
-                      <div className="absolute inset-0 bg-pink-400/20 flex items-center justify-center">
-                        <span className="text-3xl animate-bounce">✨</span>
-                      </div>
-                    )}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Información del producto - Rediseñada */}
+            {/* Información del producto */}
             <div className="space-y-5">
               {/* Card principal del producto */}
-              <div className="rounded-3xl border-4 border-white bg-white/80 backdrop-blur-sm p-6 shadow-2xl">
+              <div className="rounded-2xl border border-gray-200 bg-white shadow-lg p-6">
                 {/* Título y badge de oferta */}
                 <div className="space-y-3">
-                  <h1 className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-cyan-600 to-pink-600 bg-clip-text text-transparent leading-tight">
+                  <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">
                     {product.name}
                   </h1>
                   
                   {product.active_offer && (
-                    <div className="inline-block animate-wiggle">
+                    <div className="inline-block">
                       <span 
-                        className="rounded-full px-5 py-2.5 shadow-lg font-black text-white text-base border-4 border-white inline-flex items-center gap-2"
-                        style={{ backgroundColor: '#FF6B9D' }}
+                        className="rounded-lg px-4 py-2 shadow-md font-bold text-white text-sm bg-gradient-to-r from-pink-500 to-rose-500"
                       >
-                        <span className="text-2xl">🔥</span>
-                        ¡{Math.round(product.active_offer.discount_percentage)}% OFF!
+                        {Math.round(product.active_offer.discount_percentage)}% OFF
                       </span>
                     </div>
                   )}
 
-                  {/* Precios con diseño llamativo */}
+                  {/* Precios */}
                   {product.active_offer ? (
                     <div className="flex flex-wrap items-baseline gap-3">
-                      <p className="text-5xl font-black" style={{ color: '#FF6B9D' }}>
+                      <p className="text-4xl font-bold text-pink-600">
                         ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
                       </p>
-                      <p className="text-2xl text-gray-400 line-through font-bold">
+                      <p className="text-xl text-gray-400 line-through font-medium">
                         ${Number(product.price).toLocaleString('es-AR')}
                       </p>
-                      <span className="text-sm font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full">
-                        ¡Ahorrás ${(Number(product.price) - Number(product.active_offer.discount_price)).toLocaleString('es-AR')}!
+                      <span className="text-xs font-semibold text-green-700 bg-green-100 px-3 py-1 rounded-full">
+                        Ahorrás ${(Number(product.price) - Number(product.active_offer.discount_price)).toLocaleString('es-AR')}
                       </span>
                     </div>
                   ) : (
-                    <p className="text-4xl sm:text-5xl font-black" style={{ color: '#29C9F4' }}>
+                    <p className="text-4xl font-bold text-gray-900">
                       ${Number(product.price).toLocaleString('es-AR')}
                     </p>
                   )}
@@ -249,33 +230,30 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
               </div>
 
               {/* Descripción */}
-              <div className="rounded-2xl border-4 border-white bg-white/60 backdrop-blur-sm p-5 shadow-lg">
-                <p className="text-base text-gray-700 leading-relaxed">{product.description}</p>
+              <div className="rounded-2xl border border-gray-200 bg-white shadow-md p-5">
+                <p className="text-sm text-gray-700 leading-relaxed">{product.description}</p>
               </div>
 
               {/* Etiquetas de categorías, género y colores */}
-              <div className="rounded-2xl border-4 border-white bg-white/60 backdrop-blur-sm p-5 shadow-lg">
-                <h3 className="text-sm font-black mb-3 flex items-center gap-2" style={{ color: '#65DA4D' }}>
-                  <span className="text-xl">🏷️</span>
-                  ETIQUETAS
+              <div className="rounded-2xl border border-gray-200 bg-white shadow-md p-5">
+                <h3 className="text-xs font-semibold mb-3 text-gray-500 uppercase">
+                  Etiquetas
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {/* Género */}
                   <span 
-                    className="px-4 py-2 rounded-full text-sm font-bold text-white border-2 border-white shadow-md"
-                    style={{ backgroundColor: '#9B59B6' }}
+                    className="px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700"
                   >
-                    👤 {product.gender.name}
+                    {product.gender.name}
                   </span>
 
                   {/* Categorías */}
                   {product.categories && product.categories.map((category) => (
                     <span
                       key={category.id}
-                      className="px-4 py-2 rounded-full text-sm font-bold text-white border-2 border-white shadow-md"
-                      style={{ backgroundColor: '#29C9F4' }}
+                      className="px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700"
                     >
-                      📂 {category.name}
+                      {category.name}
                     </span>
                   ))}
 
@@ -283,14 +261,10 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                   {product.colors && product.colors.map((color) => (
                     <span
                       key={color.id}
-                      className="px-4 py-2 rounded-full text-sm font-bold border-2 border-white shadow-md flex items-center gap-2"
-                      style={{ 
-                        backgroundColor: color.name,
-                        color: ['white', 'yellow', 'cyan', 'pink', 'lightgray'].includes(color.name.toLowerCase()) ? '#000' : '#fff'
-                      }}
+                      className="px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 flex items-center gap-1.5"
                     >
                       <span
-                        className="w-4 h-4 rounded-full border-2 border-white"
+                        className="w-3 h-3 rounded-full border border-gray-300"
                         style={{ backgroundColor: color.name }}
                       ></span>
                       {color.name}
@@ -299,26 +273,21 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                 </div>
               </div>
 
-              {/* Selección de talle - Rediseñada */}
-              <div className="rounded-2xl border-4 border-white bg-white/80 backdrop-blur-sm p-5 shadow-lg">
-                <h3 className="text-base font-black mb-4 flex items-center gap-2" style={{ color: '#FFB800' }}>
-                  <span className="text-2xl">📏</span>
-                  ELEGÍ TU TALLE
+              {/* Selección de talle */}
+              <div className="rounded-2xl border border-gray-200 bg-white shadow-md p-5">
+                <h3 className="text-sm font-semibold mb-4 text-gray-700">
+                  Elegí tu talle
                 </h3>
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                   {product.sizes.map((size) => (
                     <button
                       key={size.id}
                       onClick={() => handleSizeClick(size)}
-                      className={`py-4 rounded-xl text-center text-lg font-black border-4 transition-all duration-300 transform hover:scale-110 ${
+                      className={`py-3 rounded-lg text-center text-sm font-semibold border-2 transition-all ${
                         data.size === size.name
-                          ? "text-white shadow-2xl scale-110"
-                          : "bg-white text-gray-700 border-pink-200 hover:border-pink-400 shadow-md"
+                          ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md"
+                          : "bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50"
                       }`}
-                      style={data.size === size.name ? { 
-                        backgroundColor: '#FF6B9D',
-                        borderColor: 'white'
-                      } : {}}
                     >
                       {size.name}
                     </button>
@@ -326,61 +295,59 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                 </div>
               </div>
 
-              {/* Cantidad - Solo aparece después de seleccionar talle */}
+              {/* Cantidad */}
               {data.size && (
                 <div
-                  className={`rounded-2xl border-4 border-white bg-white/80 backdrop-blur-sm p-5 shadow-lg transition-all duration-500 ${
+                  className={`rounded-2xl border border-gray-200 bg-white shadow-md p-5 transition-all duration-500 ${
                     showQuantity ? "opacity-100 transform translate-y-0" : "opacity-0 transform -translate-y-4"
                   }`}
                 >
-                  <h3 className="text-base font-black mb-4 flex items-center gap-2" style={{ color: '#65DA4D' }}>
-                    <span className="text-2xl">🔢</span>
-                    CANTIDAD
+                  <h3 className="text-sm font-semibold mb-4 text-gray-700">
+                    Cantidad
                   </h3>
                   <div className="flex items-center justify-center gap-4">
                     <button
                       onClick={() => data.quantity > 1 && setData('quantity', data.quantity - 1)}
-                      className="w-14 h-14 rounded-full font-black text-2xl text-white flex items-center justify-center shadow-lg transform hover:scale-110 transition-all duration-300 border-4 border-white"
-                      style={{ backgroundColor: '#FC1C1D' }}
+                      className="w-10 h-10 rounded-lg font-semibold text-lg bg-gradient-to-r from-red-500 to-rose-500 text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all disabled:opacity-50"
                       disabled={data.quantity <= 1}
                     >
                       −
                     </button>
-                    <div className="bg-white rounded-2xl border-4 px-8 py-3 shadow-lg" style={{ borderColor: '#29C9F4' }}>
-                      <span className="text-3xl font-black" style={{ color: '#29C9F4' }}>
+                    <div className="bg-gray-100 rounded-lg border-2 border-purple-300 px-6 py-2">
+                      <span className="text-2xl font-bold text-gray-900">
                         {data.quantity}
                       </span>
                     </div>
                     <button
                       onClick={() => data.quantity < sizeStock() && setData('quantity', data.quantity + 1)}
-                      className="w-14 h-14 rounded-full font-black text-2xl text-white flex items-center justify-center shadow-lg transform hover:scale-110 transition-all duration-300 border-4 border-white"
-                      style={{ backgroundColor: '#65DA4D' }}
+                      className="w-10 h-10 rounded-lg font-semibold text-lg bg-gradient-to-r from-green-500 to-emerald-500 text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all disabled:opacity-50"
                       disabled={data.quantity >= sizeStock()}
                     >
                       +
                     </button>
                   </div>
-                  <p className="text-center mt-3 text-sm font-bold text-gray-600">
-                    Stock disponible: <span style={{ color: '#65DA4D' }}>{sizeStock()} unidades</span>
+                  <p className="text-center mt-3 text-xs text-gray-600">
+                    Stock disponible: <span className="font-semibold text-green-600">{sizeStock()} unidades</span>
                   </p>
                 </div>
               )}
 
-              {/* Botón de agregar al carrito - Rediseñado */}
-              <div className="space-y-4">
+              {/* Botón de agregar al carrito */}
+              <div className="space-y-3">
                 <button
                   onClick={handleAddToCart}
-                  className="w-full py-5 rounded-2xl font-black text-xl text-white border-4 border-white shadow-2xl transform hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3"
-                  style={{ backgroundColor: '#65DA4D' }}
+                  className="w-full py-4 rounded-lg font-semibold text-base text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={!data.size || data.quantity < 1 || processing}
                 >
-                  <span className="text-3xl">🛒</span>
-                  {processing ? '¡Agregando...' : '¡AGREGAR AL CARRITO!'}
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  {processing ? 'Agregando...' : 'Agregar al carrito'}
                 </button>
 
                 {!data.size && (
-                  <p className="text-center text-sm font-bold animate-bounce" style={{ color: '#FF6B9D' }}>
-                    ⬆️ ¡Primero elegí un talle!
+                  <p className="text-center text-xs font-semibold text-pink-600">
+                    Primero elegí un talle
                   </p>
                 )}
               </div>
@@ -393,10 +360,10 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
           {relatedProducts && relatedProducts.length > 0 && (
             <div className="mt-16 mb-12">
               <div className="text-center mb-8">
-                <h2 className="text-4xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent inline-block mb-3">
-                  ¡Te puede interesar! 🎯
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                  Te puede interesar
                 </h2>
-                <p className="text-lg font-bold text-gray-600">Otros productos que te encantarán</p>
+                <p className="text-sm text-gray-600">Otros productos que te encantarán</p>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -406,8 +373,8 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                     href={`/products/${relatedProduct.id}`}
                     className="group"
                   >
-                    <div className="bg-white rounded-3xl border-4 border-white shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
-                      <div className="relative aspect-square bg-gradient-to-br from-cyan-50 to-purple-50">
+                    <div className="bg-white rounded-2xl border border-gray-200 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                      <div className="relative aspect-square bg-gradient-to-br from-purple-50 to-pink-50">
                         <img
                           src={getImageSrc(relatedProduct.images?.[0])}
                           alt={relatedProduct.name}
@@ -415,20 +382,19 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                         />
                         {relatedProduct.active_offer && (
                           <div className="absolute top-2 right-2">
-                            <span className="rounded-xl px-3 py-1 shadow-lg font-black text-white text-xs border-2 border-white"
-                              style={{ backgroundColor: '#FF6B9D' }}>
+                            <span className="rounded-lg px-2.5 py-1 shadow-md font-bold text-white text-xs bg-gradient-to-r from-pink-500 to-rose-500">
                               -{Math.round(relatedProduct.active_offer.discount_percentage)}%
                             </span>
                           </div>
                         )}
                       </div>
                       <div className="p-4">
-                        <h3 className="font-black text-lg text-gray-900 mb-2 line-clamp-2 group-hover:text-cyan-600 transition-colors">
+                        <h3 className="font-semibold text-base text-gray-900 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
                           {relatedProduct.name}
                         </h3>
                         {relatedProduct.active_offer ? (
                           <div className="flex items-baseline gap-2">
-                            <p className="text-2xl font-black" style={{ color: '#FF6B9D' }}>
+                            <p className="text-xl font-bold text-pink-600">
                               ${Number(relatedProduct.active_offer.discount_price).toLocaleString('es-AR')}
                             </p>
                             <p className="text-sm text-gray-400 line-through">
@@ -436,7 +402,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                             </p>
                           </div>
                         ) : (
-                          <p className="text-2xl font-black" style={{ color: '#29C9F4' }}>
+                          <p className="text-xl font-bold text-gray-900">
                             ${Number(relatedProduct.price).toLocaleString('es-AR')}
                           </p>
                         )}
@@ -451,11 +417,11 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
           {/* Sección de Productos en Oferta */}
           {offersProducts && offersProducts.length > 0 && (
             <div className="mt-16 mb-12">
-              <div className="text-center mb-8 animate-wiggle">
-                <h2 className="text-4xl font-black bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent inline-block mb-3">
-                  ¡SÚPER OFERTAS! 🔥
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                  Súper Ofertas
                 </h2>
-                <p className="text-lg font-bold text-gray-600">¡Aprovechá estos descuentos increíbles!</p>
+                <p className="text-sm text-gray-600">Aprovechá estos descuentos increíbles</p>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -465,38 +431,32 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                     href={`/products/${offerProduct.id}`}
                     className="group"
                   >
-                    <div className="bg-gradient-to-br from-pink-50 to-red-50 rounded-3xl border-4 shadow-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
-                      style={{ borderColor: '#FF6B9D' }}>
-                      <div className="relative aspect-square bg-gradient-to-br from-pink-100 to-red-100">
+                    <div className="bg-white rounded-2xl border-2 border-pink-200 shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                      <div className="relative aspect-square bg-gradient-to-br from-pink-50 to-rose-50">
                         <img
                           src={getImageSrc(offerProduct.images?.[0])}
                           alt={offerProduct.name}
                           className="w-full h-full object-cover"
                         />
-                        <div className="absolute top-2 right-2 animate-pulse">
-                          <span className="rounded-2xl px-4 py-2 shadow-xl font-black text-white text-base border-4 border-white flex items-center gap-1"
-                            style={{ backgroundColor: '#FF6B9D' }}>
-                            <span className="text-xl">🎉</span>
-                            -{Math.round(offerProduct.active_offer.discount_percentage)}%
+                        <div className="absolute top-2 right-2">
+                          <span className="rounded-lg px-3 py-1.5 shadow-lg font-bold text-white text-sm bg-gradient-to-r from-pink-500 to-rose-500">
+                            -{Math.round(offerProduct.active_offer.discount_percentage)}% OFF
                           </span>
-                        </div>
-                        <div className="absolute top-2 left-2">
-                          <span className="text-3xl animate-bounce">🔥</span>
                         </div>
                       </div>
                       <div className="p-4 bg-white">
-                        <h3 className="font-black text-lg text-gray-900 mb-2 line-clamp-2 group-hover:text-pink-600 transition-colors">
+                        <h3 className="font-semibold text-base text-gray-900 mb-2 line-clamp-2 group-hover:text-pink-600 transition-colors">
                           {offerProduct.name}
                         </h3>
                         <div className="flex flex-col gap-1">
-                          <p className="text-2xl font-black" style={{ color: '#FF6B9D' }}>
+                          <p className="text-xl font-bold text-pink-600">
                             ${Number(offerProduct.active_offer.discount_price).toLocaleString('es-AR')}
                           </p>
                           <div className="flex items-center gap-2">
-                            <p className="text-sm text-gray-400 line-through font-bold">
+                            <p className="text-sm text-gray-400 line-through">
                               ${Number(offerProduct.price).toLocaleString('es-AR')}
                             </p>
-                            <span className="text-xs font-black text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                            <span className="text-xs font-semibold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">
                               Ahorrás ${(Number(offerProduct.price) - Number(offerProduct.active_offer.discount_price)).toLocaleString('es-AR')}
                             </span>
                           </div>
@@ -511,29 +471,22 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
         </div>
       </div>
 
-      {/* Modal de previsualización - Rediseñado */}
+      {/* Modal de previsualización */}
       {isPreviewOpen && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black/90 backdrop-blur-sm modal-bg z-[9999]"
           onClick={handleModalClick}
         >
           <div className="relative flex items-center justify-center w-full h-full p-4">
-            {/* Botón de cerrar con estilo infantil */}
+            {/* Botón de cerrar */}
             <button
               onClick={handleClosePreview}
-              className="fixed top-4 right-4 sm:top-8 sm:right-8 text-white font-black rounded-full p-3 z-[10001] shadow-2xl transform hover:scale-110 hover:rotate-90 transition-all duration-300 border-4 border-white"
-              style={{ 
-                backgroundColor: '#FC1C1D',
-                fontSize: '2rem',
-                width: '4rem',
-                height: '4rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
+              className="fixed top-4 right-4 sm:top-8 sm:right-8 text-white font-bold rounded-lg p-2 z-[10001] shadow-2xl hover:bg-white/10 transition-all bg-black/30"
               aria-label="Cerrar"
             >
-              ✕
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
 
             {/* Controles de navegación entre imágenes */}
@@ -544,11 +497,10 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                     e.stopPropagation();
                     setActiveImage((prev) => (prev > 0 ? prev - 1 : orderedImages.length - 1));
                   }}
-                  className="fixed left-4 sm:left-8 text-white font-black rounded-full p-4 z-[10001] shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-white"
-                  style={{ backgroundColor: '#29C9F4' }}
+                  className="fixed left-4 sm:left-8 text-white font-bold rounded-lg p-3 z-[10001] shadow-2xl hover:bg-white/10 transition-all bg-black/30"
                   aria-label="Anterior"
                 >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
@@ -557,25 +509,24 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                     e.stopPropagation();
                     setActiveImage((prev) => (prev < orderedImages.length - 1 ? prev + 1 : 0));
                   }}
-                  className="fixed right-4 sm:right-8 text-white font-black rounded-full p-4 z-[10001] shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-white"
-                  style={{ backgroundColor: '#29C9F4' }}
+                  className="fixed right-4 sm:right-8 text-white font-bold rounded-lg p-3 z-[10001] shadow-2xl hover:bg-white/10 transition-all bg-black/30"
                   aria-label="Siguiente"
                 >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
               </>
             )}
 
-            {/* Imagen con marco decorativo */}
+            {/* Imagen */}
             <div className="relative max-w-[90vw] max-h-[80vh]">
-              <div className="rounded-3xl border-8 border-white shadow-2xl overflow-hidden bg-white p-2">
+              <div className="rounded-2xl border-4 border-white shadow-2xl overflow-hidden bg-white">
                 <img
                   ref={imgRef}
                   src={orderedImages.length > 0 ? getImageSrc(orderedImages[activeImage]) : '/placeholder.svg'}
                   alt={product.name}
-                  className="rounded-2xl w-auto h-auto max-w-full max-h-[70vh] object-contain"
+                  className="w-auto h-auto max-w-full max-h-[70vh] object-contain"
                   draggable={false}
                   style={{ userSelect: 'none' }}
                 />
@@ -591,12 +542,9 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                         e.stopPropagation();
                         setActiveImage(index);
                       }}
-                      className={`w-3 h-3 rounded-full border-2 border-white transition-all ${
-                        activeImage === index ? 'scale-125' : 'opacity-50'
+                      className={`w-2.5 h-2.5 rounded-full border-2 border-white transition-all ${
+                        activeImage === index ? 'scale-125 bg-white' : 'opacity-50 bg-gray-400'
                       }`}
-                      style={{ 
-                        backgroundColor: activeImage === index ? '#FF6B9D' : '#fff'
-                      }}
                     />
                   ))}
                 </div>
