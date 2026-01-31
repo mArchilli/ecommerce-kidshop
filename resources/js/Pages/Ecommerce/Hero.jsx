@@ -2,6 +2,13 @@ import React from 'react';
 import { Link } from '@inertiajs/react';
 
 const Hero = () => {
+  const scrollToWhatsApp = () => {
+    const whatsappSection = document.getElementById('whatsapp-section');
+    if (whatsappSection) {
+      whatsappSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   return (
     <div
       className="h-screen w-full flex items-center justify-center bg-cover bg-center relative z-0 px-8"
@@ -29,17 +36,17 @@ const Hero = () => {
         </p>
         <div className="flex gap-4">
           <Link
-            href="/catalogo"
+            href="/catalog"
             className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-white font-semibold rounded-full hover:from-blue-600 hover:to-cyan-500 transition-all shadow-lg hover:shadow-xl"
           >
             Ver catálogo de ropa
           </Link>
-          <Link
-            href="/contacto"
+          <button
+            onClick={scrollToWhatsApp}
             className="px-6 py-3 bg-white text-gray-800 font-semibold rounded-full hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl"
           >
             Contacta con nosotros
-          </Link>
+          </button>
         </div>
       </div>
     </div>

@@ -74,23 +74,26 @@ const Cart = ({ cart }) => {
     <EcommerceLayout>
       <Head title="Carrito de Compras" />
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header responsive: botón izq + título centrado (mobile),
-           y título izq + botón der (desktop) */}
-        <div className="mb-6 relative h-12 md:h-auto md:flex md:items-center md:justify-between">
-          <h1 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl font-bold text-center md:static md:translate-x-0 md:translate-y-0 md:text-left">
-            Carrito
-          </h1>
-          <button
-            onClick={handleGoBack}
-            className="absolute left-0 top-1/2 -translate-y-1/2 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200 md:static md:translate-y-0 md:ml-auto"
-          >
-            <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Volver
-          </button>
-        </div>
+      <div className="bg-gradient-to-br from-purple-50 via-pink-50 to-cyan-50 min-h-screen py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mb-4">
+              Mi Carrito
+            </h1>
+            <p className="text-gray-600 text-lg mb-6">
+              Revisa tus productos antes de finalizar la compra
+            </p>
+            <button
+              onClick={handleGoBack}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Volver
+            </button>
+          </div>
 
         {cart && cart.items && cart.items.length > 0 ? (
           <>
@@ -102,7 +105,7 @@ const Cart = ({ cart }) => {
                   {cart.items.map((item) => (
                     <div
                       key={item.id}
-                      className="bg-white border rounded-lg p-4 my-2 flex items-center gap-4 hover:shadow-md transition"
+                      className="bg-white/80 backdrop-blur-sm border-2 border-pink-200 rounded-2xl p-6 my-2 flex items-center gap-4 hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
                     >
                       <img
                         src={
@@ -111,11 +114,11 @@ const Cart = ({ cart }) => {
                             : '/placeholder.svg'
                         }
                         alt={item.product.name}
-                        className="w-24 h-24 object-cover rounded-md border"
+                        className="w-24 h-24 object-cover rounded-xl border-2 border-pink-200 shadow-sm"
                       />
                       <div className="flex-1">
                         <div className="flex items-start justify-between gap-3">
-                          <h3 className="text-base font-semibold text-gray-900">
+                          <h3 className="text-base font-bold text-gray-900">
                             {item.product.name}
                           </h3>
                           <Link
@@ -123,7 +126,7 @@ const Cart = ({ cart }) => {
                             method="delete"
                             as="button"
                             aria-label="Eliminar"
-                            className="bg-red-500 text-white w-9 h-9 rounded-md hover:bg-red-600 inline-flex items-center justify-center"
+                            className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white w-9 h-9 rounded-full inline-flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-md"
                           >
                             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m1 0l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m5 4v8m4-8v8" />
@@ -134,10 +137,10 @@ const Cart = ({ cart }) => {
                         <div className="mt-3 grid grid-cols-12 items-center gap-4">
                           {/* Precio unitario */}
                           <div className="col-span-3">
-                            <div className="text-sm text-gray-600">Precio</div>
+                            <div className="text-sm font-semibold text-purple-600">Precio</div>
                             {item.unit_price < item.product.price ? (
                               <div className="flex flex-col">
-                                <div className="text-sm font-bold" style={{ color: '#FF6B9D' }}>
+                                <div className="text-sm font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
                                   ${Number(item.unit_price).toLocaleString('es-AR')}
                                 </div>
                                 <div className="text-xs text-gray-500 line-through">
@@ -145,7 +148,7 @@ const Cart = ({ cart }) => {
                                 </div>
                               </div>
                             ) : (
-                              <div className="text-sm font-medium text-gray-900">
+                              <div className="text-sm font-bold text-gray-900">
                                 ${Number(item.unit_price).toLocaleString('es-AR')}
                               </div>
                             )}
@@ -153,9 +156,9 @@ const Cart = ({ cart }) => {
 
                           {/* Controles de cantidad */}
                           <div className="col-span-5">
-                            <div className="text-sm text-gray-600 text-center">Cantidad</div>
+                            <div className="text-sm font-semibold text-purple-600 text-center">Cantidad</div>
                             <div className="flex items-center justify-center gap-2">
-                              <span className="text-center select-none">
+                              <span className="text-center select-none bg-white/70 px-4 py-2 rounded-lg border-2 border-pink-200 font-bold">
                                 {quantities[item.id]}
                               </span>
                             </div>
@@ -163,8 +166,8 @@ const Cart = ({ cart }) => {
 
                           {/* Total por ítem */}
                           <div className="col-span-4 text-right">
-                            <div className="text-sm text-gray-600">Total</div>
-                            <div className="text-base font-semibold text-gray-900">
+                            <div className="text-sm font-semibold text-purple-600">Total</div>
+                            <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
                               ${(item.unit_price * (parseInt(quantities[item.id] || 0, 10))).toLocaleString('es-AR')}
                             </div>
                           </div>
@@ -177,20 +180,20 @@ const Cart = ({ cart }) => {
 
               {/* Columna derecha: Resumen */}
               <aside className="md:col-span-4">
-                <div className="bg-white rounded-lg shadow p-6 md:sticky top-4">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4">Resumen</h2>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Subtotal</span>
-                      <span className="font-medium">${subtotal.toLocaleString('es-AR')}</span>
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border-2 border-pink-200 p-6 md:sticky top-4">
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mb-6">Resumen</h2>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex justify-between bg-white/70 px-4 py-3 rounded-lg border border-pink-200">
+                      <span className="text-purple-600 font-semibold">Subtotal</span>
+                      <span className="font-bold text-gray-900">${subtotal.toLocaleString('es-AR')}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Envío</span>
-                      <span className="font-medium">Se calcula en el checkout</span>
+                    <div className="flex justify-between bg-white/70 px-4 py-3 rounded-lg border border-pink-200">
+                      <span className="text-purple-600 font-semibold">Envío</span>
+                      <span className="font-medium text-gray-700">Se calcula en el checkout</span>
                     </div>
-                    <div className="border-t pt-3 flex justify-between text-base">
-                      <span className="font-semibold">Total</span>
-                      <span className="font-semibold">${subtotal.toLocaleString('es-AR')}</span>
+                    <div className="bg-gradient-to-r from-purple-100 via-pink-100 to-cyan-100 border-2 border-cyan-300 rounded-xl px-4 py-4 flex justify-between text-base">
+                      <span className="font-bold text-purple-700">Total</span>
+                      <span className="font-bold text-xl bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">${subtotal.toLocaleString('es-AR')}</span>
                     </div>
                   </div>
 
@@ -198,13 +201,13 @@ const Cart = ({ cart }) => {
                     <button
                       type="button"
                       onClick={clearCart}
-                      className="w-full bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 text-center"
+                      className="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-5 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                     >
                       Vaciar carrito
                     </button>
                     <Link
                       href="/checkout"
-                      className="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-white hover:text-black border border-black transition duration-300 text-center"
+                      className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white px-5 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-center"
                     >
                       Continuar
                     </Link>
@@ -214,10 +217,40 @@ const Cart = ({ cart }) => {
             </div>
           </>
         ) : (
-          <p className="text-center text-gray-700 mt-8">
-            No hay productos en el carrito.
-          </p>
+          <div className="text-center py-20">
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-pink-200 p-12 max-w-2xl mx-auto">
+              <svg
+                className="w-32 h-32 mx-auto text-purple-300 mb-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                />
+              </svg>
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mb-4">
+                Tu carrito está vacío
+              </h2>
+              <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+                ¡Descubre nuestros productos y comienza a agregar al carrito!
+              </p>
+              <Link
+                href={route('catalog.index')}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                Explorar productos
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Link>
+            </div>
+          </div>
         )}
+        </div>
       </div>
     </EcommerceLayout>
   );

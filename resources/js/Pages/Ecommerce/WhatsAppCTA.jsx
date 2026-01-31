@@ -6,7 +6,7 @@ export default function WhatsAppCTA() {
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
   return (
-    <section className="w-full px-4 py-16 bg-white">
+    <section id="whatsapp-section" className="w-full px-4 py-16 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden border-4 border-green-500" data-aos="zoom-in">
           {/* Decoraciones de fondo */}

@@ -109,39 +109,23 @@ export default function AboutUs() {
                   Únete a nuestros lives en TikTok para ver productos en vivo, ofertas exclusivas y hacer tus compras directamente.
                 </p>
 
-                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-5 border border-white/30 mt-auto">
-                  <div className="flex items-center justify-between gap-3 mb-4">
-                    <div className="flex items-center gap-3">
-                      <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <h4 className="text-lg font-bold text-white">Horarios de Lives</h4>
-                    </div>
-                    <a
-                      href="https://www.tiktok.com/@la.tienda.de.los_ninios"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-purple-600 font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-xl flex-shrink-0 text-sm"
-                    >
-                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
-                      </svg>
-                      Ir a TikTok
-                    </a>
+                <div className="mt-auto">
+                  <div className="mb-4 text-white/95">
+                    <p className="font-semibold text-lg mb-1">Horario de los lives:</p>
+                    <p className="text-base">Lunes a sábado de 10 a 13hs y de 16 a 20hs</p>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center text-white/95">
-                      <span className="font-semibold">De lunes a sábados</span>
-                    </div>
-                    <div className="flex gap-2 flex-wrap">
-                      <span className="px-4 py-2 bg-white/30 backdrop-blur-sm rounded-full text-white font-semibold text-sm">
-                        10:00 - 13:00
-                      </span>
-                      <span className="px-4 py-2 bg-white/30 backdrop-blur-sm rounded-full text-white font-semibold text-sm">
-                        16:00 - 20:00
-                      </span>
-                    </div>
-                  </div>
+                  
+                  <a
+                    href="https://www.tiktok.com/@la.tienda.de.los_ninios"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-purple-600 font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+                  >
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+                    </svg>
+                    Ir a TikTok
+                  </a>
                 </div>
               </div>
             </div>

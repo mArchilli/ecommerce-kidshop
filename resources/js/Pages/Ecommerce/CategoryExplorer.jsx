@@ -5,7 +5,7 @@ const CategoryExplorer = () => {
   const genders = [
     {
       name: 'Nene',
-      slug: 'nene',
+      slug: 'Niños',
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="w-24 h-24" viewBox="0 0 64 64" fill="currentColor">
           <circle cx="32" cy="18" r="10"/>
@@ -34,7 +34,7 @@ const CategoryExplorer = () => {
     },
     {
       name: 'Nena',
-      slug: 'nena',
+      slug: 'Niñas',
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="w-24 h-24" viewBox="0 0 64 64" fill="currentColor">
           <circle cx="32" cy="18" r="10"/>

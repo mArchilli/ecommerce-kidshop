@@ -57,22 +57,6 @@ export default function Footer() {
                   👕 Catálogo
                 </Link>
               </li>
-              <li>
-                <a 
-                  href={route('welcome')} 
-                  className="text-gray-700 hover:text-pink-600 transition-all duration-200 font-semibold hover:translate-x-1 inline-block py-1"
-                >
-                  📍 Ubicación
-                </a>
-              </li>
-              <li>
-                <a 
-                  href={route('welcome')} 
-                  className="text-gray-700 hover:text-pink-600 transition-all duration-200 font-semibold hover:translate-x-1 inline-block py-1"
-                >
-                  ✉️ Correo
-                </a>
-              </li>
             </ul>
           </div>
 
