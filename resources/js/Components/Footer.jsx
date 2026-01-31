@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from '@inertiajs/react';
-import FAQ from '@/Components/FAQ';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -9,9 +8,6 @@ export default function Footer() {
 
   return (
     <footer className="bg-gradient-to-br from-cyan-50 via-pink-50 to-sky-50 border-t-4 border-gradient-to-r from-cyan-400 to-pink-400">
-      {/* Sección de Preguntas Frecuentes */}
-      <FAQ />
-      
       {/* Contenido principal */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">

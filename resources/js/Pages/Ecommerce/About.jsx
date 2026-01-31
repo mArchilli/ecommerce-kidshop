@@ -165,7 +165,7 @@ export default function AboutUs() {
                       </div>
                     </div>
                     <a
-                      href="/catalogo"
+                      href="/catalog"
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-cyan-600 font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-xl flex-shrink-0 text-sm"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

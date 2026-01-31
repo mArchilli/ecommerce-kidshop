@@ -9,6 +9,7 @@ import CategoryExplorer from '../Pages/Ecommerce/CategoryExplorer';
 import ProductsOffers from '../Pages/Ecommerce/ProductsOffers';
 import About from '../Pages/Ecommerce/About';
 import PaymentMethods from '../Pages/Ecommerce/PaymentMethods';
+import FAQ from '@/Components/FAQ';
 import WhatsAppCTA from '../Pages/Ecommerce/WhatsAppCTA';
 
 const Welcome = ({ products, categories, colors, genders }) => {
@@ -45,6 +46,9 @@ const Welcome = ({ products, categories, colors, genders }) => {
           <div className="w-full px-4 py-8" data-aos="fade-up" data-aos-delay="200">
             <PaymentMethods />
           </div>
+
+          {/* FAQ Section */}
+          <FAQ />
 
           {/* WhatsApp Contact Section */}
           <WhatsAppCTA />
