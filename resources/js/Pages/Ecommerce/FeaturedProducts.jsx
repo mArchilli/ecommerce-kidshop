@@ -216,7 +216,7 @@ const FeaturedProducts = ({ products = [] }) => {
           >
             <div className={`${
               showCarousel 
-                ? 'flex items-center justify-center gap-4 md:gap-6 relative' 
+                ? 'flex items-stretch justify-center gap-4 md:gap-6 relative' 
                 : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
             }`} style={{ transformStyle: isMobile ? 'flat' : 'preserve-3d' }}>
               {showCarousel ? (
@@ -235,191 +235,313 @@ const FeaturedProducts = ({ products = [] }) => {
                         ...cardStyle,
                       }}
                     >
-                      <Link
-                        href={isVisible ? route('products.show', product.id) : '#'}
-                        className={`block ${isVisible ? 'group' : ''}`}
-                        onClick={(e) => !isVisible && e.preventDefault()}
-                      >
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105">
-                          {/* Imagen del producto */}
-                          <div className="relative aspect-square overflow-hidden bg-gray-100">
-                            <img
-                              src={product.images && product.images.length > 0 
-                                ? getImageSrc(product.images[0]) 
-                                : '/placeholder.svg'
-                              }
-                              alt={product.name}
-                              className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700 ease-out"
-                            />
-                            
-                            {/* Badge de destacado */}
-                            <div className="absolute top-3 right-3">
-                              <div className="bg-white rounded-full p-2 shadow-lg">
-                                <svg 
-                                  xmlns="http://www.w3.org/2000/svg" 
-                                  viewBox="0 0 24 24" 
-                                  className="w-5 h-5"
-                                  style={{ fill: '#FFB800' }}
-                                >
-                                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                </svg>
+                      <div className="bg-white shadow-md rounded-2xl overflow-hidden transition-all duration-300 transform hover:shadow-xl hover:-translate-y-1 flex flex-col border border-gray-100 h-full">
+                        <div className="w-full relative aspect-square bg-gradient-to-br from-cyan-50 to-purple-50">
+                          <img
+                            src={product.images && product.images.length > 0 
+                              ? getImageSrc(product.images[0]) 
+                              : '/placeholder.svg'
+                            }
+                            alt={product.name}
+                            className="w-full h-full object-cover"
+                          />
+                          
+                          {/* Badge de oferta con descuento */}
+                          {product.active_offer && (
+                            <div className="absolute top-3 right-3 z-10">
+                              <div className="rounded-lg px-3 py-1.5 shadow-lg font-bold text-white text-sm bg-gradient-to-r from-pink-500 to-rose-500">
+                                -{Math.round(product.active_offer.discount_percentage)}% OFF
                               </div>
                             </div>
+                          )}
 
-                            {/* Badge de género */}
-                            {product.gender && (
-                              <div className="absolute top-3 left-3">
-                                <span className="px-3 py-1 rounded-full text-xs font-bold text-white shadow-md"
-                                  style={{ backgroundColor: '#9B59B6' }}>
-                                  {product.gender.name}
-                                </span>
-                              </div>
-                            )}
+                          {/* Badge de producto destacado */}
+                          <div className="absolute top-3 left-3 z-10">
+                            <div className="bg-gradient-to-br from-yellow-300 to-yellow-400 rounded-2xl p-2 shadow-xl border-4 border-white">
+                              <svg 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                viewBox="0 0 24 24" 
+                                className="w-6 h-6"
+                                style={{ fill: '#FFB800' }}
+                              >
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                              </svg>
+                            </div>
                           </div>
-
-                          {/* Información del producto */}
-                          <div className="p-5">
-                            <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-yellow-600 transition-colors">
-                              {product.name}
-                            </h3>
-
-                            <div className="flex items-center justify-between mb-3">
-                              <span className="text-2xl font-black" style={{ color: '#FFB800' }}>
-                                ${Number(product.price).toLocaleString('es-AR')}
+                        </div>
+                        
+                        <div className="p-5 flex flex-col flex-1 justify-between" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
+                          {/* Título del producto */}
+                          <h3 className="text-xl font-black text-gray-900 mb-3">
+                            {product.name}
+                          </h3>
+                          
+                          {/* Género */}
+                          {product.gender && (
+                            <div className="mb-3">
+                              <span className="inline-block px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                                {product.gender.name}
                               </span>
                             </div>
+                          )}
 
-                            {product.categories && product.categories.length > 0 && (
-                              <div className="flex flex-wrap gap-1 mb-3">
-                                {product.categories.slice(0, 2).map((category) => (
-                                  <span
-                                    key={category.id}
-                                    className="text-xs px-2 py-1 rounded-lg bg-gray-100 text-gray-700 font-medium"
+                          {/* Categorías */}
+                          {product.categories && product.categories.length > 0 && (
+                            <div className="mb-3">
+                              <div className="flex items-center gap-1 mb-2">
+                                <span className="text-xs font-semibold text-gray-500 uppercase">Categorías</span>
+                              </div>
+                              <div className="flex flex-wrap gap-1.5">
+                                {product.categories.map((category, idx) => (
+                                  <span 
+                                    key={`${category.id}-${idx}`} 
+                                    className="px-2.5 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700"
                                   >
                                     {category.name}
                                   </span>
                                 ))}
-                                {product.categories.length > 2 && (
-                                  <span className="text-xs px-2 py-1 rounded-lg bg-gray-100 text-gray-700 font-medium">
-                                    +{product.categories.length - 2}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Colores disponibles */}
+                          {product.colors && product.colors.length > 0 && (
+                            <div className="mb-3">
+                              <div className="flex items-center gap-1 mb-2">
+                                <span className="text-xs font-semibold text-gray-500 uppercase">Colores</span>
+                              </div>
+                              <div className="flex flex-wrap gap-1.5">
+                                {product.colors.map((color, idx) => (
+                                  <span 
+                                    key={`${color.id}-${idx}`} 
+                                    className="px-2.5 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-700"
+                                  >
+                                    {color.name}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Talles disponibles */}
+                          {product.sizes && product.sizes.length > 0 && (
+                            <div className="mb-4">
+                              <div className="flex items-center gap-1 mb-2">
+                                <span className="text-xs font-semibold text-gray-500 uppercase">Talles</span>
+                              </div>
+                              <div className="flex flex-wrap gap-1.5">
+                                {product.sizes.slice(0, 6).map((size, idx) => (
+                                  <span
+                                    key={`size-${product.id}-${size.id}`}
+                                    className="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-100 text-amber-700"
+                                  >
+                                    {size.name}
+                                  </span>
+                                ))}
+                                {product.sizes.length > 6 && (
+                                  <span
+                                    title={product.sizes.slice(6).map(s => s.name).join(', ')}
+                                    className="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-100 text-amber-700 cursor-help"
+                                  >
+                                    +{product.sizes.length - 6}
                                   </span>
                                 )}
                               </div>
-                            )}
-
-                            <div className="mt-4 pt-4 border-t border-gray-100">
-                              <span className="text-sm font-bold text-gray-900 group-hover:text-yellow-600 transition-colors flex items-center gap-2">
-                                Ver detalles
-                                <svg 
-                                  xmlns="http://www.w3.org/2000/svg" 
-                                  className="h-4 w-4 group-hover:translate-x-1 transition-transform" 
-                                  fill="none" 
-                                  viewBox="0 0 24 24" 
-                                  stroke="currentColor"
-                                >
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                              </span>
                             </div>
+                          )}
+                          
+                          {/* Precios */}
+                          <div className="mt-auto pt-4 border-t border-gray-200">
+                            {product.active_offer ? (
+                              <div className="flex items-end justify-between mb-3">
+                                <div className="flex flex-col">
+                                  <p className="text-xs text-gray-500 mb-0.5">Antes:</p>
+                                  <p className="text-base text-gray-400 line-through font-medium">
+                                    ${Number(product.price).toLocaleString('es-AR')}
+                                  </p>
+                                </div>
+                                <div className="text-right">
+                                  <p className="text-2xl font-bold text-pink-600">
+                                    ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
+                                  </p>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="mb-3">
+                                <p className="text-2xl font-bold text-gray-900">
+                                  ${Number(product.price).toLocaleString('es-AR')}
+                                </p>
+                              </div>
+                            )}
+                            
+                            <Link 
+                              href={isVisible ? route('products.show', product.id) : '#'}
+                              onClick={(e) => !isVisible && e.preventDefault()}
+                              className="w-full block text-center text-white px-6 py-3 rounded-lg font-semibold text-base transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                            >
+                              Ver Producto
+                            </Link>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   );
                 })
               ) : (
                 featuredProducts.map((product, index) => (
-                  <Link
+                  <div
                     key={product.id}
-                    href={route('products.show', product.id)}
-                    className="group"
+                    className="bg-white shadow-md rounded-2xl overflow-hidden transition-all duration-300 transform hover:shadow-xl hover:-translate-y-1 flex flex-col border border-gray-100 h-full"
                     data-aos="fade-up"
                     data-aos-delay={index * 100}
                   >
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                      {/* Imagen del producto */}
-                      <div className="relative aspect-square overflow-hidden bg-gray-100">
-                        <img
-                          src={product.images && product.images.length > 0 
-                            ? getImageSrc(product.images[0]) 
-                            : '/placeholder.svg'
-                          }
-                          alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                        
-                        {/* Badge de destacado */}
-                        <div className="absolute top-3 right-3">
-                          <div className="bg-white rounded-full p-2 shadow-lg">
-                            <svg 
-                              xmlns="http://www.w3.org/2000/svg" 
-                              viewBox="0 0 24 24" 
-                              className="w-5 h-5"
-                              style={{ fill: '#FFB800' }}
-                            >
-                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                            </svg>
+                    <div className="w-full relative aspect-square bg-gradient-to-br from-cyan-50 to-purple-50">
+                      <img
+                        src={product.images && product.images.length > 0 
+                          ? getImageSrc(product.images[0]) 
+                          : '/placeholder.svg'
+                        }
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                      />
+                      
+                      {/* Badge de oferta con descuento */}
+                      {product.active_offer && (
+                        <div className="absolute top-3 right-3 z-10">
+                          <div className="rounded-lg px-3 py-1.5 shadow-lg font-bold text-white text-sm bg-gradient-to-r from-pink-500 to-rose-500">
+                            -{Math.round(product.active_offer.discount_percentage)}% OFF
                           </div>
                         </div>
+                      )}
 
-                        {/* Badge de género */}
-                        {product.gender && (
-                          <div className="absolute top-3 left-3">
-                            <span className="px-3 py-1 rounded-full text-xs font-bold text-white shadow-md"
-                              style={{ backgroundColor: '#9B59B6' }}>
-                              {product.gender.name}
-                            </span>
-                          </div>
-                        )}
+                      {/* Badge de producto destacado */}
+                      <div className="absolute top-3 left-3 z-10">
+                        <div className="bg-gradient-to-br from-yellow-300 to-yellow-400 rounded-2xl p-2 shadow-xl border-4 border-white">
+                          <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            viewBox="0 0 24 24" 
+                            className="w-6 h-6"
+                            style={{ fill: '#FFB800' }}
+                          >
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                          </svg>
+                        </div>
                       </div>
-
-                      {/* Información del producto */}
-                      <div className="p-5">
-                        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-yellow-600 transition-colors">
-                          {product.name}
-                        </h3>
-
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-2xl font-black" style={{ color: '#FFB800' }}>
-                            ${Number(product.price).toLocaleString('es-AR')}
+                    </div>
+                    
+                    <div className="p-5 flex flex-col flex-1 justify-between" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
+                      {/* Título del producto */}
+                      <h3 className="text-xl font-black text-gray-900 mb-3">
+                        {product.name}
+                      </h3>
+                      
+                      {/* Género */}
+                      {product.gender && (
+                        <div className="mb-3">
+                          <span className="inline-block px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                            {product.gender.name}
                           </span>
                         </div>
+                      )}
 
-                        {product.categories && product.categories.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mb-3">
-                            {product.categories.slice(0, 2).map((category) => (
-                              <span
-                                key={category.id}
-                                className="text-xs px-2 py-1 rounded-lg bg-gray-100 text-gray-700 font-medium"
+                      {/* Categorías */}
+                      {product.categories && product.categories.length > 0 && (
+                        <div className="mb-3">
+                          <div className="flex items-center gap-1 mb-2">
+                            <span className="text-xs font-semibold text-gray-500 uppercase">Categorías</span>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {product.categories.map((category, idx) => (
+                              <span 
+                                key={`${category.id}-${idx}`} 
+                                className="px-2.5 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700"
                               >
                                 {category.name}
                               </span>
                             ))}
-                            {product.categories.length > 2 && (
-                              <span className="text-xs px-2 py-1 rounded-lg bg-gray-100 text-gray-700 font-medium">
-                                +{product.categories.length - 2}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Colores disponibles */}
+                      {product.colors && product.colors.length > 0 && (
+                        <div className="mb-3">
+                          <div className="flex items-center gap-1 mb-2">
+                            <span className="text-xs font-semibold text-gray-500 uppercase">Colores</span>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {product.colors.map((color, idx) => (
+                              <span 
+                                key={`${color.id}-${idx}`} 
+                                className="px-2.5 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-700"
+                              >
+                                {color.name}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Talles disponibles */}
+                      {product.sizes && product.sizes.length > 0 && (
+                        <div className="mb-4">
+                          <div className="flex items-center gap-1 mb-2">
+                            <span className="text-xs font-semibold text-gray-500 uppercase">Talles</span>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {product.sizes.slice(0, 6).map((size, idx) => (
+                              <span
+                                key={`size-${product.id}-${size.id}`}
+                                className="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-100 text-amber-700"
+                              >
+                                {size.name}
+                              </span>
+                            ))}
+                            {product.sizes.length > 6 && (
+                              <span
+                                title={product.sizes.slice(6).map(s => s.name).join(', ')}
+                                className="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-100 text-amber-700 cursor-help"
+                              >
+                                +{product.sizes.length - 6}
                               </span>
                             )}
                           </div>
-                        )}
-
-                        <div className="mt-4 pt-4 border-t border-gray-100">
-                          <span className="text-sm font-bold text-gray-900 group-hover:text-yellow-600 transition-colors flex items-center gap-2">
-                            Ver detalles
-                            <svg 
-                              xmlns="http://www.w3.org/2000/svg" 
-                              className="h-4 w-4 group-hover:translate-x-1 transition-transform" 
-                              fill="none" 
-                              viewBox="0 0 24 24" 
-                              stroke="currentColor"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                          </span>
                         </div>
+                      )}
+                      
+                      {/* Precios */}
+                      <div className="mt-auto pt-4 border-t border-gray-200">
+                        {product.active_offer ? (
+                          <div className="flex items-end justify-between mb-3">
+                            <div className="flex flex-col">
+                              <p className="text-xs text-gray-500 mb-0.5">Antes:</p>
+                              <p className="text-base text-gray-400 line-through font-medium">
+                                ${Number(product.price).toLocaleString('es-AR')}
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-2xl font-bold text-pink-600">
+                                ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="mb-3">
+                            <p className="text-2xl font-bold text-gray-900">
+                              ${Number(product.price).toLocaleString('es-AR')}
+                            </p>
+                          </div>
+                        )}
+                        
+                        <Link 
+                          href={route('products.show', product.id)}
+                          className="w-full block text-center text-white px-6 py-3 rounded-lg font-semibold text-base transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                        >
+                          Ver Producto
+                        </Link>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 ))
               )}
             </div>
@@ -430,8 +552,7 @@ const FeaturedProducts = ({ products = [] }) => {
         <div className="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
           <Link
             href={route('catalog.index')}
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white hover:scale-105 transform transition-all shadow-lg hover:shadow-xl"
-            style={{ backgroundColor: '#FFB800' }}
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 hover:scale-105 transform transition-all shadow-lg hover:shadow-xl"
           >
             Ver todo el catálogo
             <svg 

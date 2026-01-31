@@ -9,6 +9,7 @@ import Footer from '@/Components/Footer';
 const EcommerceLayout = ({ children }) => {
   const { auth, flash } = usePage().props;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     if (flash && flash.type === 'error') {
@@ -23,53 +24,61 @@ const EcommerceLayout = ({ children }) => {
     return () => { document.body.style.overflow = ''; };
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-white text-black overflow-x-hidden">
       <Head>
         <link rel="icon" type="image/png" href="/images/logo-tienda-de-ninios.png" />
       </Head>
-      <nav className="fixed top-0 left-0 right-0 z-[60] backdrop-blur-md backdrop-saturate-150 bg-white/90 border-b border-gray-200 shadow-sm overflow-x-hidden">
+      <nav className="fixed top-0 left-0 right-0 z-[60] backdrop-blur-md backdrop-saturate-150 bg-white/20">
         <div className="mx-auto max-w-7xl w-full px-4 py-3 flex justify-between items-center relative z-[80]">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-3 hover:opacity-80 transition-opacity flex-shrink-0"
+            className={`flex items-center gap-3 hover:opacity-80 transition-all duration-300 flex-shrink-0 ${
+              scrollY === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'
+            }`}
           >
             <img 
               src="/images/logo.png" 
               alt="La Tienda de los Niños" 
-              className="h-12 w-auto"
+              className="h-8 w-auto"
             />
-            <span className="text-gray-800 text-xl font-bold hidden lg:block">
+            <span className="text-black text-base font-bold hidden lg:block" style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}>
               La Tienda de los Niños
             </span>
           </Link>
-          {/* Botones Inicio/Catálogo */}
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <Link
-              href={route('welcome')}
-              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-sm ${
-                route().current('welcome')
-                  ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-400 hover:text-white hover:shadow-md'
-              }`}
-            >
-              Inicio
-            </Link>
-            <Link
-              href={route('catalog.index')}
-              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-sm ${
-                route().current('catalog.index')
-                  ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-400 hover:text-white hover:shadow-md'
-              }`}
-            >
-              Catálogo
-            </Link>
-          </div>
+          {/* Spacer para empujar todo a la derecha */}
+          <div className="flex-1"></div>
           {/* Menú escritorio */}
           <div className="hidden md:flex items-center flex-shrink-0">
-            <ul className="flex flex-row gap-4 items-center">
+            <ul className="flex flex-row gap-6 items-center">
+              {/* Botones Inicio/Catálogo */}
+              <li>
+                <Link
+                  href={route('welcome')}
+                  className="text-black text-sm font-semibold hover:text-blue-600 transition-colors"
+                  style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
+                >
+                  Inicio
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={route('catalog.index')}
+                  className="text-black text-sm font-semibold hover:text-blue-600 transition-colors"
+                  style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
+                >
+                  Catálogo
+                </Link>
+              </li>
               {/* Menú usuario */}
               {auth.user ? (
                 <>
@@ -77,8 +86,9 @@ const EcommerceLayout = ({ children }) => {
                     <li>
                       <Link
                         href={route('dashboard')}
-                        className="text-gray-700 block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                        className="text-black hover:text-blue-600 transition-colors"
                         title="Panel de administración"
+                        style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
                       >
                         <FontAwesomeIcon icon={faUserShield} /> 
                       </Link>
@@ -87,8 +97,9 @@ const EcommerceLayout = ({ children }) => {
                   <li>
                     <Link
                       href={route('profile.edit')}
-                      className="text-gray-700 block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                      className="text-black hover:text-blue-600 transition-colors"
                       title="Mi perfil"
+                      style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
                     >
                       <FontAwesomeIcon icon={faUser} /> 
                     </Link>
@@ -96,8 +107,9 @@ const EcommerceLayout = ({ children }) => {
                   <li>
                     <Link
                       href={route('user.orders.index')}
-                      className="text-gray-700 block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                      className="text-black hover:text-blue-600 transition-colors"
                       title="Mis compras"
+                      style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
                     >
                       <FontAwesomeIcon icon={faClipboardList} /> 
                     </Link>
@@ -105,8 +117,9 @@ const EcommerceLayout = ({ children }) => {
                   <li className="relative">
                     <Link
                       href={route('cart.index')}
-                      className="text-gray-700 block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                      className="text-black hover:text-blue-600 transition-colors"
                       title="Carrito"
+                      style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
                     >
                       <span className="relative inline-block">
                         <FontAwesomeIcon icon={faShoppingCart} />
@@ -123,8 +136,9 @@ const EcommerceLayout = ({ children }) => {
                       href={route('logout')}
                       method="post"
                       as="button"
-                      className="text-gray-700 block py-2 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                      className="text-black hover:text-blue-600 transition-colors text-sm font-semibold"
                       title="Cerrar sesión"
+                      style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
                     >
                       Cerrar Sesión
                     </Link>
@@ -135,8 +149,9 @@ const EcommerceLayout = ({ children }) => {
                   <li>
                     <Link
                       href={route('login')}
-                      className="px-5 py-2 rounded-full text-sm font-semibold bg-gray-100 text-gray-700 hover:bg-blue-500 hover:text-white transition-all shadow-sm"
+                      className="text-black text-sm font-semibold hover:text-blue-600 transition-colors"
                       title="Ingresar"
+                      style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
                     >
                       Iniciar sesión
                     </Link>
@@ -144,8 +159,9 @@ const EcommerceLayout = ({ children }) => {
                   <li>
                     <Link
                       href={route('register')}
-                      className="px-5 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-blue-500 to-cyan-400 text-white hover:from-blue-600 hover:to-cyan-500 transition-all shadow-md"
+                      className="text-black text-sm font-semibold hover:text-blue-600 transition-colors"
                       title="Registrarse"
+                      style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
                     >
                       Registrarse
                     </Link>
@@ -156,114 +172,150 @@ const EcommerceLayout = ({ children }) => {
           </div>
           {/* Botón menú hamburguesa */}
           <button
+            type="button"
             className="text-gray-700 text-2xl md:hidden flex-shrink-0 p-2 hover:text-blue-600 transition-colors"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={() => setIsMenuOpen((open) => !open)}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-menu"
+            aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
           >
             {isMenuOpen ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
           </button>
         </div>
-        {/* Menú hamburguesa solo para usuario en mobile */}
-        {isMenuOpen && (
-          <div
-            id="mobile-menu"
-            className="fixed inset-x-0 top-[64px] bottom-0 z-[70] bg-white/95 backdrop-blur-md backdrop-saturate-150 border-t border-gray-200 md:hidden overflow-y-auto overflow-x-hidden"
-          >
-            <ul className="flex flex-col p-4 space-y-2 bg-white/95 backdrop-blur-md backdrop-saturate-150 border-t border-gray-200 w-full">
-              {/* Menú usuario */}
-              {auth.user ? (
-                <>
-                  {auth.user.role === 'admin' && (
-                    <li>
-                      <Link
-                        href={route('dashboard')}
-                        className="text-gray-700 block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors "
-                        onClick={() => setIsMenuOpen(false)}
-                        title="Panel de administración"
-                      >
-                        <FontAwesomeIcon icon={faUserShield} /> Administracion
-                      </Link>
-                    </li>
-                  )}
-                  <li>
-                    <Link
-                      href={route('profile.edit')}
-                      className="text-gray-700 block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                      title="Mi perfil"
-                    >
-                      <FontAwesomeIcon icon={faUser} /> Perfil
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href={route('user.orders.index')}
-                      className="text-gray-700 block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                      title="Mis compras"
-                    >
-                      <FontAwesomeIcon icon={faClipboardList} /> Mis Compras
-                    </Link>
-                  </li>
-                  <li className="relative">
-                    <Link
-                      href={route('cart.index')}
-                      className="text-gray-700 block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                      title="Carrito"
-                    >
-                      <span className="relative inline-block">
-                        <FontAwesomeIcon icon={faShoppingCart} /> Carrito
-                        {auth.cart_count > 0 && (
-                          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5 shadow border border-white">
-                            {auth.cart_count}
-                          </span>
-                        )}
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href={route('logout')}
-                      method="post"
-                      as="button"
-                      className="text-gray-700 block py-3 px-4 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors text-left w-full"
-                      onClick={() => setIsMenuOpen(false)}
-                      title="Cerrar sesión"
-                    >
-                      Cerrar Sesión
-                    </Link>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <Link
-                      href={route('login')}
-                      className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-500 hover:text-white transition-all text-center font-semibold"
-                      onClick={() => setIsMenuOpen(false)}
-                      title="Ingresar"
-                    >
-                      Iniciar sesión
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href={route('register')}
-                      className="text-white block py-3 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 transition-all text-center font-semibold shadow-md"
-                      onClick={() => setIsMenuOpen(false)}
-                      title="Registrarse"
-                    >
-                      Registrarse
-                    </Link>
-                  </li>
-                </>
-              )}
-            </ul>
-          </div>
-        )}
       </nav>
+      
+      {/* Overlay oscuro al abrir menú */}
+      {isMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-[85] md:hidden transition-opacity"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+
+      {/* Menú hamburguesa deslizante desde la derecha */}
+      <div
+        id="mobile-menu"
+        className={`fixed top-0 right-0 h-screen w-64 max-w-[75vw] z-[90] bg-white shadow-2xl md:hidden overflow-y-auto transform transition-transform duration-300 ease-in-out ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        {/* Botón cerrar */}
+        <button
+          onClick={() => setIsMenuOpen(false)}
+          className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 transition-colors"
+          aria-label="Cerrar menú"
+        >
+          <FontAwesomeIcon icon={faTimes} className="text-2xl" />
+        </button>
+
+        <ul className="flex flex-col p-6 pt-20 space-y-3 w-full">
+          {/* Navegación principal */}
+          <li>
+            <Link
+              href={route('welcome')}
+              className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Inicio
+            </Link>
+          </li>
+          <li>
+            <Link
+              href={route('catalog.index')}
+              className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Catálogo
+            </Link>
+          </li>
+
+          {/* Divisor */}
+          {!auth.user && <div className="border-t border-gray-200 my-2"></div>}
+
+          {/* Menú usuario autenticado */}
+          {auth.user ? (
+            <>
+              <div className="border-t border-gray-200 my-2"></div>
+              {auth.user.role === 'admin' && (
+                <li>
+                  <Link
+                    href={route('dashboard')}
+                    className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <FontAwesomeIcon icon={faUserShield} /> Administración
+                  </Link>
+                </li>
+              )}
+              <li>
+                <Link
+                  href={route('profile.edit')}
+                  className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <FontAwesomeIcon icon={faUser} /> Perfil
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={route('user.orders.index')}
+                  className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <FontAwesomeIcon icon={faClipboardList} /> Mis Compras
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={route('cart.index')}
+                  className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <FontAwesomeIcon icon={faShoppingCart} /> Carrito
+                  {auth.cart_count > 0 && (
+                    <span className="ml-2 bg-red-600 text-white text-xs font-bold rounded-full px-2 py-0.5">
+                      {auth.cart_count}
+                    </span>
+                  )}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={route('logout')}
+                  method="post"
+                  as="button"
+                  className="text-white block py-3 px-4 rounded-lg bg-red-500 hover:bg-red-600 transition-all text-center font-semibold w-full"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Cerrar Sesión
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link
+                  href={route('login')}
+                  className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Iniciar sesión
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={route('register')}
+                  className="text-white block py-3 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 transition-all text-center font-semibold shadow-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Registrarse
+                </Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
+        
 
       {/* Spacer condicional: evita empuje solo fuera de la home */}
       {!route().current('welcome') && <div className="h-24 md:h-20" aria-hidden="true" />}
