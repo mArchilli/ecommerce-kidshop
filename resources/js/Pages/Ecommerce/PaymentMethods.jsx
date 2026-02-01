@@ -17,7 +17,7 @@ export default function PaymentMethods() {
             </svg>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-            Métodos de Pago
+            Métodos de pago
           </h2>
           <p className="text-lg text-gray-600">
             Trabajamos con MercadoPago para ofrecerte múltiples opciones de pago seguras y confiables
@@ -93,71 +93,82 @@ export default function PaymentMethods() {
             </div>
           </div>
 
-          {/* Información de seguridad */}
+          {/* Compra protegida por Mercado Pago */}
           <div className="lg:col-span-1" data-aos="fade-left">
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 shadow-lg h-full flex flex-col">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="flex items-center justify-center h-14 w-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 text-white shadow-lg">
-                  <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="bg-gradient-to-br from-sky-500 via-blue-500 to-blue-600 rounded-3xl p-8 shadow-xl h-full flex flex-col relative overflow-hidden group">
+              {/* Decoración de fondo */}
+              <div className="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 bg-white opacity-10 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 bg-white opacity-10 rounded-full blur-3xl"></div>
+              
+              {/* Header */}
+              <div className="relative z-10 text-center mb-6">
+                <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-white/20 backdrop-blur-sm text-white shadow-lg border border-white/30 mb-4">
+                  <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">100% Seguro</h3>
+                <h3 className="text-2xl font-black text-white mb-2">Compra protegida</h3>
+                <p className="text-white/90 text-sm">Tu dinero está seguro con Mercado Pago</p>
               </div>
 
-              <div className="space-y-4 flex-grow">
-                <div className="bg-white rounded-xl p-4 shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 mt-1">
-                      <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              {/* Beneficios principales */}
+              <div className="relative z-10 space-y-3 flex-grow">
+                <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 flex items-center justify-center h-8 w-8 rounded-lg bg-white/20 text-white">
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                       </svg>
                     </div>
-                    <p className="text-sm text-gray-700">Encriptación avanzada para proteger tus datos</p>
+                    <p className="text-white text-sm font-medium">Pagás sin compartir tus datos</p>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl p-4 shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 mt-1">
-                      <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 flex items-center justify-center h-8 w-8 rounded-lg bg-white/20 text-white">
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <p className="text-sm text-gray-700">Procesamiento en tiempo real</p>
+                    <p className="text-white text-sm font-medium">Confirmación al instante</p>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl p-4 shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 mt-1">
-                      <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 flex items-center justify-center h-8 w-8 rounded-lg bg-white/20 text-white">
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
                     </div>
-                    <p className="text-sm text-gray-700">Confirmación inmediata de compra</p>
+                    <p className="text-white text-sm font-medium">Pago en cuotas brindadas por Mercado Pago</p>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-xl p-4 shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 mt-1">
-                      <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 flex items-center justify-center h-8 w-8 rounded-lg bg-white/20 text-white">
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                       </svg>
                     </div>
-                    <p className="text-sm text-gray-700">Tus datos nunca se comparten</p>
+                    <p className="text-white text-sm font-medium">Devolución si hay problemas</p>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-green-200">
-                <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-green-500 to-emerald-400 text-white shadow-md">
-                  <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Certificado SSL
-                </span>
+              {/* Footer con sello de confianza */}
+              <div className="relative z-10 mt-6 pt-5 border-t border-white/20">
+                <div className="flex items-center justify-center gap-3">
+                  <div className="bg-white rounded-lg px-3 py-2 shadow-md">
+                    <img className="h-6 w-auto" src="/images/Landing/MercadoPago-1.png" alt="MercadoPago" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-white/90 text-xs">Protegido por</p>
+                    <p className="text-white font-bold text-sm">Mercado Pago</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -158,7 +158,7 @@ const FeaturedProducts = ({ products = [] }) => {
             </svg>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-            Productos Destacados
+            Productos destacados
           </h2>
           <p className="text-lg text-gray-600">
             Descubre nuestra selección especial de productos favoritos

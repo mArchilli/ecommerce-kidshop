@@ -53,7 +53,7 @@ export default function FAQ() {
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mb-3">
-            Preguntas Frecuentes
+            Preguntas frecuentes
           </h2>
           <p className="text-gray-600 text-lg">
             Encontrá respuestas a las consultas más comunes

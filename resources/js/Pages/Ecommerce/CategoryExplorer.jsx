@@ -18,21 +18,6 @@ const CategoryExplorer = () => {
       description: 'Ropa para niños'
     },
     {
-      name: 'Unisex',
-      slug: 'unisex',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-24 h-24" viewBox="0 0 64 64" fill="currentColor">
-          <circle cx="28" cy="18" r="8"/>
-          <path d="M28 28c-6 0-11 3-11 8v12h22V36c0-5-5-8-11-8z"/>
-          <circle cx="44" cy="18" r="8"/>
-          <path d="M44 28c-6 0-11 3-11 8v12h22V36c0-5-5-8-11-8z"/>
-        </svg>
-      ),
-      gradient: 'from-green-500 to-emerald-500',
-      hoverGradient: 'hover:from-green-600 hover:to-emerald-600',
-      description: 'Ropa para todos'
-    },
-    {
       name: 'Nena',
       slug: 'Niñas',
       icon: (
@@ -54,29 +39,16 @@ const CategoryExplorer = () => {
       <div className="max-w-7xl mx-auto">
         {/* Encabezado */}
         <div className="text-center mb-12" data-aos="fade-up">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-1 w-12 bg-gradient-to-r from-transparent to-purple-500"></div>
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="w-10 h-10 text-purple-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-            <div className="h-1 w-12 bg-gradient-to-l from-transparent to-purple-500"></div>
-          </div>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-            Explora por Género
+            Explora por género
           </h2>
           <p className="text-lg text-gray-600">
             Encuentra la ropa perfecta para cada uno
           </p>
         </div>
 
-        {/* Grid de géneros - 3 cards grandes */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        {/* Grid de géneros - 2 cards centradas */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
           {genders.map((gender, index) => (
             <Link
               key={gender.slug}
