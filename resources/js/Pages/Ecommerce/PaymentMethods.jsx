@@ -30,51 +30,51 @@ export default function PaymentMethods() {
               {/* Grid de métodos de pago */}
               <h4 className="text-xl font-bold text-gray-900 mb-6">Aceptamos:</h4>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div className="bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105" data-aos="zoom-in" data-aos-delay="100">
+                <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 flex flex-col items-center justify-center min-h-[180px]" data-aos="zoom-in" data-aos-delay="100">
                   <div className="text-center">
-                    <div className="flex items-center justify-center h-12 w-12 mx-auto rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white mb-3">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="flex items-center justify-center h-16 w-16 mx-auto rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white mb-5 shadow-lg">
+                      <svg className="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
                     </div>
-                    <p className="text-sm font-bold text-gray-900">Visa</p>
-                    <p className="text-xs text-gray-500 mt-1">Crédito y Débito</p>
+                    <p className="text-lg font-bold text-gray-900 mb-2">Visa</p>
+                    <p className="text-sm text-gray-600">Crédito y Débito</p>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
+                <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 flex flex-col items-center justify-center min-h-[180px]" data-aos="zoom-in" data-aos-delay="200">
                   <div className="text-center">
-                    <div className="flex items-center justify-center h-12 w-12 mx-auto rounded-xl bg-gradient-to-br from-orange-500 to-red-600 text-white mb-3">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="flex items-center justify-center h-16 w-16 mx-auto rounded-xl bg-gradient-to-br from-orange-500 to-red-600 text-white mb-5 shadow-lg">
+                      <svg className="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
                     </div>
-                    <p className="text-sm font-bold text-gray-900">Mastercard</p>
-                    <p className="text-xs text-gray-500 mt-1">Crédito y Débito</p>
+                    <p className="text-lg font-bold text-gray-900 mb-2">Mastercard</p>
+                    <p className="text-sm text-gray-600">Crédito y Débito</p>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105" data-aos="zoom-in" data-aos-delay="300">
+                <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 flex flex-col items-center justify-center min-h-[180px]" data-aos="zoom-in" data-aos-delay="300">
                   <div className="text-center">
-                    <div className="flex items-center justify-center h-12 w-12 mx-auto rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white mb-3">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="flex items-center justify-center h-16 w-16 mx-auto rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white mb-5 shadow-lg">
+                      <svg className="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
                     </div>
-                    <p className="text-sm font-bold text-gray-900">Amex</p>
-                    <p className="text-xs text-gray-500 mt-1">Crédito</p>
+                    <p className="text-lg font-bold text-gray-900 mb-2">Amex</p>
+                    <p className="text-sm text-gray-600">Crédito</p>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105" data-aos="zoom-in" data-aos-delay="400">
+                <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 flex flex-col items-center justify-center min-h-[180px]" data-aos="zoom-in" data-aos-delay="400">
                   <div className="text-center">
-                    <div className="flex items-center justify-center h-12 w-12 mx-auto rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 text-white mb-3">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="flex items-center justify-center h-16 w-16 mx-auto rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 text-white mb-5 shadow-lg">
+                      <svg className="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
                       </svg>
                     </div>
-                    <p className="text-sm font-bold text-gray-900">Transferencia</p>
-                    <p className="text-xs text-gray-500 mt-1">Bancaria</p>
+                    <p className="text-lg font-bold text-gray-900 mb-2">Transferencia</p>
+                    <p className="text-sm text-gray-600">Bancaria</p>
                   </div>
                 </div>
               </div>

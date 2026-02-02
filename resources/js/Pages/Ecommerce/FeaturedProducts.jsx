@@ -41,7 +41,7 @@ const FeaturedProducts = ({ products = [] }) => {
     if (isTransitioning) {
       const timer = setTimeout(() => {
         setIsTransitioning(false);
-      }, 600);
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [isTransitioning]);
@@ -100,7 +100,7 @@ const FeaturedProducts = ({ products = [] }) => {
   const getCardStyle = (position) => {
     if (!showCarousel) return {};
     
-    const baseTransition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+    const baseTransition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
     
     if (position === -1) {
       // Producto anterior (izquierda, detrás)
@@ -161,13 +161,13 @@ const FeaturedProducts = ({ products = [] }) => {
             <>
               <button
                 onClick={handlePrev}
-                className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
-                style={{ marginLeft: '-20px' }}
+                className="absolute left-2 md:left-0 top-1/3 -translate-y-1/2 z-20 bg-white/95 backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 group border border-gray-100"
+                style={{ marginLeft: window.innerWidth >= 768 ? '-20px' : '0' }}
                 data-aos="fade-right"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-6 w-6 text-gray-800 group-hover:text-yellow-600 transition-colors" 
+                  className="h-5 w-5 md:h-6 md:w-6 text-gray-800 group-hover:text-cyan-600 transition-colors duration-200" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -178,13 +178,13 @@ const FeaturedProducts = ({ products = [] }) => {
               
               <button
                 onClick={handleNext}
-                className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
-                style={{ marginRight: '-20px' }}
+                className="absolute right-2 md:right-0 top-1/3 -translate-y-1/2 z-20 bg-white/95 backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 group border border-gray-100"
+                style={{ marginRight: window.innerWidth >= 768 ? '-20px' : '0' }}
                 data-aos="fade-left"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-6 w-6 text-gray-800 group-hover:text-yellow-600 transition-colors" 
+                  className="h-5 w-5 md:h-6 md:w-6 text-gray-800 group-hover:text-cyan-600 transition-colors duration-200" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -216,7 +216,7 @@ const FeaturedProducts = ({ products = [] }) => {
                   return (
                     <div
                       key={`${product.id}-${index}`}
-                      className={`transition-all ease-out ${isTransitioning ? 'duration-600' : 'duration-300'}`}
+                      className={`transition-all ease-out ${isTransitioning ? 'duration-300' : 'duration-200'}`}
                       style={{
                         flex: isVisible ? (isMobile ? '0 0 100%' : '0 0 calc(25% - 18px)') : (isMobile ? '0 0 100%' : '0 0 calc(25% - 18px)'),
                         position: 'relative',
