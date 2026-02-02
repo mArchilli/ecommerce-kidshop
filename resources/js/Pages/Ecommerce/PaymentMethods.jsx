@@ -4,18 +4,6 @@ export default function PaymentMethods() {
       <div className="max-w-7xl mx-auto">
         {/* Encabezado de sección */}
         <div className="text-left mb-10 px-4" data-aos="fade-up">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-1 w-12 bg-gradient-to-r from-transparent to-green-500"></div>
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="w-8 h-8 text-green-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-            </svg>
-          </div>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
             Métodos de pago
           </h2>
@@ -28,7 +16,7 @@ export default function PaymentMethods() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* MercadoPago destacado */}
           <div className="lg:col-span-2" data-aos="fade-right">
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-3xl p-8 shadow-lg h-full">
+            <div className="bg-gradient-to-br from-blue-200 via-cyan-100 to-white rounded-3xl p-8 shadow-lg h-full">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
                 <div className="bg-white rounded-2xl p-4 shadow-md">
                   <img className="h-12 w-auto" src="/images/Landing/MercadoPago-1.png?height=64&width=200" alt="MercadoPago logo" />

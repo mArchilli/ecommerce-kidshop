@@ -35,7 +35,7 @@ const CategoryExplorer = () => {
   ];
 
   return (
-    <section className="w-full px-4 py-16 bg-gradient-to-b from-gray-50 to-white">
+    <section className="w-full px-4 py-16 bg-gradient-to-br from-cyan-100 to-pink-100">
       <div className="max-w-7xl mx-auto">
         {/* Encabezado */}
         <div className="text-center mb-12" data-aos="fade-up">

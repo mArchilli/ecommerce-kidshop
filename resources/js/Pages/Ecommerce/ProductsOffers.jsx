@@ -151,18 +151,6 @@ const ProductsOffers = ({ products = [] }) => {
       <div className="max-w-7xl mx-auto">
         {/* Encabezado de la sección */}
         <div className="text-center mb-12" data-aos="fade-up">
-          <div className="inline-flex items-center gap-3 mb-4">
-            <div className="h-1 w-12 bg-gradient-to-r from-transparent to-pink-400"></div>
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              viewBox="0 0 24 24" 
-              className="w-8 h-8"
-              style={{ fill: '#FF6B9D' }}
-            >
-              <path d="M21 8.94a1.31 1.31 0 0 0-.06-.27v-.09a1.07 1.07 0 0 0-.19-.28l-6-6a1.07 1.07 0 0 0-.28-.19.32.32 0 0 0-.09 0 .88.88 0 0 0-.33-.11H7a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8.94zm-6-3.53L17.59 8H16a1 1 0 0 1-1-1zM18 19a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6v3a3 3 0 0 0 3 3h2zm-3-3H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2zm0-4H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2z" />
-            </svg>
-            <div className="h-1 w-12 bg-gradient-to-l from-transparent to-pink-400"></div>
-          </div>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
             🔥 Ofertas Especiales
           </h2>
