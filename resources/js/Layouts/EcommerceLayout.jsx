@@ -5,6 +5,7 @@ import { faShoppingCart, faUser, faBars, faTimes, faUserShield, faClipboardList 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from '@/Components/Footer';
+import CartButton from '@/Components/CartButton';
 
 const EcommerceLayout = ({ children }) => {
   const { auth, flash } = usePage().props;
@@ -113,23 +114,6 @@ const EcommerceLayout = ({ children }) => {
                       style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
                     >
                       <FontAwesomeIcon icon={faClipboardList} /> 
-                    </Link>
-                  </li>
-                  <li className="relative">
-                    <Link
-                      href={route('cart.index')}
-                      className="text-black hover:text-blue-600 transition-colors"
-                      title="Carrito"
-                      style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
-                    >
-                      <span className="relative inline-block">
-                        <FontAwesomeIcon icon={faShoppingCart} />
-                        {auth.cart_count > 0 && (
-                          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5 shadow border border-white">
-                            {auth.cart_count}
-                          </span>
-                        )}
-                      </span>
                     </Link>
                   </li>
                   <li>
@@ -268,20 +252,6 @@ const EcommerceLayout = ({ children }) => {
               </li>
               <li>
                 <Link
-                  href={route('cart.index')}
-                  className="text-gray-700 block py-3 px-4 rounded-full bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <FontAwesomeIcon icon={faShoppingCart} /> Carrito
-                  {auth.cart_count > 0 && (
-                    <span className="ml-2 bg-red-600 text-white text-xs font-bold rounded-full px-2 py-0.5">
-                      {auth.cart_count}
-                    </span>
-                  )}
-                </Link>
-              </li>
-              <li>
-                <Link
                   href={route('logout')}
                   method="post"
                   as="button"
@@ -322,6 +292,7 @@ const EcommerceLayout = ({ children }) => {
       {!route().current('welcome') && <div className="h-24 md:h-20 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50" aria-hidden="true" />}
 
       <main className="flex-grow">{children}</main>
+      <CartButton />
       <Footer />
       <ToastContainer />
     </div>
