@@ -31,7 +31,7 @@ Route::get('/admin/dashboard', function () {
         'orderCount' => \App\Models\Order::count(),
         'offerCount' => \App\Models\Offer::count(),
         'activeOfferCount' => \App\Models\Offer::where('is_active', true)->count(),
-        'pendingOrders' => \App\Models\Order::where('shipping_status', 'pendiente')
+        'pendingOrders' => \App\Models\Order::where('shipping_status', \App\Models\Order::SHIPPING_STATUS_PENDING)
             ->with(['user', 'items'])
             ->latest()
             ->take(5)

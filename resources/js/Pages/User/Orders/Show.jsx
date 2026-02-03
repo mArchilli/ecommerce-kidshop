@@ -16,11 +16,11 @@ const OrderShow = ({ order }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'pending':
-        return 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white border-yellow-200';
+        return 'bg-gradient-to-r from-green-400 to-green-500 text-white border-green-200';
       case 'dispatched':
         return 'bg-gradient-to-r from-cyan-400 to-cyan-500 text-white border-cyan-200';
       default:
-        return 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white border-yellow-200';
+        return 'bg-gradient-to-r from-green-400 to-green-500 text-white border-green-200';
     }
   };
 

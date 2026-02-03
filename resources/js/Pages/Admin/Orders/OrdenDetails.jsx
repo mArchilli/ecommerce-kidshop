@@ -132,13 +132,13 @@ const OrderDetails = ({ order, csrf_token }) => {
                             <div className="flex flex-col items-center flex-1">
                                 <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg transition-all duration-300 ${
                                     order.shipping_status === 'pending'
-                                        ? 'bg-yellow-500 text-white scale-110 animate-pulse'
+                                        ? 'bg-green-500 text-white scale-110'
                                         : 'bg-gray-300 text-gray-600'
                                 }`}>
-                                    {order.shipping_status === 'pending' ? '⏳' : '1'}
+                                    {order.shipping_status === 'pending' ? '✓' : '1'}
                                 </div>
                                 <p className="mt-2 text-xs sm:text-sm font-bold text-center" style={{ 
-                                    color: order.shipping_status === 'pending' ? '#FFB800' : '#9CA3AF' 
+                                    color: order.shipping_status === 'pending' ? '#65DA4D' : '#9CA3AF' 
                                 }}>
                                     ⏳ Pendiente
                                 </p>
@@ -155,10 +155,10 @@ const OrderDetails = ({ order, csrf_token }) => {
                             <div className="flex flex-col items-center flex-1">
                                 <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg transition-all duration-300 ${
                                     order.shipping_status === 'dispatched'
-                                        ? 'bg-cyan-500 text-white scale-110 animate-pulse'
+                                        ? 'bg-cyan-500 text-white scale-110'
                                         : 'bg-gray-300 text-gray-600'
                                 }`}>
-                                    {order.shipping_status === 'dispatched' ? '🚚' : '2'}
+                                    {order.shipping_status === 'dispatched' ? '✓' : '2'}
                                 </div>
                                 <p className="mt-2 text-xs sm:text-sm font-bold text-center" style={{ 
                                     color: order.shipping_status === 'dispatched' ? '#29C9F4' : '#9CA3AF' 
@@ -169,7 +169,7 @@ const OrderDetails = ({ order, csrf_token }) => {
                         </div>
                     </div>
 
-                    <div className="mb-6 p-6 rounded-xl border-4" style={{ borderColor: order.shipping_status === 'pending' ? '#FFB800' : '#29C9F4', backgroundColor: order.shipping_status === 'pending' ? '#FFF9E6' : '#E6F7FF' }}>
+                    <div className="mb-6 p-6 rounded-xl border-4" style={{ borderColor: order.shipping_status === 'pending' ? '#65DA4D' : '#29C9F4', backgroundColor: order.shipping_status === 'pending' ? '#E8F8E8' : '#E6F7FF' }}>
                         <p className="text-lg font-bold text-neutral-800">
                             <strong>Estado Actual:</strong>{' '}
                             {order.shipping_status === 'pending' && '⏳ Pendiente'}
@@ -190,7 +190,7 @@ const OrderDetails = ({ order, csrf_token }) => {
                                 <button
                                     type="submit"
                                     className="inline-flex items-center px-6 py-3 rounded-xl font-bold text-white transition hover:scale-105 transform shadow-md"
-                                    style={{ backgroundColor: '#FFB800' }}
+                                    style={{ backgroundColor: '#65DA4D' }}
                                 >
                                     ⏳ Marcar como Pendiente
                                 </button>

@@ -45,7 +45,7 @@ class PaymentStatusController extends Controller
             'payment_id' => $paymentId,
             'total' => $cart->items->sum(fn($item) => $item->unit_price * $item->quantity),
             'status' => 'completed',
-            'shipping_status' => 'Pendiente',
+            'shipping_status' => Order::SHIPPING_STATUS_PENDING,
             'province' => $shippingInfo['province'] ?? null,
             'city' => $shippingInfo['city'] ?? null,
             'postal_code' => $shippingInfo['postal_code'] ?? null,

@@ -8,9 +8,9 @@ class Order extends Model
 {
     use HasFactory;
 
-    const SHIPPING_STATUS_PENDING = 'Pendiente';
-    const SHIPPING_STATUS_DISPATCHED = 'Despachado';
-    const SHIPPING_STATUS_DELIVERED = 'Entregado';
+    const SHIPPING_STATUS_PENDING = 'pending';
+    const SHIPPING_STATUS_DISPATCHED = 'dispatched';
+    const SHIPPING_STATUS_DELIVERED = 'delivered';
 
     protected $fillable = [
         'user_id',
