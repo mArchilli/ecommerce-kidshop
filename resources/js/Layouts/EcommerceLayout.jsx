@@ -10,6 +10,7 @@ const EcommerceLayout = ({ children }) => {
   const { auth, flash } = usePage().props;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const isHomePage = route().current('welcome');
 
   useEffect(() => {
     if (flash && flash.type === 'error') {
@@ -43,7 +44,7 @@ const EcommerceLayout = ({ children }) => {
           <Link
             href="/"
             className={`flex items-center gap-3 hover:opacity-80 transition-all duration-300 flex-shrink-0 ${
-              scrollY === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'
+              isHomePage && scrollY === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'
             }`}
           >
             <img 
@@ -213,7 +214,7 @@ const EcommerceLayout = ({ children }) => {
           <li>
             <Link
               href={route('welcome')}
-              className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+              className="text-gray-700 block py-3 px-4 rounded-full bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
               onClick={() => setIsMenuOpen(false)}
             >
               Inicio
@@ -222,7 +223,7 @@ const EcommerceLayout = ({ children }) => {
           <li>
             <Link
               href={route('catalog.index')}
-              className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+              className="text-gray-700 block py-3 px-4 rounded-full bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
               onClick={() => setIsMenuOpen(false)}
             >
               Catálogo
@@ -240,7 +241,7 @@ const EcommerceLayout = ({ children }) => {
                 <li>
                   <Link
                     href={route('dashboard')}
-                    className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+                    className="text-gray-700 block py-3 px-4 rounded-full bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <FontAwesomeIcon icon={faUserShield} /> Administración
@@ -250,7 +251,7 @@ const EcommerceLayout = ({ children }) => {
               <li>
                 <Link
                   href={route('profile.edit')}
-                  className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+                  className="text-gray-700 block py-3 px-4 rounded-full bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <FontAwesomeIcon icon={faUser} /> Perfil
@@ -259,7 +260,7 @@ const EcommerceLayout = ({ children }) => {
               <li>
                 <Link
                   href={route('user.orders.index')}
-                  className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+                  className="text-gray-700 block py-3 px-4 rounded-full bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <FontAwesomeIcon icon={faClipboardList} /> Mis Compras
@@ -268,7 +269,7 @@ const EcommerceLayout = ({ children }) => {
               <li>
                 <Link
                   href={route('cart.index')}
-                  className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+                  className="text-gray-700 block py-3 px-4 rounded-full bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <FontAwesomeIcon icon={faShoppingCart} /> Carrito
@@ -284,7 +285,7 @@ const EcommerceLayout = ({ children }) => {
                   href={route('logout')}
                   method="post"
                   as="button"
-                  className="text-white block py-3 px-4 rounded-lg bg-red-500 hover:bg-red-600 transition-all text-center font-semibold w-full"
+                  className="text-white block py-3 px-4 rounded-full bg-red-500 hover:bg-red-600 transition-all text-center font-semibold w-full"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Cerrar Sesión
@@ -296,7 +297,7 @@ const EcommerceLayout = ({ children }) => {
               <li>
                 <Link
                   href={route('login')}
-                  className="text-gray-700 block py-3 px-4 rounded-lg bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
+                  className="text-gray-700 block py-3 px-4 rounded-full bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-all text-center font-semibold"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Iniciar sesión
@@ -305,7 +306,7 @@ const EcommerceLayout = ({ children }) => {
               <li>
                 <Link
                   href={route('register')}
-                  className="text-white block py-3 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 transition-all text-center font-semibold shadow-md"
+                  className="text-white block py-3 px-4 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 transition-all text-center font-semibold shadow-md"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Registrarse

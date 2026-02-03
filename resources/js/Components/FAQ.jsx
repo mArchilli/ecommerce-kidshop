@@ -19,8 +19,8 @@ export default function FAQ() {
       )
     },
     {
-      question: '¿Realizan envíos al interior?',
-      answer: 'Sí realizamos envíos a todo el país a través de vía cargo, correo argentino y Andreani.'
+      question: '¿Realizan envíos al interior y a la provincia de Buenos Aires?',
+      answer: 'Sí realizamos envíos al interior, a PBA y a todo el país a través de vía cargo, correo argentino y Andreani.'
     },
     {
       question: '¿Cuándo despachan los pedidos?',
@@ -49,10 +49,10 @@ export default function FAQ() {
   };
 
   return (
-    <section className="bg-gradient-to-br from-sky-100 to-white py-16 border-t-4 border-gradient-to-r from-purple-400 to-cyan-400">
+    <section className="py-16 px-4">
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mb-3">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
             Preguntas frecuentes
           </h2>
           <p className="text-gray-600 text-lg">

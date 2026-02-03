@@ -23,7 +23,7 @@ const Chip = ({ label, selected, onClick, color = 'default' }) => {
     <button
       type="button"
       onClick={onClick}
-      className={`px-3 sm:px-4 py-2 rounded-lg border text-xs sm:text-sm font-semibold transition-all hover:shadow-md ${colorStyles[color]}`}
+      className={`px-3 sm:px-4 py-2 rounded-full border text-xs sm:text-sm font-semibold transition-all hover:shadow-md ${colorStyles[color]}`}
       aria-pressed={selected}
     >
       {label}
@@ -243,7 +243,7 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
                 <button
                   key={chip.key}
                   type="button"
-                  className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs sm:text-sm font-semibold hover:shadow-md transition-all"
+                  className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs sm:text-sm font-semibold hover:shadow-md transition-all"
                 >
                   <span>{chip.label}</span>
                 </button>
@@ -251,7 +251,7 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
               <button
                 type="button"
                 onClick={handleClear}
-                className="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-gradient-to-r from-red-500 to-rose-500 text-white hover:shadow-md transition-all"
+                className="px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-gradient-to-r from-red-500 to-rose-500 text-white hover:shadow-md transition-all"
               >
                 Limpiar todo
               </button>
@@ -259,7 +259,7 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
           )}
           <button
             type="button"
-            className={compact ? 'ml-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg font-semibold text-sm shadow-sm hover:shadow-md transition-all' : 'mx-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-md transition-all w-full sm:w-auto'}
+            className={compact ? 'ml-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full font-semibold text-sm shadow-sm hover:shadow-md transition-all' : 'mx-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-md transition-all w-full sm:w-auto'}
             onClick={() => setExpanded(true)}
             aria-expanded={expanded}
           >
@@ -289,19 +289,19 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
               <div className="flex justify-center gap-3 sm:gap-4 mt-6">
                 <button 
                   onClick={handleFilterChange} 
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
                 >
                   Aplicar filtros
                 </button>
                 <button 
                   onClick={handleClear} 
-                  className="bg-gradient-to-r from-red-500 to-rose-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
+                  className="bg-gradient-to-r from-red-500 to-rose-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
                 >
                   Limpiar
                 </button>
                 <button 
                   onClick={() => setExpanded(false)} 
-                  className="text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-md transition-all border border-gray-300 bg-white"
+                  className="text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-md transition-all border border-gray-300 bg-white"
                 >
                   Cerrar
                 </button>
@@ -324,19 +324,19 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
               <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 pt-4">
                 <button 
                   onClick={handleFilterChange} 
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
                 >
                   Aplicar filtros
                 </button>
                 <button 
                   onClick={handleClear} 
-                  className="bg-gradient-to-r from-red-500 to-rose-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
+                  className="bg-gradient-to-r from-red-500 to-rose-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
                 >
                   Limpiar todo
                 </button>
                 <button 
                   onClick={() => setExpanded(false)} 
-                  className="text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:shadow-md transition-all border border-gray-300 bg-white"
+                  className="text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-md transition-all border border-gray-300 bg-white"
                 >
                   Cerrar
                 </button>

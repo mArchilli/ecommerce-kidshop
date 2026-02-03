@@ -104,7 +104,7 @@ export default function VerifyEmail({ status }) {
                                     <div className="mt-6 flex flex-col gap-4">
                                         <PrimaryButton
                                             disabled={processing}
-                                            className="w-full py-3 border border-black text-center font-semibold rounded-lg shadow-sm transition hover:scale-[1.02] hover:bg-white hover:text-black justify-center"
+                                            className="w-full py-3 border border-black text-center font-semibold rounded-full shadow-sm transition hover:scale-[1.02] hover:bg-white hover:text-black justify-center"
                                         >
                                             Reenviar correo de verificación
                                         </PrimaryButton>
@@ -112,7 +112,7 @@ export default function VerifyEmail({ status }) {
                                             href={route('logout')}
                                             method="post"
                                             as="button"
-                                            className="w-full py-3 text-base rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition"
+                                            className="w-full py-3 text-base rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 transition"
                                         >
                                             Cerrar sesión
                                         </Link>

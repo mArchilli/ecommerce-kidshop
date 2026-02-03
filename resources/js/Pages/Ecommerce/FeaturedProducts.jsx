@@ -142,7 +142,7 @@ const FeaturedProducts = ({ products = [] }) => {
   };
 
   return (
-    <section className="w-full px-4 py-12 bg-white">
+    <section className="w-full px-4 py-12">
       <div className="max-w-7xl mx-auto">
         {/* Encabezado de la sección */}
         <div className="text-left mb-12 px-4" data-aos="fade-up">
@@ -157,7 +157,7 @@ const FeaturedProducts = ({ products = [] }) => {
         {/* Grid de productos con carrusel */}
         <div className="relative">
           {/* Flechas de navegación (solo desktop) */}
-          {showCarousel && (
+          {showCarousel && !isMobile && (
             <>
               <button
                 onClick={handlePrev}
@@ -197,35 +197,32 @@ const FeaturedProducts = ({ products = [] }) => {
 
           {/* Contenedor del carrusel */}
           <div 
-            className={`${showCarousel ? 'overflow-hidden px-4 md:px-12' : ''}`} 
+            className={`${showCarousel ? (isMobile ? 'overflow-x-auto scrollbar-hide px-4' : 'overflow-hidden px-4 md:px-12') : ''}`} 
             style={{ perspective: isMobile ? 'none' : '1500px' }}
-            onTouchStart={showCarousel ? handleTouchStart : undefined}
-            onTouchMove={showCarousel ? handleTouchMove : undefined}
-            onTouchEnd={showCarousel ? handleTouchEnd : undefined}
           >
             <div className={`${
               showCarousel 
-                ? 'flex items-stretch justify-center gap-4 md:gap-6 relative' 
+                ? (isMobile ? 'flex gap-4 snap-x snap-mandatory' : 'flex items-stretch justify-center gap-4 md:gap-6 relative')
                 : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
             }`} style={{ transformStyle: isMobile ? 'flat' : 'preserve-3d' }}>
               {showCarousel ? (
-                getVisibleProducts().map((product, index) => {
-                  const cardStyle = getCardStyle(product.position);
-                  const isVisible = product.position >= 0 && product.position < productsPerView;
+                (isMobile ? featuredProducts : getVisibleProducts()).map((product, index) => {
+                  const cardStyle = isMobile ? {} : getCardStyle(product.position);
+                  const isVisible = isMobile ? true : (product.position >= 0 && product.position < productsPerView);
                   
                   return (
                     <div
                       key={`${product.id}-${index}`}
-                      className={`transition-all ease-out ${isTransitioning ? 'duration-300' : 'duration-200'}`}
+                      className={`${isMobile ? 'snap-center flex-shrink-0' : ''} transition-all ease-out ${isTransitioning ? 'duration-300' : 'duration-200'}`}
                       style={{
-                        flex: isVisible ? (isMobile ? '0 0 100%' : '0 0 calc(25% - 18px)') : (isMobile ? '0 0 100%' : '0 0 calc(25% - 18px)'),
+                        flex: isMobile ? '0 0 85%' : (isVisible ? '0 0 calc(25% - 18px)' : '0 0 calc(25% - 18px)'),
                         position: 'relative',
-                        transformStyle: 'preserve-3d',
+                        transformStyle: isMobile ? 'flat' : 'preserve-3d',
                         ...cardStyle,
                       }}
                     >
                       <div className="bg-white shadow-md rounded-2xl overflow-hidden transition-all duration-300 transform hover:shadow-xl hover:-translate-y-1 flex flex-col border border-gray-100 h-full">
-                        <div className="w-full relative aspect-square bg-gradient-to-br from-cyan-50 to-purple-50">
+                        <div className="w-full relative aspect-[4/3] md:aspect-square bg-gradient-to-br from-cyan-50 to-purple-50">
                           <img
                             src={product.images && product.images.length > 0 
                               ? getImageSrc(product.images[0]) 
@@ -237,20 +234,20 @@ const FeaturedProducts = ({ products = [] }) => {
                           
                           {/* Badge de oferta con descuento */}
                           {product.active_offer && (
-                            <div className="absolute top-3 right-3 z-10">
-                              <div className="rounded-lg px-3 py-1.5 shadow-lg font-bold text-white text-sm bg-gradient-to-r from-pink-500 to-rose-500">
+                            <div className="absolute top-2 md:top-3 right-2 md:right-3 z-10">
+                              <div className="rounded-lg px-2 md:px-3 py-1 md:py-1.5 shadow-lg font-bold text-white text-xs md:text-sm bg-gradient-to-r from-pink-500 to-rose-500">
                                 -{Math.round(product.active_offer.discount_percentage)}% OFF
                               </div>
                             </div>
                           )}
 
                           {/* Badge de producto destacado */}
-                          <div className="absolute top-3 left-3 z-10">
-                            <div className="bg-gradient-to-br from-yellow-300 to-yellow-400 rounded-2xl p-2 shadow-xl border-4 border-white">
+                          <div className="absolute top-2 md:top-3 left-2 md:left-3 z-10">
+                            <div className="bg-gradient-to-br from-yellow-300 to-yellow-400 rounded-xl md:rounded-2xl p-1.5 md:p-2 shadow-xl border-2 md:border-4 border-white">
                               <svg 
                                 xmlns="http://www.w3.org/2000/svg" 
                                 viewBox="0 0 24 24" 
-                                className="w-6 h-6"
+                                className="w-4 h-4 md:w-6 md:h-6"
                                 style={{ fill: '#FFB800' }}
                               >
                                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -259,16 +256,16 @@ const FeaturedProducts = ({ products = [] }) => {
                           </div>
                         </div>
                         
-                        <div className="p-5 flex flex-col flex-1 justify-between" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
+                        <div className="p-3 md:p-5 flex flex-col flex-1 justify-between" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
                           {/* Título del producto */}
-                          <h3 className="text-xl font-black text-gray-900 mb-3">
+                          <h3 className="text-base md:text-xl text-gray-900 mb-2 md:mb-3 line-clamp-2">
                             {product.name}
                           </h3>
                           
                           {/* Género */}
                           {product.gender && (
-                            <div className="mb-3">
-                              <span className="inline-block px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                            <div className="mb-2 md:mb-3">
+                              <span className="inline-block px-2 md:px-3 py-1 md:py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
                                 {product.gender.name}
                               </span>
                             </div>
@@ -276,7 +273,7 @@ const FeaturedProducts = ({ products = [] }) => {
 
                           {/* Categorías */}
                           {product.categories && product.categories.length > 0 && (
-                            <div className="mb-3">
+                            <div className="mb-2 md:mb-3 hidden md:block">
                               <div className="flex items-center gap-1 mb-2">
                                 <span className="text-xs font-semibold text-gray-500 uppercase">Categorías</span>
                               </div>
@@ -366,7 +363,7 @@ const FeaturedProducts = ({ products = [] }) => {
                             <Link 
                               href={isVisible ? route('products.show', product.id) : '#'}
                               onClick={(e) => !isVisible && e.preventDefault()}
-                              className="w-full block text-center text-white px-6 py-3 rounded-lg font-semibold text-base transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                              className="w-full block text-center text-white px-6 py-3 rounded-full font-semibold text-base transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                             >
                               Ver Producto
                             </Link>
@@ -420,7 +417,7 @@ const FeaturedProducts = ({ products = [] }) => {
                     
                     <div className="p-5 flex flex-col flex-1 justify-between" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
                       {/* Título del producto */}
-                      <h3 className="text-xl font-black text-gray-900 mb-3">
+                      <h3 className="text-xl text-gray-900 mb-3">
                         {product.name}
                       </h3>
                       
@@ -524,7 +521,7 @@ const FeaturedProducts = ({ products = [] }) => {
                         
                         <Link 
                           href={route('products.show', product.id)}
-                          className="w-full block text-center text-white px-6 py-3 rounded-lg font-semibold text-base transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                          className="w-full block text-center text-white px-6 py-3 rounded-full font-semibold text-base transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                         >
                           Ver Producto
                         </Link>
@@ -541,7 +538,7 @@ const FeaturedProducts = ({ products = [] }) => {
         <div className="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
           <Link
             href={route('catalog.index')}
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 hover:scale-105 transform transition-all shadow-lg hover:shadow-xl"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 hover:scale-105 transform transition-all shadow-lg hover:shadow-xl"
           >
             Ver todo el catálogo
             <svg 

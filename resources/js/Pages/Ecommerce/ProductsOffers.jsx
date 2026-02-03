@@ -147,12 +147,12 @@ const ProductsOffers = ({ products = [] }) => {
   };
 
   return (
-    <section className="w-full px-4 py-12 bg-gradient-to-br from-pink-50 via-white to-pink-50">
+    <section className="w-full px-4 py-12">
       <div className="max-w-7xl mx-auto">
         {/* Encabezado de la sección */}
         <div className="text-center mb-12" data-aos="fade-up">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-            🔥 Ofertas Especiales
+            Ofertas Especiales
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             ¡No te pierdas estas increíbles promociones por tiempo limitado!
@@ -202,30 +202,27 @@ const ProductsOffers = ({ products = [] }) => {
 
           {/* Contenedor del carrusel */}
           <div 
-            className={`${showCarousel ? 'overflow-hidden px-4 md:px-12' : ''}`} 
+            className={`${showCarousel ? (isMobile ? 'overflow-x-auto scrollbar-hide px-4' : 'overflow-hidden px-4 md:px-12') : ''}`} 
             style={{ perspective: isMobile ? 'none' : '1500px' }}
-            onTouchStart={showCarousel ? handleTouchStart : undefined}
-            onTouchMove={showCarousel ? handleTouchMove : undefined}
-            onTouchEnd={showCarousel ? handleTouchEnd : undefined}
           >
             <div className={`${
               showCarousel 
-                ? 'flex items-center justify-center gap-4 md:gap-6 relative' 
+                ? (isMobile ? 'flex gap-4 snap-x snap-mandatory' : 'flex items-center justify-center gap-4 md:gap-6 relative')
                 : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
             }`} style={{ transformStyle: isMobile ? 'flat' : 'preserve-3d' }}>
               {showCarousel ? (
-                getVisibleProducts().map((product, index) => {
-                  const cardStyle = getCardStyle(product.position);
-                  const isVisible = product.position >= 0 && product.position < productsPerView;
+                (isMobile ? productsWithOffers : getVisibleProducts()).map((product, index) => {
+                  const cardStyle = isMobile ? {} : getCardStyle(product.position);
+                  const isVisible = isMobile ? true : (product.position >= 0 && product.position < productsPerView);
                   
                   return (
                     <div
                       key={`${product.id}-${index}`}
-                      className={`transition-all ease-out ${isTransitioning ? 'duration-600' : 'duration-300'}`}
+                      className={`${isMobile ? 'snap-center flex-shrink-0' : ''} transition-all ease-out ${isTransitioning ? 'duration-600' : 'duration-300'}`}
                       style={{
-                        flex: isVisible ? (isMobile ? '0 0 100%' : '0 0 calc(25% - 18px)') : (isMobile ? '0 0 100%' : '0 0 calc(25% - 18px)'),
+                        flex: isMobile ? '0 0 85%' : (isVisible ? '0 0 calc(25% - 18px)' : '0 0 calc(25% - 18px)'),
                         position: 'relative',
-                        transformStyle: 'preserve-3d',
+                        transformStyle: isMobile ? 'flat' : 'preserve-3d',
                         ...cardStyle,
                       }}
                     >
@@ -236,7 +233,7 @@ const ProductsOffers = ({ products = [] }) => {
                       >
                         <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 border-2 border-pink-200">
                           {/* Imagen del producto */}
-                          <div className="relative aspect-square overflow-hidden bg-gray-100">
+                          <div className="relative aspect-[4/3] md:aspect-square overflow-hidden bg-gray-100">
                             <img
                               src={product.images && product.images.length > 0 
                                 ? getImageSrc(product.images[0]) 
@@ -248,8 +245,8 @@ const ProductsOffers = ({ products = [] }) => {
                             
                             {/* Badge de oferta con descuento */}
                             {getActiveOffer(product) && (
-                              <div className="absolute top-3 right-3">
-                                <div className="rounded-full px-3 py-2 shadow-lg font-bold text-white text-sm"
+                              <div className="absolute top-2 md:top-3 right-2 md:right-3">
+                                <div className="rounded-full px-2 md:px-3 py-1 md:py-2 shadow-lg font-bold text-white text-xs md:text-sm"
                                   style={{ backgroundColor: '#FF6B9D' }}>
                                   -{Math.round(getActiveOffer(product).discount_percentage)}% OFF
                                 </div>
@@ -258,8 +255,8 @@ const ProductsOffers = ({ products = [] }) => {
 
                             {/* Badge de género */}
                             {product.gender && (
-                              <div className="absolute top-3 left-3">
-                                <span className="px-3 py-1 rounded-full text-xs font-bold text-white shadow-md"
+                              <div className="absolute top-2 md:top-3 left-2 md:left-3">
+                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs font-bold text-white shadow-md"
                                   style={{ backgroundColor: '#9B59B6' }}>
                                   {product.gender.name}
                                 </span>
@@ -268,16 +265,16 @@ const ProductsOffers = ({ products = [] }) => {
                           </div>
 
                           {/* Información del producto */}
-                          <div className="p-5">
-                            <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-pink-600 transition-colors">
+                          <div className="p-3 md:p-5">
+                            <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-pink-600 transition-colors">
                               {product.name}
                             </h3>
 
                             {/* Precios con oferta */}
-                            <div className="flex items-center gap-2 mb-3">
+                            <div className="flex items-center gap-2 mb-2 md:mb-3">
                               {getActiveOffer(product) ? (
                                 <>
-                                  <span className="text-xl font-black" style={{ color: '#FF6B9D' }}>
+                                  <span className="text-lg md:text-xl font-black" style={{ color: '#FF6B9D' }}>
                                     ${Number(getActiveOffer(product).discount_price).toLocaleString('es-AR')}
                                   </span>
                                   <span className="text-sm text-gray-500 line-through">

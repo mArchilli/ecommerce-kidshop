@@ -1,6 +1,18 @@
+import { useState, useEffect } from 'react';
+
 export default function AboutUs() {
+  const [showFirstSet, setShowFirstSet] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowFirstSet(prev => !prev);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section className="max-w-7xl mx-auto px-4 py-16 bg-gradient-to-br from-purple-50 via-white to-cyan-50 rounded-3xl">
+    <section className="max-w-7xl mx-auto px-4 py-16 pb-8">
       {/* Encabezado de sección */}
       <div className="text-left mb-10 px-4" data-aos="fade-up">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
@@ -26,8 +38,8 @@ export default function AboutUs() {
               brindando múltiples canales para que encuentres todo lo que buscas.
             </p>
 
-            {/* Features en grid */}
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Features en grid - Desktop: mostrar todas */}
+            <div className="mt-8 hidden sm:grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-shadow duration-300" data-aos="zoom-in" data-aos-delay="100">
                 <div className="flex items-center justify-center h-14 w-14 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-400 text-white mb-4 shadow-lg">
                   <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -66,6 +78,83 @@ export default function AboutUs() {
                 </div>
                 <h4 className="text-lg font-bold text-gray-900 mb-2">Disponible 24/7</h4>
                 <p className="text-sm text-gray-600">Compra cuando quieras, desde donde quieras, siempre abierto.</p>
+              </div>
+            </div>
+
+            {/* Features carrusel - Mobile: alternar entre 2 sets */}
+            <div className="mt-8 sm:hidden">
+              <div className="relative">
+                <div className="grid grid-cols-1 gap-4 overflow-hidden">
+                  <div className={`transition-all duration-700 ease-in-out transform ${
+                    showFirstSet 
+                      ? 'opacity-100 translate-x-0' 
+                      : 'opacity-0 -translate-x-full absolute inset-0'
+                  }`}>
+                    <div className="bg-white rounded-2xl p-5 shadow-md mb-4">
+                      <div className="flex items-center justify-center h-14 w-14 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-400 text-white mb-4 shadow-lg">
+                        <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <h4 className="text-lg font-bold text-gray-900 mb-2">Calidad garantizada</h4>
+                      <p className="text-sm text-gray-600">Cada prenda pasa por un control de calidad antes de enviarse.</p>
+                    </div>
+
+                    <div className="bg-white rounded-2xl p-5 shadow-md">
+                      <div className="flex items-center justify-center h-14 w-14 rounded-xl bg-gradient-to-br from-pink-400 to-rose-400 text-white mb-4 shadow-lg">
+                        <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                        </svg>
+                      </div>
+                      <h4 className="text-lg font-bold text-gray-900 mb-2">Envíos a todo el país</h4>
+                      <p className="text-sm text-gray-600">Llegamos a cualquier parte del país de forma rápida y segura.</p>
+                    </div>
+                  </div>
+
+                  <div className={`transition-all duration-700 ease-in-out transform ${
+                    !showFirstSet 
+                      ? 'opacity-100 translate-x-0' 
+                      : 'opacity-0 translate-x-full absolute inset-0'
+                  }`}>
+                    <div className="bg-white rounded-2xl p-5 shadow-md mb-4">
+                      <div className="flex items-center justify-center h-14 w-14 rounded-xl bg-gradient-to-br from-green-400 to-emerald-400 text-white mb-4 shadow-lg">
+                        <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                      </div>
+                      <h4 className="text-lg font-bold text-gray-900 mb-2">Pagos seguros</h4>
+                      <p className="text-sm text-gray-600">Transacciones protegidas con tecnología de encriptación.</p>
+                    </div>
+
+                    <div className="bg-white rounded-2xl p-5 shadow-md">
+                      <div className="flex items-center justify-center h-14 w-14 rounded-xl bg-gradient-to-br from-orange-400 to-amber-400 text-white mb-4 shadow-lg">
+                        <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <h4 className="text-lg font-bold text-gray-900 mb-2">Disponible 24/7</h4>
+                      <p className="text-sm text-gray-600">Compra cuando quieras, desde donde quieras, siempre abierto.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Indicadores de posición */}
+                <div className="flex justify-center gap-2 mt-6">
+                  <button
+                    onClick={() => setShowFirstSet(true)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      showFirstSet ? 'w-8 bg-purple-500' : 'w-2 bg-gray-300'
+                    }`}
+                    aria-label="Ir a primera sección"
+                  />
+                  <button
+                    onClick={() => setShowFirstSet(false)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      !showFirstSet ? 'w-8 bg-purple-500' : 'w-2 bg-gray-300'
+                    }`}
+                    aria-label="Ir a segunda sección"
+                  />
+                </div>
               </div>
             </div>
           </div>

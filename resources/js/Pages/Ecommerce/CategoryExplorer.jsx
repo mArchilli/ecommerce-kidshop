@@ -35,7 +35,7 @@ const CategoryExplorer = () => {
   ];
 
   return (
-    <section className="w-full px-4 py-16 bg-gradient-to-br from-cyan-100 to-pink-100">
+    <section className="w-full px-4 py-16">
       <div className="max-w-7xl mx-auto">
         {/* Encabezado */}
         <div className="text-center mb-12" data-aos="fade-up">
@@ -57,7 +57,14 @@ const CategoryExplorer = () => {
               data-aos="zoom-in"
               data-aos-delay={index * 100}
             >
-              <div className={`relative rounded-3xl bg-gradient-to-br ${gender.gradient} ${gender.hoverGradient} p-8 md:p-12 flex flex-col items-center justify-center transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer overflow-hidden min-h-[320px] md:min-h-[400px]`}>
+              <div 
+                className={`relative rounded-3xl p-8 md:p-12 flex flex-col items-center justify-center transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer overflow-hidden min-h-[320px] md:min-h-[400px]`}
+                style={{
+                  background: gender.slug === 'Niños' 
+                    ? 'linear-gradient(to right, rgba(34, 211, 238, 0.6) 0%, rgba(6, 182, 212, 0.4) 20%, rgba(59, 130, 246, 0) 40%), linear-gradient(to bottom right, rgb(59, 130, 246), rgb(6, 182, 212))'
+                    : 'linear-gradient(to left, rgba(244, 114, 182, 0.6) 0%, rgba(251, 113, 133, 0.4) 20%, rgba(244, 63, 94, 0) 40%), linear-gradient(to bottom right, rgb(236, 72, 153), rgb(244, 63, 94))'
+                }}
+              >
                 {/* Efecto de brillo al hover */}
                 <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
                 

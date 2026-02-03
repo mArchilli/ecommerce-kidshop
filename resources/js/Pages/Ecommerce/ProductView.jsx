@@ -120,7 +120,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
           <div className="mb-6">
             <button
               onClick={handleGoBack}
-              className="inline-flex items-center px-5 py-2.5 rounded-lg font-semibold bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md hover:shadow-lg transition-all duration-200"
+              className="inline-flex items-center px-5 py-2.5 rounded-full font-semibold bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md hover:shadow-lg transition-all duration-200"
             >
               <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -283,7 +283,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                     <button
                       key={size.id}
                       onClick={() => handleSizeClick(size)}
-                      className={`py-3 rounded-lg text-center text-sm font-semibold border-2 transition-all ${
+                      className={`py-3 rounded-full text-center text-sm font-semibold border-2 transition-all ${
                         data.size === size.name
                           ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md"
                           : "bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50"
@@ -308,7 +308,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                   <div className="flex items-center justify-center gap-4">
                     <button
                       onClick={() => data.quantity > 1 && setData('quantity', data.quantity - 1)}
-                      className="w-10 h-10 rounded-lg font-semibold text-lg bg-gradient-to-r from-red-500 to-rose-500 text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all disabled:opacity-50"
+                      className="w-10 h-10 rounded-full font-semibold text-lg bg-gradient-to-r from-red-500 to-rose-500 text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all disabled:opacity-50"
                       disabled={data.quantity <= 1}
                     >
                       −
@@ -320,7 +320,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                     </div>
                     <button
                       onClick={() => data.quantity < sizeStock() && setData('quantity', data.quantity + 1)}
-                      className="w-10 h-10 rounded-lg font-semibold text-lg bg-gradient-to-r from-green-500 to-emerald-500 text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all disabled:opacity-50"
+                      className="w-10 h-10 rounded-full font-semibold text-lg bg-gradient-to-r from-green-500 to-emerald-500 text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all disabled:opacity-50"
                       disabled={data.quantity >= sizeStock()}
                     >
                       +
@@ -336,7 +336,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
               <div className="space-y-3">
                 <button
                   onClick={handleAddToCart}
-                  className="w-full py-4 rounded-lg font-semibold text-base text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 rounded-full font-semibold text-base text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={!data.size || data.quantity < 1 || processing}
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -481,7 +481,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
             {/* Botón de cerrar */}
             <button
               onClick={handleClosePreview}
-              className="fixed top-4 right-4 sm:top-8 sm:right-8 text-white font-bold rounded-lg p-2 z-[10001] shadow-2xl hover:bg-white/10 transition-all bg-black/30"
+              className="fixed top-4 right-4 sm:top-8 sm:right-8 text-white font-bold rounded-full p-2 z-[10001] shadow-2xl hover:bg-white/10 transition-all bg-black/30"
               aria-label="Cerrar"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -497,7 +497,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                     e.stopPropagation();
                     setActiveImage((prev) => (prev > 0 ? prev - 1 : orderedImages.length - 1));
                   }}
-                  className="fixed left-4 sm:left-8 text-white font-bold rounded-lg p-3 z-[10001] shadow-2xl hover:bg-white/10 transition-all bg-black/30"
+                  className="fixed left-4 sm:left-8 text-white font-bold rounded-full p-3 z-[10001] shadow-2xl hover:bg-white/10 transition-all bg-black/30"
                   aria-label="Anterior"
                 >
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -509,7 +509,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                     e.stopPropagation();
                     setActiveImage((prev) => (prev < orderedImages.length - 1 ? prev + 1 : 0));
                   }}
-                  className="fixed right-4 sm:right-8 text-white font-bold rounded-lg p-3 z-[10001] shadow-2xl hover:bg-white/10 transition-all bg-black/30"
+                  className="fixed right-4 sm:right-8 text-white font-bold rounded-full p-3 z-[10001] shadow-2xl hover:bg-white/10 transition-all bg-black/30"
                   aria-label="Siguiente"
                 >
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">

@@ -23,8 +23,8 @@ const Welcome = ({ products, categories, colors, genders }) => {
   return (
     <EcommerceLayout>
       <Head title="Bienvenido" />
-      <div className="flex flex-col min-h-screen bg-white">
-        <main className="flex-grow w-full">
+      <div className="flex flex-col min-h-screen font-sans">
+        <main className="flex-grow w-full bg-gradient-to-b from-white via-purple-50/30 via-cyan-50/30 via-pink-50/20 to-white">
           {/* Hero Section */}
           <Hero />
 
@@ -37,14 +37,17 @@ const Welcome = ({ products, categories, colors, genders }) => {
           {/* Products Offers Section */}
           <ProductsOffers products={products} />
 
-          {/* About Section */}
-          <div className="w-full px-4 py-8 bg-gray-100" data-aos="fade-up">
-            <About />
-          </div>
-          
-          {/* Payment Methods Section */}
-          <div className="w-full px-4 py-8" data-aos="fade-up" data-aos-delay="200">
-            <PaymentMethods />
+          {/* About & Payment Methods - Unified Section */}
+          <div className="w-full">
+            {/* About Section */}
+            <div data-aos="fade-up">
+              <About />
+            </div>
+            
+            {/* Payment Methods Section */}
+            <div data-aos="fade-up" data-aos-delay="200">
+              <PaymentMethods />
+            </div>
           </div>
 
           {/* FAQ Section */}

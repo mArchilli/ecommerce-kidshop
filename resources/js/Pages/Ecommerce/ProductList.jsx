@@ -78,7 +78,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
               <button
                 type="button"
                 onClick={() => handleFilter({})}
-                className="text-white px-4 sm:px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 font-bold hover:shadow-lg transition-all duration-200 text-sm"
+                className="text-white px-4 sm:px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 font-bold hover:shadow-lg transition-all duration-200 text-sm"
               >
                 Buscar
               </button>
@@ -98,7 +98,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                   key={opt.value || 'default'}
                   type="button"
                   onClick={() => { setSort(opt.value); handleFilter({}); }}
-                  className={`px-4 py-2.5 rounded-lg border text-sm font-semibold transition-all ${
+                  className={`px-4 py-2.5 rounded-full border text-sm font-semibold transition-all ${
                     sort === opt.value
                       ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
                       : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
@@ -183,7 +183,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                   
                   <div className="p-5 flex flex-col flex-1 justify-between" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
                     {/* Título del producto */}
-                    <h3 className="text-xl font-black text-gray-900 mb-3">
+                    <h3 className="text-xl text-gray-900 mb-3">
                       {product.name}
                     </h3>
                     
@@ -285,7 +285,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                       
                       <Link 
                         href={`/products/${product.id}`} 
-                        className="w-full block text-center text-white px-6 py-3 rounded-lg font-semibold text-base transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                        className="w-full block text-center text-white px-6 py-3 rounded-full font-semibold text-base transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                       >
                         Ver Producto
                       </Link>
@@ -313,7 +313,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                     type="button"
                     disabled={!link.url || link.active}
                     onClick={() => handlePagination(link.url)}
-                    className={`px-4 py-2 rounded-lg font-medium text-sm transition-all border ${
+                    className={`px-4 py-2 rounded-full font-medium text-sm transition-all border ${
                       link.active
                         ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
                         : link.url
