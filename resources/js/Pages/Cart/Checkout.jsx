@@ -367,11 +367,16 @@ const Checkout = ({ cart, savedShippingInfo }) => {
                           {errors.address && <span className="text-red-500 text-sm">{errors.address}</span>}
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">Teléfono de Contacto (Nos contactaremos via WhatsApp)</label>
+                          <label className="block text-sm font-medium text-gray-700">Teléfono de Contacto (solo números, ej: 1123456789)</label>
                           <input
                             type="text"
                             value={data.phone}
-                            onChange={(e) => setData('phone', e.target.value)}
+                            onChange={(e) => {
+                              const numericValue = e.target.value.replace(/\D/g, '');
+                              setData('phone', numericValue);
+                            }}
+                            maxLength="15"
+                            placeholder="1123456789"
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
                           />
                           {errors.phone && <span className="text-red-500 text-sm">{errors.phone}</span>}
@@ -495,11 +500,16 @@ const Checkout = ({ cart, savedShippingInfo }) => {
                           {errors.courier_company && <span className="text-red-500 text-sm">{errors.courier_company}</span>}
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">Teléfono de Contacto (Nos contactaremos via WhatsApp)</label>
+                          <label className="block text-sm font-medium text-gray-700">Teléfono de Contacto (solo números, ej: 1123456789)</label>
                           <input
                             type="text"
                             value={data.phone}
-                            onChange={(e) => setData('phone', e.target.value)}
+                            onChange={(e) => {
+                              const numericValue = e.target.value.replace(/\D/g, '');
+                              setData('phone', numericValue);
+                            }}
+                            maxLength="15"
+                            placeholder="1123456789"
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
                           />
                           {errors.phone && <span className="text-red-500 text-sm">{errors.phone}</span>}

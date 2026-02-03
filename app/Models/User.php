@@ -60,7 +60,15 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new CustomVerifyEmail());
+        try {
+            $this->notify(new CustomVerifyEmail());
+        } catch (\Exception $e) {
+            \Log::error('Error al enviar notificación de verificación', [
+                'user_id' => $this->id,
+                'error' => $e->getMessage()
+            ]);
+            // No lanzar la excepción, permitir que continúe el flujo
+        }
     }
 
     public function orders()

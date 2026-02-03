@@ -19,7 +19,7 @@ class CustomVerifyEmail extends BaseVerifyEmail
 
         return (new MailMessage)
             ->subject('Verifica tu correo electrónico')
-            ->greeting('¡Hola, Bienenido/a!')
+            ->greeting('¡Hola, Bienvenido/a!')
             ->line('Gracias por registrarte en La Tienda de los Niños. Por favor, verifica tu correo electrónico haciendo clic en el botón de abajo.')
             ->action('Verificar Correo', $verificationUrl)
             ->line('Si no creaste una cuenta, no es necesario realizar ninguna acción.')

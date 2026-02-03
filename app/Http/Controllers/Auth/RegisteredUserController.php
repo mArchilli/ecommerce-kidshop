@@ -42,7 +42,16 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+        // Intentar enviar el email de verificación, pero no fallar si hay error
+        try {
+            event(new Registered($user));
+        } catch (\Exception $e) {
+            \Log::error('Error al enviar email de verificación', [
+                'error' => $e->getMessage(),
+                'user_id' => $user->id,
+            ]);
+            // Continuar aunque falle el envío de email
+        }
 
         // Autenticar al usuario después del registro
         Auth::login($user);
