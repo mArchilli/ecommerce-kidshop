@@ -127,106 +127,53 @@ const OrderDetails = ({ order, csrf_token }) => {
 
                     {/* Timeline visual */}
                     <div className="mb-6 sm:mb-8 overflow-x-auto">
-                        <div className="flex items-center justify-between min-w-[600px] sm:min-w-0 max-w-3xl mx-auto px-4 sm:px-0">
-                            {/* Paso 1: Recibida */}
-                            <div className="flex flex-col items-center flex-1">
-                                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg transition-all duration-300 ${
-                                    ['pending', 'dispatched', 'delivered'].includes(order.shipping_status) 
-                                        ? 'bg-green-500 text-white scale-110' 
-                                        : 'bg-gray-300 text-gray-600'
-                                }`}>
-                                    {['pending', 'dispatched', 'delivered'].includes(order.shipping_status) ? '✓' : '1'}
-                                </div>
-                                <p className="mt-2 text-xs sm:text-sm font-bold text-center" style={{ 
-                                    color: ['pending', 'dispatched', 'delivered'].includes(order.shipping_status) ? '#65DA4D' : '#9CA3AF' 
-                                }}>
-                                    📥 Recibida
-                                </p>
-                            </div>
-
-                            {/* Línea conectora 1 */}
-                            <div className={`h-1 flex-1 mx-1 sm:mx-2 rounded transition-all duration-300 ${
-                                ['dispatched', 'delivered'].includes(order.shipping_status) 
-                                    ? 'bg-green-500' 
-                                    : 'bg-gray-300'
-                            }`} />
-
-                            {/* Paso 2: Procesando */}
+                        <div className="flex items-center justify-between min-w-[400px] sm:min-w-0 max-w-2xl mx-auto px-4 sm:px-0">
+                            {/* Paso 1: Pendiente */}
                             <div className="flex flex-col items-center flex-1">
                                 <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg transition-all duration-300 ${
                                     order.shipping_status === 'pending'
                                         ? 'bg-yellow-500 text-white scale-110 animate-pulse'
-                                        : ['dispatched', 'delivered'].includes(order.shipping_status)
-                                        ? 'bg-green-500 text-white scale-110'
                                         : 'bg-gray-300 text-gray-600'
                                 }`}>
-                                    {order.shipping_status === 'pending' ? '⏳' : ['dispatched', 'delivered'].includes(order.shipping_status) ? '✓' : '2'}
+                                    {order.shipping_status === 'pending' ? '⏳' : '1'}
                                 </div>
                                 <p className="mt-2 text-xs sm:text-sm font-bold text-center" style={{ 
-                                    color: order.shipping_status === 'pending' ? '#FFB800' : ['dispatched', 'delivered'].includes(order.shipping_status) ? '#65DA4D' : '#9CA3AF' 
+                                    color: order.shipping_status === 'pending' ? '#FFB800' : '#9CA3AF' 
                                 }}>
-                                    ⏰ Procesando
+                                    ⏳ Pendiente
                                 </p>
                             </div>
 
-                            {/* Línea conectora 2 */}
+                            {/* Línea conectora */}
                             <div className={`h-1 flex-1 mx-1 sm:mx-2 rounded transition-all duration-300 ${
-                                ['delivered'].includes(order.shipping_status) 
-                                    ? 'bg-green-500' 
-                                    : order.shipping_status === 'dispatched'
-                                    ? 'bg-cyan-500'
+                                order.shipping_status === 'dispatched'
+                                    ? 'bg-cyan-500' 
                                     : 'bg-gray-300'
                             }`} />
 
-                            {/* Paso 3: En Camino */}
+                            {/* Paso 2: Despachado */}
                             <div className="flex flex-col items-center flex-1">
                                 <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg transition-all duration-300 ${
                                     order.shipping_status === 'dispatched'
                                         ? 'bg-cyan-500 text-white scale-110 animate-pulse'
-                                        : order.shipping_status === 'delivered'
-                                        ? 'bg-green-500 text-white scale-110'
                                         : 'bg-gray-300 text-gray-600'
                                 }`}>
-                                    {order.shipping_status === 'dispatched' ? '🚚' : order.shipping_status === 'delivered' ? '✓' : '3'}
+                                    {order.shipping_status === 'dispatched' ? '🚚' : '2'}
                                 </div>
                                 <p className="mt-2 text-xs sm:text-sm font-bold text-center" style={{ 
-                                    color: order.shipping_status === 'dispatched' ? '#29C9F4' : order.shipping_status === 'delivered' ? '#65DA4D' : '#9CA3AF' 
+                                    color: order.shipping_status === 'dispatched' ? '#29C9F4' : '#9CA3AF' 
                                 }}>
-                                    🚚 En Camino
-                                </p>
-                            </div>
-
-                            {/* Línea conectora 3 */}
-                            <div className={`h-1 flex-1 mx-1 sm:mx-2 rounded transition-all duration-300 ${
-                                order.shipping_status === 'delivered' 
-                                    ? 'bg-green-500' 
-                                    : 'bg-gray-300'
-                            }`} />
-
-                            {/* Paso 4: Entregada */}
-                            <div className="flex flex-col items-center flex-1">
-                                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg transition-all duration-300 ${
-                                    order.shipping_status === 'delivered'
-                                        ? 'bg-green-500 text-white scale-110 animate-bounce'
-                                        : 'bg-gray-300 text-gray-600'
-                                }`}>
-                                    {order.shipping_status === 'delivered' ? '🎉' : '4'}
-                                </div>
-                                <p className="mt-2 text-xs sm:text-sm font-bold text-center" style={{ 
-                                    color: order.shipping_status === 'delivered' ? '#65DA4D' : '#9CA3AF' 
-                                }}>
-                                    ✅ Entregada
+                                    🚚 Despachado
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="mb-6 p-6 rounded-xl border-4" style={{ borderColor: order.shipping_status === 'pending' ? '#FFB800' : order.shipping_status === 'dispatched' ? '#29C9F4' : '#65DA4D', backgroundColor: order.shipping_status === 'pending' ? '#FFF9E6' : order.shipping_status === 'dispatched' ? '#E6F7FF' : '#E8F8E8' }}>
+                    <div className="mb-6 p-6 rounded-xl border-4" style={{ borderColor: order.shipping_status === 'pending' ? '#FFB800' : '#29C9F4', backgroundColor: order.shipping_status === 'pending' ? '#FFF9E6' : '#E6F7FF' }}>
                         <p className="text-lg font-bold text-neutral-800">
                             <strong>Estado Actual:</strong>{' '}
                             {order.shipping_status === 'pending' && '⏳ Pendiente'}
                             {order.shipping_status === 'dispatched' && '🚚 Despachado'}
-                            {order.shipping_status === 'delivered' && '✅ Entregado'}
                         </p>
                     </div>
 

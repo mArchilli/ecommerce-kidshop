@@ -18,11 +18,9 @@ const OrderShow = ({ order }) => {
       case 'pending':
         return 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white border-yellow-200';
       case 'dispatched':
-        return 'bg-gradient-to-r from-blue-400 to-cyan-500 text-white border-blue-200';
-      case 'delivered':
-        return 'bg-gradient-to-r from-green-400 to-green-500 text-white border-green-200';
+        return 'bg-gradient-to-r from-cyan-400 to-cyan-500 text-white border-cyan-200';
       default:
-        return 'bg-gradient-to-r from-gray-400 to-gray-500 text-white border-gray-200';
+        return 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white border-yellow-200';
     }
   };
 
@@ -33,10 +31,8 @@ const OrderShow = ({ order }) => {
         return '⏳ Pendiente';
       case 'dispatched':
         return '🚚 Despachado';
-      case 'delivered':
-        return '✅ Entregado';
       default:
-        return status;
+        return '⏳ Pendiente';
     }
   };
 
@@ -151,37 +147,44 @@ const OrderShow = ({ order }) => {
                 </h2>
                 <div className="relative">
                   <div className="flex items-center justify-between">
-                    {/* Paso 1: Pendiente */}
+                    {/* Paso 1: Pedido Confirmado - Siempre verde */}
                     <div className="flex flex-col items-center flex-1">
-                      <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg ${
-                          ['pending', 'dispatched', 'delivered'].includes(order.shipping_status)
-                            ? 'bg-gradient-to-br from-green-400 to-green-500 text-white'
-                            : 'bg-gray-200 text-gray-500'
-                        }`}
-                      >
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gradient-to-br from-green-400 to-green-500 text-white">
                         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      <span className="text-xs text-gray-700 font-bold mt-2 text-center">Pedido<br />Confirmado</span>
+                      <span className="text-xs text-green-600 font-bold mt-2 text-center">Pedido<br />Confirmado</span>
                     </div>
 
-                    {/* Línea */}
+                    {/* Línea 1 - Siempre verde */}
+                    <div className="flex-1 h-2 rounded-full bg-gradient-to-r from-green-400 to-green-500" />
+
+                    {/* Paso 2: Pendiente - Verde por defecto */}
+                    <div className="flex flex-col items-center flex-1">
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-gradient-to-br from-green-400 to-green-500 text-white">
+                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <span className="text-xs text-green-600 font-bold mt-2 text-center">Pendiente</span>
+                    </div>
+
+                    {/* Línea 2 - Verde solo si despachado */}
                     <div
-                      className={`flex-1 h-2 rounded-full ${
-                        ['dispatched', 'delivered'].includes(order.shipping_status)
+                      className={`flex-1 h-2 rounded-full transition-all duration-300 ${
+                        order.shipping_status === 'dispatched'
                           ? 'bg-gradient-to-r from-green-400 to-cyan-400'
                           : 'bg-gray-200'
                       }`}
                     />
 
-                    {/* Paso 2: Despachado */}
+                    {/* Paso 3: Despachado */}
                     <div className="flex flex-col items-center flex-1">
                       <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg ${
-                          ['dispatched', 'delivered'].includes(order.shipping_status)
-                            ? 'bg-gradient-to-br from-cyan-400 to-cyan-500 text-white'
+                        className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${
+                          order.shipping_status === 'dispatched'
+                            ? 'bg-gradient-to-br from-cyan-400 to-cyan-500 text-white scale-110'
                             : 'bg-gray-200 text-gray-500'
                         }`}
                       >
@@ -189,30 +192,9 @@ const OrderShow = ({ order }) => {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
                         </svg>
                       </div>
-                      <span className="text-xs text-gray-700 font-bold mt-2 text-center">En<br />Camino</span>
-                    </div>
-
-                    {/* Línea */}
-                    <div
-                      className={`flex-1 h-2 rounded-full ${
-                        order.shipping_status === 'delivered' ? 'bg-gradient-to-r from-cyan-400 to-purple-400' : 'bg-gray-200'
-                      }`}
-                    />
-
-                    {/* Paso 3: Entregado */}
-                    <div className="flex flex-col items-center flex-1">
-                      <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg ${
-                          order.shipping_status === 'delivered'
-                            ? 'bg-gradient-to-br from-purple-400 to-purple-500 text-white'
-                            : 'bg-gray-200 text-gray-500'
-                        }`}
-                      >
-                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                      </div>
-                      <span className="text-xs text-gray-700 font-bold mt-2 text-center">Entregado</span>
+                      <span className={`text-xs font-bold mt-2 text-center ${
+                        order.shipping_status === 'dispatched' ? 'text-cyan-600' : 'text-gray-500'
+                      }`}>Despachado</span>
                     </div>
                   </div>
                 </div>
