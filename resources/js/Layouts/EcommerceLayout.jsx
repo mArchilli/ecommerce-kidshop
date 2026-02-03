@@ -319,7 +319,7 @@ const EcommerceLayout = ({ children }) => {
         
 
       {/* Spacer condicional: evita empuje solo fuera de la home */}
-      {!route().current('welcome') && <div className="h-24 md:h-20" aria-hidden="true" />}
+      {!route().current('welcome') && <div className="h-24 md:h-20 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50" aria-hidden="true" />}
 
       <main className="flex-grow">{children}</main>
       <Footer />

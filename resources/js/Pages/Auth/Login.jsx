@@ -26,9 +26,9 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout full>
             <Head title="Iniciar sesión" />
 
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex">
+            <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-pink-50/20 to-blue-50/30 flex">
                 {/* Columna izquierda (info) */}
-                <div className="hidden lg:flex lg:w-1/2 justify-center bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 relative overflow-hidden text-white">
+                <div className="hidden lg:flex lg:w-1/2 justify-center bg-gradient-to-br from-purple-500 via-pink-400 to-purple-600 relative overflow-hidden text-white">
                     <div className="absolute inset-0 bg-white/5"></div>
                     <div className="absolute top-20 left-20 w-32 h-32 bg-purple-300/30 rounded-full blur-xl animate-pulse"></div>
                     <div className="absolute bottom-20 right-20 w-40 h-40 bg-pink-300/30 rounded-full blur-2xl animate-pulse"></div>
@@ -41,7 +41,7 @@ export default function Login({ status, canResetPassword }) {
                                 <img 
                                     src="/images/logo.png" 
                                     alt="Logo La Tienda de los Niños" 
-                                    className="w-64 h-32 mx-auto drop-shadow-2xl"
+                                    className="w-48 h-auto mx-auto drop-shadow-2xl"
                                 />
                             </div>
                             <h1 className="text-5xl font-black mb-4 drop-shadow-lg">¡Hola!</h1>
@@ -133,13 +133,13 @@ export default function Login({ status, canResetPassword }) {
                                                 type="email"
                                                 name="email"
                                                 value={data.email}
-                                                className="w-full px-4 py-4 bg-purple-50 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
+                                                className="w-full px-4 py-4 bg-purple-50 border-2 border-purple-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                                 autoComplete="username"
                                                 isFocused={true}
                                                 onChange={(e) => setData('email', e.target.value)}
                                                 placeholder="tu@email.com"
                                             />
-                                            <div className="absolute inset-0 rounded-xl pointer-events-none transition-all duration-300"></div>
+                                            <div className="absolute inset-0 rounded-2xl pointer-events-none transition-all duration-300"></div>
                                         </div>
                                         <InputError message={errors.email} className="mt-2" />
                                     </div>
@@ -157,7 +157,7 @@ export default function Login({ status, canResetPassword }) {
                                                 type={showPassword ? 'text' : 'password'}
                                                 name="password"
                                                 value={data.password}
-                                                className="w-full px-4 py-4 pr-12 bg-purple-50 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
+                                                className="w-full px-4 py-4 pr-12 bg-purple-50 border-2 border-purple-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                                 autoComplete="current-password"
                                                 onChange={(e) => setData('password', e.target.value)}
                                                 placeholder="••••••••"
@@ -174,7 +174,7 @@ export default function Login({ status, canResetPassword }) {
                                             >
                                                 {showPassword ? 'Ocultar' : 'Mostrar'}
                                             </button>
-                                            <div className="absolute inset-0 rounded-xl pointer-events-none transition-all duration-300"></div>
+                                            <div className="absolute inset-0 rounded-2xl pointer-events-none transition-all duration-300"></div>
                                         </div>
                                         <InputError message={errors.password} className="mt-2" />
                                     </div>
@@ -206,7 +206,7 @@ export default function Login({ status, canResetPassword }) {
 
                                     {/* Botón */}
                                     <PrimaryButton
-                                        className="w-full text-white py-4 text-lg font-black rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 justify-center bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border-0"
+                                        className="w-full text-white py-4 text-lg font-black rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 justify-center bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 border-0"
                                         disabled={processing}
                                     >
                                         Iniciar sesión
@@ -223,15 +223,6 @@ export default function Login({ status, canResetPassword }) {
                                         >
                                             Registrate
                                         </Link>
-                                    </p>
-                                    <p className="text-center text-sm text-neutral-600">
-                                        ¿Necesitas ayuda con el acceso?{' '}
-                                        <a
-                                            href="#"
-                                            className="text-neutral-900 hover:underline"
-                                        >
-                                            Contáctanos
-                                        </a>
                                     </p>
                                 </div>
                             </div>

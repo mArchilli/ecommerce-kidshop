@@ -37,7 +37,7 @@ export default function Register() {
         <GuestLayout full>
             <Head title="Crear cuenta" />
 
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex">
+            <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-pink-50/20 to-blue-50/30 flex">
                 {/* Columna izquierda (formulario) */}
                 <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
                     <div className="w-full max-w-md">
@@ -79,7 +79,7 @@ export default function Register() {
                                             id="name"
                                             name="name"
                                             value={data.name}
-                                            className="w-full px-4 py-4 bg-purple-50 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
+                                            className="w-full px-4 py-4 bg-purple-50 border-2 border-purple-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                             autoComplete="name"
                                             isFocused={true}
                                             onChange={(e) => setData('name', e.target.value)}
@@ -100,7 +100,7 @@ export default function Register() {
                                             type="email"
                                             name="email"
                                             value={data.email}
-                                            className="w-full px-4 py-4 bg-purple-50 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
+                                            className="w-full px-4 py-4 bg-purple-50 border-2 border-purple-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                             autoComplete="username"
                                             onChange={(e) => setData('email', e.target.value)}
                                             required
@@ -121,7 +121,7 @@ export default function Register() {
                                                 type={showPassword ? 'text' : 'password'}
                                                 name="password"
                                                 value={data.password}
-                                                className="w-full px-4 py-4 pr-12 bg-purple-50 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
+                                                className="w-full px-4 py-4 pr-12 bg-purple-50 border-2 border-purple-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                                 autoComplete="new-password"
                                                 onChange={(e) => setData('password', e.target.value)}
                                                 required
@@ -151,7 +151,7 @@ export default function Register() {
                                                 type={showPasswordConfirm ? 'text' : 'password'}
                                                 name="password_confirmation"
                                                 value={data.password_confirmation}
-                                                className="w-full px-4 py-4 pr-12 bg-purple-50 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
+                                                className="w-full px-4 py-4 pr-12 bg-purple-50 border-2 border-purple-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                                 autoComplete="new-password"
                                                 onChange={(e) =>
                                                     setData('password_confirmation', e.target.value)
@@ -187,7 +187,7 @@ export default function Register() {
                                         </Link>
 
                                         <PrimaryButton
-                                            className="text-white py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 font-black text-lg order-1 sm:order-2 w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border-0"
+                                            className="text-white py-4 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 font-black text-lg order-1 sm:order-2 w-full sm:w-auto bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 border-0"
                                             disabled={processing}
                                         >
                                             Crear cuenta
@@ -207,7 +207,7 @@ export default function Register() {
                 </div>
 
                 {/* Columna derecha (info) */}
-                <div className="hidden lg:flex lg:w-1/2 justify-center bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 relative overflow-hidden text-white">
+                <div className="hidden lg:flex lg:w-1/2 justify-center bg-gradient-to-br from-purple-500 via-pink-400 to-purple-600 relative overflow-hidden text-white">
                     <div className="absolute inset-0 bg-white/5"></div>
                     <div className="absolute top-20 left-20 w-32 h-32 bg-purple-300/30 rounded-full blur-xl animate-pulse"></div>
                     <div className="absolute bottom-20 right-20 w-40 h-40 bg-pink-300/30 rounded-full blur-2xl animate-pulse"></div>
@@ -220,7 +220,7 @@ export default function Register() {
                                 <img 
                                     src="/images/logo.png" 
                                     alt="Logo La Tienda de los Niños" 
-                                    className="w-64 h-32 mx-auto drop-shadow-2xl"
+                                    className="w-48 h-auto mx-auto drop-shadow-2xl"
                                 />
                             </div>
                             <h2 className="text-5xl font-black mb-4 drop-shadow-lg">¡Bienvenido!</h2>

@@ -19,9 +19,9 @@ export default function ForgotPassword({ status }) {
         <GuestLayout full={true}>
             <Head title="Recuperar Contraseña" />
 
-            <div className="min-h-screen flex">
+            <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-pink-50/20 to-blue-50/30 flex">
                 {/* Panel Izquierdo - Formulario */}
-                <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+                <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
                     <div className="w-full max-w-md">
                         {/* Logo/Marca */}
                         <div className="text-center mb-8">
@@ -34,7 +34,7 @@ export default function ForgotPassword({ status }) {
                         </div>
 
                         {/* Tarjeta del Formulario */}
-                        <div className="bg-white rounded-3xl shadow-2xl p-8 border-4 border-purple-200">
+                        <div className="bg-white/90 backdrop-blur-md shadow-2xl border-4 border-white rounded-3xl transition-all duration-500 p-8" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
                             <div className="mb-6">
                                 <h2 className="text-2xl font-bold text-gray-800 mb-2">
                                     Recuperar Contraseña
@@ -65,7 +65,7 @@ export default function ForgotPassword({ status }) {
                                         type="email"
                                         name="email"
                                         value={data.email}
-                                        className="block w-full px-4 py-3 border-2 border-purple-200 rounded-xl focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all"
+                                        className="block w-full px-4 py-4 bg-purple-50 border-2 border-purple-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-purple-500 focus:bg-white transition-all duration-300 hover:border-purple-300 font-semibold"
                                         isFocused={true}
                                         onChange={(e) => setData('email', e.target.value)}
                                         placeholder="tu@email.com"
@@ -76,7 +76,7 @@ export default function ForgotPassword({ status }) {
                                 {/* Botón Enviar */}
                                 <div className="space-y-4">
                                     <PrimaryButton
-                                        className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-0"
+                                        className="w-full py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-black text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-0 justify-center"
                                         disabled={processing}
                                     >
                                         Enviar Enlace de Recuperación
@@ -110,8 +110,12 @@ export default function ForgotPassword({ status }) {
                 </div>
 
                 {/* Panel Derecho - Información */}
-                <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 text-white p-12 items-center justify-center">
-                    <div className="max-w-md space-y-8">
+                <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-purple-500 via-pink-400 to-purple-600 text-white p-12 items-center justify-center relative overflow-hidden">
+                    <div className="absolute inset-0 bg-white/5"></div>
+                    <div className="absolute top-20 left-20 w-32 h-32 bg-purple-300/30 rounded-full blur-xl animate-pulse"></div>
+                    <div className="absolute bottom-20 right-20 w-40 h-40 bg-pink-300/30 rounded-full blur-2xl animate-pulse"></div>
+                    <div className="absolute top-40 right-40 w-24 h-24 bg-blue-300/30 rounded-full blur-xl"></div>
+                    <div className="relative z-10 max-w-md space-y-8">
                         <div>
                             <h1 className="text-5xl font-black mb-4 drop-shadow-lg">¡Tranquilo!</h1>
                             <p className="text-xl text-purple-100">
