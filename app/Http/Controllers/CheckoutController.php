@@ -61,45 +61,78 @@ class CheckoutController extends Controller
         // Crear cliente de preferencias
         $client = new PreferenceClient();
 
-        // Mapea los items para MercadoPago
+        // Mapea los items para MercadoPago - validar que cumplan los requisitos
         $items = $cart->items->map(function ($item) {
+            $unitPrice = round((float) $item->unit_price, 2);
+            
+            // Validar que el precio sea mayor a 0
+            if ($unitPrice <= 0) {
+                throw new \Exception("El precio del producto '{$item->product->name}' debe ser mayor a 0");
+            }
+            
             return [
-                'title' => $item->product->name,
+                'title' => substr($item->product->name, 0, 256), // Máximo 256 caracteres
                 'quantity' => (int) $item->quantity,
-                'unit_price' => (float) $item->unit_price,
+                'unit_price' => $unitPrice,
+                'currency_id' => 'ARS',
             ];
         })->toArray();
 
-        // Crear la preferencia
-        $preference = $client->create([
-            'items' => $items,
-            'back_urls' => [
-                'success' => config('app.url') . '/payment/success',
-                'failure' => config('app.url') . '/payment/failure',
-                'pending' => config('app.url') . '/payment/pending',
-            ],
-            'auto_return' => 'approved',
-            'external_reference' => json_encode([
-                'user_id' => $user->id,
-                'shipping_info' => $validated,
-            ]),
-            'payer' => [
-                'name' => $validated['first_name'],
-                'surname' => $validated['last_name'],
-                'email' => $validated['email'],
-                'phone' => [
-                    'area_code' => '',
-                    'number' => $validated['phone'] ?? '',
-                ],
-                'identification' => [
-                    'type' => 'DNI',
-                    'number' => $validated['dni'],
-                ],
-            ],
-        ]);
+        // Validar que haya items
+        if (empty($items)) {
+            return redirect()->route('checkout.index')->with('error', 'No hay productos para procesar.');
+        }
 
-        // Guardar la información de envío en la sesión
+        // Guardar la información de envío en la sesión ANTES de crear la preferencia
         $request->session()->put('shipping_info', $validated);
+        $request->session()->put('payment_in_progress', true);
+
+        // Limpiar y validar DNI (solo números)
+        $dniLimpio = preg_replace('/[^0-9]/', '', $validated['dni']);
+
+        // Preparar datos del payer
+        $payerData = [
+            'name' => trim($validated['first_name']),
+            'surname' => trim($validated['last_name']),
+            'email' => trim($validated['email']),
+            'identification' => [
+                'type' => 'DNI',
+                'number' => $dniLimpio,
+            ],
+        ];
+
+        // Solo agregar teléfono si existe y no está vacío
+        if (!empty($validated['phone'])) {
+            $payerData['phone'] = [
+                'area_code' => '',
+                'number' => preg_replace('/[^0-9]/', '', $validated['phone']),
+            ];
+        }
+
+        try {
+            // Crear la preferencia con external_reference simplificado
+            $preference = $client->create([
+                'items' => $items,
+                'back_urls' => [
+                    'success' => config('app.url') . '/payment/success',
+                    'failure' => config('app.url') . '/payment/failure',
+                    'pending' => config('app.url') . '/payment/pending',
+                ],
+                'auto_return' => 'approved',
+                'external_reference' => $user->id . '_' . time(),
+                'payer' => $payerData,
+                'statement_descriptor' => 'TIENDA NIÑOS',
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error al crear preferencia de MercadoPago', [
+                'error' => $e->getMessage(),
+                'items' => $items,
+                'payer' => $payerData,
+            ]);
+            
+            return redirect()->route('checkout.index')
+                ->with('error', 'Error al procesar el pago. Por favor, intenta nuevamente.');
+        }
 
         // Retornar la vista con el preferenceId y la información de envío
         return Inertia::render('Cart/Payment', [

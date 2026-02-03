@@ -10,30 +10,34 @@ class PaymentStatusController extends Controller
 {
     public function success(Request $request)
     {
-        // Obtener y decodificar la external_reference
-        $externalRef = json_decode($request->get('external_reference'), true);
-
-        // Extraer los datos de external_reference
-        $userId = $externalRef['user_id'] ?? null;
-        $shippingInfo = $externalRef['shipping_info'] ?? null;
-        $paymentId = $request->get('payment_id');
-    $dni = $shippingInfo['dni'] ?? null;
-
-        // Validaciones básicas
-        if (!$paymentId || !$userId || !$shippingInfo || !$dni) {
-            return redirect()->route('checkout.index')->with('error', 'Datos de pago inválidos o incompletos (falta DNI).');
+        // Obtener datos de la sesión
+        $shippingInfo = $request->session()->get('shipping_info');
+        $paymentInProgress = $request->session()->get('payment_in_progress', false);
+        
+        // Validar que haya un pago en progreso
+        if (!$paymentInProgress || !$shippingInfo) {
+            return redirect()->route('checkout.index')->with('error', 'No hay información de pago disponible.');
         }
 
-        // Buscar al usuario
-        $user = User::find($userId);
+        // Obtener el usuario autenticado
+        $user = $request->user();
         if (!$user) {
-            return redirect()->route('checkout.index')->with('error', 'Usuario no encontrado.');
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión.');
         }
 
         // Obtener el carrito del usuario
         $cart = $user->cart()->with('items.product')->first();
         if (!$cart || $cart->items->isEmpty()) {
             return redirect()->route('checkout.index')->with('error', 'Tu carrito está vacío o expirado.');
+        }
+
+        // Obtener el payment_id de MercadoPago
+        $paymentId = $request->get('payment_id') ?? 'pending';
+        $dni = $shippingInfo['dni'] ?? null;
+
+        // Validar DNI
+        if (!$dni) {
+            return redirect()->route('checkout.index')->with('error', 'Falta información del DNI.');
         }
 
         // Crear la orden con el precio real del carrito (incluye descuentos)
@@ -70,6 +74,9 @@ class PaymentStatusController extends Controller
         $cart->items()->delete();
         $cart->delete();
 
+        // Limpiar la sesión
+        $request->session()->forget(['shipping_info', 'payment_in_progress']);
+
         // Cargar relaciones necesarias para la vista
         $order->load(['items.product', 'user']);
 
@@ -79,15 +86,13 @@ class PaymentStatusController extends Controller
             'payment_id' => $paymentId,
             'order' => $order,
             'user' => $user,
+            'shippingInfo' => $shippingInfo,
         ]);
     }
 
     public function failure(Request $request)
     {
-        if (!$request->session()->has('payment_in_progress')) {
-            return redirect('/')->with('error', 'No tienes permiso para acceder a esta página.');
-        }
-
+        // Limpiar la sesión de pago
         $request->session()->forget('payment_in_progress');
 
         return Inertia::render('Cart/Failure', [
@@ -97,12 +102,7 @@ class PaymentStatusController extends Controller
 
     public function pending(Request $request)
     {
-        if (!$request->session()->has('payment_in_progress')) {
-            return redirect('/')->with('error', 'No tienes permiso para acceder a esta página.');
-        }
-
-        $request->session()->forget('payment_in_progress');
-
+        // Mantener la información en sesión por si se completa después
         return Inertia::render('Cart/Pending', [
             'message' => 'Tu pago está pendiente de aprobación.',
         ]);
