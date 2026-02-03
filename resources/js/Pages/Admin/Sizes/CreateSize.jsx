@@ -21,7 +21,7 @@ export default function CreateSize() {
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-2xl font-bold leading-tight text-gray-800">
-                        ✨ Crear Talle
+                        ✨ Agregar Talle
                     </h2>
                     <Link
                         href={route('sizes.index')}
@@ -74,7 +74,7 @@ export default function CreateSize() {
                                     className="inline-flex items-center px-8 py-3 rounded-xl font-bold text-sm text-white uppercase tracking-wider hover:scale-105 transform transition shadow-lg"
                                     style={{ backgroundColor: '#FFB800' }}
                                 >
-                                    ✅ Crear Talle
+                                    ✅ Agregar Talle
                                 </button>
                             </div>
                         </form>

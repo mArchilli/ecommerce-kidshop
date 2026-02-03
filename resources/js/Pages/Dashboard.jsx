@@ -84,13 +84,6 @@ export default function Dashboard() {
                             <div className="mt-1 sm:mt-2 text-3xl sm:text-4xl font-black text-white drop-shadow-md">{productCount || 0}</div>
                         </div>
                         <div 
-                            className="rounded-2xl border-4 border-white p-4 sm:p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-delayed cursor-pointer"
-                            style={{ backgroundColor: '#65DA4D' }}
-                        >
-                            <div className="text-xs sm:text-sm text-white/90 font-semibold">📂 Categorías</div>
-                            <div className="mt-1 sm:mt-2 text-3xl sm:text-4xl font-black text-white drop-shadow-md">{categoryCount || 0}</div>
-                        </div>
-                        <div 
                             className="rounded-2xl border-4 border-white p-4 sm:p-6 shadow-lg transform hover:scale-105 hover:rotate-2 transition-all duration-300 animate-floating-slow cursor-pointer"
                             style={{ backgroundColor: '#FC1C1D' }}
                         >

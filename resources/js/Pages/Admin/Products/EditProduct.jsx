@@ -94,10 +94,10 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
             formData.append(`sizes[${i}][stock]`, s.stock);
         });
         
-        // Enviar imágenes con el formato que espera el backend (images[])
+        // Enviar cada imagen con su índice específico
         ['image_1', 'image_2', 'image_3'].forEach(key => {
             if (data[key]) {
-                formData.append('images[]', data[key]);
+                formData.append(key, data[key]);
             }
         });
         

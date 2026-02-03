@@ -20,7 +20,7 @@ export default function SizesView({ sizes }) {
                         className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-sm text-white uppercase tracking-wider hover:scale-105 transform transition shadow-lg"
                         style={{ backgroundColor: '#FFB800' }}
                     >
-                        ✨ Crear Talle
+                        ✨ Agregar Talle
                     </Link>
                 </div>
             }

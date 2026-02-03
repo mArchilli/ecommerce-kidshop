@@ -127,11 +127,7 @@ const Checkout = ({ cart, savedShippingInfo }) => {
   };
 
   const handleGoBack = () => {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      router.visit(route('catalog.index'));
-    }
+    router.visit(route('cart.index'));
   };
 
   const total =
@@ -149,7 +145,7 @@ const Checkout = ({ cart, savedShippingInfo }) => {
       <div className="bg-gradient-to-br from-purple-50 via-pink-50 to-cyan-50 min-h-screen py-16">
         <div className="max-w-7xl mx-auto px-4">
           {/* Header */}
-          <div className="text-center mb-12">
+          <div className="text-left mb-12">
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mb-4">
               Finalizar Compra
             </h1>

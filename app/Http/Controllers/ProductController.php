@@ -201,28 +201,34 @@ class ProductController extends Controller
             'colors' => 'array',
             'gender_id' => 'required|exists:genders,id',
             'is_featured' => 'nullable|boolean',
-            'images' => 'nullable|array|max:4', // Validar que sea un array con un máximo de 4 elementos
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validar que cada elemento del array sea una imagen válida
+            'image_1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $imagesBasePath = rtrim(env('PUBLIC_IMAGES_PATH', 'public/images/'), '/');
         $productsPath = $imagesBasePath . '/products';
-        $imagePaths = $product->images;
-        if ($request->hasFile('images')) {
-            // Eliminar las imágenes antiguas
-            foreach ($product->images as $image) {
-                $imagePath = public_path($image);
-                if (file_exists($imagePath)) {
-                    @unlink($imagePath);
+        
+        // Mantener las imágenes actuales como base
+        $imagePaths = $product->images ?? [];
+        
+        // Procesar cada imagen individualmente
+        $imageFields = ['image_1', 'image_2', 'image_3'];
+        foreach ($imageFields as $index => $field) {
+            if ($request->hasFile($field)) {
+                // Eliminar la imagen antigua en esa posición específica
+                if (isset($imagePaths[$index])) {
+                    $oldImagePath = public_path($imagePaths[$index]);
+                    if (file_exists($oldImagePath)) {
+                        @unlink($oldImagePath);
+                    }
                 }
-            }
-
-            // Guardar las nuevas imágenes
-            $imagePaths = [];
-            foreach ($request->file('images') as $file) {
+                
+                // Guardar la nueva imagen
+                $file = $request->file($field);
                 $filename = uniqid() . '_' . $file->getClientOriginalName();
                 $file->move(public_path($productsPath), $filename);
-                $imagePaths[] = 'images/products/' . $filename;
+                $imagePaths[$index] = 'images/products/' . $filename;
             }
         }
 

@@ -74,7 +74,7 @@ export default function CreateColor() {
                                     className="inline-flex items-center px-8 py-3 rounded-xl font-bold text-sm text-white uppercase tracking-wider hover:scale-105 transform transition shadow-lg"
                                     style={{ backgroundColor: '#FC1C1D' }}
                                 >
-                                    ✅ Crear Color
+                                    ✅ Agregar Color
                                 </button>
                             </div>
                         </form>

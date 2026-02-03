@@ -425,7 +425,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
               className="w-full sm:w-auto px-8 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
               style={{ backgroundColor: '#65DA4D' }}
             >
-              ✅ Crear Producto
+              ✅ Agregar Prenda
             </button>
           </div>
         </form>
