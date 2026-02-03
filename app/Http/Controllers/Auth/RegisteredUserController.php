@@ -43,21 +43,17 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Intentar enviar el email de verificación, pero no fallar si hay error
-        try {
-            event(new Registered($user));
-        } catch (\Exception $e) {
-            Log::error('Error al enviar email de verificación', [
-                'error' => $e->getMessage(),
-                'user_id' => $user->id,
-            ]);
-            // Continuar aunque falle el envío de email
-        }
+        // Disparar evento de registro (esto envía el email de verificación)
+        event(new Registered($user));
 
-        // Autenticar al usuario después del registro
-        Auth::login($user);
+        // Log para debugging
+        Log::info('Usuario registrado exitosamente', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+        ]);
 
-        // Redirigir a la vista de verificación de correo
-        return redirect()->route('verification.notice');
+        // NO autenticar al usuario automáticamente
+        // Redirigir al login con mensaje de verificación
+        return redirect()->route('login')->with('status', 'Registro exitoso. Por favor, revisa tu correo electrónico para verificar tu cuenta antes de iniciar sesión.');
     }
 }

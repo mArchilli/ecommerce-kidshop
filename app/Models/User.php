@@ -62,13 +62,29 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         try {
+            Log::info('Iniciando envío de notificación de verificación', [
+                'user_id' => $this->id,
+                'email' => $this->email,
+                'mail_mailer' => config('mail.default'),
+                'mail_host' => config('mail.mailers.smtp.host'),
+                'mail_from' => config('mail.from.address'),
+            ]);
+            
             $this->notify(new CustomVerifyEmail());
+            
+            Log::info('Notificación de verificación enviada exitosamente', [
+                'user_id' => $this->id,
+                'email' => $this->email,
+            ]);
         } catch (\Exception $e) {
             Log::error('Error al enviar notificación de verificación', [
                 'user_id' => $this->id,
-                'error' => $e->getMessage()
+                'email' => $this->email,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
-            // No lanzar la excepción, permitir que continúe el flujo
+            // Lanzar la excepción para que el usuario sepa que hay un problema
+            throw $e;
         }
     }
 

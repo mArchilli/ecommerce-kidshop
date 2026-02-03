@@ -97,7 +97,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::put('cart/update/{cartItem}', [CartController::class, 'update'])->name('cart.update');
@@ -111,15 +111,20 @@ Route::middleware('auth')->group(function () {
 });
 
 // Rutas para el proceso de checkout
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
      
 });
 
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index'); 
-Route::post('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
-Route::get('/payment/success', [PaymentStatusController::class, 'success'])->name('payment.success');
-Route::get('/payment/failure', [PaymentStatusController::class, 'failure'])->name('payment.failure');
-Route::get('/payment/pending', [PaymentStatusController::class, 'pending'])->name('payment.pending');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index'); 
+    Route::post('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/payment/success', [PaymentStatusController::class, 'success'])->name('payment.success');
+    Route::get('/payment/failure', [PaymentStatusController::class, 'failure'])->name('payment.failure');
+    Route::get('/payment/pending', [PaymentStatusController::class, 'pending'])->name('payment.pending');
+});
 
 // Rutas para la verificación de correo electrónico
 Route::get('/email/verify', function () {
