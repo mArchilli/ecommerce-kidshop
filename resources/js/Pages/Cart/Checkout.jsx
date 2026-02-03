@@ -164,10 +164,59 @@ const Checkout = ({ cart, savedShippingInfo }) => {
           </div>
 
         {cart && cart.items && cart.items.length > 0 ? (
-          <div className="grid md:grid-cols-12 gap-6">
-            {/* Columna izquierda: Envío + Lista de productos */}
-            <section className="md:col-span-8 flex flex-col gap-6">
-              {/* Información de envío (se mantiene el formulario condicional) */}
+          <div className="flex flex-col gap-6 md:grid md:grid-cols-12">
+            {/* Lista de productos (mobile: order-1, desktop: arriba en col izquierda) */}
+            <section className="md:col-start-1 md:col-span-8 md:order-1">
+              <div className="bg-white/80 backdrop-blur-sm border-2 border-pink-200 rounded-2xl shadow-lg">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent p-6">Productos</h2>
+                <div className="divide-y divide-gray-200">
+                  {cart.items.map((item) => (
+                    <div key={item.id} className="p-4 mx-4 my-3 flex items-center gap-4 bg-white/70 rounded-xl border border-pink-100 hover:border-cyan-300 hover:shadow-md transition-all">
+                      <img
+                        src={
+                          item.product.images && item.product.images.length > 0
+                            ? getImageSrc(item.product.images[0])
+                            : '/placeholder.svg'
+                        }
+                        alt={item.product.name}
+                        className="w-20 h-20 object-cover rounded-xl border-2 border-pink-200 shadow-sm"
+                      />
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <h3 className="text-sm font-semibold text-gray-900">{item.product.name}</h3>
+                            <p className="text-xs text-gray-500">Talle: {item.size || 'N/A'}</p>
+                            <p className="text-xs text-gray-500">Cantidad: {item.quantity}</p>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-sm">
+                              {item.unit_price < item.product.price ? (
+                                <div className="flex flex-col items-end">
+                                  <div className="text-sm font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                                    Precio: ${Number(item.unit_price).toLocaleString('es-AR')}
+                                  </div>
+                                  <div className="text-xs text-gray-500 line-through">
+                                    ${Number(item.product.price).toLocaleString('es-AR')}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="font-bold text-gray-900">Precio: ${Number(item.unit_price).toLocaleString('es-AR')}</div>
+                              )}
+                            </div>
+                            <div className="text-base font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mt-1">
+                              Total: ${(item.unit_price * item.quantity).toLocaleString('es-AR')}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Información de envío (mobile: order-2, desktop: abajo en col izquierda) */}
+            <section className="md:col-start-1 md:col-span-8 md:order-2">
               <div className="bg-white/80 backdrop-blur-sm shadow-lg rounded-2xl border-2 border-pink-200 p-6">
                 <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mb-6">Información de Envío</h2>
 
@@ -460,64 +509,16 @@ const Checkout = ({ cart, savedShippingInfo }) => {
                   </>
                 )}
               </div>
-
-              {/* Lista de productos (estilo similar a Index) */}
-              <div className="bg-white/80 backdrop-blur-sm border-2 border-pink-200 rounded-2xl shadow-lg">
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent p-6">Productos</h2>
-                <div className="divide-y divide-gray-200">
-                  {cart.items.map((item) => (
-                    <div key={item.id} className="p-4 mx-4 my-3 flex items-center gap-4 bg-white/70 rounded-xl border border-pink-100 hover:border-cyan-300 hover:shadow-md transition-all">
-                      <img
-                        src={
-                          item.product.images && item.product.images.length > 0
-                            ? getImageSrc(item.product.images[0])
-                            : '/placeholder.svg'
-                        }
-                        alt={item.product.name}
-                        className="w-20 h-20 object-cover rounded-xl border-2 border-pink-200 shadow-sm"
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-start justify-between gap-4">
-                          <div>
-                            <h3 className="text-sm font-semibold text-gray-900">{item.product.name}</h3>
-                            <p className="text-xs text-gray-500">Talle: {item.size || 'N/A'}</p>
-                            <p className="text-xs text-gray-500">Cantidad: {item.quantity}</p>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-sm">
-                              {item.unit_price < item.product.price ? (
-                                <div className="flex flex-col items-end">
-                                  <div className="text-sm font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                                    Precio: ${Number(item.unit_price).toLocaleString('es-AR')}
-                                  </div>
-                                  <div className="text-xs text-gray-500 line-through">
-                                    ${Number(item.product.price).toLocaleString('es-AR')}
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="font-bold text-gray-900">Precio: ${Number(item.unit_price).toLocaleString('es-AR')}</div>
-                              )}
-                            </div>
-                            <div className="text-base font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mt-1">
-                              Total: ${(item.unit_price * item.quantity).toLocaleString('es-AR')}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </section>
 
-            {/* Columna derecha: Resumen sticky + botón de pago */}
-            <aside className="md:col-span-4">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border-2 border-pink-200 p-6 md:sticky top-4">
+            {/* Columna derecha: Resumen sticky + botón de pago (mobile: order-3) */}
+            <aside className="md:col-start-9 md:col-span-4 md:row-start-1 md:row-span-2">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border-2 border-pink-200 p-6 md:sticky md:top-4">
                 <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mb-6">Resumen</h2>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between bg-white/70 px-4 py-3 rounded-lg border border-pink-200">
                     <span className="text-purple-600 font-semibold">Subtotal</span>
-                    <span className="font-bold text-gray-900">${total.toFixed(2)}</span>
+                    <span className="font-bold text-gray-900">${total.toLocaleString('es-AR')}</span>
                   </div>
                   <div className="flex justify-between bg-white/70 px-4 py-3 rounded-lg border border-pink-200">
                     <span className="text-purple-600 font-semibold">Envío</span>
@@ -525,7 +526,7 @@ const Checkout = ({ cart, savedShippingInfo }) => {
                   </div>
                   <div className="bg-gradient-to-r from-purple-100 via-pink-100 to-cyan-100 border-2 border-cyan-300 rounded-xl px-4 py-4 flex justify-between text-base">
                     <span className="font-bold text-purple-700">Total</span>
-                    <span className="font-bold text-xl bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">${total.toFixed(2)}</span>
+                    <span className="font-bold text-xl bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">${total.toLocaleString('es-AR')}</span>
                   </div>
                 </div>
 

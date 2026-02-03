@@ -8,6 +8,9 @@ import 'aos/dist/aos.css';
 const ProductList = ({ products, categories, colors, genders, sizes = [], filters = {} }) => {
   // products: objeto paginado de Laravel (data, links, meta)
 
+  // Estado para mostrar/ocultar filtros
+  const [showFilters, setShowFilters] = useState(false);
+
   // Handler para filtros: envía los filtros al backend usando Inertia
   const handleFilter = (selectedFilters) => {
     // Merge con parámetros actuales para no perder filtros cuando se aplica búsqueda/orden
@@ -64,29 +67,28 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
         {/* Barra de búsqueda y orden (responsive) */}
         <div className="w-full my-6 space-y-4">
           {/* Fila con búsqueda y orden */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            {/* Barra de búsqueda */}
-            <div className="flex-1 flex gap-2">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
+            {/* Barra de búsqueda - más pequeña en desktop */}
+            <div className="flex gap-2 md:w-auto w-full">
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleFilter({}); }}
                 placeholder="Busca por nombre o descripción..."
-                className="flex-1 rounded-xl border-2 border-cyan-300 px-4 py-3 text-sm sm:text-base font-semibold focus:outline-none focus:ring-4 focus:ring-cyan-200 focus:border-cyan-400"
+                className="flex-1 md:w-96 rounded-xl border-2 border-cyan-300 px-4 py-3 text-sm sm:text-base font-semibold focus:outline-none focus:ring-4 focus:ring-cyan-200 focus:border-cyan-400"
               />
               <button
                 type="button"
                 onClick={() => handleFilter({})}
-                className="text-white px-4 sm:px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 font-bold hover:shadow-lg transition-all duration-200 text-sm"
+                className="text-white px-4 sm:px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 font-bold hover:shadow-lg transition-all duration-200 text-sm whitespace-nowrap"
               >
                 Buscar
               </button>
             </div>
 
-            {/* Botones de orden */}
-          <div className="mt-4 sm:mt-0">
-            <div className="hidden sm:flex gap-2 flex-wrap">
+            {/* Botones de orden y filtros en desktop */}
+            <div className="hidden md:flex gap-2 flex-wrap items-center">
               {[
                 { value: '', label: 'Por defecto' },
                 { value: 'price_asc', label: 'Precio ↑' },
@@ -107,34 +109,69 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                   {opt.label}
                 </button>
               ))}
-            </div>
-            <div className="flex sm:hidden w-full">
-              <select
-                value={sort}
-                onChange={(e) => { setSort(e.target.value); handleFilter({}); }}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+              {/* Botón mostrar filtros en desktop */}
+              <button
+                type="button"
+                onClick={() => setShowFilters(!showFilters)}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2.5 rounded-full font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105 transition-all"
               >
-                <option value="">Ordenar por...</option>
-                <option value="price_asc">Precio: menor a mayor</option>
-                <option value="price_desc">Precio: mayor a menor</option>
-                <option value="newest">Más nuevos</option>
-                <option value="oldest">Más antiguos</option>
-              </select>
+                Mas filtros
+              </button>
             </div>
           </div>
+
+          {/* Botones de orden en mobile (2 por fila) */}
+          <div className="grid grid-cols-2 gap-2 md:hidden">
+            {[
+              { value: '', label: 'Por defecto' },
+              { value: 'price_asc', label: 'Precio ↑' },
+              { value: 'price_desc', label: 'Precio ↓' },
+              { value: 'newest', label: 'Nuevos' },
+              { value: 'oldest', label: 'Antiguos' },
+            ].map(opt => (
+              <button
+                key={opt.value || 'default'}
+                type="button"
+                onClick={() => { setSort(opt.value); handleFilter({}); }}
+                className={`px-4 py-2.5 rounded-full border text-sm font-semibold transition-all ${
+                  sort === opt.value
+                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
+                    : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Botón mostrar filtros en mobile (ancho completo) */}
+          <div className="md:hidden">
+            <button
+              type="button"
+              onClick={() => setShowFilters(!showFilters)}
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full font-semibold text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+            >
+              Mostrar filtros
+            </button>
           </div>
         </div>
         
         {/* Menú de filtros detallado (desplegable, no modal) */}
-        <ProductFilter
-          categories={categories}
-          colors={colors}
-          genders={genders}
-          sizes={sizes}
-          onFilter={handleFilter}
-          initialFilters={filters}
-          compact={false}
-        />
+        {showFilters && (
+          <ProductFilter
+            categories={categories}
+            colors={colors}
+            genders={genders}
+            sizes={sizes}
+            onFilter={(selectedFilters) => {
+              handleFilter(selectedFilters);
+              setShowFilters(false);
+            }}
+            initialFilters={filters}
+            compact={false}
+            onClose={() => setShowFilters(false)}
+          />
+        )}
         {products && products.data && products.data.length > 0 ? (
           <>
             <div

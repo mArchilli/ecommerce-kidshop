@@ -33,15 +33,15 @@ const Chip = ({ label, selected, onClick, color = 'default' }) => {
 
 const ANIMATION_DURATION = 500;
 
-const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, initialFilters = {}, compact = false }) => {
+const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, initialFilters = {}, compact = false, onClose }) => {
   const [selectedCategory, setSelectedCategory] = useState(initialFilters.category || '');
   const [selectedColor, setSelectedColor] = useState(initialFilters.color || '');
   const [selectedGender, setSelectedGender] = useState(initialFilters.gender || '');
   const [selectedSize, setSelectedSize] = useState(initialFilters.size || '');
   const [minPrice, setMinPrice] = useState(initialFilters.min_price || '');
   const [maxPrice, setMaxPrice] = useState(initialFilters.max_price || '');
-  const [expanded, setExpanded] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [expanded, setExpanded] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
   const contentRef = useRef(null);
 
   useEffect(() => {
@@ -72,7 +72,6 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
       gender: selectedGender,
       size: selectedSize,
     });
-    setExpanded(false);
   };
 
   const handleClear = () => {
@@ -83,7 +82,12 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
     setMinPrice('');
     setMaxPrice('');
     onFilter({ min_price: '', max_price: '', category: '', color: '', gender: '', size: '' });
-    setExpanded(false);
+  };
+
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    }
   };
 
   const activeChips = [
@@ -227,95 +231,16 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
   );
 
   return (
-    <div
-      className={
-        compact
-          ? 'rounded-xl p-0 bg-white shadow-sm max-w-full mx-auto my-2 border border-gray-200'
-          : 'sm:rounded-xl p-0 bg-white max-w-7xl mx-auto sm:my-8 shadow-md border border-gray-200'
-      }
-    >
-      {/* Vista colapsada */}
-      {!expanded ? (
-        <div className={compact ? 'flex items-center gap-3 p-3' : 'flex flex-col gap-4 justify-center py-5 sm:py-6 px-4 sm:px-6'}>
-          {activeChips.length > 0 && (
-            <div className="flex flex-wrap gap-2 justify-center">
-              {activeChips.map(chip => (
-                <button
-                  key={chip.key}
-                  type="button"
-                  className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs sm:text-sm font-semibold hover:shadow-md transition-all"
-                >
-                  <span>{chip.label}</span>
-                </button>
-              ))}
-              <button
-                type="button"
-                onClick={handleClear}
-                className="px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-gradient-to-r from-red-500 to-rose-500 text-white hover:shadow-md transition-all"
-              >
-                Limpiar todo
-              </button>
-            </div>
-          )}
-          <button
-            type="button"
-            className={compact ? 'ml-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full font-semibold text-sm shadow-sm hover:shadow-md transition-all' : 'mx-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-md transition-all w-full sm:w-auto'}
-            onClick={() => setExpanded(true)}
-            aria-expanded={expanded}
-          >
-            {compact ? 'Filtros' : 'Mostrar filtros'}
-          </button>
-        </div>
-      ) : null}
-
-      {/* Vista expandida */}
+    <>
+      {/* Contenedor de filtros expandidos */}
       {isVisible && (
-        compact ? (
-          // Modo compact: Modal overlay
-          <div className="fixed inset-0 z-50 bg-black/40 p-4 overflow-auto">
-            <div className="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-xl">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold">Filtrar productos</h3>
-                <button 
-                  onClick={() => setExpanded(false)} 
-                  className="text-4xl font-bold text-neutral-500 hover:text-neutral-700 w-10 h-10 flex items-center justify-center leading-none"
-                >
-                  ×
-                </button>
-              </div>
-              <div ref={contentRef} className="space-y-6">
-                <FilterContent />
-              </div>
-              <div className="flex justify-center gap-3 sm:gap-4 mt-6">
-                <button 
-                  onClick={handleFilterChange} 
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
-                >
-                  Aplicar filtros
-                </button>
-                <button 
-                  onClick={handleClear} 
-                  className="bg-gradient-to-r from-red-500 to-rose-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-lg transition-all"
-                >
-                  Limpiar
-                </button>
-                <button 
-                  onClick={() => setExpanded(false)} 
-                  className="text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-md transition-all border border-gray-300 bg-white"
-                >
-                  Cerrar
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          // Modo normal: Panel inline expandible
+        <div className="rounded-xl bg-white max-w-7xl mx-auto shadow-md border border-gray-200 my-6">
           <div
             ref={contentRef}
             className="overflow-hidden transition-all"
             style={{
-              maxHeight: '0px',
-              opacity: '0',
+              maxHeight: expanded ? `${contentRef.current?.scrollHeight || 2000}px` : '0px',
+              opacity: expanded ? '1' : '0',
               transitionDuration: `${ANIMATION_DURATION}ms`,
             }}
           >
@@ -335,7 +260,7 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
                   Limpiar todo
                 </button>
                 <button 
-                  onClick={() => setExpanded(false)} 
+                  onClick={handleClose} 
                   className="text-gray-700 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm sm:text-base hover:shadow-md transition-all border border-gray-300 bg-white"
                 >
                   Cerrar
@@ -343,9 +268,9 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
               </div>
             </div>
           </div>
-        )
+        </div>
       )}
-    </div>
+    </>
   );
 };
 
