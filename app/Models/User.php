@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\CustomVerifyEmail;
@@ -63,7 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail
         try {
             $this->notify(new CustomVerifyEmail());
         } catch (\Exception $e) {
-            \Log::error('Error al enviar notificación de verificación', [
+            Log::error('Error al enviar notificación de verificación', [
                 'user_id' => $this->id,
                 'error' => $e->getMessage()
             ]);

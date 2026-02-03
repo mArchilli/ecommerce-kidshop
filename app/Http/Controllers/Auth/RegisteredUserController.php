@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -46,7 +47,7 @@ class RegisteredUserController extends Controller
         try {
             event(new Registered($user));
         } catch (\Exception $e) {
-            \Log::error('Error al enviar email de verificación', [
+            Log::error('Error al enviar email de verificación', [
                 'error' => $e->getMessage(),
                 'user_id' => $user->id,
             ]);

@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Preference\PreferenceClient;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -124,7 +125,7 @@ class CheckoutController extends Controller
                 'statement_descriptor' => 'TIENDA NIÑOS',
             ]);
         } catch (\Exception $e) {
-            \Log::error('Error al crear preferencia de MercadoPago', [
+            Log::error('Error al crear preferencia de MercadoPago', [
                 'error' => $e->getMessage(),
                 'items' => $items,
                 'payer' => $payerData,
@@ -140,36 +141,5 @@ class CheckoutController extends Controller
             'preferenceId' => $preference->id,
             'shippingInfo' => $validated,
         ]);
-    }
-
-
-    public function success(Request $request)
-    {
-        // Obtener la información de envío de la sesión
-        $shippingInfo = $request->session()->get('shipping_info');
-        
-        // Obtener el usuario autenticado
-        $user = $request->user();
-        
-        // Obtener el carrito del usuario con los items y productos
-        $cart = \App\Models\Cart::with('items.product')
-            ->where('user_id', $user->id)
-            ->first();
-
-        return Inertia::render('Cart/Success', [
-            'shippingInfo' => $shippingInfo,
-            'user' => $user,
-            'cart' => $cart,
-        ]);
-    }
-
-    public function failure()
-    {
-        return Inertia::render('Cart/Failure');
-    }
-
-    public function pending()
-    {
-        return Inertia::render('Cart/Pending');
     }
 }
