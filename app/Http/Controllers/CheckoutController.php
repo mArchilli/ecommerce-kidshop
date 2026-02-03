@@ -74,9 +74,12 @@ class CheckoutController extends Controller
         $preference = $client->create([
             'items' => $items,
             'back_urls' => [
-                'success' => "https://latiendadelosniños.com/payment/success",
-                'failure' => "https://latiendadelosniños.com/payment/failure",
-                'pending' => "https://latiendadelosniños.com/payment/pending",
+                // 'success' => "https://latiendadelosniños.com/payment/success",
+                // 'failure' => "https://latiendadelosniños.com/payment/failure",
+                // 'pending' => "https://latiendadelosniños.com/payment/pending",
+                'success' => "https://archillimatias.dev/payment/success",
+                'failure' => "https://archillimatias.dev/payment/failure",
+                'pending' => "https://archillimatias.dev/payment/pending",
             ],
             'auto_return' => 'approved',
             'external_reference' => json_encode([
