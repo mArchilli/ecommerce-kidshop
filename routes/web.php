@@ -11,7 +11,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\UserOrderController;
-use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -125,21 +124,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment/failure', [PaymentStatusController::class, 'failure'])->name('payment.failure');
     Route::get('/payment/pending', [PaymentStatusController::class, 'pending'])->name('payment.pending');
 });
-
-// Rutas para la verificación de correo electrónico
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
-    ->middleware(['auth', 'signed'])->name('verification.verify');
-
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
-
 
 require __DIR__.'/auth.php';
 

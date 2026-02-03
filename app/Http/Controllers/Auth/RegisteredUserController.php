@@ -52,8 +52,10 @@ class RegisteredUserController extends Controller
             'email' => $user->email,
         ]);
 
-        // NO autenticar al usuario automáticamente
-        // Redirigir al login con mensaje de verificación
-        return redirect()->route('login')->with('status', 'Registro exitoso. Por favor, revisa tu correo electrónico para verificar tu cuenta antes de iniciar sesión.');
+        // Autenticar al usuario para que pueda acceder a la página de verificación
+        Auth::login($user);
+
+        // Redirigir a la página de verificación de email
+        return redirect()->route('verification.notice');
     }
 }
