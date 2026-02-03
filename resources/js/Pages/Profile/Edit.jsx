@@ -1,4 +1,4 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head } from '@inertiajs/react';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
@@ -6,34 +6,40 @@ import UpdateProfileInformationForm from './Partials/UpdateProfileInformationFor
 
 export default function Edit({ mustVerifyEmail, status }) {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Perfil
-                </h2>
-            }
-        >
-            <Head title="Profile" />
+        <EcommerceLayout>
+            <Head title="Mi Perfil" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <UpdateProfileInformationForm
-                            mustVerifyEmail={mustVerifyEmail}
-                            status={status}
-                            className="max-w-xl"
-                        />
+            <div className="min-h-screen bg-gradient-to-br from-white via-pink-50 to-cyan-50 py-12">
+                <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+                    {/* Header */}
+                    <div className="mb-8 text-center" data-aos="fade-down">
+                        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3 flex items-center justify-center gap-3">
+                            <span className="text-5xl">👤</span>
+                            Mi Perfil
+                        </h1>
+                        <p className="text-lg text-gray-600">
+                            Gestiona tu información personal y configuración de cuenta
+                        </p>
                     </div>
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <UpdatePasswordForm className="max-w-xl" />
-                    </div>
+                    <div className="space-y-6">
+                        <div data-aos="fade-up" data-aos-delay="100">
+                            <UpdateProfileInformationForm
+                                mustVerifyEmail={mustVerifyEmail}
+                                status={status}
+                            />
+                        </div>
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <DeleteUserForm className="max-w-xl" />
+                        <div data-aos="fade-up" data-aos-delay="200">
+                            <UpdatePasswordForm />
+                        </div>
+
+                        <div data-aos="fade-up" data-aos-delay="300">
+                            <DeleteUserForm />
+                        </div>
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </EcommerceLayout>
     );
 }
