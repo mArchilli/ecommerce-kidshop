@@ -1,8 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 
-export default function Index({ pendingOrders, dispatchedOrders }) {
+export default function Index({ pendingOrders, dispatchedOrders, filters }) {
+    const [search, setSearch] = useState(filters?.search || '');
+    const [month, setMonth] = useState(filters?.month || '');
+    const [year, setYear] = useState(filters?.year || '');
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        router.get(route('orders.index'), 
+            { search, month, year },
+            { preserveState: true, preserveScroll: true }
+        );
+    };
+
+    const handleReset = () => {
+        setSearch('');
+        setMonth('');
+        setYear('');
+        router.get(route('orders.index'), {}, { preserveState: true });
+    };
+
+    const currentYear = new Date().getFullYear();
+    const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+    const months = [
+        { value: '1', label: 'Enero' },
+        { value: '2', label: 'Febrero' },
+        { value: '3', label: 'Marzo' },
+        { value: '4', label: 'Abril' },
+        { value: '5', label: 'Mayo' },
+        { value: '6', label: 'Junio' },
+        { value: '7', label: 'Julio' },
+        { value: '8', label: 'Agosto' },
+        { value: '9', label: 'Septiembre' },
+        { value: '10', label: 'Octubre' },
+        { value: '11', label: 'Noviembre' },
+        { value: '12', label: 'Diciembre' },
+    ];
     // Render de paginación reutilizable
     const Pagination = ({ links }) => (
         <div className="mt-4 flex flex-wrap gap-1">
@@ -105,13 +140,92 @@ export default function Index({ pendingOrders, dispatchedOrders }) {
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold leading-tight text-black">📦 Órdenes</h2>
-                {/* eliminado selector de filtro */}
                 </div>
             }
         >
             <Head title="Órdenes" />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl space-y-8 sm:px-6 lg:px-8">
+                    {/* Filtros de búsqueda */}
+                    <div className="bg-white rounded-2xl shadow-lg border-4 border-white p-6">
+                        <h3 className="text-lg font-bold text-neutral-800 mb-4">🔍 Buscar y Filtrar Órdenes</h3>
+                        <form onSubmit={handleSearch} className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                {/* Búsqueda por texto */}
+                                <div className="md:col-span-2">
+                                    <label htmlFor="search" className="block text-sm font-medium text-neutral-700 mb-2">
+                                        Buscar por nombre, email, DNI o ID de pago
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="search"
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        placeholder="Buscar..."
+                                        className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    />
+                                </div>
+
+                                {/* Filtro por mes */}
+                                <div>
+                                    <label htmlFor="month" className="block text-sm font-medium text-neutral-700 mb-2">
+                                        Mes
+                                    </label>
+                                    <select
+                                        id="month"
+                                        value={month}
+                                        onChange={(e) => setMonth(e.target.value)}
+                                        className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    >
+                                        <option value="">Todos</option>
+                                        {months.map((m) => (
+                                            <option key={m.value} value={m.value}>
+                                                {m.label}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Filtro por año */}
+                                <div>
+                                    <label htmlFor="year" className="block text-sm font-medium text-neutral-700 mb-2">
+                                        Año
+                                    </label>
+                                    <select
+                                        id="year"
+                                        value={year}
+                                        onChange={(e) => setYear(e.target.value)}
+                                        className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    >
+                                        <option value="">Todos</option>
+                                        {years.map((y) => (
+                                            <option key={y} value={y}>
+                                                {y}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
+                            {/* Botones de acción */}
+                            <div className="flex gap-3">
+                                <button
+                                    type="submit"
+                                    className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-md"
+                                >
+                                    🔍 Buscar
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={handleReset}
+                                    className="px-6 py-2 bg-neutral-200 text-neutral-700 font-semibold rounded-lg hover:bg-neutral-300 transition"
+                                >
+                                    🔄 Limpiar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
                     <TableBlock title="Pendientes" collection={pendingOrders} />
                     <TableBlock title="Despachadas" collection={dispatchedOrders} />
                 </div>
