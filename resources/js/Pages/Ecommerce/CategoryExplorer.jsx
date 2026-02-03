@@ -40,10 +40,10 @@ const CategoryExplorer = () => {
         {/* Encabezado */}
         <div className="text-center mb-12" data-aos="fade-up">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-            Explora por género
+            ¿Qué estás buscando?
           </h2>
           <p className="text-lg text-gray-600">
-            Encuentra la ropa perfecta para cada uno
+            Encontra la ropa perfecta para cada uno
           </p>
         </div>
 

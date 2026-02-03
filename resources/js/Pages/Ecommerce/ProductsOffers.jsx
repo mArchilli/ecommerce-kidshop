@@ -150,11 +150,11 @@ const ProductsOffers = ({ products = [] }) => {
     <section className="w-full px-4 py-12">
       <div className="max-w-7xl mx-auto">
         {/* Encabezado de la sección */}
-        <div className="text-center mb-12" data-aos="fade-up">
+        <div className="text-left mb-12" data-aos="fade-up">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
             Ofertas Especiales
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl ">
             ¡No te pierdas estas increíbles promociones por tiempo limitado!
           </p>
         </div>
@@ -211,7 +211,7 @@ const ProductsOffers = ({ products = [] }) => {
                 : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
             }`} style={{ transformStyle: isMobile ? 'flat' : 'preserve-3d' }}>
               {showCarousel ? (
-                (isMobile ? productsWithOffers : getVisibleProducts()).map((product, index) => {
+                (isMobile ? offeredProducts : getVisibleProducts()).map((product, index) => {
                   const cardStyle = isMobile ? {} : getCardStyle(product.position);
                   const isVisible = isMobile ? true : (product.position >= 0 && product.position < productsPerView);
                   
@@ -228,12 +228,12 @@ const ProductsOffers = ({ products = [] }) => {
                     >
                       <Link
                         href={isVisible ? route('products.show', product.id) : '#'}
-                        className={`block ${isVisible ? 'group' : ''}`}
+                        className={`block ${isVisible ? 'group' : ''} h-full`}
                         onClick={(e) => !isVisible && e.preventDefault()}
                       >
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 border-2 border-pink-200">
+                        <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 border-2 border-pink-200 h-full flex flex-col">
                           {/* Imagen del producto */}
-                          <div className="relative aspect-[4/3] md:aspect-square overflow-hidden bg-gray-100">
+                          <div className="w-full relative aspect-[4/3] md:aspect-square overflow-hidden bg-gray-100">
                             <img
                               src={product.images && product.images.length > 0 
                                 ? getImageSrc(product.images[0]) 
@@ -265,7 +265,7 @@ const ProductsOffers = ({ products = [] }) => {
                           </div>
 
                           {/* Información del producto */}
-                          <div className="p-3 md:p-5">
+                          <div className="p-3 md:p-5 flex-1 flex flex-col">
                             <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-pink-600 transition-colors">
                               {product.name}
                             </h3>
@@ -288,25 +288,63 @@ const ProductsOffers = ({ products = [] }) => {
                               )}
                             </div>
 
+                            {/* Etiquetas de categorías */}
                             {product.categories && product.categories.length > 0 && (
-                              <div className="flex flex-wrap gap-1 mb-3">
+                              <div className="flex flex-wrap gap-1 mb-2">
                                 {product.categories.slice(0, 2).map((category) => (
                                   <span
                                     key={category.id}
-                                    className="text-xs px-2 py-1 rounded-lg bg-pink-50 text-pink-700 font-medium"
+                                    className="text-xs px-2 py-1 rounded-lg bg-blue-100 text-blue-700 font-semibold"
                                   >
                                     {category.name}
                                   </span>
                                 ))}
                                 {product.categories.length > 2 && (
-                                  <span className="text-xs px-2 py-1 rounded-lg bg-pink-50 text-pink-700 font-medium">
+                                  <span className="text-xs px-2 py-1 rounded-lg bg-blue-100 text-blue-700 font-semibold">
                                     +{product.categories.length - 2}
                                   </span>
                                 )}
                               </div>
                             )}
+                            
+                            {/* Etiquetas de colores y talles */}
+                            <div className="flex flex-wrap gap-1 mb-3">
+                              {/* Colores */}
+                              {product.colors && product.colors.slice(0, 2).map((color) => (
+                                <span
+                                  key={color.id}
+                                  className="text-xs px-2 py-1 rounded-lg bg-gray-100 text-gray-700 font-semibold flex items-center gap-1"
+                                >
+                                  <span
+                                    className="w-2 h-2 rounded-full border border-gray-300"
+                                    style={{ backgroundColor: color.name }}
+                                  ></span>
+                                  {color.name}
+                                </span>
+                              ))}
+                              {product.colors && product.colors.length > 2 && (
+                                <span className="text-xs px-2 py-1 rounded-lg bg-gray-100 text-gray-700 font-semibold">
+                                  +{product.colors.length - 2}
+                                </span>
+                              )}
+                              
+                              {/* Talles específicos */}
+                              {product.sizes && product.sizes.slice(0, 3).map((size) => (
+                                <span
+                                  key={size.id}
+                                  className="text-xs px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold"
+                                >
+                                  {size.name}
+                                </span>
+                              ))}
+                              {product.sizes && product.sizes.length > 3 && (
+                                <span className="text-xs px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">
+                                  +{product.sizes.length - 3}
+                                </span>
+                              )}
+                            </div>
 
-                            <div className="mt-4 pt-4 border-t border-pink-100">
+                            <div className="mt-auto pt-4 border-t border-pink-100">
                               <span className="text-sm font-bold text-gray-900 group-hover:text-pink-600 transition-colors flex items-center gap-2">
                                 Ver oferta
                                 <svg 
@@ -331,11 +369,11 @@ const ProductsOffers = ({ products = [] }) => {
                   <Link
                     key={product.id}
                     href={route('products.show', product.id)}
-                    className="group"
+                    className="group block h-full"
                     data-aos="fade-up"
                     data-aos-delay={index * 100}
                   >
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-pink-200">
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 border-2 border-pink-200 h-full flex flex-col">
                       {/* Imagen del producto */}
                       <div className="relative aspect-square overflow-hidden bg-gray-100">
                         <img
@@ -369,7 +407,7 @@ const ProductsOffers = ({ products = [] }) => {
                       </div>
 
                       {/* Información del producto */}
-                      <div className="p-5">
+                      <div className="p-5 flex-1 flex flex-col">
                         <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-pink-600 transition-colors">
                           {product.name}
                         </h3>
@@ -392,25 +430,63 @@ const ProductsOffers = ({ products = [] }) => {
                           )}
                         </div>
 
+                        {/* Etiquetas de categorías */}
                         {product.categories && product.categories.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mb-3">
+                          <div className="flex flex-wrap gap-1 mb-2">
                             {product.categories.slice(0, 2).map((category) => (
                               <span
                                 key={category.id}
-                                className="text-xs px-2 py-1 rounded-lg bg-pink-50 text-pink-700 font-medium"
+                                className="text-xs px-2 py-1 rounded-lg bg-blue-100 text-blue-700 font-semibold"
                               >
                                 {category.name}
                               </span>
                             ))}
                             {product.categories.length > 2 && (
-                              <span className="text-xs px-2 py-1 rounded-lg bg-pink-50 text-pink-700 font-medium">
+                              <span className="text-xs px-2 py-1 rounded-lg bg-blue-100 text-blue-700 font-semibold">
                                 +{product.categories.length - 2}
                               </span>
                             )}
                           </div>
                         )}
+                        
+                        {/* Etiquetas de colores y talles */}
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {/* Colores */}
+                          {product.colors && product.colors.slice(0, 2).map((color) => (
+                            <span
+                              key={color.id}
+                              className="text-xs px-2 py-1 rounded-lg bg-gray-100 text-gray-700 font-semibold flex items-center gap-1"
+                            >
+                              <span
+                                className="w-2 h-2 rounded-full border border-gray-300"
+                                style={{ backgroundColor: color.name }}
+                              ></span>
+                              {color.name}
+                            </span>
+                          ))}
+                          {product.colors && product.colors.length > 2 && (
+                            <span className="text-xs px-2 py-1 rounded-lg bg-gray-100 text-gray-700 font-semibold">
+                              +{product.colors.length - 2}
+                            </span>
+                          )}
+                          
+                          {/* Talles específicos */}
+                          {product.sizes && product.sizes.slice(0, 3).map((size) => (
+                            <span
+                              key={size.id}
+                              className="text-xs px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold"
+                            >
+                              {size.name}
+                            </span>
+                          ))}
+                          {product.sizes && product.sizes.length > 3 && (
+                            <span className="text-xs px-2 py-1 rounded-lg bg-green-100 text-green-700 font-semibold">
+                              +{product.sizes.length - 3}
+                            </span>
+                          )}
+                        </div>
 
-                        <div className="mt-4 pt-4 border-t border-pink-100">
+                        <div className="mt-auto pt-4 border-t border-pink-100">
                           <span className="text-sm font-bold text-gray-900 group-hover:text-pink-600 transition-colors flex items-center gap-2">
                             Ver oferta
                             <svg 
