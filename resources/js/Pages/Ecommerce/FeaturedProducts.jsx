@@ -197,7 +197,7 @@ const FeaturedProducts = ({ products = [] }) => {
 
           {/* Contenedor del carrusel */}
           <div 
-            className={`${showCarousel ? (isMobile ? 'overflow-x-auto scrollbar-hide px-4' : 'overflow-hidden px-4 md:px-12') : ''}`} 
+            className={`${showCarousel ? (isMobile ? 'overflow-x-auto scrollbar-hide px-4' : 'overflow-hidden px-4 md:px-12 py-6') : ''}`} 
             style={{ perspective: isMobile ? 'none' : '1500px' }}
           >
             <div className={`${

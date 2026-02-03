@@ -31,10 +31,10 @@ class ProductSeeder extends Seeder
                 'categories' => ['Remeras', 'Casual'],
                 'colors' => ['Verde', 'Azul'],
                 'sizes' => [
-                    ['name' => '2', 'stock' => 15],
-                    ['name' => '4', 'stock' => 20],
-                    ['name' => '6', 'stock' => 18],
-                    ['name' => '8', 'stock' => 12],
+                    ['name' => '2 - bebe/a ', 'stock' => 15],
+                    ['name' => '4 - niño/a ', 'stock' => 20],
+                    ['name' => '6 - niño/a ', 'stock' => 18],
+                    ['name' => '8 - niño/a ', 'stock' => 12],
                 ]
             ],
             [
@@ -44,12 +44,12 @@ class ProductSeeder extends Seeder
                 'images' => ['images/products/vestido_flores.jpg'],
                 'is_featured' => true,
                 'gender' => 'Niñas',
-                'categories' => ['Vestidos', 'Elegante'],
+                'categories' => ['Vestidos', 'Casual'],
                 'colors' => ['Rosa', 'Blanco'],
                 'sizes' => [
-                    ['name' => '2', 'stock' => 10],
-                    ['name' => '4', 'stock' => 15],
-                    ['name' => '6', 'stock' => 12],
+                    ['name' => '2 - bebe/a ', 'stock' => 10],
+                    ['name' => '4 - niño/a ', 'stock' => 15],
+                    ['name' => '6 - niño/a ', 'stock' => 12],
                 ]
             ],
             [
@@ -59,13 +59,13 @@ class ProductSeeder extends Seeder
                 'images' => ['images/products/jogger_deportivo.jpg'],
                 'is_featured' => true,
                 'gender' => 'Unisex',
-                'categories' => ['Pantalones', 'Deportivo'],
+                'categories' => ['Joggers', 'Deportiva'],
                 'colors' => ['Negro', 'Gris', 'Azul'],
                 'sizes' => [
-                    ['name' => '4', 'stock' => 25],
-                    ['name' => '6', 'stock' => 30],
-                    ['name' => '8', 'stock' => 20],
-                    ['name' => '10', 'stock' => 15],
+                    ['name' => '4 - niño/a ', 'stock' => 25],
+                    ['name' => '6 - niño/a ', 'stock' => 30],
+                    ['name' => '8 - niño/a ', 'stock' => 20],
+                    ['name' => '10 - niño/a ', 'stock' => 15],
                 ]
             ],
             [
@@ -75,12 +75,12 @@ class ProductSeeder extends Seeder
                 'images' => ['images/products/buzo_superheroes.jpg'],
                 'is_featured' => true,
                 'gender' => 'Niños',
-                'categories' => ['Buzos', 'Abrigo'],
+                'categories' => ['Buzos', 'Casual'],
                 'colors' => ['Rojo', 'Azul', 'Negro'],
                 'sizes' => [
-                    ['name' => '4', 'stock' => 18],
-                    ['name' => '6', 'stock' => 22],
-                    ['name' => '8', 'stock' => 16],
+                    ['name' => '4 - niño/a ', 'stock' => 18],
+                    ['name' => '6 - niño/a ', 'stock' => 22],
+                    ['name' => '8 - niño/a ', 'stock' => 16],
                 ]
             ],
             [
@@ -90,12 +90,12 @@ class ProductSeeder extends Seeder
                 'images' => ['images/products/conjunto_unicornio.jpg'],
                 'is_featured' => true,
                 'gender' => 'Niñas',
-                'categories' => ['Conjuntos', 'Deportivo'],
+                'categories' => ['Conjuntos', 'Deportiva'],
                 'colors' => ['Rosa', 'Violeta', 'Blanco'],
                 'sizes' => [
-                    ['name' => '2', 'stock' => 12],
-                    ['name' => '4', 'stock' => 18],
-                    ['name' => '6', 'stock' => 15],
+                    ['name' => '2 - bebe/a ', 'stock' => 12],
+                    ['name' => '4 - niño/a ', 'stock' => 18],
+                    ['name' => '6 - niño/a ', 'stock' => 15],
                 ]
             ],
             [
@@ -108,10 +108,10 @@ class ProductSeeder extends Seeder
                 'categories' => ['Camperas', 'Casual'],
                 'colors' => ['Azul'],
                 'sizes' => [
-                    ['name' => '6', 'stock' => 20],
-                    ['name' => '8', 'stock' => 25],
-                    ['name' => '10', 'stock' => 18],
-                    ['name' => '12', 'stock' => 14],
+                    ['name' => '6 - niño/a ', 'stock' => 20],
+                    ['name' => '8 - niño/a ', 'stock' => 25],
+                    ['name' => '10 - niño/a ', 'stock' => 18],
+                    ['name' => '12 - niño/a ', 'stock' => 14],
                 ]
             ],
             [
@@ -121,12 +121,12 @@ class ProductSeeder extends Seeder
                 'images' => ['images/products/short_cargo.jpg'],
                 'is_featured' => true,
                 'gender' => 'Niños',
-                'categories' => ['Shorts', 'Verano'],
+                'categories' => ['Shorts', 'Casual'],
                 'colors' => ['Beige', 'Verde', 'Negro'],
                 'sizes' => [
-                    ['name' => '4', 'stock' => 22],
-                    ['name' => '6', 'stock' => 28],
-                    ['name' => '8', 'stock' => 20],
+                    ['name' => '4 - niño/a ', 'stock' => 22],
+                    ['name' => '6 - niño/a ', 'stock' => 28],
+                    ['name' => '8 - niño/a ', 'stock' => 20],
                 ]
             ],
             [
@@ -136,12 +136,12 @@ class ProductSeeder extends Seeder
                 'images' => ['images/products/pollera_tul.jpg'],
                 'is_featured' => true,
                 'gender' => 'Niñas',
-                'categories' => ['Polleras', 'Elegante'],
+                'categories' => ['Faldas', 'Formal'],
                 'colors' => ['Rosa', 'Violeta', 'Blanco'],
                 'sizes' => [
-                    ['name' => '2', 'stock' => 10],
-                    ['name' => '4', 'stock' => 14],
-                    ['name' => '6', 'stock' => 12],
+                    ['name' => '2 - bebe/a ', 'stock' => 10],
+                    ['name' => '4 - niño/a ', 'stock' => 14],
+                    ['name' => '6 - niño/a ', 'stock' => 12],
                 ]
             ],
             [
@@ -151,13 +151,13 @@ class ProductSeeder extends Seeder
                 'images' => ['images/products/musculosa_rayas.jpg'],
                 'is_featured' => true,
                 'gender' => 'Unisex',
-                'categories' => ['Remeras', 'Verano'],
+                'categories' => ['Remeras', 'Deportiva'],
                 'colors' => ['Blanco', 'Azul', 'Rojo'],
                 'sizes' => [
-                    ['name' => '2', 'stock' => 30],
-                    ['name' => '4', 'stock' => 35],
-                    ['name' => '6', 'stock' => 25],
-                    ['name' => '8', 'stock' => 20],
+                    ['name' => '2 - bebe/a ', 'stock' => 30],
+                    ['name' => '4 - niño/a ', 'stock' => 35],
+                    ['name' => '6 - niño/a ', 'stock' => 25],
+                    ['name' => '8 - niño/a ', 'stock' => 20],
                 ]
             ],
             [
@@ -167,13 +167,13 @@ class ProductSeeder extends Seeder
                 'images' => ['images/products/enterito_polar.jpg'],
                 'is_featured' => true,
                 'gender' => 'Unisex',
-                'categories' => ['Pijamas', 'Abrigo'],
+                'categories' => ['Pijamas', 'Enteritos'],
                 'colors' => ['Gris', 'Azul', 'Rosa'],
                 'sizes' => [
-                    ['name' => '2', 'stock' => 15],
-                    ['name' => '4', 'stock' => 20],
-                    ['name' => '6', 'stock' => 18],
-                    ['name' => '8', 'stock' => 12],
+                    ['name' => '2 - bebe/a ', 'stock' => 15],
+                    ['name' => '4 - niño/a ', 'stock' => 20],
+                    ['name' => '6 - niño/a ', 'stock' => 18],
+                    ['name' => '8 - niño/a ', 'stock' => 12],
                 ]
             ],
         ];

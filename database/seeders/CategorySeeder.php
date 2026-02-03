@@ -14,7 +14,44 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        $categories = ['Camisetas', 'Pantalones', 'Chaquetas', 'Vestidos', 'Faldas'];
+        $categories = [
+            'Camisetas',
+            'Remeras',
+            'Pantalones',
+            'Jeans',
+            'Chaquetas',
+            'Camperas',
+            'Abrigos',
+            'Vestidos',
+            'Faldas',
+            'Shorts',
+            'Bermudas',
+            'Buzos',
+            'Sudaderas',
+            'Sweaters',
+            'Joggers',
+            'Conjuntos',
+            'Pijamas',
+            'Ropa Interior',
+            'Medias',
+            'Calcetines',
+            'Bodies',
+            'Enteritos',
+            'Mallas',
+            'Trajes de Baño',
+            'Gorros',
+            'Gorras',
+            'Bufandas',
+            'Guantes',
+            'Accesorios',
+            'Zapatillas',
+            'Zapatos',
+            'Sandalias',
+            'Botas',
+            'Deportiva',
+            'Formal',
+            'Casual',
+        ];
 
         foreach ($categories as $category) {
             Category::create(['name' => $category]);
