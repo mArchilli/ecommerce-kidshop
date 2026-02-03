@@ -24,7 +24,7 @@ const Welcome = ({ products, categories, colors, genders }) => {
     <EcommerceLayout>
       <Head title="Bienvenido" />
       <div className="flex flex-col min-h-screen font-sans">
-        <main className="flex-grow w-full bg-gradient-to-b from-white via-purple-50/30 via-cyan-50/30 via-pink-50/20 to-white">
+        <main className="flex-grow w-full bg-white">
           {/* Hero Section */}
           <Hero />
 

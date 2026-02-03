@@ -10,6 +10,7 @@ import CartButton from '@/Components/CartButton';
 const EcommerceLayout = ({ children }) => {
   const { auth, flash } = usePage().props;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const isHomePage = route().current('welcome');
 
@@ -66,8 +67,8 @@ const EcommerceLayout = ({ children }) => {
               <li>
                 <Link
                   href={route('welcome')}
-                  className="text-black text-sm font-semibold hover:text-blue-600 transition-colors"
-                  style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
+                  className="text-white text-sm font-semibold hover:text-cyan-200 transition-colors"
+                  style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4)' }}
                 >
                   Inicio
                 </Link>
@@ -75,8 +76,8 @@ const EcommerceLayout = ({ children }) => {
               <li>
                 <Link
                   href={route('catalog.index')}
-                  className="text-black text-sm font-semibold hover:text-blue-600 transition-colors"
-                  style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
+                  className="text-white text-sm font-semibold hover:text-cyan-200 transition-colors"
+                  style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4)' }}
                 >
                   Catálogo
                 </Link>
@@ -84,49 +85,75 @@ const EcommerceLayout = ({ children }) => {
               {/* Menú usuario */}
               {auth.user ? (
                 <>
-                  {auth.user.role === 'admin' && (
-                    <li>
-                      <Link
-                        href={route('dashboard')}
-                        className="text-black hover:text-blue-600 transition-colors"
-                        title="Panel de administración"
-                        style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
-                      >
-                        <FontAwesomeIcon icon={faUserShield} /> 
-                      </Link>
-                    </li>
-                  )}
-                  <li>
-                    <Link
-                      href={route('profile.edit')}
-                      className="text-black hover:text-blue-600 transition-colors"
-                      title="Mi perfil"
-                      style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
+                  <li className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                      className="flex items-center gap-2 text-white hover:text-cyan-200 transition-colors"
+                      style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4)' }}
                     >
-                      <FontAwesomeIcon icon={faUser} /> 
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href={route('user.orders.index')}
-                      className="text-black hover:text-blue-600 transition-colors"
-                      title="Mis compras"
-                      style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
-                    >
-                      <FontAwesomeIcon icon={faClipboardList} /> 
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href={route('logout')}
-                      method="post"
-                      as="button"
-                      className="text-black hover:text-blue-600 transition-colors text-sm font-semibold"
-                      title="Cerrar sesión"
-                      style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
-                    >
-                      Cerrar Sesión
-                    </Link>
+                      <span className="text-sm font-semibold">{auth.user.name}</span>
+                      <svg className={`w-4 h-4 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    
+                    {/* Menú desplegable */}
+                    {isUserMenuOpen && (
+                      <>
+                        <div 
+                          className="fixed inset-0 z-[70]" 
+                          onClick={() => setIsUserMenuOpen(false)}
+                        />
+                        <div className="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-2xl overflow-hidden z-[75] border-2 border-purple-100">
+                          <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-3">
+                            <p className="text-white font-bold text-sm truncate">{auth.user.name}</p>
+                            <p className="text-purple-100 text-xs truncate">{auth.user.email}</p>
+                          </div>
+                          <div className="py-2">
+                            {auth.user.role === 'admin' && (
+                              <Link
+                                href={route('dashboard')}
+                                className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 hover:text-purple-600 transition-all"
+                                onClick={() => setIsUserMenuOpen(false)}
+                              >
+                                <FontAwesomeIcon icon={faUserShield} className="w-4" />
+                                <span className="text-sm font-semibold">Administración</span>
+                              </Link>
+                            )}
+                            <Link
+                              href={route('profile.edit')}
+                              className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:text-blue-600 transition-all"
+                              onClick={() => setIsUserMenuOpen(false)}
+                            >
+                              <FontAwesomeIcon icon={faUser} className="w-4" />
+                              <span className="text-sm font-semibold">Mi Perfil</span>
+                            </Link>
+                            <Link
+                              href={route('user.orders.index')}
+                              className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:text-green-600 transition-all"
+                              onClick={() => setIsUserMenuOpen(false)}
+                            >
+                              <FontAwesomeIcon icon={faClipboardList} className="w-4" />
+                              <span className="text-sm font-semibold">Mis Compras</span>
+                            </Link>
+                            <div className="border-t border-gray-200 my-2"></div>
+                            <Link
+                              href={route('logout')}
+                              method="post"
+                              as="button"
+                              className="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-all w-full text-left"
+                              onClick={() => setIsUserMenuOpen(false)}
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                              </svg>
+                              <span className="text-sm font-semibold">Cerrar Sesión</span>
+                            </Link>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </li>
                 </>
               ) : (
@@ -134,19 +161,17 @@ const EcommerceLayout = ({ children }) => {
                   <li>
                     <Link
                       href={route('login')}
-                      className="text-black text-sm font-semibold hover:text-blue-600 transition-colors"
+                      className="px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl"
                       title="Ingresar"
-                      style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
                     >
-                      Iniciar sesión
+                      Ingresar
                     </Link>
                   </li>
                   <li>
                     <Link
                       href={route('register')}
-                      className="text-black text-sm font-semibold hover:text-blue-600 transition-colors"
+                      className="px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-500 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl"
                       title="Registrarse"
-                      style={{ textShadow: '0 2px 4px rgba(255,255,255,0.8)' }}
                     >
                       Registrarse
                     </Link>
