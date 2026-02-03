@@ -74,18 +74,25 @@ class CheckoutController extends Controller
         $preference = $client->create([
             'items' => $items,
             'back_urls' => [
-                // 'success' => "https://latiendadelosniños.com/payment/success",
-                // 'failure' => "https://latiendadelosniños.com/payment/failure",
-                // 'pending' => "https://latiendadelosniños.com/payment/pending",
-                'success' => "https://archillimatias.dev/payment/success",
-                'failure' => "https://archillimatias.dev/payment/failure",
-                'pending' => "https://archillimatias.dev/payment/pending",
+                'success' => config('app.url') . '/payment/success',
+                'failure' => config('app.url') . '/payment/failure',
+                'pending' => config('app.url') . '/payment/pending',
             ],
             'auto_return' => 'approved',
-            'external_reference' => json_encode([
-                'user_id' => $user->id,
-                'shipping_info' => $validated,
-            ]),
+            'external_reference' => 'order_' . $user->id . '_' . time(),
+            'payer' => [
+                'name' => $validated['first_name'],
+                'surname' => $validated['last_name'],
+                'email' => $validated['email'],
+                'phone' => [
+                    'area_code' => '',
+                    'number' => $validated['phone'] ?? '',
+                ],
+                'identification' => [
+                    'type' => 'DNI',
+                    'number' => $validated['dni'],
+                ],
+            ],
         ]);
 
         // Guardar la información de envío en la sesión
