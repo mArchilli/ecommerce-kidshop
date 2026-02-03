@@ -161,13 +161,13 @@ const FeaturedProducts = ({ products = [] }) => {
             <>
               <button
                 onClick={handlePrev}
-                className="absolute left-2 md:left-0 top-1/3 -translate-y-1/2 z-20 bg-white/95 backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 group border border-gray-100"
-                style={{ marginLeft: window.innerWidth >= 768 ? '-20px' : '0' }}
+                className="absolute left-2 md:left-0 top-1/3 -translate-y-1/2 z-20 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 group"
+                style={{ backgroundColor: '#06B6D4', marginLeft: window.innerWidth >= 768 ? '-20px' : '0' }}
                 data-aos="fade-right"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5 md:h-6 md:w-6 text-gray-800 group-hover:text-cyan-600 transition-colors duration-200" 
+                  className="h-5 w-5 md:h-6 md:w-6 text-white transition-colors duration-200" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -178,13 +178,13 @@ const FeaturedProducts = ({ products = [] }) => {
               
               <button
                 onClick={handleNext}
-                className="absolute right-2 md:right-0 top-1/3 -translate-y-1/2 z-20 bg-white/95 backdrop-blur-sm rounded-full p-3 md:p-4 shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 group border border-gray-100"
-                style={{ marginRight: window.innerWidth >= 768 ? '-20px' : '0' }}
+                className="absolute right-2 md:right-0 top-1/3 -translate-y-1/2 z-20 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 group"
+                style={{ backgroundColor: '#06B6D4', marginRight: window.innerWidth >= 768 ? '-20px' : '0' }}
                 data-aos="fade-left"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5 md:h-6 md:w-6 text-gray-800 group-hover:text-cyan-600 transition-colors duration-200" 
+                  className="h-5 w-5 md:h-6 md:w-6 text-white transition-colors duration-200" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
