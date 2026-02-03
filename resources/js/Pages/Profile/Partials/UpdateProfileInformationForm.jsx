@@ -50,7 +50,7 @@ export default function UpdateProfileInformation({
                 <div>
                     <label className="flex items-center gap-2 text-sm font-bold mb-2 text-neutral-700">
                         <span className="text-lg">📛</span>
-                        Nombre
+                        Nombre y Apellido
                     </label>
 
                     <TextInput
