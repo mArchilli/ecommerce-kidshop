@@ -58,7 +58,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
     <EcommerceLayout>
       <Head title="Catálogo" />
 
-      <div className="max-w-7xl mx-auto px-4" data-aos="fade-up" data-aos-delay="400">
+      <div className="max-w-7xl mx-auto px-4 " data-aos="fade-up" data-aos-delay="400" >
         <h1 className="hidden text-3xl font-extrabold text-gray-900 sm:text-4xl my-6 text-center md:text-left">Catalogo de prendas</h1>
         
         {/* Barra de búsqueda y orden (responsive) */}

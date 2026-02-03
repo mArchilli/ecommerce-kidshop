@@ -84,7 +84,7 @@ export default function AboutUs() {
             {/* Features carrusel - Mobile: alternar entre 2 sets */}
             <div className="mt-8 sm:hidden">
               <div className="relative">
-                <div className="grid grid-cols-1 gap-4 overflow-hidden">
+                <div className="grid grid-cols-1 gap-4 overflow-hidden py-2">
                   <div className={`transition-all duration-700 ease-in-out transform ${
                     showFirstSet 
                       ? 'opacity-100 translate-x-0' 

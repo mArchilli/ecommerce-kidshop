@@ -13,8 +13,7 @@ const CartButton = () => {
 
   const cartCount = auth.cart_count || 0;
   
-  console.log('CartButton - auth:', auth);
-  console.log('CartButton - cartCount:', cartCount);
+  
 
   return (
     <>
