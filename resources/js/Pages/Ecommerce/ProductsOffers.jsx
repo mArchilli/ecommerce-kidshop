@@ -35,13 +35,13 @@ const ProductsOffers = ({ products = [] }) => {
   }, []);
 
   const productsPerView = isMobile ? 1 : 4;
-  const showCarousel = offeredProducts.length > 5;
+  const showCarousel = offeredProducts.length > 0;
 
   useEffect(() => {
     if (isTransitioning) {
       const timer = setTimeout(() => {
         setIsTransitioning(false);
-      }, 600);
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [isTransitioning]);
@@ -100,7 +100,7 @@ const ProductsOffers = ({ products = [] }) => {
   const getCardStyle = (position) => {
     if (!showCarousel) return {};
     
-    const baseTransition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+    const baseTransition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
     
     if (position === -1) {
       // Producto anterior (izquierda, detrás)
@@ -162,17 +162,17 @@ const ProductsOffers = ({ products = [] }) => {
         {/* Grid de productos con carrusel */}
         <div className="relative">
           {/* Flechas de navegación (solo desktop) */}
-          {showCarousel && (
+          {showCarousel && !isMobile && (
             <>
               <button
                 onClick={handlePrev}
-                className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 z-20 rounded-full p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
-                style={{ backgroundColor: '#FF6B9D', marginLeft: '-20px' }}
+                className="absolute left-2 md:left-0 top-1/3 -translate-y-1/2 z-20 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 group"
+                style={{ backgroundColor: '#FF6B9D', marginLeft: window.innerWidth >= 768 ? '-20px' : '0' }}
                 data-aos="fade-right"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-6 w-6 text-white transition-colors" 
+                  className="h-5 w-5 md:h-6 md:w-6 text-white transition-colors duration-200" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -183,13 +183,13 @@ const ProductsOffers = ({ products = [] }) => {
               
               <button
                 onClick={handleNext}
-                className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 z-20 rounded-full p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
-                style={{ backgroundColor: '#FF6B9D', marginRight: '-20px' }}
+                className="absolute right-2 md:right-0 top-1/3 -translate-y-1/2 z-20 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 group"
+                style={{ backgroundColor: '#FF6B9D', marginRight: window.innerWidth >= 768 ? '-20px' : '0' }}
                 data-aos="fade-left"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-6 w-6 text-white transition-colors" 
+                  className="h-5 w-5 md:h-6 md:w-6 text-white transition-colors duration-200" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -202,12 +202,12 @@ const ProductsOffers = ({ products = [] }) => {
 
           {/* Contenedor del carrusel */}
           <div 
-            className={`${showCarousel ? (isMobile ? 'overflow-x-auto scrollbar-hide px-4' : 'overflow-hidden px-4 md:px-12') : ''}`} 
+            className={`${showCarousel ? (isMobile ? 'overflow-x-auto scrollbar-hide px-4' : 'overflow-hidden px-4 md:px-12 pt-8 pb-16') : ''}`} 
             style={{ perspective: isMobile ? 'none' : '1500px' }}
           >
             <div className={`${
               showCarousel 
-                ? (isMobile ? 'flex gap-4 snap-x snap-mandatory' : 'flex items-center justify-center gap-4 md:gap-6 relative')
+                ? (isMobile ? 'flex gap-4 snap-x snap-mandatory' : 'flex items-stretch justify-center gap-4 md:gap-6 relative')
                 : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
             }`} style={{ transformStyle: isMobile ? 'flat' : 'preserve-3d' }}>
               {showCarousel ? (
@@ -218,7 +218,7 @@ const ProductsOffers = ({ products = [] }) => {
                   return (
                     <div
                       key={`${product.id}-${index}`}
-                      className={`${isMobile ? 'snap-center flex-shrink-0' : ''} transition-all ease-out ${isTransitioning ? 'duration-600' : 'duration-300'}`}
+                      className={`${isMobile ? 'snap-center flex-shrink-0' : ''} transition-all ease-out ${isTransitioning ? 'duration-300' : 'duration-200'}`}
                       style={{
                         flex: isMobile ? '0 0 85%' : (isVisible ? '0 0 calc(25% - 18px)' : '0 0 calc(25% - 18px)'),
                         position: 'relative',
