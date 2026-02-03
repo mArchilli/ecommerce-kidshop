@@ -36,11 +36,12 @@ class PaymentStatusController extends Controller
             return redirect()->route('checkout.index')->with('error', 'Tu carrito está vacío o expirado.');
         }
 
-    // Crear la orden (pendiente de validación externa real del pago)
-    $order = $user->orders()->create([
+        // Crear la orden con el precio real del carrito (incluye descuentos)
+        $order = $user->orders()->create([
             'payment_id' => $paymentId,
-            'total' => $cart->items->sum(fn($item) => $item->product->price * $item->quantity),
+            'total' => $cart->items->sum(fn($item) => $item->unit_price * $item->quantity),
             'status' => 'completed',
+            'shipping_status' => 'Pendiente',
             'province' => $shippingInfo['province'] ?? null,
             'city' => $shippingInfo['city'] ?? null,
             'postal_code' => $shippingInfo['postal_code'] ?? null,
@@ -48,15 +49,19 @@ class PaymentStatusController extends Controller
             'phone' => $shippingInfo['phone'] ?? null,
             'shipping_method' => $shippingInfo['shipping_method'] ?? null,
             'dni' => $dni,
+            'first_name' => $shippingInfo['first_name'] ?? null,
+            'last_name' => $shippingInfo['last_name'] ?? null,
+            'email' => $shippingInfo['email'] ?? null,
+            'observations' => $shippingInfo['observations'] ?? null,
+            'courier_company' => $shippingInfo['courier_company'] ?? null,
         ]);
 
-        // Crear los detalles de la orden
+        // Crear los detalles de la orden con el precio real del carrito
         foreach ($cart->items as $item) {
             $order->items()->create([
                 'product_id' => $item->product_id,
                 'quantity' => $item->quantity,
-                'price' => $item->product->price,
-                // 'status' => 'completed', // columna no definida en OrderItem (omitir)
+                'price' => $item->unit_price, // Precio con descuento aplicado
                 'size' => $item->size ?? null,
             ]);
         }

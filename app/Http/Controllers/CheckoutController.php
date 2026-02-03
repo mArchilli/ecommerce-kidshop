@@ -79,7 +79,10 @@ class CheckoutController extends Controller
                 'pending' => config('app.url') . '/payment/pending',
             ],
             'auto_return' => 'approved',
-            'external_reference' => 'order_' . $user->id . '_' . time(),
+            'external_reference' => json_encode([
+                'user_id' => $user->id,
+                'shipping_info' => $validated,
+            ]),
             'payer' => [
                 'name' => $validated['first_name'],
                 'surname' => $validated['last_name'],

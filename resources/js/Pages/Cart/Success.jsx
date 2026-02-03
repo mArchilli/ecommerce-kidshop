@@ -2,34 +2,38 @@ import React from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head } from '@inertiajs/react';
 
-const Success = ({ shippingInfo, user, cart }) => {
+const Success = ({ shippingInfo, user, cart, order, message, payment_id }) => {
   const whatsappNumber = '541133973222';
   
-  // Construir el texto de los items del carrito
-  const itemsText = cart?.items?.map(item => {
-    const unit = Number(item.unit_price ?? item.product?.price ?? 0).toLocaleString('es-AR');
-    const subtotal = (Number(item.unit_price ?? item.product?.price ?? 0) * item.quantity).toLocaleString('es-AR');
+  // Usar datos de la orden si están disponibles, sino del carrito
+  const orderItems = order?.items || cart?.items || [];
+  const orderData = order || {};
+  
+  // Construir el texto de los items
+  const itemsText = orderItems.map(item => {
+    const unit = Number(item.price || item.unit_price || item.product?.price || 0).toLocaleString('es-AR');
+    const subtotal = (Number(item.price || item.unit_price || item.product?.price || 0) * item.quantity).toLocaleString('es-AR');
     const size = item.size || '—';
     return `• ${item.product?.name}\n  Talle: ${size} | Cantidad: ${item.quantity}\n  Precio unit.: $${unit} | Subtotal: $${subtotal}`;
   }).join('\n\n') || '';
 
   // Calcular total
-  const total = cart?.items?.reduce((sum, item) => sum + (item.unit_price * item.quantity), 0) || 0;
+  const total = order?.total || cart?.items?.reduce((sum, item) => sum + (item.unit_price * item.quantity), 0) || 0;
   const totalFormatted = Number(total).toLocaleString('es-AR');
 
-  // Información del comprador desde shippingInfo
-  const firstName = shippingInfo?.first_name || '';
-  const lastName = shippingInfo?.last_name || '';
-  const email = shippingInfo?.email || '';
-  const dni = shippingInfo?.dni || '—';
-  const phone = shippingInfo?.phone || '—';
-  const shippingMethod = shippingInfo?.shipping_method || '—';
-  const province = shippingInfo?.province || '';
-  const city = shippingInfo?.city || '';
-  const postalCode = shippingInfo?.postal_code || '';
-  const address = shippingInfo?.address || '';
-  const observations = shippingInfo?.observations || '';
-  const courierCompany = shippingInfo?.courier_company || '';
+  // Información del comprador - priorizar datos de la orden
+  const firstName = orderData.first_name || shippingInfo?.first_name || '';
+  const lastName = orderData.last_name || shippingInfo?.last_name || '';
+  const email = orderData.email || shippingInfo?.email || '';
+  const dni = orderData.dni || shippingInfo?.dni || '—';
+  const phone = orderData.phone || shippingInfo?.phone || '—';
+  const shippingMethod = orderData.shipping_method || shippingInfo?.shipping_method || '—';
+  const province = orderData.province || shippingInfo?.province || '';
+  const city = orderData.city || shippingInfo?.city || '';
+  const postalCode = orderData.postal_code || shippingInfo?.postal_code || '';
+  const address = orderData.address || shippingInfo?.address || '';
+  const observations = orderData.observations || shippingInfo?.observations || '';
+  const courierCompany = orderData.courier_company || shippingInfo?.courier_company || '';
 
   // Dirección completa según método de envío
   const direccionCompleta = shippingMethod === 'Envio a Domicilio'
@@ -132,9 +136,9 @@ const Success = ({ shippingInfo, user, cart }) => {
         <div className="w-full max-w-xl bg-white rounded-lg border border-green-200 p-4 mb-8 text-sm text-gray-700 shadow">
           <h2 className="font-semibold text-green-700 mb-2">Detalle del Pedido</h2>
           <ul className="space-y-1 max-h-56 overflow-y-auto pr-2">
-            {cart?.items?.map(item => {
-              const unit = Number(item.unit_price ?? item.product?.price ?? 0).toLocaleString('es-AR');
-              const subtotal = (Number(item.unit_price ?? item.product?.price ?? 0) * item.quantity).toLocaleString('es-AR');
+            {orderItems.map(item => {
+              const unit = Number(item.price || item.unit_price || item.product?.price || 0).toLocaleString('es-AR');
+              const subtotal = (Number(item.price || item.unit_price || item.product?.price || 0) * item.quantity).toLocaleString('es-AR');
               return (
                 <li key={item.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b last:border-b-0 border-gray-100 py-2">
                   <span className="font-medium text-gray-800 text-sm">{item.product?.name}</span>
