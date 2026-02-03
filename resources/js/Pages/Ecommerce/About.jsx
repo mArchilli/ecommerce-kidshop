@@ -188,7 +188,7 @@ export default function AboutUs() {
               {/* Contenido */}
               <div className="relative z-10 p-6 pt-5">
                 <p className="text-white/95 text-base leading-relaxed mb-5">
-                  Únete a nuestros lives en TikTok para ver productos en vivo, ofertas exclusivas y hacer tus compras directamente.
+                  Unite a nuestros lives en TikTok para ver las prendas en vivo, ofertas exclusivas y hacer tus compras.
                 </p>
 
                 {/* Info de horarios con diseño mejorado */}

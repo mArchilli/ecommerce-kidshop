@@ -29,6 +29,20 @@ const Cart = ({ cart }) => {
     );
   };
 
+  const incrementQuantity = (itemId) => {
+    const newQuantity = quantities[itemId] + 1;
+    handleQuantityChange(itemId, newQuantity);
+    updateQuantity(itemId, newQuantity);
+  };
+
+  const decrementQuantity = (itemId) => {
+    if (quantities[itemId] > 1) {
+      const newQuantity = quantities[itemId] - 1;
+      handleQuantityChange(itemId, newQuantity);
+      updateQuantity(itemId, newQuantity);
+    }
+  };
+
   const updateAll = () => {
     Inertia.put(
       '/cart/update-all',
@@ -154,9 +168,28 @@ const Cart = ({ cart }) => {
                           <div className="col-span-5">
                             <div className="text-sm font-semibold text-purple-600 text-center">Cantidad</div>
                             <div className="flex items-center justify-center gap-2">
-                              <span className="text-center select-none bg-white/70 px-4 py-2 rounded-lg border-2 border-pink-200 font-bold">
+                              <button
+                                onClick={() => decrementQuantity(item.id)}
+                                disabled={quantities[item.id] <= 1}
+                                className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white w-8 h-8 rounded-full inline-flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-md disabled:transform-none disabled:shadow-none"
+                                aria-label="Disminuir cantidad"
+                              >
+                                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M20 12H4" />
+                                </svg>
+                              </button>
+                              <span className="text-center select-none bg-white/70 px-4 py-2 rounded-lg border-2 border-pink-200 font-bold min-w-[3rem]">
                                 {quantities[item.id]}
                               </span>
+                              <button
+                                onClick={() => incrementQuantity(item.id)}
+                                className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white w-8 h-8 rounded-full inline-flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-md"
+                                aria-label="Aumentar cantidad"
+                              >
+                                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 4v16m8-8H4" />
+                                </svg>
+                              </button>
                             </div>
                           </div>
 

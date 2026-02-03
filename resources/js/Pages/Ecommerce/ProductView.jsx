@@ -392,6 +392,48 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                         <h3 className="font-semibold text-base text-gray-900 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
                           {relatedProduct.name}
                         </h3>
+                        
+                        {/* Etiquetas */}
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {/* Género */}
+                          {relatedProduct.gender && (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-700">
+                              {relatedProduct.gender.name}
+                            </span>
+                          )}
+                          
+                          {/* Categorías */}
+                          {relatedProduct.categories && relatedProduct.categories.slice(0, 2).map((category) => (
+                            <span
+                              key={category.id}
+                              className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700"
+                            >
+                              {category.name}
+                            </span>
+                          ))}
+                          
+                          {/* Colores */}
+                          {relatedProduct.colors && relatedProduct.colors.slice(0, 2).map((color) => (
+                            <span
+                              key={color.id}
+                              className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-700 flex items-center gap-1"
+                            >
+                              <span
+                                className="w-2 h-2 rounded-full border border-gray-300"
+                                style={{ backgroundColor: color.name }}
+                              ></span>
+                              {color.name}
+                            </span>
+                          ))}
+                          
+                          {/* Talles disponibles */}
+                          {relatedProduct.sizes && relatedProduct.sizes.length > 0 && (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">
+                              {relatedProduct.sizes.length} {relatedProduct.sizes.length === 1 ? 'talle' : 'talles'}
+                            </span>
+                          )}
+                        </div>
+                        
                         {relatedProduct.active_offer ? (
                           <div className="flex items-baseline gap-2">
                             <p className="text-xl font-bold text-pink-600">
@@ -448,6 +490,48 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                         <h3 className="font-semibold text-base text-gray-900 mb-2 line-clamp-2 group-hover:text-pink-600 transition-colors">
                           {offerProduct.name}
                         </h3>
+                        
+                        {/* Etiquetas */}
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {/* Género */}
+                          {offerProduct.gender && (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-700">
+                              {offerProduct.gender.name}
+                            </span>
+                          )}
+                          
+                          {/* Categorías */}
+                          {offerProduct.categories && offerProduct.categories.slice(0, 2).map((category) => (
+                            <span
+                              key={category.id}
+                              className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700"
+                            >
+                              {category.name}
+                            </span>
+                          ))}
+                          
+                          {/* Colores */}
+                          {offerProduct.colors && offerProduct.colors.slice(0, 2).map((color) => (
+                            <span
+                              key={color.id}
+                              className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-700 flex items-center gap-1"
+                            >
+                              <span
+                                className="w-2 h-2 rounded-full border border-gray-300"
+                                style={{ backgroundColor: color.name }}
+                              ></span>
+                              {color.name}
+                            </span>
+                          ))}
+                          
+                          {/* Talles disponibles */}
+                          {offerProduct.sizes && offerProduct.sizes.length > 0 && (
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-700">
+                              {offerProduct.sizes.length} {offerProduct.sizes.length === 1 ? 'talle' : 'talles'}
+                            </span>
+                          )}
+                        </div>
+                        
                         <div className="flex flex-col gap-1">
                           <p className="text-xl font-bold text-pink-600">
                             ${Number(offerProduct.active_offer.discount_price).toLocaleString('es-AR')}

@@ -72,7 +72,7 @@ export default function Register() {
                                     <div className="group">
                                         <InputLabel
                                             htmlFor="name"
-                                            value="Nombre"
+                                            value="Nombre y Apellido"
                                             className="block text-sm font-bold text-gray-700 mb-2"
                                         />
                                         <TextInput
