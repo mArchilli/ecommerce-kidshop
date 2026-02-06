@@ -50,7 +50,7 @@ export default function FAQ() {
 
   return (
     <section className="py-16 px-4">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
             Preguntas frecuentes
@@ -60,36 +60,55 @@ export default function FAQ() {
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="w-full space-y-5">
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md border-2 border-pink-200 overflow-hidden transition-all duration-300 hover:shadow-lg"
+              className={`group relative bg-gradient-to-r from-white via-pink-50/30 to-cyan-50/30 backdrop-blur-sm rounded-2xl shadow-lg border-2 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] ${
+                openIndex === index 
+                  ? 'border-cyan-400 shadow-cyan-200/50' 
+                  : 'border-pink-200 hover:border-pink-300'
+              }`}
             >
+              {/* Efecto de brillo en hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+              
               <button
                 onClick={() => toggleQuestion(index)}
-                className="w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 rounded-2xl transition-all"
+                className={`relative w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none focus:ring-4 focus:ring-cyan-300/50 transition-all duration-300 ${
+                  openIndex === index ? 'bg-gradient-to-r from-cyan-50/50 to-pink-50/50' : ''
+                }`}
                 aria-expanded={openIndex === index}
               >
-                <span className="text-lg font-semibold text-gray-800 pr-4">
+                <span className={`text-xl font-bold pr-6 transition-colors duration-300 ${
+                  openIndex === index 
+                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-pink-600' 
+                    : 'text-gray-800 group-hover:text-gray-900'
+                }`}>
                   {faq.question}
                 </span>
-                <FontAwesomeIcon
-                  icon={openIndex === index ? faChevronUp : faChevronDown}
-                  className={`text-cyan-600 transition-transform duration-300 flex-shrink-0 ${
-                    openIndex === index ? 'rotate-0' : 'rotate-0'
-                  }`}
-                />
+                <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  openIndex === index 
+                    ? 'bg-gradient-to-br from-cyan-500 to-pink-500 shadow-lg scale-110' 
+                    : 'bg-gradient-to-br from-pink-200 to-cyan-200 group-hover:from-pink-300 group-hover:to-cyan-300 group-hover:shadow-md'
+                }`}>
+                  <FontAwesomeIcon
+                    icon={openIndex === index ? faChevronUp : faChevronDown}
+                    className={`text-white transition-all duration-300 ${
+                      openIndex === index ? 'text-base' : 'text-sm'
+                    }`}
+                  />
+                </div>
               </button>
               
               <div
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                  openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                  openIndex === index ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
                 }`}
               >
-                <div className="px-6 pb-5 pt-2">
-                  <div className="w-full h-px bg-gradient-to-r from-purple-300 via-pink-300 to-cyan-300 mb-4"></div>
-                  <div className="text-gray-700 leading-relaxed">
+                <div className="px-8 pb-6 pt-2">
+                  <div className="w-full h-0.5 bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 mb-5 rounded-full shadow-sm"></div>
+                  <div className="text-gray-700 leading-relaxed text-base bg-white/50 p-5 rounded-xl border border-pink-100/50">
                     {faq.answer}
                   </div>
                 </div>
