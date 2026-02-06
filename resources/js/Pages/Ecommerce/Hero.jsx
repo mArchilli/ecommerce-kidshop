@@ -13,7 +13,7 @@ const Hero = () => {
 
   return (
     <div
-      className="min-h-screen w-full flex items-center bg-gradient-to-b from-yellow-50 via-amber-50 to-pink-50 relative z-0 overflow-hidden"
+      className="min-h-screen w-full flex items-center relative z-0 overflow-hidden"
       data-aos="fade-in"
     >
       {/* Elementos decorativos de fondo */}
