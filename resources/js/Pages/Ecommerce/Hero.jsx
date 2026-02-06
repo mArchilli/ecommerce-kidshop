@@ -60,17 +60,17 @@ const Hero = () => {
             </h1>
 
             <div className="mb-8">
-              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                En <span className="font-semibold text-pink-600">la Tienda de los Niños</span> nos especializamos en ropa cómoda y de calidad para niños y niñas, diseñada para acompañar cada aventura.
+              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0 text-left">
+                En <span className="font-semibold text-pink-600 underline decoration-pink-400 underline-offset-2">la Tienda de los Niños</span> nos especializamos en ropa cómoda y de calidad para niños y niñas, diseñada para acompañar cada aventura.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link
                 href="/catalog"
-                className="group relative px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-pink-500 via-rose-500 to-cyan-500 rounded-full shadow-lg hover:shadow-2xl hover:shadow-pink-300/40 transition-all duration-300 hover:scale-105 overflow-hidden"
+                className="group relative px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 rounded-full shadow-lg hover:shadow-2xl hover:shadow-pink-300/40 transition-all duration-300 hover:scale-105 overflow-hidden"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-pink-600 via-rose-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                <span className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                 <span className="relative flex items-center justify-center gap-3">
                   Ver catálogo de ropa
                   <FontAwesomeIcon icon={faArrowRight} className="group-hover:translate-x-1 transition-transform duration-300" />

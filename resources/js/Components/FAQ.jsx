@@ -10,11 +10,10 @@ export default function FAQ() {
       question: '¿Cómo comprar?',
       answer: (
         <>
-          1. Dale click en <a href="/register" className="text-cyan-600 hover:text-cyan-700 underline font-semibold">registrarse</a> o si ya tenés una cuenta <a href="/login" className="text-cyan-600 hover:text-cyan-700 underline font-semibold">iniciá sesión</a><br />
-          2. Completá tus datos de registro<br />
-          3. Ya podés añadir productos al carrito, una vez que elijas todo lo que vas a comprar clickeá en finalizar compra<br />
-          4. Vas a poder pagar con cualquier método de pago. <strong className="underline">Las compras dentro del sitio están protegidas por Mercado Pago</strong><br />
-          5. ¡Listo! Ya compraste en la tienda de los niños. Te vamos a contactar para realizar el envío.
+          1. Dale click en <a href="/register" className="text-cyan-600 hover:text-cyan-700 underline font-semibold">registrarse</a> y completa con tus datos o bien si ya tenés una cuenta <a href="/login" className="text-cyan-600 hover:text-cyan-700 underline font-semibold">iniciá sesión</a><br />
+          2. Una vez registrado, ya podés añadir productos a tu carrito, visita el <a href="/catalog" className="text-cyan-600 hover:text-cyan-700 underline font-semibold">catálogo</a> y una vez que elijas todo lo que vas a comprar clickeá en finalizar compra<br />
+          3. Vas a poder pagar con cualquier método de pago. <strong className="underline">Las compras dentro del sitio están protegidas por Mercado Pago</strong><br />
+          4. ¡Listo! Cuando impacte la compra en el sistema te vamos a contactar para poder coordinar detalles y envios
         </>
       )
     },

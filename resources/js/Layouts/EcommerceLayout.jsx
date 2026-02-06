@@ -68,7 +68,7 @@ const EcommerceLayout = ({ children }) => {
                 <Link
                   href={route('welcome')}
                   className="text-white text-sm font-semibold hover:text-cyan-200 transition-colors"
-                  style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4)' }}
+                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)' }}
                 >
                   Inicio
                 </Link>
@@ -77,7 +77,7 @@ const EcommerceLayout = ({ children }) => {
                 <Link
                   href={route('catalog.index')}
                   className="text-white text-sm font-semibold hover:text-cyan-200 transition-colors"
-                  style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.4)' }}
+                  style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)' }}
                 >
                   Catálogo
                 </Link>
