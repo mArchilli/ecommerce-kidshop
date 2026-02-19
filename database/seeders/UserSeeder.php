@@ -28,5 +28,13 @@ class UserSeeder extends Seeder
             'role' => 'user',
             'email_verified_at' => now(),
         ]);
+
+        User::create([
+            'name' => 'Franco Arias',
+            'email' => 'arias-franco@hotmail.com',
+            'password' => bcrypt('Telefe11'), 
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
     }
 }
