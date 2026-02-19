@@ -357,6 +357,21 @@ const Checkout = ({ cart, savedShippingInfo }) => {
                           {errors.postal_code && <span className="text-red-500 text-sm">{errors.postal_code}</span>}
                         </div>
                         <div>
+                          <label className="block text-sm font-medium text-gray-700">Empresa de Correo</label>
+                          <select
+                            value={data.courier_company}
+                            onChange={(e) => setData('courier_company', e.target.value)}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
+                          >
+                            <option value="">Seleccione una empresa</option>
+                            <option value="Correo Argentino">Correo Argentino</option>
+                            <option value="Andreani">Andreani</option>
+                            <option value="Via Cargo">Via Cargo</option>
+                            <option value="Consultar con la tienda">Consultar con la tienda</option>
+                          </select>
+                          {errors.courier_company && <span className="text-red-500 text-sm">{errors.courier_company}</span>}
+                        </div>
+                        <div>
                           <label className="block text-sm font-medium text-gray-700">Dirección</label>
                           <input
                             type="text"

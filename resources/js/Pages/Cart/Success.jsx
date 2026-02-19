@@ -140,7 +140,7 @@ const Success = ({ shippingInfo, user, cart, order, message, payment_id }) => {
             {shippingMethod === 'Envio a Domicilio' && observations && (
               <div className="sm:col-span-2"><span className="font-medium">Observaciones:</span> {observations}</div>
             )}
-            {shippingMethod === 'Envio a Sucursal' && courierCompany && (
+            {courierCompany && (
               <div><span className="font-medium">Empresa de Correo:</span> {courierCompany}</div>
             )}
           </div>

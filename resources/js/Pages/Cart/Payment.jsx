@@ -145,7 +145,7 @@ const Payment = ({ cart, preferenceId, shippingInfo }) => {
                     </>
                   )}
                   
-                  {shippingInfo?.shipping_method === 'Envio a Sucursal' && shippingInfo?.courier_company && (
+                  {shippingInfo?.courier_company && (
                     <p className="text-sm"><span className="font-semibold text-purple-600">Empresa de Correo:</span> <span className="text-gray-900">{shippingInfo?.courier_company}</span></p>
                   )}
                 </div>
