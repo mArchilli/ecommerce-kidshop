@@ -3,7 +3,7 @@ import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head } from '@inertiajs/react';
 
 const Success = ({ shippingInfo, user, cart, order, message, payment_id }) => {
-  const whatsappNumber = '541133973222';
+  const whatsappNumber = '1172397202';
   
   // Usar datos de la orden si están disponibles, sino del carrito
   const orderItems = order?.items || cart?.items || [];
@@ -42,16 +42,16 @@ const Success = ({ shippingInfo, user, cart, order, message, payment_id }) => {
 
   // Construir mensaje de WhatsApp completo
   const whatsappMessageParts = [
-    '🛒 *NUEVO PEDIDO - KidShop*',
+    '*NUEVO PEDIDO - KidShop*',
     '═══════════════════════',
     '',
-    '*📋 DATOS DEL COMPRADOR*',
+    '*DATOS DEL COMPRADOR*',
     `Nombre: ${firstName} ${lastName}`,
     `Email: ${email}`,
     `DNI: ${dni}`,
     phone !== '—' ? `Teléfono: ${phone}` : null,
     '',
-    '*🚚 INFORMACIÓN DE ENVÍO*',
+    '*INFORMACIÓN DE ENVÍO*',
     `Método: ${shippingMethod}`,
     `Provincia: ${province}`,
     `Localidad: ${city}`,
@@ -68,12 +68,12 @@ const Success = ({ shippingInfo, user, cart, order, message, payment_id }) => {
 
   whatsappMessageParts.push(
     '',
-    '*📦 DETALLE DEL PEDIDO*',
+    '*DETALLE DEL PEDIDO*',
     '───────────────────────',
     itemsText,
     '───────────────────────',
     '',
-    `*💰 TOTAL: $${totalFormatted}*`,
+    `*TOTAL: $${totalFormatted}*`,
     '',
     '═══════════════════════'
   );
