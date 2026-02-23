@@ -3,7 +3,7 @@ import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head } from '@inertiajs/react';
 
 const Success = ({ shippingInfo, user, cart, order, message, payment_id }) => {
-  const whatsappNumber = '1172397202';
+  const whatsappNumber = '5491172397202';
   
   // Usar datos de la orden si están disponibles, sino del carrito
   const orderItems = order?.items || cart?.items || [];

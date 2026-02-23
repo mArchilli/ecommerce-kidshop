@@ -85,7 +85,7 @@ export default function PaymentMethods() {
                   ¿Tenés dudas con los pagos? Mandanos un mensaje
                 </p>
                 <a
-                  href="https://wa.me/5491162606042?text=Hola!%20tengo%20una%20duda%20con%20el%20tema%20de%20los%20pagos"
+                  href="https://wa.me/5491172397202?text=Hola!%20tengo%20una%20duda%20con%20el%20tema%20de%20los%20pagos"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"

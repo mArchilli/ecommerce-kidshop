@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 export default function WhatsAppCTA() {
   const [nombre, setNombre] = useState('');
   const [mensaje, setMensaje] = useState('');
-  const whatsappNumber = '1172397202';
+  const whatsappNumber = '5491172397202';
 
   const handleSubmit = (e) => {
     e.preventDefault();
