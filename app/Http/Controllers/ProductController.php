@@ -170,7 +170,7 @@ class ProductController extends Controller
         }
         $product->sizes()->sync($sizes);
 
-        return redirect()->route('products.index');
+        return redirect()->route('products.index')->with('success', 'Prenda creada exitosamente.');
     }
 
     public function edit(Product $product)
@@ -242,7 +242,7 @@ class ProductController extends Controller
         }
         $product->sizes()->sync($sizes);
 
-        return redirect()->route('products.index');
+        return redirect()->route('products.index')->with('success', 'Prenda actualizada exitosamente.');
     }
 
     public function delete(Product $product)
@@ -271,7 +271,7 @@ class ProductController extends Controller
         }
 
         $product->delete();
-        return redirect()->route('products.index');
+        return redirect()->route('products.index')->with('success', 'Prenda eliminada exitosamente.');
     }
 
     public function catalog(Request $request)

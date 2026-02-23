@@ -27,7 +27,7 @@ class ColorController extends Controller
 
         Color::create($request->only('name'));
 
-        return redirect()->route('colors.index');
+        return redirect()->route('colors.index')->with('success', 'Color creado exitosamente.');
     }
 
     public function edit(Color $color)
@@ -43,7 +43,7 @@ class ColorController extends Controller
 
         $color->update($request->only('name'));
 
-        return redirect()->route('colors.index');
+        return redirect()->route('colors.index')->with('success', 'Color actualizado exitosamente.');
     }
 
     public function delete(Color $color)
@@ -54,6 +54,6 @@ class ColorController extends Controller
     public function destroy(Color $color)
     {
         $color->delete();
-        return redirect()->route('colors.index');
+        return redirect()->route('colors.index')->with('success', 'Color eliminado exitosamente.');
     }
 }

@@ -15,11 +15,8 @@ const EcommerceLayout = ({ children }) => {
   const isHomePage = route().current('welcome');
 
   useEffect(() => {
-    if (flash && flash.type === 'error') {
-      toast.error(flash.message);
-    } else if (flash && flash.type === 'success') {
-      toast.success(flash.message);
-    }
+    if (flash?.success) toast.success(flash.success);
+    if (flash?.error)   toast.error(flash.error);
   }, [flash]);
 
   useEffect(() => {

@@ -6,6 +6,7 @@ use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
@@ -44,7 +45,7 @@ class CartController extends Controller
             ? $product->activeOffer->discount_price 
             : $product->price;
 
-        \Log::info('Adding product to cart', [
+        Log::info('Adding product to cart', [
             'product_id' => $product->id,
             'product_price' => $product->price,
             'has_active_offer' => $product->activeOffer ? 'yes' : 'no',
@@ -68,13 +69,13 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('cart.index');
+        return back()->with('success', '¡Producto agregado al carrito!');
     }
 
     public function remove(CartItem $cartItem)
     {
         $cartItem->delete();
-        return redirect()->route('cart.index');
+        return back()->with('success', 'Producto eliminado del carrito.');
     }
 
     public function update(Request $request, CartItem $cartItem)

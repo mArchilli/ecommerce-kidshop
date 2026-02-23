@@ -135,6 +135,7 @@ const Cart = ({ cart }) => {
                             href={`/cart/remove/${item.id}`}
                             method="delete"
                             as="button"
+                            preserveScroll={true}
                             aria-label="Eliminar"
                             className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white w-9 h-9 rounded-full inline-flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-md"
                           >

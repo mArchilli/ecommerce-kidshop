@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head, Link, useForm, router } from '@inertiajs/react';
+import { toast } from 'react-toastify';
 
 const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => {
   const { data, setData, post, processing, errors } = useForm({
@@ -15,7 +16,6 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
   const [activeImage, setActiveImage] = useState(0);
   const [showQuantity, setShowQuantity] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [addedToCart, setAddedToCart] = useState(false);
   const imgRef = useRef(null);
   const mainImgRef = useRef(null);
 
@@ -49,8 +49,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
     post(route('cart.add', product.id), data, {
       preserveScroll: true,
       onSuccess: () => {
-        setAddedToCart(true);
-        setTimeout(() => setAddedToCart(false), 3000);
+        toast.success('¡Producto agregado al carrito!');
       },
       onError: (errors) => {
         console.error('Error adding product to cart:', errors);
@@ -129,19 +128,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
             </button>
           </div>
 
-          {/* Notificación de añadido al carrito */}
-          {addedToCart && (
-            <div className="fixed top-20 right-4 z-50 animate-bounce-in">
-              <div className="rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 shadow-2xl px-6 py-4 flex items-center gap-3 text-white">
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                <div className="font-semibold">
-                  ¡Añadido al carrito!
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Notificación de añadido al carrito eliminada: ahora se usa toast */}
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
             {/* Selección de imágenes */}

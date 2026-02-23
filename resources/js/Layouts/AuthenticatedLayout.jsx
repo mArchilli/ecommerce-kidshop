@@ -2,9 +2,17 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import { Link, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
+    const { flash } = usePage().props;
+
+    // Mostrar toast cuando lleguen flash messages del servidor
+    useEffect(() => {
+        if (flash?.success) toast.success(flash.success);
+        if (flash?.error)   toast.error(flash.error);
+    }, [flash]);
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
         // Cargar estado del localStorage
@@ -495,6 +503,17 @@ export default function AuthenticatedLayout({ header, children }) {
 
                 <main>{children}</main>
             </div>
+
+            {/* Toast notifications */}
+            <Toaster
+                position="top-right"
+                toastOptions={{
+                    duration: 3500,
+                    style: { fontWeight: '600', borderRadius: '12px', padding: '14px 18px' },
+                    success: { style: { background: '#ecfdf5', color: '#065f46', border: '1.5px solid #6ee7b7' }, iconTheme: { primary: '#10b981', secondary: '#fff' } },
+                    error:   { style: { background: '#fef2f2', color: '#991b1b', border: '1.5px solid #fca5a5' }, iconTheme: { primary: '#ef4444', secondary: '#fff' } },
+                }}
+            />
         </div>
     );
 }

@@ -27,7 +27,7 @@ class SizeController extends Controller
 
         Size::create($request->only('name'));
 
-        return redirect()->route('sizes.index');
+        return redirect()->route('sizes.index')->with('success', 'Talle creado exitosamente.');
     }
 
     public function edit(Size $size)
@@ -43,7 +43,7 @@ class SizeController extends Controller
 
         $size->update($request->only('name'));
 
-        return redirect()->route('sizes.index');
+        return redirect()->route('sizes.index')->with('success', 'Talle actualizado exitosamente.');
     }
 
     public function delete(Size $size)
@@ -54,6 +54,6 @@ class SizeController extends Controller
     public function destroy(Size $size)
     {
         $size->delete();
-        return redirect()->route('sizes.index');
+        return redirect()->route('sizes.index')->with('success', 'Talle eliminado exitosamente.');
     }
 }

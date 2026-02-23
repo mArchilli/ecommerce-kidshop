@@ -223,7 +223,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                   className="w-full rounded-lg border-2 border-green-300 px-4 py-2 text-sm focus:outline-none focus:ring-4 focus:ring-green-200 focus:border-green-400 transition-all"
                 />
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-green-300 scrollbar-track-green-50">
                 {categories.filter(({ name }) => name.toLowerCase().includes(searchCategory.toLowerCase())).map(({ id, name }) => (
                   <CheckboxLabel
                     key={id}
@@ -255,7 +255,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                   className="w-full rounded-lg border-2 border-red-300 px-4 py-2 text-sm focus:outline-none focus:ring-4 focus:ring-red-200 focus:border-red-400 transition-all"
                 />
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-red-300 scrollbar-track-red-50">
                 {colors.filter(({ name }) => name.toLowerCase().includes(searchColor.toLowerCase())).map(({ id, name }) => (
                   <CheckboxLabel
                     key={id}
