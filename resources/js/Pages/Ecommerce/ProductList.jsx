@@ -61,7 +61,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
     <EcommerceLayout>
       <Head title="Catálogo" />
 
-      <div className="max-w-7xl mx-auto px-4 " data-aos="fade-up" data-aos-delay="400" >
+      <div className="max-w-7xl mx-auto px-4 " >
         <h1 className="hidden text-3xl font-extrabold text-gray-900 sm:text-4xl my-6 text-center md:text-left">Catalogo de prendas</h1>
         
         {/* Barra de búsqueda y orden (responsive) */}
@@ -181,8 +181,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                 <div 
                   key={product.id} 
                   className="bg-white shadow-md rounded-2xl overflow-hidden transition-all duration-300 transform hover:shadow-xl hover:-translate-y-1 flex flex-col border border-gray-100"
-                  data-aos="fade-up"
-                  data-aos-delay="200"
+                  
                 >
                   <div className="w-full relative aspect-square bg-gradient-to-br from-cyan-50 to-purple-50">
                     <img 
@@ -324,7 +323,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                         href={`/products/${product.id}`} 
                         className="w-full block text-center text-white px-6 py-3 rounded-full font-semibold text-base transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                       >
-                        Ver Producto
+                        Ver Prenda
                       </Link>
                     </div>
                   </div>
