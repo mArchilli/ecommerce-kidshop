@@ -35,7 +35,7 @@ const ProductsOffers = ({ products = [] }) => {
   }, []);
 
   const productsPerView = isMobile ? 1 : 4;
-  const showCarousel = offeredProducts.length > 0;
+  const showCarousel = offeredProducts.length > productsPerView;
 
   useEffect(() => {
     if (isTransitioning) {

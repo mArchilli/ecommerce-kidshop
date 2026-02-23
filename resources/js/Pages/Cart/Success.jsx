@@ -42,7 +42,9 @@ const Success = ({ shippingInfo, user, cart, order, message, payment_id }) => {
 
   // Construir mensaje de WhatsApp completo
   const whatsappMessageParts = [
-    '*NUEVO PEDIDO - KidShop*',
+    '*LA TIENDA DE LOS NIÑOS*',
+    'Nos pondremos en contacto con vos en cuanto podamos para coordinar el envio de tu pedido.',
+    'Nuestros horarios de atencion son de lunes a sabados de 9:00 a 20:00.',
     '═══════════════════════',
     '',
     '*DATOS DEL COMPRADOR*',
@@ -61,6 +63,7 @@ const Success = ({ shippingInfo, user, cart, order, message, payment_id }) => {
   // Agregar campos específicos según método de envío
   if (shippingMethod === 'Envio a Domicilio') {
     if (address) whatsappMessageParts.push(`Dirección: ${address}`);
+    if (courierCompany) whatsappMessageParts.push(`Empresa de Correo: ${courierCompany}`);
     if (observations) whatsappMessageParts.push(`Observaciones: ${observations}`);
   } else if (shippingMethod === 'Envio a Sucursal') {
     if (courierCompany) whatsappMessageParts.push(`Empresa de Correo: ${courierCompany}`);

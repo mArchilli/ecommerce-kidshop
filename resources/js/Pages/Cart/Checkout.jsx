@@ -120,7 +120,8 @@ const Checkout = ({ cart, savedShippingInfo }) => {
       data.email.trim() &&
       data.province &&
       data.city &&
-      data.postal_code.trim();
+      data.postal_code.trim() &&
+      data.courier_company;
     
     if (!commonFieldsValid) return;
     post(route('checkout.payment'));
@@ -560,7 +561,7 @@ const Checkout = ({ cart, savedShippingInfo }) => {
                     type="button"
                     onClick={proceedToPayment}
                     className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white px-5 py-4 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
-                    disabled={processing || !data.shipping_method || !data.dni.trim() || !data.first_name.trim() || !data.last_name.trim() || !data.email.trim() || !data.province || !data.city || !data.postal_code.trim()}
+                    disabled={processing || !data.shipping_method || !data.dni.trim() || !data.first_name.trim() || !data.last_name.trim() || !data.email.trim() || !data.province || !data.city || !data.postal_code.trim() || !data.courier_company}
                   >
                     {processing ? 'Procesando...' : 'Proceder al Pago'}
                   </button>

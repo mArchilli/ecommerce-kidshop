@@ -2,56 +2,10 @@ import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 
-// ─── DATOS DE MUESTRA (hardcodeados para previsualización) ───────────────────
-const DEMO_PENDING = {
-    total: 1,
-    from: 1,
-    to: 1,
-    links: [],
-    data: [
-        {
-            id: 101,
-            total: '18500.00',
-            created_at: '2026-02-18T14:32:00.000Z',
-            shipping_method: 'Envio a Domicilio',
-            province: 'Buenos Aires',
-            city: 'La Plata',
-            courier_company: 'Andreani',
-            payment_id: 'MP-98765432',
-            user: { name: 'Lucas Fernández', email: 'lucas@ejemplo.com' },
-        },
-    ],
-};
-
-const DEMO_DISPATCHED = {
-    total: 1,
-    from: 1,
-    to: 1,
-    links: [],
-    data: [
-        {
-            id: 87,
-            total: '43250.00',
-            created_at: '2026-02-10T09:15:00.000Z',
-            shipping_method: 'Envio a Sucursal',
-            province: 'Córdoba',
-            city: 'Villa Carlos Paz',
-            courier_company: 'Correo Argentino',
-            payment_id: 'MP-12345678',
-            user: { name: 'Valentina Gómez', email: 'valen@ejemplo.com' },
-        },
-    ],
-};
-// ─────────────────────────────────────────────────────────────────────────────
-
-export default function Index({ pendingOrders: pendingProp, dispatchedOrders: dispatchedProp, filters }) {
+export default function Index({ pendingOrders, dispatchedOrders, filters }) {
     const [search, setSearch] = useState(filters?.search || '');
     const [month, setMonth] = useState(filters?.month || '');
     const [year, setYear] = useState(filters?.year || '');
-
-    // Usar datos reales si existen, si no los demo
-    const pendingOrders   = (pendingProp?.data?.length   ? pendingProp   : DEMO_PENDING);
-    const dispatchedOrders = (dispatchedProp?.data?.length ? dispatchedProp : DEMO_DISPATCHED);
 
     const handleSearch = (e) => {
         e.preventDefault();
