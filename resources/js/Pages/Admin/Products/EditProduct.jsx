@@ -24,6 +24,11 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
         image_2: product.images && product.images[1] ? `/${product.images[1]}` : null,
         image_3: product.images && product.images[2] ? `/${product.images[2]}` : null,
     });
+    const [newImageSelected, setNewImageSelected] = useState({
+        image_1: false,
+        image_2: false,
+        image_3: false,
+    });
     const [selectedSizes, setSelectedSizes] = useState(product.sizes.map(size => size.id.toString()) || []);
     const [searchCategory, setSearchCategory] = useState('');
     const [searchColor, setSearchColor] = useState('');
@@ -51,6 +56,10 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                 ...prev,
                 [key]: file ? URL.createObjectURL(file) : null,
             }));
+            setNewImageSelected(prev => ({
+                ...prev,
+                [key]: !!file,
+            }));
         }
     };
 
@@ -76,36 +85,8 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Filtrar solo los talles seleccionados con su stock actual
-        const selectedSizesWithStock = data.sizes.filter(size => selectedSizes.includes(size.id.toString()));
-        
-        const formData = new FormData();
-        formData.append('name', data.name);
-        formData.append('description', data.description);
-        formData.append('price', data.price);
-        formData.append('gender_id', data.gender_id);
-        formData.append('is_featured', data.is_featured ? '1' : '0');
-        data.categories.forEach(c => formData.append('categories[]', c));
-        data.colors.forEach(c => formData.append('colors[]', c));
-        
-        // Usar la variable filtrada directamente en lugar de data.sizes
-        selectedSizesWithStock.forEach((s, i) => {
-            formData.append(`sizes[${i}][id]`, s.id);
-            formData.append(`sizes[${i}][stock]`, s.stock);
-        });
-        
-        // Enviar cada imagen con su índice específico
-        ['image_1', 'image_2', 'image_3'].forEach(key => {
-            if (data[key]) {
-                formData.append(key, data[key]);
-            }
-        });
-        
         post(route('products.update', product.id), {
-            data: formData,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
+            forceFormData: true,
         });
     };
 
@@ -392,6 +373,17 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                                         className="block w-full text-sm file:mr-4 file:rounded-xl file:border-0 file:px-6 file:py-3 file:text-white file:font-bold file:hover:scale-105 file:transition file:shadow-md"
                                     />
                                     <style>{`input[type="file"]::file-selector-button { background-color: #9B59B6; }`}</style>
+                                    {/* Indicador de estado de la imagen */}
+                                    {imagePreviews[`image_${i}`] && !newImageSelected[`image_${i}`] && (
+                                        <div className="mt-2 flex items-center gap-1 text-xs font-semibold text-green-600 bg-green-50 border border-green-200 rounded-lg px-3 py-1">
+                                            <span>✅</span> Imagen actual guardada (se mantendrá)
+                                        </div>
+                                    )}
+                                    {newImageSelected[`image_${i}`] && (
+                                        <div className="mt-2 flex items-center gap-1 text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-lg px-3 py-1">
+                                            <span>🆕</span> Nueva imagen seleccionada
+                                        </div>
+                                    )}
                                     {errors[`image_${i}`] && (
                                         <div className="text-red-500 text-xs mt-2">{errors[`image_${i}`]}</div>
                                     )}
