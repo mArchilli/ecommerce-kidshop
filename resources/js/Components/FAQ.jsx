@@ -85,7 +85,7 @@ export default function FAQ() {
               
               <button
                 onClick={() => toggleQuestion(index)}
-                className={`relative w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none focus:ring-4 focus:ring-cyan-300/50 transition-all duration-300 ${
+                className={`relative w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none  transition-all duration-300 ${
                   openIndex === index ? 'bg-gradient-to-r from-cyan-50/50 to-pink-50/50' : ''
                 }`}
                 aria-expanded={openIndex === index}
