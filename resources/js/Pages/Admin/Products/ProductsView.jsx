@@ -17,16 +17,16 @@ export default function ProductsView({ products }) {
         new Set(products.map(p => p.gender?.name).filter(Boolean))
     );
 
-    // Estados de filtros
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('');
-    const [selectedColor, setSelectedColor] = useState('');
-    const [selectedSize, setSelectedSize] = useState('');
-    const [selectedGender, setSelectedGender] = useState('');
-    const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
-    const [showFilters, setShowFilters] = useState(false);
-    const [sortOrder, setSortOrder] = useState('');
+    // Estados de filtros (persistidos en localStorage)
+    const [searchTerm, setSearchTerm] = useState(() => localStorage.getItem('pv_search') || '');
+    const [selectedCategory, setSelectedCategory] = useState(() => localStorage.getItem('pv_category') || '');
+    const [selectedColor, setSelectedColor] = useState(() => localStorage.getItem('pv_color') || '');
+    const [selectedSize, setSelectedSize] = useState(() => localStorage.getItem('pv_size') || '');
+    const [selectedGender, setSelectedGender] = useState(() => localStorage.getItem('pv_gender') || '');
+    const [minPrice, setMinPrice] = useState(() => localStorage.getItem('pv_minPrice') || '');
+    const [maxPrice, setMaxPrice] = useState(() => localStorage.getItem('pv_maxPrice') || '');
+    const [showFilters, setShowFilters] = useState(true);
+    const [sortOrder, setSortOrder] = useState(() => localStorage.getItem('pv_sort') || '');
 
     // Filtrar productos según todos los criterios
     const filteredProducts = products.filter(product => {
@@ -84,6 +84,8 @@ export default function ProductsView({ products }) {
         setMinPrice('');
         setMaxPrice('');
         setSortOrder('');
+        ['pv_search','pv_category','pv_color','pv_size','pv_gender','pv_minPrice','pv_maxPrice','pv_sort']
+            .forEach(k => localStorage.removeItem(k));
     };
 
     const activeFiltersCount = [
@@ -97,9 +99,17 @@ export default function ProductsView({ products }) {
         sortOrder
     ].filter(Boolean).length;
 
+    // Persistir todos los filtros en localStorage al cambiar
     useEffect(() => {
-        //console.log(products);
-    }, [products]);
+        localStorage.setItem('pv_search', searchTerm);
+        localStorage.setItem('pv_category', selectedCategory);
+        localStorage.setItem('pv_color', selectedColor);
+        localStorage.setItem('pv_size', selectedSize);
+        localStorage.setItem('pv_gender', selectedGender);
+        localStorage.setItem('pv_minPrice', minPrice);
+        localStorage.setItem('pv_maxPrice', maxPrice);
+        localStorage.setItem('pv_sort', sortOrder);
+    }, [searchTerm, selectedCategory, selectedColor, selectedSize, selectedGender, minPrice, maxPrice, sortOrder]);
 
     const handleToggleFeatured = (productId, e) => {
         e.preventDefault();
@@ -209,6 +219,61 @@ export default function ProductsView({ products }) {
                             </div>
                         </div>
                     </div>
+
+                    {/* Chips de filtros activos */}
+                    {activeFiltersCount > 0 && (
+                        <div className="mb-4 flex flex-wrap gap-2 items-center">
+                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Filtros activos:</span>
+                            {searchTerm && (
+                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
+                                    🔍 &quot;{searchTerm}&quot;
+                                    <button onClick={() => setSearchTerm('')} className="ml-1 hover:opacity-70">✕</button>
+                                </span>
+                            )}
+                            {selectedCategory && (
+                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#65DA4D' }}>
+                                    📂 {selectedCategory}
+                                    <button onClick={() => setSelectedCategory('')} className="ml-1 hover:opacity-70">✕</button>
+                                </span>
+                            )}
+                            {selectedColor && (
+                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#FC1C1D' }}>
+                                    🎨 {selectedColor}
+                                    <button onClick={() => setSelectedColor('')} className="ml-1 hover:opacity-70">✕</button>
+                                </span>
+                            )}
+                            {selectedSize && (
+                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#FFB800' }}>
+                                    📏 {selectedSize}
+                                    <button onClick={() => setSelectedSize('')} className="ml-1 hover:opacity-70">✕</button>
+                                </span>
+                            )}
+                            {selectedGender && (
+                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#9B59B6' }}>
+                                    👶 {selectedGender}
+                                    <button onClick={() => setSelectedGender('')} className="ml-1 hover:opacity-70">✕</button>
+                                </span>
+                            )}
+                            {minPrice && (
+                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
+                                    💵 Min: ${minPrice}
+                                    <button onClick={() => setMinPrice('')} className="ml-1 hover:opacity-70">✕</button>
+                                </span>
+                            )}
+                            {maxPrice && (
+                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
+                                    💰 Max: ${maxPrice}
+                                    <button onClick={() => setMaxPrice('')} className="ml-1 hover:opacity-70">✕</button>
+                                </span>
+                            )}
+                            {sortOrder && (
+                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
+                                    🔤 {sortOrder === 'asc' ? 'A → Z' : 'Z → A'}
+                                    <button onClick={() => setSortOrder('')} className="ml-1 hover:opacity-70">✕</button>
+                                </span>
+                            )}
+                        </div>
+                    )}
 
                     {/* Panel de filtros expandible */}
                     {showFilters && (
