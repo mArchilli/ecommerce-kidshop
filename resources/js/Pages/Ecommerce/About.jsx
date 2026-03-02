@@ -207,7 +207,7 @@ export default function AboutUs() {
                 </div>
                 
                 <a
-                  href="https://www.tiktok.com/@la.tienda.de.los_ninios"
+                  href="https://www.tiktok.com/@latiendadelosninios/"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-purple-600 font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-xl group-hover:shadow-lg"

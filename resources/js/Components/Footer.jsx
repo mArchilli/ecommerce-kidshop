@@ -89,7 +89,7 @@ export default function Footer() {
                   <span className="text-sm font-semibold">Seguinos</span>
                 </a>
                 <a 
-                  href="https://www.tiktok.com/@la.tienda.de.los_ninios" 
+                  href="https://www.tiktok.com/@latiendadelosninios/" 
                   aria-label="TikTok" 
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white transition-all duration-300 transform hover:scale-105 shadow-md"
                   target="_blank"
