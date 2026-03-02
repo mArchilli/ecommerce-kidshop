@@ -226,7 +226,7 @@ const FeaturedProducts = ({ products = [] }) => {
                         className="group block h-full"
                       >
                         <div className="bg-white rounded-2xl overflow-hidden shadow-lg md:hover:shadow-2xl transition-all duration-500 transform md:hover:-translate-y-3 md:hover:scale-105 border-2 border-cyan-200 h-full flex flex-col">
-                          <div className="w-full relative aspect-[4/3] md:aspect-square bg-gradient-to-br from-cyan-50 to-purple-50">
+                          <div className="w-full relative aspect-[4/3] md:aspect-square overflow-hidden bg-gradient-to-br from-cyan-50 to-purple-50">
                           <img
                             src={product.images && product.images.length > 0 
                               ? getImageSrc(product.images[0]) 
