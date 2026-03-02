@@ -183,11 +183,11 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                   className="bg-white shadow-md rounded-2xl overflow-hidden transition-all duration-300 transform hover:shadow-xl hover:-translate-y-1 flex flex-col border border-gray-100"
                   
                 >
-                  <div className="w-full relative aspect-square bg-gradient-to-br from-cyan-50 to-purple-50">
+                  <div className="w-full relative md:aspect-square md:overflow-hidden bg-gradient-to-br from-cyan-50 to-purple-50">
                     <img 
                       src={product.images && product.images.length > 0 ? getImageSrc(product.images[0]) : '/placeholder.svg'} 
                       alt={product.name} 
-                      className="w-full h-full object-cover"
+                      className="w-full h-auto md:absolute md:inset-0 md:h-full object-cover"
                     />
                     
                     {/* Badge de oferta con descuento - más grande y llamativo */}

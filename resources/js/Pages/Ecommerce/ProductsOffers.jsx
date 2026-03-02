@@ -231,7 +231,7 @@ const ProductsOffers = ({ products = [] }) => {
                         className={`block ${isVisible ? 'group' : ''} h-full`}
                         onClick={(e) => !isVisible && e.preventDefault()}
                       >
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 border-2 border-pink-200 h-full flex flex-col">
+                        <div className="bg-white rounded-2xl overflow-hidden shadow-lg md:hover:shadow-2xl transition-all duration-500 transform md:hover:-translate-y-3 md:hover:scale-105 border-2 border-pink-200 h-full flex flex-col">
                           {/* Imagen del producto */}
                           <div className="w-full relative aspect-[4/3] md:aspect-square overflow-hidden bg-gray-100">
                             <img
@@ -240,7 +240,7 @@ const ProductsOffers = ({ products = [] }) => {
                                 : '/placeholder.svg'
                               }
                               alt={product.name}
-                              className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700 ease-out"
+                              className="w-full h-full object-cover md:group-hover:scale-125 transition-transform duration-700 ease-out"
                             />
                             
                             {/* Badge de oferta con descuento */}
@@ -266,7 +266,7 @@ const ProductsOffers = ({ products = [] }) => {
 
                           {/* Información del producto */}
                           <div className="p-3 md:p-5 flex-1 flex flex-col">
-                            <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-pink-600 transition-colors">
+                            <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 line-clamp-2 md:group-hover:text-pink-600 transition-colors">
                               {product.name}
                             </h3>
 
@@ -345,11 +345,11 @@ const ProductsOffers = ({ products = [] }) => {
                             </div>
 
                             <div className="mt-auto pt-4 border-t border-pink-100">
-                              <span className="text-sm font-bold text-gray-900 group-hover:text-pink-600 transition-colors flex items-center gap-2">
+                              <span className="text-sm font-bold text-gray-900 md:group-hover:text-pink-600 transition-colors flex items-center gap-2">
                                 Ver oferta
                                 <svg 
                                   xmlns="http://www.w3.org/2000/svg" 
-                                  className="h-4 w-4 group-hover:translate-x-1 transition-transform" 
+                                  className="h-4 w-4 md:group-hover:translate-x-1 transition-transform" 
                                   fill="none" 
                                   viewBox="0 0 24 24" 
                                   stroke="currentColor"
@@ -373,7 +373,7 @@ const ProductsOffers = ({ products = [] }) => {
                     data-aos="fade-up"
                     data-aos-delay={index * 100}
                   >
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 border-2 border-pink-200 h-full flex flex-col">
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-lg md:hover:shadow-2xl transition-all duration-500 transform md:hover:-translate-y-3 md:hover:scale-105 border-2 border-pink-200 h-full flex flex-col">
                       {/* Imagen del producto */}
                       <div className="relative aspect-square overflow-hidden bg-gray-100">
                         <img
@@ -382,7 +382,7 @@ const ProductsOffers = ({ products = [] }) => {
                             : '/placeholder.svg'
                           }
                           alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          className="w-full h-full object-cover md:group-hover:scale-110 transition-transform duration-500"
                         />
                         
                         {/* Badge de oferta con descuento */}
@@ -408,7 +408,7 @@ const ProductsOffers = ({ products = [] }) => {
 
                       {/* Información del producto */}
                       <div className="p-5 flex-1 flex flex-col">
-                        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-pink-600 transition-colors">
+                        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 md:group-hover:text-pink-600 transition-colors">
                           {product.name}
                         </h3>
 
@@ -487,11 +487,11 @@ const ProductsOffers = ({ products = [] }) => {
                         </div>
 
                         <div className="mt-auto pt-4 border-t border-pink-100">
-                          <span className="text-sm font-bold text-gray-900 group-hover:text-pink-600 transition-colors flex items-center gap-2">
+                          <span className="text-sm font-bold text-gray-900 md:group-hover:text-pink-600 transition-colors flex items-center gap-2">
                             Ver oferta
                             <svg 
                               xmlns="http://www.w3.org/2000/svg" 
-                              className="h-4 w-4 group-hover:translate-x-1 transition-transform" 
+                              className="h-4 w-4 md:group-hover:translate-x-1 transition-transform" 
                               fill="none" 
                               viewBox="0 0 24 24" 
                               stroke="currentColor"

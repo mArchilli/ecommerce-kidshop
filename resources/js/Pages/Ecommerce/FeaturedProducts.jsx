@@ -225,7 +225,7 @@ const FeaturedProducts = ({ products = [] }) => {
                         href={route('products.show', product.id)}
                         className="group block h-full"
                       >
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 border-2 border-cyan-200 h-full flex flex-col">
+                        <div className="bg-white rounded-2xl overflow-hidden shadow-lg md:hover:shadow-2xl transition-all duration-500 transform md:hover:-translate-y-3 md:hover:scale-105 border-2 border-cyan-200 h-full flex flex-col">
                           <div className="w-full relative aspect-[4/3] md:aspect-square bg-gradient-to-br from-cyan-50 to-purple-50">
                           <img
                             src={product.images && product.images.length > 0 
@@ -233,7 +233,7 @@ const FeaturedProducts = ({ products = [] }) => {
                               : '/placeholder.svg'
                             }
                             alt={product.name}
-                            className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700 ease-out"
+                            className="w-full h-full object-cover md:group-hover:scale-125 transition-transform duration-700 ease-out"
                           />
                           
                           {/* Badge de oferta con descuento */}
@@ -261,7 +261,7 @@ const FeaturedProducts = ({ products = [] }) => {
                         </div>
                         
                         <div className="p-3 md:p-5 flex-1 flex flex-col">
-                          <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-cyan-600 transition-colors">
+                          <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 line-clamp-2 md:group-hover:text-cyan-600 transition-colors">
                             {product.name}
                           </h3>
 
@@ -340,11 +340,11 @@ const FeaturedProducts = ({ products = [] }) => {
                           </div>
 
                           <div className="mt-auto pt-4 border-t border-cyan-100">
-                            <span className="text-sm font-bold text-gray-900 group-hover:text-cyan-600 transition-colors flex items-center gap-2">
+                            <span className="text-sm font-bold text-gray-900 md:group-hover:text-cyan-600 transition-colors flex items-center gap-2">
                               Ver prenda
                               <svg 
                                 xmlns="http://www.w3.org/2000/svg" 
-                                className="h-4 w-4 group-hover:translate-x-1 transition-transform" 
+                                className="h-4 w-4 md:group-hover:translate-x-1 transition-transform" 
                                 fill="none" 
                                 viewBox="0 0 24 24" 
                                 stroke="currentColor"
@@ -368,7 +368,7 @@ const FeaturedProducts = ({ products = [] }) => {
                     data-aos="fade-up"
                     data-aos-delay={index * 100}
                   >
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 border-2 border-cyan-200 h-full flex flex-col">
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-lg md:hover:shadow-2xl transition-all duration-500 transform md:hover:-translate-y-3 md:hover:scale-105 border-2 border-cyan-200 h-full flex flex-col">
                       {/* Imagen del producto */}
                       <div className="relative aspect-square overflow-hidden bg-gray-100">
                         <img
@@ -377,7 +377,7 @@ const FeaturedProducts = ({ products = [] }) => {
                             : '/placeholder.svg'
                           }
                           alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          className="w-full h-full object-cover md:group-hover:scale-110 transition-transform duration-500"
                         />
                         
                         {/* Badge de oferta con descuento */}
@@ -406,7 +406,7 @@ const FeaturedProducts = ({ products = [] }) => {
 
                       {/* Información del producto */}
                       <div className="p-5 flex-1 flex flex-col">
-                        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-cyan-600 transition-colors">
+                        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 md:group-hover:text-cyan-600 transition-colors">
                           {product.name}
                         </h3>
 
@@ -485,11 +485,11 @@ const FeaturedProducts = ({ products = [] }) => {
                         </div>
 
                         <div className="mt-auto pt-4 border-t border-cyan-100">
-                          <span className="text-sm font-bold text-gray-900 hover:text-cyan-600 transition-colors flex items-center gap-2">
+                          <span className="text-sm font-bold text-gray-900 md:hover:text-cyan-600 transition-colors flex items-center gap-2">
                             Ver prenda
                             <svg 
                               xmlns="http://www.w3.org/2000/svg" 
-                              className="h-4 w-4 group-hover:translate-x-1 transition-transform" 
+                              className="h-4 w-4 md:group-hover:translate-x-1 transition-transform" 
                               fill="none" 
                               viewBox="0 0 24 24" 
                               stroke="currentColor"
