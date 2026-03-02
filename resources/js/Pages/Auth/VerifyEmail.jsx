@@ -107,7 +107,7 @@ export default function VerifyEmail({ status }) {
                                     </div>
                                     <h1 className="text-3xl font-black text-gray-900 mb-3">Verifica tu correo</h1>
                                     <p className="text-gray-600 text-center text-base font-semibold leading-relaxed">
-                                        ¡Gracias por registrarte! Revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.
+                                        ¡Gracias por registrarte! Revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta. Si no recibiste el correo, revisa tu casilla de SPAM o podes solicitar uno nuevo.
                                     </p>
                                 </div>
                                 
