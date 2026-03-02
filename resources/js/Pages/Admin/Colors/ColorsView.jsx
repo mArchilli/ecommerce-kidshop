@@ -4,11 +4,16 @@ import { Head, Link } from '@inertiajs/react';
 
 export default function ColorsView({ colors }) {
     const [searchTerm, setSearchTerm] = useState('');
+    const [sortOrder, setSortOrder] = useState('');
 
-    // Filtrar colores según búsqueda
-    const filteredColors = colors.filter(color => 
-        color.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Filtrar y ordenar colores
+    const filteredColors = colors
+        .filter(color => color.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        .sort((a, b) => {
+            if (sortOrder === 'asc') return a.name.localeCompare(b.name);
+            if (sortOrder === 'desc') return b.name.localeCompare(a.name);
+            return 0;
+        });
 
     return (
         <AuthenticatedLayout
@@ -28,26 +33,50 @@ export default function ColorsView({ colors }) {
             <Head title="Colores" />
             <div className="py-6 sm:py-10">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    {/* Buscador */}
+                    {/* Buscador y orden */}
                     <div className="mb-6">
                         <div className="bg-gradient-to-r from-white to-red-50 rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6">
-                            <div className="relative max-w-2xl mx-auto">
-                                <input
-                                    type="text"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    placeholder="🔍 Buscar color por nombre..."
-                                    className="w-full border-2 border-neutral-300 rounded-xl px-4 sm:px-5 py-3 text-sm sm:text-base font-semibold focus:outline-none focus:ring-4 focus:ring-red-200 focus:border-red-400 pr-10"
-                                    style={{ backgroundColor: '#f8f9fa' }}
-                                />
-                                {searchTerm && (
+                            <div className="flex flex-col sm:flex-row items-start gap-3">
+                                {/* Buscador */}
+                                <div className="relative w-full sm:max-w-sm">
+                                    <input
+                                        type="text"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        placeholder="🔍 Buscar color por nombre..."
+                                        className="w-full border-2 border-neutral-300 rounded-xl px-4 sm:px-5 py-3 text-sm sm:text-base font-semibold focus:outline-none focus:ring-4 focus:ring-red-200 focus:border-red-400 pr-10"
+                                        style={{ backgroundColor: '#f8f9fa' }}
+                                    />
+                                    {searchTerm && (
+                                        <button
+                                            onClick={() => setSearchTerm('')}
+                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-neutral-600 text-xl font-bold"
+                                        >
+                                            ✕
+                                        </button>
+                                    )}
+                                </div>
+                                {/* Botones de orden */}
+                                <div className="flex gap-2 flex-wrap">
                                     <button
-                                        onClick={() => setSearchTerm('')}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-neutral-600 text-xl font-bold"
+                                        onClick={() => setSortOrder(sortOrder === 'asc' ? '' : 'asc')}
+                                        className={`px-4 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-md ${
+                                            sortOrder === 'asc' ? 'text-white' : 'bg-white border-2 border-red-300 text-red-600'
+                                        }`}
+                                        style={sortOrder === 'asc' ? { backgroundColor: '#FC1C1D', color: 'white' } : {}}
                                     >
-                                        ✕
+                                        A → Z
                                     </button>
-                                )}
+                                    <button
+                                        onClick={() => setSortOrder(sortOrder === 'desc' ? '' : 'desc')}
+                                        className={`px-4 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-md ${
+                                            sortOrder === 'desc' ? 'text-white' : 'bg-white border-2 border-red-300 text-red-600'
+                                        }`}
+                                        style={sortOrder === 'desc' ? { backgroundColor: '#FC1C1D', color: 'white' } : {}}
+                                    >
+                                        Z → A
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

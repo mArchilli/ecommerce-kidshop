@@ -26,6 +26,7 @@ export default function ProductsView({ products }) {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [showFilters, setShowFilters] = useState(false);
+    const [sortOrder, setSortOrder] = useState('');
 
     // Filtrar productos según todos los criterios
     const filteredProducts = products.filter(product => {
@@ -68,6 +69,10 @@ export default function ProductsView({ products }) {
         }
 
         return true;
+    }).sort((a, b) => {
+        if (sortOrder === 'asc') return a.name.localeCompare(b.name);
+        if (sortOrder === 'desc') return b.name.localeCompare(a.name);
+        return 0;
     });
 
     const clearAllFilters = () => {
@@ -78,6 +83,7 @@ export default function ProductsView({ products }) {
         setSelectedGender('');
         setMinPrice('');
         setMaxPrice('');
+        setSortOrder('');
     };
 
     const activeFiltersCount = [
@@ -87,7 +93,8 @@ export default function ProductsView({ products }) {
         selectedSize,
         selectedGender,
         minPrice,
-        maxPrice
+        maxPrice,
+        sortOrder
     ].filter(Boolean).length;
 
     useEffect(() => {
@@ -131,7 +138,7 @@ export default function ProductsView({ products }) {
                         <div className="bg-gradient-to-r from-white to-neutral-50 rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6">
                             <div className="flex flex-col gap-3 sm:gap-4">
                                 {/* Buscador */}
-                                <div className="w-full">
+                                <div className="w-full sm:max-w-sm">
                                     <div className="relative">
                                         <input
                                             type="text"
@@ -151,32 +158,53 @@ export default function ProductsView({ products }) {
                                         )}
                                     </div>
                                 </div>
-                                
-                                {/* Botones de filtros */}
-                                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+
+                                {/* Botones de orden A-Z + Filtros en la misma línea */}
+                                <div className="flex items-center gap-2 w-full">
+                                    {/* Orden alfabético */}
                                     <button
-                                        onClick={() => setShowFilters(!showFilters)}
-                                        className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md relative"
-                                        style={{ backgroundColor: '#29C9F4' }}
+                                        onClick={() => setSortOrder(sortOrder === 'asc' ? '' : 'asc')}
+                                        className={`px-4 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-md ${
+                                            sortOrder === 'asc' ? 'text-white' : 'bg-white border-2 border-cyan-300 text-cyan-600'
+                                        }`}
+                                        style={sortOrder === 'asc' ? { backgroundColor: '#29C9F4', color: 'white' } : {}}
                                     >
-                                        {showFilters ? '❌ Ocultar Filtros' : '🔧 Mostrar Filtros'}
-                                        {activeFiltersCount > 0 && (
-                                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-                                                {activeFiltersCount}
-                                            </span>
-                                        )}
+                                        A → Z
+                                    </button>
+                                    <button
+                                        onClick={() => setSortOrder(sortOrder === 'desc' ? '' : 'desc')}
+                                        className={`px-4 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-md ${
+                                            sortOrder === 'desc' ? 'text-white' : 'bg-white border-2 border-cyan-300 text-cyan-600'
+                                        }`}
+                                        style={sortOrder === 'desc' ? { backgroundColor: '#29C9F4', color: 'white' } : {}}
+                                    >
+                                        Z → A
                                     </button>
 
-                                    {/* Botón limpiar filtros */}
-                                    {activeFiltersCount > 0 && (
+                                    {/* Botones de filtros alineados a la derecha */}
+                                    <div className="flex gap-2 ml-auto">
+                                        {activeFiltersCount > 0 && (
+                                            <button
+                                                onClick={clearAllFilters}
+                                                className="px-5 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                                                style={{ backgroundColor: '#FC1C1D' }}
+                                            >
+                                                🗑️ Limpiar
+                                            </button>
+                                        )}
                                         <button
-                                            onClick={clearAllFilters}
-                                            className="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
-                                            style={{ backgroundColor: '#FC1C1D' }}
+                                            onClick={() => setShowFilters(!showFilters)}
+                                            className="px-5 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md relative"
+                                            style={{ backgroundColor: '#29C9F4' }}
                                         >
-                                            🗑️ Limpiar
+                                            {showFilters ? '❌ Ocultar Filtros' : '🔧 Más Filtros'}
+                                            {activeFiltersCount > 0 && (
+                                                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                                                    {activeFiltersCount}
+                                                </span>
+                                            )}
                                         </button>
-                                    )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
