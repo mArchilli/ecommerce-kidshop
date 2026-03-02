@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
+import * as XLSX from 'xlsx';
 
 export default function ProductsView({ products }) {
     // Obtener valores únicos para filtros
@@ -119,6 +120,50 @@ export default function ProductsView({ products }) {
         });
     };
 
+    const exportToExcel = () => {
+        const rows = filteredProducts.map(product => {
+            const totalStock = product.sizes.reduce((sum, size) => sum + (size.pivot?.stock || 0), 0);
+            const offerActive = !!(product.active_offer?.is_active);
+            return {
+                // ── Datos generales ──
+                'Nombre': product.name,
+                'Descripción': product.description || '',
+                'Género': product.gender?.name || '',
+                'Categorías': product.categories.map(c => c.name).join(', '),
+                'Colores': product.colors.map(c => c.name).join(', '),
+                'Talles': product.sizes.map(s => s.name).join(', '),
+                'Stock por Talle': product.sizes.map(s => `${s.name}: ${s.pivot?.stock ?? 0}`).join(' | '),
+                'Stock Total': totalStock,
+                'Precio ($)': Number(product.price),
+                'Destacado': product.is_featured ? 'Sí' : 'No',
+                // ── Ofertas ──
+                'Tiene Oferta Activa': offerActive ? 'Sí' : 'No',
+                'Nombre Oferta': offerActive ? product.active_offer.name : '',
+                'Descuento (%)': offerActive ? Number(product.active_offer.discount_percentage) : '',
+                'Precio Original ($)': offerActive ? Number(product.price) : '',
+                'Precio con Descuento ($)': offerActive ? Number(product.active_offer.discount_price) : '',
+                'Oferta Desde': offerActive && product.active_offer.start_date
+                    ? new Date(product.active_offer.start_date).toLocaleDateString('es-AR') : '',
+                'Oferta Hasta': offerActive && product.active_offer.end_date
+                    ? new Date(product.active_offer.end_date).toLocaleDateString('es-AR') : 'Sin límite',
+            };
+        });
+
+        const worksheet = XLSX.utils.json_to_sheet(rows);
+
+        // Ancho de columnas automático
+        const colWidths = Object.keys(rows[0] || {}).map(key => ({
+            wch: Math.max(key.length, ...rows.map(r => String(r[key] ?? '').length)) + 2
+        }));
+        worksheet['!cols'] = colWidths;
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Prendas');
+
+        const fecha = new Date().toLocaleDateString('es-AR').replace(/\//g, '-');
+        XLSX.writeFile(workbook, `prendas_${fecha}.xlsx`);
+    };
+
     return (
         <AuthenticatedLayout
             header={
@@ -129,13 +174,28 @@ export default function ProductsView({ products }) {
                             👕 Prendas
                         </h2>
                     </div>
-                    <Link
-                        href={route('products.create')}
-                        className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
-                        style={{ backgroundColor: '#65DA4D' }}
-                    >
-                        ➕ Agregar Prenda
-                    </Link>
+                    <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                        <button
+                            onClick={exportToExcel}
+                            className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                            style={{ backgroundColor: '#1D6F42' }}
+                            title={`Exportar ${filteredProducts.length} prenda(s) a Excel`}
+                        >
+                            📊 Exportar Excel
+                            {activeFiltersCount > 0 && (
+                                <span className="ml-2 text-xs bg-white/30 px-1.5 py-0.5 rounded-full">
+                                    {filteredProducts.length}
+                                </span>
+                            )}
+                        </button>
+                        <Link
+                            href={route('products.create')}
+                            className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                            style={{ backgroundColor: '#65DA4D' }}
+                        >
+                            ➕ Agregar Prenda
+                        </Link>
+                    </div>
                 </div>
             }
         >
