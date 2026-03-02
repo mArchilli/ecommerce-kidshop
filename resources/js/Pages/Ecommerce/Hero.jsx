@@ -1,16 +1,9 @@
 import React from 'react';
 import { Link } from '@inertiajs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faComments } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 const Hero = () => {
-  const scrollToWhatsApp = () => {
-    const whatsappSection = document.getElementById('whatsapp-section');
-    if (whatsappSection) {
-      whatsappSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  };
-
   return (
     <div
       className="min-h-screen w-full flex items-center relative z-0 overflow-hidden"
@@ -67,24 +60,24 @@ const Hero = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link
-                href="/catalog"
+                href="/register"
                 className="group relative px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 rounded-full shadow-lg hover:shadow-2xl hover:shadow-pink-300/40 transition-all duration-300 hover:scale-105 overflow-hidden"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                 <span className="relative flex items-center justify-center gap-3">
+                  Registrate ya mismo!
+                  <FontAwesomeIcon icon={faUserPlus} className="group-hover:translate-x-1 transition-transform duration-300" />
+                </span>
+              </Link>
+              <Link
+                href="/catalog"
+                className="group px-8 py-4 text-lg font-bold text-gray-700 bg-white/80 backdrop-blur-sm border-2 border-pink-200 rounded-full hover:border-pink-400 hover:bg-white hover:text-pink-600 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
+              >
+                <span className="flex items-center justify-center gap-3">
                   Ver catálogo de ropa
                   <FontAwesomeIcon icon={faArrowRight} className="group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
               </Link>
-              <button
-                onClick={scrollToWhatsApp}
-                className="group px-8 py-4 text-lg font-bold text-gray-700 bg-white/80 backdrop-blur-sm border-2 border-pink-200 rounded-full hover:border-pink-400 hover:bg-white hover:text-pink-600 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
-              >
-                <span className="flex items-center justify-center gap-3">
-                  Contacta con nosotros
-                  <FontAwesomeIcon icon={faComments} className="group-hover:scale-110 transition-transform duration-300" />
-                </span>
-              </button>
             </div>
           </div>
         </div>
