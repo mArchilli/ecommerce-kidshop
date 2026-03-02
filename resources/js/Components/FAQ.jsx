@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 700,
+      once: true,
+      easing: 'ease-out-cubic',
+    });
+  }, []);
 
   const faqs = [
     {
@@ -50,7 +60,7 @@ export default function FAQ() {
   return (
     <section className="py-16 px-4">
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12" data-aos="fade-up">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
             Preguntas frecuentes
           </h2>
@@ -59,13 +69,14 @@ export default function FAQ() {
           </p>
         </div>
 
-        <div className="w-full space-y-5">
+        <div className="w-full space-y-5"
+            data-aos="fade-up">
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className={`group relative bg-gradient-to-r from-white via-pink-50/30 to-cyan-50/30 backdrop-blur-sm rounded-2xl shadow-lg border-2 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] ${
+              className={`group relative bg-gradient-to-r from-white via-pink-50/30 to-cyan-50/30 backdrop-blur-sm rounded-2xl shadow-lg border-2 overflow-hidden transition-all duration-500 md:hover:shadow-2xl md:hover:scale-[1.02] ${
                 openIndex === index 
-                  ? 'border-cyan-400 shadow-cyan-200/50' 
+                  ? 'border-cyan-400 shadow-cyan-200/50 scale-[1.01]' 
                   : 'border-pink-200 hover:border-pink-300'
               }`}
             >
@@ -92,9 +103,9 @@ export default function FAQ() {
                     : 'bg-gradient-to-br from-pink-200 to-cyan-200 group-hover:from-pink-300 group-hover:to-cyan-300 group-hover:shadow-md'
                 }`}>
                   <FontAwesomeIcon
-                    icon={openIndex === index ? faChevronUp : faChevronDown}
-                    className={`text-white transition-all duration-300 ${
-                      openIndex === index ? 'text-base' : 'text-sm'
+                    icon={faChevronDown}
+                    className={`text-white text-sm transition-transform duration-400 ease-in-out ${
+                      openIndex === index ? 'rotate-180' : 'rotate-0'
                     }`}
                   />
                 </div>
