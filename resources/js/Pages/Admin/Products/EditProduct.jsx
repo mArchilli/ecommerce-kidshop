@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm, Link } from '@inertiajs/react';
+import { Head, useForm, Link, usePage } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
 import RadioLabel from '@/Components/RadioLabel';
 
 export default function EditProduct({ product, categories = [], sizes = [], colors = [], genders = [] }) {
+    const { flash } = usePage().props;
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    useEffect(() => {
+        if (flash?.success) {
+            setShowSuccess(true);
+            const timer = setTimeout(() => setShowSuccess(false), 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [flash?.success]);
+
     const { data, setData, post, errors } = useForm({
         name: product.name || '',
         description: product.description || '',
@@ -106,6 +117,24 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
             }
         >
             <Head title="Editar Producto" />
+
+            {/* Notificación de éxito */}
+            <div
+                className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl font-bold text-white transition-all duration-500 ${
+                    showSuccess ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+                }`}
+                style={{ backgroundColor: '#65DA4D' }}
+            >
+                <span className="text-2xl">✅</span>
+                <span>¡Prenda actualizada exitosamente!</span>
+                <button
+                    onClick={() => setShowSuccess(false)}
+                    className="ml-2 text-white/80 hover:text-white text-xl font-black leading-none"
+                >
+                    ✕
+                </button>
+            </div>
+
             <div className="max-w-7xl mx-auto py-10">
                 <form onSubmit={handleSubmit} className="space-y-8" encType="multipart/form-data">
                     {/* Información básica */}
@@ -319,6 +348,7 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                                                     min={0}
                                                     value={current?.stock ?? 0}
                                                     onChange={e => handleStockChange(e, size.id)}
+                                                    onWheel={(e) => e.target.blur()}
                                                     className="w-full rounded-lg border-2 border-yellow-300 px-3 py-2 text-sm font-bold text-center focus:outline-none focus:ring-4 focus:ring-yellow-200 focus:border-yellow-400 transition-all"
                                                     placeholder="0"
                                                     style={{ backgroundColor: '#FFFBEB' }}

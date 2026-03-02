@@ -339,6 +339,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                           min={0}
                           value={current?.stock ?? 0}
                           onChange={e => handleStockChange(e, size.id)}
+                          onWheel={(e) => e.target.blur()}
                           className="w-full rounded-lg border-2 border-yellow-300 px-3 py-2 text-sm font-bold text-center focus:outline-none focus:ring-4 focus:ring-yellow-200 focus:border-yellow-400 transition-all"
                           placeholder="0"
                           style={{ backgroundColor: '#FFFBEB' }}

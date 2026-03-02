@@ -242,7 +242,7 @@ class ProductController extends Controller
         }
         $product->sizes()->sync($sizes);
 
-        return redirect()->route('products.index')->with('success', 'Prenda actualizada exitosamente.');
+        return redirect()->route('products.edit', $product->id)->with('success', 'Prenda actualizada exitosamente.');
     }
 
     public function delete(Product $product)
