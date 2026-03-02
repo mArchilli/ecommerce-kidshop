@@ -142,20 +142,27 @@ export default function ProductsView({ products }) {
             <Head title="Prendas" />
 
             <div className="py-8 sm:py-12">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    {/* Buscador y botón de filtros */}
-                    <div className="mb-4 sm:mb-6">
-                        <div className="bg-gradient-to-r from-white to-neutral-50 rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6">
-                            <div className="flex flex-col gap-3 sm:gap-4">
+                <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col lg:flex-row lg:items-start gap-4 lg:gap-6">
+
+                        {/* ── COLUMNA DERECHA: sidebar sticky de filtros (solo desktop) ── */}
+                        <aside className="w-full lg:w-72 xl:w-80 lg:flex-shrink-0 lg:sticky lg:top-4 lg:self-start lg:order-2">
+                            <div className="bg-gradient-to-r from-white to-neutral-50 rounded-2xl border-4 border-white shadow-lg p-4">
+
+                                {/* Título del panel (solo desktop) */}
+                                <h3 className="hidden lg:flex items-center gap-2 text-base font-bold mb-4" style={{ color: '#29C9F4' }}>
+                                    <span>🔧</span> Filtros
+                                </h3>
+
                                 {/* Buscador */}
-                                <div className="w-full sm:max-w-sm">
+                                <div className="mb-3">
                                     <div className="relative">
                                         <input
                                             type="text"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
-                                            placeholder="🔍 Buscar por nombre o descripción..."
-                                            className="w-full border-2 border-neutral-300 rounded-xl px-4 sm:px-5 py-3 text-sm sm:text-base font-semibold focus:outline-none focus:ring-4 focus:ring-cyan-200 focus:border-cyan-400 pr-10"
+                                            placeholder="🔍 Buscar..."
+                                            className="w-full border-2 border-neutral-300 rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-cyan-200 focus:border-cyan-400 pr-10"
                                             style={{ backgroundColor: '#f8f9fa' }}
                                         />
                                         {searchTerm && (
@@ -169,12 +176,11 @@ export default function ProductsView({ products }) {
                                     </div>
                                 </div>
 
-                                {/* Botones de orden A-Z + Filtros en la misma línea */}
-                                <div className="flex items-center gap-2 w-full">
-                                    {/* Orden alfabético */}
+                                {/* Orden A-Z / Z-A */}
+                                <div className="flex gap-2 mb-3">
                                     <button
                                         onClick={() => setSortOrder(sortOrder === 'asc' ? '' : 'asc')}
-                                        className={`px-4 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-md ${
+                                        className={`flex-1 px-3 py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-md ${
                                             sortOrder === 'asc' ? 'text-white' : 'bg-white border-2 border-cyan-300 text-cyan-600'
                                         }`}
                                         style={sortOrder === 'asc' ? { backgroundColor: '#29C9F4', color: 'white' } : {}}
@@ -183,222 +189,219 @@ export default function ProductsView({ products }) {
                                     </button>
                                     <button
                                         onClick={() => setSortOrder(sortOrder === 'desc' ? '' : 'desc')}
-                                        className={`px-4 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-md ${
+                                        className={`flex-1 px-3 py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-md ${
                                             sortOrder === 'desc' ? 'text-white' : 'bg-white border-2 border-cyan-300 text-cyan-600'
                                         }`}
                                         style={sortOrder === 'desc' ? { backgroundColor: '#29C9F4', color: 'white' } : {}}
                                     >
                                         Z → A
                                     </button>
+                                </div>
 
-                                    {/* Botones de filtros alineados a la derecha */}
-                                    <div className="flex gap-2 ml-auto">
-                                        {activeFiltersCount > 0 && (
-                                            <button
-                                                onClick={clearAllFilters}
-                                                className="px-5 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
-                                                style={{ backgroundColor: '#FC1C1D' }}
-                                            >
-                                                🗑️ Limpiar
-                                            </button>
+                                {/* Chips de filtros activos */}
+                                {activeFiltersCount > 0 && (
+                                    <div className="mb-3 flex flex-wrap gap-1.5">
+                                        <span className="w-full text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Activos:</span>
+                                        {searchTerm && (
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
+                                                🔍 &quot;{searchTerm}&quot;
+                                                <button onClick={() => setSearchTerm('')} className="ml-0.5 hover:opacity-70">✕</button>
+                                            </span>
                                         )}
+                                        {selectedCategory && (
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#65DA4D' }}>
+                                                📂 {selectedCategory}
+                                                <button onClick={() => setSelectedCategory('')} className="ml-0.5 hover:opacity-70">✕</button>
+                                            </span>
+                                        )}
+                                        {selectedColor && (
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#FC1C1D' }}>
+                                                🎨 {selectedColor}
+                                                <button onClick={() => setSelectedColor('')} className="ml-0.5 hover:opacity-70">✕</button>
+                                            </span>
+                                        )}
+                                        {selectedSize && (
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#FFB800' }}>
+                                                📏 {selectedSize}
+                                                <button onClick={() => setSelectedSize('')} className="ml-0.5 hover:opacity-70">✕</button>
+                                            </span>
+                                        )}
+                                        {selectedGender && (
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#9B59B6' }}>
+                                                👶 {selectedGender}
+                                                <button onClick={() => setSelectedGender('')} className="ml-0.5 hover:opacity-70">✕</button>
+                                            </span>
+                                        )}
+                                        {minPrice && (
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
+                                                💵 Min: ${minPrice}
+                                                <button onClick={() => setMinPrice('')} className="ml-0.5 hover:opacity-70">✕</button>
+                                            </span>
+                                        )}
+                                        {maxPrice && (
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
+                                                💰 Max: ${maxPrice}
+                                                <button onClick={() => setMaxPrice('')} className="ml-0.5 hover:opacity-70">✕</button>
+                                            </span>
+                                        )}
+                                        {sortOrder && (
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
+                                                🔤 {sortOrder === 'asc' ? 'A → Z' : 'Z → A'}
+                                                <button onClick={() => setSortOrder('')} className="ml-0.5 hover:opacity-70">✕</button>
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
+
+                                {/* Panel de filtros: siempre visible en desktop, colapsable en mobile */}
+                                <div className={`${showFilters ? 'block' : 'hidden'} lg:block`}>
+                                    <div className="flex flex-col gap-3">
+                                        {/* Filtro por Categoría */}
+                                        <div className="bg-gradient-to-r from-green-50 to-lime-50 p-4 rounded-xl border-2 border-green-200">
+                                            <label className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: '#65DA4D' }}>
+                                                <span>📂</span> Categoría
+                                            </label>
+                                            <select
+                                                value={selectedCategory}
+                                                onChange={(e) => setSelectedCategory(e.target.value)}
+                                                className="w-full border-2 border-green-300 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-green-400"
+                                            >
+                                                <option value="">Todas</option>
+                                                {allCategories.map((cat) => (
+                                                    <option key={cat} value={cat}>{cat}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+
+                                        {/* Filtro por Color */}
+                                        <div className="bg-gradient-to-r from-red-50 to-pink-50 p-4 rounded-xl border-2 border-red-200">
+                                            <label className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: '#FC1C1D' }}>
+                                                <span>🎨</span> Color
+                                            </label>
+                                            <select
+                                                value={selectedColor}
+                                                onChange={(e) => setSelectedColor(e.target.value)}
+                                                className="w-full border-2 border-red-300 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-red-400"
+                                            >
+                                                <option value="">Todos</option>
+                                                {allColors.map((color) => (
+                                                    <option key={color} value={color}>{color}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+
+                                        {/* Filtro por Talle */}
+                                        <div className="bg-gradient-to-r from-yellow-50 to-amber-50 p-4 rounded-xl border-2 border-yellow-200">
+                                            <label className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: '#FFB800' }}>
+                                                <span>📏</span> Talle
+                                            </label>
+                                            <select
+                                                value={selectedSize}
+                                                onChange={(e) => setSelectedSize(e.target.value)}
+                                                className="w-full border-2 border-yellow-300 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                            >
+                                                <option value="">Todos</option>
+                                                {allSizes.map((size) => (
+                                                    <option key={size} value={size}>{size}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+
+                                        {/* Filtro por Género */}
+                                        <div className="bg-gradient-to-r from-purple-50 to-violet-50 p-4 rounded-xl border-2 border-purple-200">
+                                            <label className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: '#9B59B6' }}>
+                                                <span>👶</span> Género
+                                            </label>
+                                            <select
+                                                value={selectedGender}
+                                                onChange={(e) => setSelectedGender(e.target.value)}
+                                                className="w-full border-2 border-purple-300 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-purple-400"
+                                            >
+                                                <option value="">Todos</option>
+                                                {allGenders.map((gender) => (
+                                                    <option key={gender} value={gender}>{gender}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+
+                                        {/* Precio Mínimo */}
+                                        <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-4 rounded-xl border-2 border-cyan-200">
+                                            <label className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: '#29C9F4' }}>
+                                                <span>💵</span> Precio Mínimo
+                                            </label>
+                                            <input
+                                                type="number"
+                                                value={minPrice}
+                                                onChange={(e) => setMinPrice(e.target.value)}
+                                                placeholder="$ 0"
+                                                min="0"
+                                                className="w-full border-2 border-cyan-300 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                                            />
+                                        </div>
+
+                                        {/* Precio Máximo */}
+                                        <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-4 rounded-xl border-2 border-cyan-200">
+                                            <label className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: '#29C9F4' }}>
+                                                <span>💰</span> Precio Máximo
+                                            </label>
+                                            <input
+                                                type="number"
+                                                value={maxPrice}
+                                                onChange={(e) => setMaxPrice(e.target.value)}
+                                                placeholder="$ 99999"
+                                                min="0"
+                                                className="w-full border-2 border-cyan-300 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Botón mostrar/ocultar filtros (solo mobile) */}
+                                <div className="lg:hidden flex gap-2 mt-3">
+                                    {activeFiltersCount > 0 && (
                                         <button
-                                            onClick={() => setShowFilters(!showFilters)}
-                                            className="px-5 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md relative"
-                                            style={{ backgroundColor: '#29C9F4' }}
+                                            onClick={clearAllFilters}
+                                            className="flex-1 px-4 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
+                                            style={{ backgroundColor: '#FC1C1D' }}
                                         >
-                                            {showFilters ? '❌ Ocultar Filtros' : '🔧 Más Filtros'}
-                                            {activeFiltersCount > 0 && (
-                                                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-                                                    {activeFiltersCount}
-                                                </span>
-                                            )}
+                                            🗑️ Limpiar
                                         </button>
-                                    </div>
+                                    )}
+                                    <button
+                                        onClick={() => setShowFilters(!showFilters)}
+                                        className="flex-1 px-4 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md relative"
+                                        style={{ backgroundColor: '#29C9F4' }}
+                                    >
+                                        {showFilters ? '❌ Ocultar' : '🔧 Filtros'}
+                                        {activeFiltersCount > 0 && (
+                                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                                {activeFiltersCount}
+                                            </span>
+                                        )}
+                                    </button>
                                 </div>
+
+                                {/* Botón limpiar todo (solo desktop) */}
+                                {activeFiltersCount > 0 && (
+                                    <button
+                                        onClick={clearAllFilters}
+                                        className="hidden lg:flex w-full mt-3 items-center justify-center px-4 py-2.5 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md text-sm"
+                                        style={{ backgroundColor: '#FC1C1D' }}
+                                    >
+                                        🗑️ Limpiar todos los filtros
+                                    </button>
+                                )}
                             </div>
-                        </div>
-                    </div>
+                        </aside>
 
-                    {/* Chips de filtros activos */}
-                    {activeFiltersCount > 0 && (
-                        <div className="mb-4 flex flex-wrap gap-2 items-center">
-                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Filtros activos:</span>
-                            {searchTerm && (
-                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
-                                    🔍 &quot;{searchTerm}&quot;
-                                    <button onClick={() => setSearchTerm('')} className="ml-1 hover:opacity-70">✕</button>
-                                </span>
-                            )}
-                            {selectedCategory && (
-                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#65DA4D' }}>
-                                    📂 {selectedCategory}
-                                    <button onClick={() => setSelectedCategory('')} className="ml-1 hover:opacity-70">✕</button>
-                                </span>
-                            )}
-                            {selectedColor && (
-                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#FC1C1D' }}>
-                                    🎨 {selectedColor}
-                                    <button onClick={() => setSelectedColor('')} className="ml-1 hover:opacity-70">✕</button>
-                                </span>
-                            )}
-                            {selectedSize && (
-                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#FFB800' }}>
-                                    📏 {selectedSize}
-                                    <button onClick={() => setSelectedSize('')} className="ml-1 hover:opacity-70">✕</button>
-                                </span>
-                            )}
-                            {selectedGender && (
-                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#9B59B6' }}>
-                                    👶 {selectedGender}
-                                    <button onClick={() => setSelectedGender('')} className="ml-1 hover:opacity-70">✕</button>
-                                </span>
-                            )}
-                            {minPrice && (
-                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
-                                    💵 Min: ${minPrice}
-                                    <button onClick={() => setMinPrice('')} className="ml-1 hover:opacity-70">✕</button>
-                                </span>
-                            )}
-                            {maxPrice && (
-                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
-                                    💰 Max: ${maxPrice}
-                                    <button onClick={() => setMaxPrice('')} className="ml-1 hover:opacity-70">✕</button>
-                                </span>
-                            )}
-                            {sortOrder && (
-                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
-                                    🔤 {sortOrder === 'asc' ? 'A → Z' : 'Z → A'}
-                                    <button onClick={() => setSortOrder('')} className="ml-1 hover:opacity-70">✕</button>
-                                </span>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Panel de filtros expandible */}
-                    {showFilters && (
-                        <div className="mb-4 sm:mb-6 animate-fadeIn">
-                            <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6 lg:p-8">
-                                <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 flex items-center gap-2" style={{ color: '#29C9F4' }}>
-                                    <span className="text-2xl sm:text-3xl">🔧</span>
-                                    Filtros Avanzados
-                                </h3>
-                                
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                                    {/* Filtro por Categoría */}
-                                    <div className="bg-gradient-to-r from-green-50 to-lime-50 p-5 rounded-xl border-2 border-green-200">
-                                        <label className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#65DA4D' }}>
-                                            <span className="text-xl">📂</span>
-                                            Categoría
-                                        </label>
-                                        <select
-                                            value={selectedCategory}
-                                            onChange={(e) => setSelectedCategory(e.target.value)}
-                                            className="w-full border-2 border-green-300 rounded-xl px-4 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-green-400"
-                                        >
-                                            <option value="">Todas</option>
-                                            {allCategories.map((cat) => (
-                                                <option key={cat} value={cat}>{cat}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    {/* Filtro por Color */}
-                                    <div className="bg-gradient-to-r from-red-50 to-pink-50 p-5 rounded-xl border-2 border-red-200">
-                                        <label className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#FC1C1D' }}>
-                                            <span className="text-xl">🎨</span>
-                                            Color
-                                        </label>
-                                        <select
-                                            value={selectedColor}
-                                            onChange={(e) => setSelectedColor(e.target.value)}
-                                            className="w-full border-2 border-red-300 rounded-xl px-4 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-red-400"
-                                        >
-                                            <option value="">Todos</option>
-                                            {allColors.map((color) => (
-                                                <option key={color} value={color}>{color}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    {/* Filtro por Talle */}
-                                    <div className="bg-gradient-to-r from-yellow-50 to-amber-50 p-5 rounded-xl border-2 border-yellow-200">
-                                        <label className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#FFB800' }}>
-                                            <span className="text-xl">📏</span>
-                                            Talle
-                                        </label>
-                                        <select
-                                            value={selectedSize}
-                                            onChange={(e) => setSelectedSize(e.target.value)}
-                                            className="w-full border-2 border-yellow-300 rounded-xl px-4 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                        >
-                                            <option value="">Todos</option>
-                                            {allSizes.map((size) => (
-                                                <option key={size} value={size}>{size}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    {/* Filtro por Género */}
-                                    <div className="bg-gradient-to-r from-purple-50 to-violet-50 p-5 rounded-xl border-2 border-purple-200">
-                                        <label className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#9B59B6' }}>
-                                            <span className="text-xl">👶</span>
-                                            Género
-                                        </label>
-                                        <select
-                                            value={selectedGender}
-                                            onChange={(e) => setSelectedGender(e.target.value)}
-                                            className="w-full border-2 border-purple-300 rounded-xl px-4 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-purple-400"
-                                        >
-                                            <option value="">Todos</option>
-                                            {allGenders.map((gender) => (
-                                                <option key={gender} value={gender}>{gender}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    {/* Filtro por Precio Mínimo */}
-                                    <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-5 rounded-xl border-2 border-cyan-200">
-                                        <label className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#29C9F4' }}>
-                                            <span className="text-xl">💵</span>
-                                            Precio Mínimo
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={minPrice}
-                                            onChange={(e) => setMinPrice(e.target.value)}
-                                            placeholder="$ 0"
-                                            min="0"
-                                            className="w-full border-2 border-cyan-300 rounded-xl px-4 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                                        />
-                                    </div>
-
-                                    {/* Filtro por Precio Máximo */}
-                                    <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-5 rounded-xl border-2 border-cyan-200">
-                                        <label className="flex items-center gap-2 text-sm font-bold mb-2" style={{ color: '#29C9F4' }}>
-                                            <span className="text-xl">💰</span>
-                                            Precio Máximo
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={maxPrice}
-                                            onChange={(e) => setMaxPrice(e.target.value)}
-                                            placeholder="$ 99999"
-                                            min="0"
-                                            className="w-full border-2 border-cyan-300 rounded-xl px-4 py-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                                        />
-                                    </div>
-                                </div>
+                        {/* ── COLUMNA IZQUIERDA: resultados + grid de productos ── */}
+                        <div className="flex-1 min-w-0 lg:order-1">
+                            {/* Resumen de resultados */}
+                            <div className="mb-4 px-0">
+                                <p className="text-sm sm:text-base font-bold text-gray-700">
+                                    📊 Mostrando {filteredProducts.length} de {products.length} prendas
+                                </p>
                             </div>
-                        </div>
-                    )}
-
-                    {/* Resumen de resultados */}
-                    <div className="mb-4 px-0">
-                        <p className="text-sm sm:text-base font-bold text-gray-700">
-                            📊 Mostrando {filteredProducts.length} de {products.length} prendas
-                        </p>
-                    </div>
 
                     <div className="overflow-hidden bg-white rounded-2xl border-4 border-white shadow-lg">
                         <div className="p-4 sm:p-6 lg:p-8 text-gray-900">
@@ -693,9 +696,11 @@ export default function ProductsView({ products }) {
                                 </div>
                             )}
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </div>{/* /overflow-hidden */}
+                        </div>{/* /flex-1 columna izquierda */}
+                    </div>{/* /flex dos columnas */}
+                </div>{/* /max-w-7xl */}
+            </div>{/* /py-8 */}
         </AuthenticatedLayout>
     );
 }
