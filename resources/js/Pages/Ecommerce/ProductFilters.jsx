@@ -162,7 +162,7 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
             onClick={() => setSelectedCategory('')}
             color="category"
           />
-          {categories.map((category) => (
+          {[...categories].sort((a, b) => a.name.localeCompare(b.name, 'es')).map((category) => (
             <Chip
               key={category.id}
               label={category.name}
