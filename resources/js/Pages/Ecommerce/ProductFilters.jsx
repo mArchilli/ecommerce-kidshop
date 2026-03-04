@@ -107,7 +107,7 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
         <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
           Género
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-nowrap sm:flex-wrap gap-2 overflow-x-auto pb-1 scrollbar-hide">
           <Chip
             label="Todos"
             selected={selectedGender === ''}
@@ -131,7 +131,7 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
         <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
           Talle
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-nowrap sm:flex-wrap gap-2 overflow-x-auto pb-1 scrollbar-hide">
           <Chip
             label="Todos"
             selected={selectedSize === ''}
@@ -155,7 +155,7 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
         <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
           Categoría
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-nowrap sm:flex-wrap gap-2 overflow-x-auto pb-1 scrollbar-hide">
           <Chip
             label="Todas"
             selected={selectedCategory === ''}

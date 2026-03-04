@@ -120,28 +120,60 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
             </div>
           </div>
 
-          {/* Botones de orden en mobile (2 por fila) */}
-          <div className="grid grid-cols-2 gap-2 md:hidden">
-            {[
-              { value: '', label: 'Por defecto' },
-              { value: 'price_asc', label: 'Precio ↑' },
-              { value: 'price_desc', label: 'Precio ↓' },
-              { value: 'newest', label: 'Nuevos' },
-              { value: 'oldest', label: 'Antiguos' },
-            ].map(opt => (
-              <button
-                key={opt.value || 'default'}
-                type="button"
-                onClick={() => { setSort(opt.value); handleFilter({}); }}
-                className={`px-4 py-2.5 rounded-full border text-sm font-semibold transition-all ${
-                  sort === opt.value
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
-                    : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
-                }`}
-              >
-                {opt.label}
-              </button>
-            ))}
+          {/* Botones de orden en mobile */}
+          <div className="flex flex-col gap-2 md:hidden">
+            {/* Por defecto - ancho completo */}
+            <button
+              type="button"
+              onClick={() => { setSort(''); handleFilter({}); }}
+              className={`w-full px-4 py-2.5 rounded-full border text-sm font-semibold transition-all ${
+                sort === ''
+                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
+                  : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+              }`}
+            >
+              Por defecto
+            </button>
+            {/* Precio ↑ y Precio ↓ */}
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { value: 'price_asc', label: 'Precio ↑' },
+                { value: 'price_desc', label: 'Precio ↓' },
+              ].map(opt => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => { setSort(opt.value); handleFilter({}); }}
+                  className={`px-4 py-2.5 rounded-full border text-sm font-semibold transition-all ${
+                    sort === opt.value
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+            {/* Nuevos y Antiguos */}
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { value: 'newest', label: 'Nuevos' },
+                { value: 'oldest', label: 'Antiguos' },
+              ].map(opt => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => { setSort(opt.value); handleFilter({}); }}
+                  className={`px-4 py-2.5 rounded-full border text-sm font-semibold transition-all ${
+                    sort === opt.value
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Botón mostrar filtros en mobile (ancho completo) */}
