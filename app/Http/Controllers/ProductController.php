@@ -148,19 +148,29 @@ class ProductController extends Controller
 
         $imageFields = ['image_1', 'image_2', 'image_3'];
         $imagePaths = [];
-        $imagesBasePath = rtrim(env('PUBLIC_IMAGES_PATH', 'public/images/'), '/');
-        $productsPath = $imagesBasePath . '/products';
+        // Ruta del filesystem para GUARDAR el archivo (en producción apunta fuera de laravel, ej: /../../public_html/images)
+        $imagesStorePath = rtrim(env('PUBLIC_IMAGES_PATH', 'images'), '/');
+        // Ruta URL para ALMACENAR en la BD (siempre relativa al webroot, ej: images)
+        $imagesUrlPath   = rtrim(env('PUBLIC_IMAGES_URL_PATH', 'images'), '/');
+        $absolutePath = public_path($imagesStorePath . '/products');
+
+        // Crear el directorio si no existe (crucial en producción)
+        if (!is_dir($absolutePath)) {
+            mkdir($absolutePath, 0755, true);
+        }
+
         try {
             foreach ($imageFields as $field) {
                 if ($request->hasFile($field)) {
                     $file = $request->file($field);
                     $filename = uniqid() . '_' . $file->getClientOriginalName();
-                    $file->move(public_path($productsPath), $filename);
-                    $imagePaths[] = 'images/products/' . $filename;
+                    $file->move($absolutePath, $filename);
+                    // Guardar en BD la ruta URL (images/products/filename)
+                    $imagePaths[] = $imagesUrlPath . '/products/' . $filename;
                 }
             }
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['images' => 'Error al guardar las imágenes.']);
+            return redirect()->back()->withErrors(['images' => 'Error al guardar las imágenes: ' . $e->getMessage()]);
         }
 
         $product = Product::create($request->only(['name', 'description', 'price', 'gender_id', 'is_featured']) + ['images' => $imagePaths]);
@@ -209,29 +219,36 @@ class ProductController extends Controller
             'image_3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $imagesBasePath = rtrim(env('PUBLIC_IMAGES_PATH', 'public/images/'), '/');
-        $productsPath = $imagesBasePath . '/products';
-        
+        $imagesStorePath = rtrim(env('PUBLIC_IMAGES_PATH', 'images'), '/');
+        $imagesUrlPath   = rtrim(env('PUBLIC_IMAGES_URL_PATH', 'images'), '/');
+        $absolutePath = public_path($imagesStorePath . '/products');
+
+        // Crear el directorio si no existe (crucial en producción)
+        if (!is_dir($absolutePath)) {
+            mkdir($absolutePath, 0755, true);
+        }
+
         // Mantener las imágenes actuales como base
         $imagePaths = $product->images ?? [];
-        
+
         // Procesar cada imagen individualmente
         $imageFields = ['image_1', 'image_2', 'image_3'];
         foreach ($imageFields as $index => $field) {
             if ($request->hasFile($field)) {
-                // Eliminar la imagen antigua en esa posición específica
+                // Eliminar la imagen antigua usando la ruta real del filesystem
                 if (isset($imagePaths[$index])) {
-                    $oldImagePath = public_path($imagePaths[$index]);
-                    if (file_exists($oldImagePath)) {
-                        @unlink($oldImagePath);
+                    $oldAbsPath = $absolutePath . '/' . basename($imagePaths[$index]);
+                    if (file_exists($oldAbsPath)) {
+                        @unlink($oldAbsPath);
                     }
                 }
-                
+
                 // Guardar la nueva imagen
                 $file = $request->file($field);
                 $filename = uniqid() . '_' . $file->getClientOriginalName();
-                $file->move(public_path($productsPath), $filename);
-                $imagePaths[$index] = 'images/products/' . $filename;
+                $file->move($absolutePath, $filename);
+                // Guardar en BD la ruta URL (images/products/filename)
+                $imagePaths[$index] = $imagesUrlPath . '/products/' . $filename;
             }
         }
 
