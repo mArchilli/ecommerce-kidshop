@@ -121,8 +121,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
 });
 
+// Success sin auth: MercadoPago puede redirigir en un contexto mobile sin sesión.
+// La seguridad está en el payment_id único de la URL. El controlador maneja la autenticación internamente.
+Route::get('/payment/success', [PaymentStatusController::class, 'success'])->name('payment.success');
+
 Route::middleware('auth')->group(function () {
-    Route::get('/payment/success', [PaymentStatusController::class, 'success'])->name('payment.success');
     Route::get('/payment/failure', [PaymentStatusController::class, 'failure'])->name('payment.failure');
     Route::get('/payment/pending', [PaymentStatusController::class, 'pending'])->name('payment.pending');
 });

@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Size;
 use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Payment\PaymentClient;
 
@@ -169,6 +171,18 @@ class MercadoPagoWebhookController extends Controller
                     'price'      => $item->unit_price,
                     'size'       => $item->size ?? null,
                 ]);
+
+                // Decrementar el stock en la tabla pivot product_size
+                if ($item->size) {
+                    $sizeModel = Size::where('name', $item->size)->first();
+                    if ($sizeModel) {
+                        DB::table('product_size')
+                            ->where('product_id', $item->product_id)
+                            ->where('size_id', $sizeModel->id)
+                            ->where('stock', '>', 0)
+                            ->decrement('stock', $item->quantity);
+                    }
+                }
             }
 
             // Vaciar el carrito
