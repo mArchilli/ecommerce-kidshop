@@ -22,7 +22,10 @@ class ProductController extends Controller
 
     public function showProducts(Request $request)
     {
-        $query = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer']);
+        $query = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer'])
+            ->whereHas('sizes', function ($q) {
+                $q->where('product_size.stock', '>', 0);
+            });
 
         if ($request->has('category')) {
             $query->whereHas('categories', function ($q) use ($request) {
@@ -276,7 +279,10 @@ class ProductController extends Controller
 
     public function catalog(Request $request)
     {
-        $query = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer']);
+        $query = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer'])
+            ->whereHas('sizes', function ($q) {
+                $q->where('product_size.stock', '>', 0);
+            });
 
         if ($request->filled('q')) {
             $q = trim($request->q);

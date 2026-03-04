@@ -101,84 +101,6 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
 
   const FilterContent = () => (
     <div className="flex flex-col gap-4 sm:gap-8">
-      {/* Filtro de Precio */}
-      <div className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm">
-        <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
-          Precio
-        </div>
-        <div className="flex flex-wrap gap-2 sm:gap-3">
-          <div className="flex-1 min-w-[100px] sm:min-w-[120px]">
-            <label className="block text-xs font-medium text-gray-600 mb-1.5">Mínimo</label>
-            <input
-              type="number"
-              min="0"
-              value={minPrice}
-              onChange={(e) => setMinPrice(e.target.value)}
-              placeholder="$ 0"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
-            />
-          </div>
-          <div className="flex-1 min-w-[100px] sm:min-w-[120px]">
-            <label className="block text-xs font-medium text-gray-600 mb-1.5">Máximo</label>
-            <input
-              type="number"
-              min="0"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
-              placeholder="$ 99999"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Filtro de Categoría */}
-      <div className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm">
-        <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
-          Categoría
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Chip
-            label="Todas"
-            selected={selectedCategory === ''}
-            onClick={() => setSelectedCategory('')}
-            color="category"
-          />
-          {categories.map((category) => (
-            <Chip
-              key={category.id}
-              label={category.name}
-              selected={selectedCategory === category.name}
-              onClick={() => setSelectedCategory(category.name)}
-              color="category"
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Filtro de Color */}
-      <div className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm">
-        <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
-          Color
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Chip
-            label="Todos"
-            selected={selectedColor === ''}
-            onClick={() => setSelectedColor('')}
-            color="color"
-          />
-          {colors.map((color) => (
-            <Chip
-              key={color.id}
-              label={color.name}
-              selected={selectedColor === color.name}
-              onClick={() => setSelectedColor(color.name)}
-              color="color"
-            />
-          ))}
-        </div>
-      </div>
 
       {/* Filtro de Género */}
       <div className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm">
@@ -227,6 +149,31 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
           ))}
         </div>
       </div>
+
+      {/* Filtro de Categoría */}
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm">
+        <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
+          Categoría
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Chip
+            label="Todas"
+            selected={selectedCategory === ''}
+            onClick={() => setSelectedCategory('')}
+            color="category"
+          />
+          {categories.map((category) => (
+            <Chip
+              key={category.id}
+              label={category.name}
+              selected={selectedCategory === category.name}
+              onClick={() => setSelectedCategory(category.name)}
+              color="category"
+            />
+          ))}
+        </div>
+      </div>
+      
     </div>
   );
 

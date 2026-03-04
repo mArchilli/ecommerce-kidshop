@@ -33,18 +33,17 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        // Verificar si el usuario ha verificado su correo
-        if (is_null($user->email_verified_at)) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            
-            return back()->withErrors([
-                'email' => 'Debes verificar tu correo electrónico antes de iniciar sesión. Por favor, revisa tu bandeja de entrada y spam.',
-            ])->with('status', 'verification-required');
-        }
-
         $request->session()->regenerate();
+
+        // Verificar si el usuario ha verificado su correo.
+        // Si el middleware 'auth' guardó la URL de verificación como "intended"
+        // (porque el usuario hizo clic en el link del email sin estar logueado),
+        // redirect()->intended() lo llevará directo allí y la verificación se completará.
+        // Si llegó al login directamente (sin pasar por el link), se lo redirige a la
+        // pantalla de "verifica tu correo" para que lo haga.
+        if (is_null($user->email_verified_at)) {
+            return redirect()->intended(route('verification.notice'));
+        }
 
         // Redirigir según el rol del usuario
         if ($user->role === 'admin') {
