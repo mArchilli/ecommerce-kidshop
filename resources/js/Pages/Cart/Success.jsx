@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head } from '@inertiajs/react';
 
-const Success = ({ shippingInfo, user, cart, order, message, payment_id }) => {
+const Success = ({ shippingInfo, user, cart, order, message, payment_id, autoWhatsApp }) => {
   const whatsappNumber = '5491172397202';
   
   // Usar datos de la orden si están disponibles, sino del carrito
@@ -84,6 +84,22 @@ const Success = ({ shippingInfo, user, cart, order, message, payment_id }) => {
   const whatsappMessage = encodeURIComponent(whatsappMessageParts.filter(Boolean).join('\n'));
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
+  // Auto-abrir WhatsApp cuando el usuario llega a esta página (solo una vez por sesión de pago)
+  useEffect(() => {
+    if (!autoWhatsApp) return;
+    // Usamos sessionStorage para evitar que se abra más de una vez si el usuario recarga
+    const alreadyOpened = sessionStorage.getItem('wa_opened_' + (order?.id || payment_id));
+    if (alreadyOpened) return;
+
+    // Pequeño delay para que el usuario vea la página antes de que se abra WhatsApp
+    const timer = setTimeout(() => {
+      sessionStorage.setItem('wa_opened_' + (order?.id || payment_id), '1');
+      window.open(whatsappUrl, '_blank');
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [autoWhatsApp, whatsappUrl, order?.id, payment_id]);
+
   return (
     <EcommerceLayout>
       <Head title="Pago Exitoso" />
@@ -111,8 +127,9 @@ const Success = ({ shippingInfo, user, cart, order, message, payment_id }) => {
             <div className="flex-1">
               <h3 className="text-lg font-bold text-green-800 mb-1">⚠️ ¡PASO IMPORTANTE!</h3>
               <p className="text-sm text-green-700 font-medium">
-                <strong className="text-base">Es NECESARIO que envíes el pedido por WhatsApp</strong> para que podamos procesar tu orden y coordinar la entrega. 
-                Sin este paso, tu pedido no será procesado.
+                WhatsApp se abrirá automáticamente con tu pedido. Si no se abrió, presioná el botón de abajo.
+                <br />
+                <strong className="text-base">Enviá el mensaje para que podamos procesar tu orden y coordinar la entrega.</strong>
               </p>
             </div>
           </div>

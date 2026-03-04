@@ -109,10 +109,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mis-compras/{order}', [UserOrderController::class, 'show'])->name('user.orders.show');
 });
 
-// Rutas para el proceso de checkout
-Route::middleware(['auth', 'verified'])->group(function () {
-     
-});
+use App\Http\Controllers\MercadoPagoWebhookController;
+
+// Webhook de MercadoPago (sin autenticación, sin CSRF - llamado server-to-server)
+Route::post('/webhook/mercadopago', [MercadoPagoWebhookController::class, 'handle'])->name('webhook.mercadopago');
+
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index'); 

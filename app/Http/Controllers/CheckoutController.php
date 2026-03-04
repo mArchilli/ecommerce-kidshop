@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Preference\PreferenceClient;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class CheckoutController extends Controller
 {
@@ -91,6 +92,9 @@ class CheckoutController extends Controller
         // Limpiar y validar DNI (solo números)
         $dniLimpio = preg_replace('/[^0-9]/', '', $validated['dni']);
 
+        // Generar external_reference ANTES de crear la preferencia para poder usarlo como clave de cache
+        $externalReference = $user->id . '_' . time();
+
         // Preparar datos del payer
         $payerData = [
             'name' => trim($validated['first_name']),
@@ -112,6 +116,10 @@ class CheckoutController extends Controller
 
         try {
             // Crear la preferencia con external_reference simplificado
+            // Guardar shipping_info en cache keyed por external_reference (disponible para el webhook)
+            // TTL de 2 horas: suficiente tiempo para que el usuario complete el pago
+            Cache::put('shipping_info_' . $externalReference, $validated, now()->addHours(2));
+
             $preference = $client->create([
                 'items' => $items,
                 'back_urls' => [
@@ -119,9 +127,10 @@ class CheckoutController extends Controller
                     'failure' => config('app.url') . '/payment/failure',
                     'pending' => config('app.url') . '/payment/pending',
                 ],
-                'auto_return' => 'approved',
-                'external_reference' => $user->id . '_' . time(),
-                'payer' => $payerData,
+                'auto_return'         => 'approved',
+                'external_reference'  => $externalReference,
+                'notification_url'    => config('app.url') . '/webhook/mercadopago',
+                'payer'               => $payerData,
                 'statement_descriptor' => 'TIENDA NIÑOS',
             ]);
         } catch (\Exception $e) {

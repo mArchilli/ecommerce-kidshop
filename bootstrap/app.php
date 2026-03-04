@@ -15,6 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
         // para que las URLs firmadas funcionen correctamente con HTTPS
         $middleware->trustProxies(at: '*');
 
+        // Excluir el webhook de MercadoPago de la verificación CSRF (es server-to-server)
+        $middleware->validateCsrfTokens(except: [
+            '/webhook/mercadopago',
+        ]);
+
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Order;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class PaymentStatusController extends Controller
 {
@@ -34,14 +36,40 @@ class PaymentStatusController extends Controller
 
         // Obtener el payment_id de MercadoPago
         $paymentId = $request->get('payment_id') ?? 'pending';
+
+        // --- Verificar si el webhook ya creó la orden para este pago ---
+        $existingOrder = ($paymentId !== 'pending')
+            ? Order::where('payment_id', $paymentId)->with(['items.product', 'user'])->first()
+            : null;
+
+        if ($existingOrder) {
+            Log::info('success(): orden ya existente (creada por webhook)', ['order_id' => $existingOrder->id]);
+
+            // Vaciar el carrito si todavía existe (puede que el webhook ya lo hizo)
+            if ($cart) {
+                $cart->items()->delete();
+                $cart->delete();
+            }
+            // Limpiar sesión
+            $request->session()->forget(['shipping_info', 'payment_in_progress']);
+
+            return Inertia::render('Cart/Success', [
+                'message'    => '¡Pago realizado con éxito!',
+                'payment_id' => $paymentId,
+                'order'      => $existingOrder,
+                'user'       => $user,
+                'shippingInfo' => $shippingInfo,
+                'autoWhatsApp' => true,
+            ]);
+        }
+
+        // --- La orden NO fue creada por webhook: la creamos ahora ---
         $dni = $shippingInfo['dni'] ?? null;
 
-        // Validar DNI
         if (!$dni) {
             return redirect()->route('checkout.index')->with('error', 'Falta información del DNI.');
         }
 
-        // Crear la orden con el precio real del carrito (incluye descuentos)
         $order = $user->orders()->create([
             'payment_id' => $paymentId,
             'total' => $cart->items->sum(fn($item) => $item->unit_price * $item->quantity),
@@ -83,11 +111,12 @@ class PaymentStatusController extends Controller
 
         // Renderizar la vista de éxito con datos completos
         return Inertia::render('Cart/Success', [
-            'message' => '¡Pago realizado con éxito!',
-            'payment_id' => $paymentId,
-            'order' => $order,
-            'user' => $user,
+            'message'      => '¡Pago realizado con éxito!',
+            'payment_id'   => $paymentId,
+            'order'        => $order,
+            'user'         => $user,
             'shippingInfo' => $shippingInfo,
+            'autoWhatsApp' => true,
         ]);
     }
 
