@@ -7,6 +7,7 @@ const ProductsOffers = ({ products = [] }) => {
   const [direction, setDirection] = useState('next');
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   
   // Manejar productos paginados o array directo
   const productsList = products?.data || products || [];
@@ -16,13 +17,6 @@ const ProductsOffers = ({ products = [] }) => {
     ? productsList.filter(product => product.active_offer || product.activeOffer) 
     : [];
 
-  // Si no hay productos en oferta, no mostrar nada
-  if (offeredProducts.length === 0) {
-    return null;
-  }
-
-  const [isMobile, setIsMobile] = useState(false);
-  
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -34,9 +28,6 @@ const ProductsOffers = ({ products = [] }) => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const productsPerView = isMobile ? 1 : 4;
-  const showCarousel = offeredProducts.length > productsPerView;
-
   useEffect(() => {
     if (isTransitioning) {
       const timer = setTimeout(() => {
@@ -45,6 +36,14 @@ const ProductsOffers = ({ products = [] }) => {
       return () => clearTimeout(timer);
     }
   }, [isTransitioning]);
+
+  const productsPerView = isMobile ? 1 : 4;
+  const showCarousel = offeredProducts.length > productsPerView;
+
+  // Si no hay productos en oferta, no mostrar nada
+  if (offeredProducts.length === 0) {
+    return null;
+  }
 
   const handlePrev = () => {
     if (isTransitioning) return;

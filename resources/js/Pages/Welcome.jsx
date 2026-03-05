@@ -12,7 +12,7 @@ import PaymentMethods from '../Pages/Ecommerce/PaymentMethods';
 import FAQ from '@/Components/FAQ';
 import WhatsAppCTA from '../Pages/Ecommerce/WhatsAppCTA';
 
-const Welcome = ({ products, categories, colors, genders }) => {
+const Welcome = ({ products, categories, colors, genders, offersProducts }) => {
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -35,7 +35,7 @@ const Welcome = ({ products, categories, colors, genders }) => {
           <CategoryExplorer />
 
           {/* Products Offers Section */}
-          <ProductsOffers products={products} />
+          <ProductsOffers products={offersProducts} />
 
           {/* About & Payment Methods - Unified Section */}
           <div className="w-full">

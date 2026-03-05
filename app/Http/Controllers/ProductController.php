@@ -57,6 +57,11 @@ class ProductController extends Controller
         $sizes = Size::all();
         $genders = Gender::all();
 
+        // Productos con ofertas activas (query independiente, no paginada)
+        $offersProducts = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer'])
+            ->whereHas('activeOffer')
+            ->get();
+
         // Pasar los filtros actuales a la vista para mantener el estado
         $filters = [
             'category' => $request->category,
@@ -65,7 +70,7 @@ class ProductController extends Controller
             'size' => $request->size,
         ];
 
-        return Inertia::render('Welcome', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters'));
+        return Inertia::render('Welcome', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters', 'offersProducts'));
     }
 
     public function show(Product $product)
