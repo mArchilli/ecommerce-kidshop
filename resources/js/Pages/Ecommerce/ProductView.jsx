@@ -181,7 +181,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
               <div className="rounded-2xl border border-gray-200 bg-white shadow-lg p-6">
                 {/* Título y badge de oferta */}
                 <div className="space-y-3">
-                  <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">
+                  <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight break-words">
                     {product.name}
                   </h1>
                   
