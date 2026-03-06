@@ -194,18 +194,18 @@ const Checkout = ({ cart, savedShippingInfo }) => {
                               {item.unit_price < item.product.price ? (
                                 <div className="flex flex-col items-end">
                                   <div className="text-sm font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                                    Precio: ${Number(item.unit_price).toLocaleString('es-AR')}
+                                    Precio: ${Number(item.unit_price).toLocaleString('es-AR')} ARS
                                   </div>
                                   <div className="text-xs text-gray-500 line-through">
-                                    ${Number(item.product.price).toLocaleString('es-AR')}
+                                    ${Number(item.product.price).toLocaleString('es-AR')} ARS
                                   </div>
                                 </div>
                               ) : (
-                                <div className="font-bold text-gray-900">Precio: ${Number(item.unit_price).toLocaleString('es-AR')}</div>
+                                <div className="font-bold text-gray-900">Precio: ${Number(item.unit_price).toLocaleString('es-AR')} ARS</div>
                               )}
                             </div>
                             <div className="text-base font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mt-1">
-                              Total: ${(item.unit_price * item.quantity).toLocaleString('es-AR')}
+                              Total: ${(item.unit_price * item.quantity).toLocaleString('es-AR')} ARS
                             </div>
                           </div>
                         </div>
@@ -544,7 +544,7 @@ const Checkout = ({ cart, savedShippingInfo }) => {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between bg-white/70 px-4 py-3 rounded-lg border border-pink-200">
                     <span className="text-purple-600 font-semibold">Subtotal</span>
-                    <span className="font-bold text-gray-900">${total.toLocaleString('es-AR')}</span>
+                    <span className="font-bold text-gray-900">${total.toLocaleString('es-AR')} ARS</span>
                   </div>
                   <div className="flex justify-between bg-white/70 px-4 py-3 rounded-lg border border-pink-200">
                     <span className="text-purple-600 font-semibold">Envío</span>
@@ -552,7 +552,7 @@ const Checkout = ({ cart, savedShippingInfo }) => {
                   </div>
                   <div className="bg-gradient-to-r from-purple-100 via-pink-100 to-cyan-100 border-2 border-cyan-300 rounded-xl px-4 py-4 flex justify-between text-base">
                     <span className="font-bold text-purple-700">Total</span>
-                    <span className="font-bold text-xl bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">${total.toLocaleString('es-AR')}</span>
+                    <span className="font-bold text-xl bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">${total.toLocaleString('es-AR')} ARS</span>
                   </div>
                 </div>
 

@@ -270,18 +270,29 @@ const FeaturedProducts = ({ products = [] }) => {
                             {product.active_offer ? (
                               <>
                                 <span className="text-lg md:text-xl font-black text-cyan-600">
-                                  ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
+                                  ${Number(product.active_offer.discount_price).toLocaleString('es-AR')} ARS
                                 </span>
                                 <span className="text-sm text-gray-500 line-through">
-                                  ${Number(product.price).toLocaleString('es-AR')}
+                                  ${Number(product.price).toLocaleString('es-AR')} ARS
                                 </span>
                               </>
                             ) : (
                               <span className="text-2xl font-black text-cyan-600">
-                                ${Number(product.price).toLocaleString('es-AR')}
+                                ${Number(product.price).toLocaleString('es-AR')} ARS
                               </span>
                             )}
                           </div>
+
+                          {/* Géneros */}
+                          {product.genders && product.genders.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mb-2">
+                              {product.genders.map((gender) => (
+                                <span key={gender.id} className="text-xs px-2 py-1 rounded-lg bg-violet-100 text-violet-700 font-semibold">
+                                  {gender.name}
+                                </span>
+                              ))}
+                            </div>
+                          )}
 
                           {/* Etiquetas de categorías */}
                           {product.categories && product.categories.length > 0 && (
@@ -415,18 +426,29 @@ const FeaturedProducts = ({ products = [] }) => {
                           {product.active_offer ? (
                             <>
                               <span className="text-xl font-black text-cyan-600">
-                                ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
+                                ${Number(product.active_offer.discount_price).toLocaleString('es-AR')} ARS
                               </span>
                               <span className="text-sm text-gray-500 line-through">
-                                ${Number(product.price).toLocaleString('es-AR')}
+                                ${Number(product.price).toLocaleString('es-AR')} ARS
                               </span>
                             </>
                           ) : (
                             <span className="text-2xl font-black text-cyan-600">
-                              ${Number(product.price).toLocaleString('es-AR')}
+                              ${Number(product.price).toLocaleString('es-AR')} ARS
                             </span>
                           )}
                         </div>
+
+                        {/* Géneros */}
+                        {product.genders && product.genders.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mb-2">
+                            {product.genders.map((gender) => (
+                              <span key={gender.id} className="text-xs px-2 py-1 rounded-lg bg-violet-100 text-violet-700 font-semibold">
+                                {gender.name}
+                              </span>
+                            ))}
+                          </div>
+                        )}
 
                         {/* Etiquetas de categorías */}
                         {product.categories && product.categories.length > 0 && (

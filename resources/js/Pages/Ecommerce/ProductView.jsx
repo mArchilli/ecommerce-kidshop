@@ -199,18 +199,18 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                   {product.active_offer ? (
                     <div className="flex flex-wrap items-baseline gap-3">
                       <p className="text-4xl font-bold text-pink-600">
-                        ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
+                        ${Number(product.active_offer.discount_price).toLocaleString('es-AR')} ARS
                       </p>
                       <p className="text-xl text-gray-400 line-through font-medium">
-                        ${Number(product.price).toLocaleString('es-AR')}
+                        ${Number(product.price).toLocaleString('es-AR')} ARS
                       </p>
                       <span className="text-xs font-semibold text-green-700 bg-green-100 px-3 py-1 rounded-full">
-                        Ahorrás ${(Number(product.price) - Number(product.active_offer.discount_price)).toLocaleString('es-AR')}
+                        Ahorrás ${(Number(product.price) - Number(product.active_offer.discount_price)).toLocaleString('es-AR')} ARS
                       </span>
                     </div>
                   ) : (
                     <p className="text-4xl font-bold text-gray-900">
-                      ${Number(product.price).toLocaleString('es-AR')}
+                      ${Number(product.price).toLocaleString('es-AR')} ARS
                     </p>
                   )}
                 </div>
@@ -427,15 +427,15 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                         {relatedProduct.active_offer ? (
                           <div className="flex items-baseline gap-2">
                             <p className="text-xl font-bold text-pink-600">
-                              ${Number(relatedProduct.active_offer.discount_price).toLocaleString('es-AR')}
+                              ${Number(relatedProduct.active_offer.discount_price).toLocaleString('es-AR')} ARS
                             </p>
                             <p className="text-sm text-gray-400 line-through">
-                              ${Number(relatedProduct.price).toLocaleString('es-AR')}
+                              ${Number(relatedProduct.price).toLocaleString('es-AR')} ARS
                             </p>
                           </div>
                         ) : (
                           <p className="text-xl font-bold text-gray-900">
-                            ${Number(relatedProduct.price).toLocaleString('es-AR')}
+                            ${Number(relatedProduct.price).toLocaleString('es-AR')} ARS
                           </p>
                         )}
                       </div>
@@ -524,14 +524,14 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                         
                         <div className="flex flex-col gap-1">
                           <p className="text-xl font-bold text-pink-600">
-                            ${Number(offerProduct.active_offer.discount_price).toLocaleString('es-AR')}
+                            ${Number(offerProduct.active_offer.discount_price).toLocaleString('es-AR')} ARS
                           </p>
                           <div className="flex items-center gap-2">
                             <p className="text-sm text-gray-400 line-through">
-                              ${Number(offerProduct.price).toLocaleString('es-AR')}
+                              ${Number(offerProduct.price).toLocaleString('es-AR')} ARS
                             </p>
                             <span className="text-xs font-semibold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">
-                              Ahorrás ${(Number(offerProduct.price) - Number(offerProduct.active_offer.discount_price)).toLocaleString('es-AR')}
+                              Ahorrás ${(Number(offerProduct.price) - Number(offerProduct.active_offer.discount_price)).toLocaleString('es-AR')} ARS
                             </span>
                           </div>
                         </div>

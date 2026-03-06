@@ -176,13 +176,13 @@ const Success = ({ shippingInfo, user, cart, order, message, payment_id, autoWha
               return (
                 <li key={item.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b last:border-b-0 border-gray-100 py-2">
                   <span className="font-medium text-gray-800 text-sm">{item.product?.name}</span>
-                  <span className="text-xs text-gray-500">Talle: {item.size || '—'} | Cant: {item.quantity} | Unit: ${unit} | Subtotal: ${subtotal}</span>
+                  <span className="text-xs text-gray-500">Talle: {item.size || '—'} | Cant: {item.quantity} | Unit: ${unit} ARS | Subtotal: ${subtotal} ARS</span>
                 </li>
               );
             })}
           </ul>
           <div className="mt-4 flex justify-end border-t pt-3">
-            <span className="text-base font-semibold text-fuchsia-700">Total: ${totalFormatted}</span>
+            <span className="text-base font-semibold text-fuchsia-700">Total: ${totalFormatted} ARS</span>
           </div>
         </div>
 

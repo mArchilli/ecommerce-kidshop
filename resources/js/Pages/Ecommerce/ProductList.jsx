@@ -210,111 +210,76 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center max-w-7xl mx-auto"
             >
               {products.data.map((product, idx) => (
-                <div 
-                  key={product.id} 
-                  className="bg-white shadow-md rounded-2xl overflow-hidden transition-all duration-300 transform hover:shadow-xl hover:-translate-y-1 flex flex-col border border-gray-100"
-                  
+                <div
+                  key={product.id}
+                  className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col border border-gray-100"
                 >
-                  <div className="w-full relative md:aspect-square md:overflow-hidden bg-gradient-to-br from-cyan-50 to-purple-50">
-                    <img 
-                      src={product.images && product.images.length > 0 ? getImageSrc(product.images[0]) : '/placeholder.svg'} 
-                      alt={product.name} 
-                      className="w-full h-auto md:absolute md:inset-0 md:h-full object-cover"
+                  {/* Imagen */}
+                  <div className="relative aspect-square overflow-hidden bg-gray-50">
+                    <img
+                      src={product.images && product.images.length > 0 ? getImageSrc(product.images[0]) : '/placeholder.svg'}
+                      alt={product.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    
-                    {/* Badge de oferta con descuento - más grande y llamativo */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                    {/* Badge oferta */}
                     {product.active_offer && (
-                      <div className="absolute top-3 right-3 z-10">
-                        <div className="rounded-lg px-3 py-1.5 shadow-lg font-bold text-white text-sm bg-gradient-to-r from-pink-500 to-rose-500"
-                        >
+                      <div className="absolute top-3 right-3">
+                        <span className="bg-rose-500 text-white text-xs font-extrabold px-3 py-1.5 rounded-full shadow-lg tracking-wide">
                           -{Math.round(product.active_offer.discount_percentage)}% OFF
-                        </div>
+                        </span>
                       </div>
                     )}
 
-                    {/* Badge de producto destacado */}
+                    {/* Badge destacado */}
                     {product.is_featured && (
-                      <div className="absolute top-3 left-3 z-10">
-                        <div className="bg-gradient-to-br from-yellow-300 to-yellow-400 rounded-2xl p-2 shadow-xl border-4 border-white">
-                          <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            viewBox="0 0 24 24" 
-                            className="w-6 h-6"
-                            style={{ fill: '#FFB800' }}
-                          >
+                      <div className="absolute top-3 left-3">
+                        <div className="bg-amber-400 rounded-full p-2 shadow-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 fill-white">
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                           </svg>
                         </div>
                       </div>
                     )}
                   </div>
-                  
-                  <div className="p-5 flex flex-col flex-1 justify-between">
-                    {/* Título del producto */}
-                    <h3 className="text-xl text-gray-900 mb-3">
+
+                  {/* Contenido */}
+                  <div className="p-5 flex flex-col flex-1">
+
+                    {/* Título */}
+                    <h3 className="text-2xl font-extrabold text-gray-900 leading-tight mb-3 tracking-tight">
                       {product.name}
                     </h3>
-                    
-                    {/* Género */}
-                    {product.genders && product.genders.length > 0 && (
-                      <div className="mb-3 flex flex-wrap gap-1.5">
-                        {product.genders.map((gender) => (
-                          <span key={gender.id} className="inline-block px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
-                            {gender.name}
-                          </span>
-                        ))}
-                      </div>
-                    )}
 
-                    {/* Categorías */}
-                    {product.categories && product.categories.length > 0 && (
-                      <div className="mb-3">
-                        <div className="flex items-center gap-1 mb-2">
-                          <span className="text-xs font-semibold text-gray-500 uppercase">Categorías</span>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {product.categories.map((category, idx) => (
-                            <span 
-                              key={`${category.id}-${idx}`} 
-                              className="px-2.5 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700"
-                            >
-                              {category.name}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    {/* Tags: género, categorías, colores */}
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {product.genders && product.genders.map((gender) => (
+                        <span key={gender.id} className="px-2.5 py-1 rounded-full text-xs font-semibold bg-violet-100 text-violet-700 border border-violet-200">
+                          {gender.name}
+                        </span>
+                      ))}
+                      {product.categories && product.categories.map((category, idx) => (
+                        <span key={`${category.id}-${idx}`} className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 border border-emerald-200">
+                          {category.name}
+                        </span>
+                      ))}
+                      {product.colors && product.colors.map((color, idx) => (
+                        <span key={`${color.id}-${idx}`} className="px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-700 border border-sky-200">
+                          {color.name}
+                        </span>
+                      ))}
+                    </div>
 
-                    {/* Colores disponibles */}
-                    {product.colors && product.colors.length > 0 && (
-                      <div className="mb-3">
-                        <div className="flex items-center gap-1 mb-2">
-                          <span className="text-xs font-semibold text-gray-500 uppercase">Colores</span>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {product.colors.map((color, idx) => (
-                            <span 
-                              key={`${color.id}-${idx}`} 
-                              className="px-2.5 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-700"
-                            >
-                              {color.name}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Talles disponibles */}
+                    {/* Talles */}
                     {product.sizes && product.sizes.length > 0 && (
                       <div className="mb-4">
-                        <div className="flex items-center gap-1 mb-2">
-                          <span className="text-xs font-semibold text-gray-500 uppercase">Talles</span>
-                        </div>
+                        <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">Talles</p>
                         <div className="flex flex-wrap gap-1.5">
-                          {product.sizes.slice(0, 6).map((size, idx) => (
+                          {product.sizes.slice(0, 6).map((size) => (
                             <span
                               key={`size-${product.id}-${size.id}`}
-                              className="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-100 text-amber-700"
+                              className="min-w-[2.25rem] h-9 flex items-center justify-center px-2 rounded-xl text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200"
                             >
                               {size.name}
                             </span>
@@ -322,7 +287,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                           {product.sizes.length > 6 && (
                             <span
                               title={product.sizes.slice(6).map(s => s.name).join(', ')}
-                              className="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-100 text-amber-700 cursor-help"
+                              className="min-w-[2.25rem] h-9 flex items-center justify-center px-2 rounded-xl text-xs font-bold bg-amber-50 text-amber-500 border border-amber-200 cursor-help"
                             >
                               +{product.sizes.length - 6}
                             </span>
@@ -330,36 +295,29 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                         </div>
                       </div>
                     )}
-                    
-                    {/* Precios */}
-                    <div className="mt-auto pt-4 border-t border-gray-200">
+
+                    {/* Precio y CTA */}
+                    <div className="mt-auto pt-4 border-t border-gray-100">
                       {product.active_offer ? (
                         <div className="flex items-end justify-between mb-3">
-                          <div className="flex flex-col">
-                            <p className="text-xs text-gray-500 mb-0.5">Antes:</p>
-                            <p className="text-base text-gray-400 line-through font-medium">
-                              ${Number(product.price).toLocaleString('es-AR')}
-                            </p>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-2xl font-bold text-pink-600">
-                              ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
-                            </p>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="mb-3">
-                          <p className="text-2xl font-bold text-gray-900">
-                            ${Number(product.price).toLocaleString('es-AR')}
+                          <p className="text-sm text-gray-400 line-through">
+                            ${Number(product.price).toLocaleString('es-AR')} ARS
+                          </p>
+                          <p className="text-3xl font-extrabold text-rose-500">
+                            ${Number(product.active_offer.discount_price).toLocaleString('es-AR')} ARS
                           </p>
                         </div>
+                      ) : (
+                        <p className="text-3xl font-extrabold text-gray-900 mb-3">
+                          ${Number(product.price).toLocaleString('es-AR')} ARS
+                        </p>
                       )}
-                      
-                      <Link 
-                        href={`/products/${product.id}`} 
-                        className="w-full block text-center text-white px-6 py-3 rounded-full font-semibold text-base transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+
+                      <Link
+                        href={`/products/${product.id}`}
+                        className="w-full block text-center text-white px-6 py-3 rounded-2xl font-bold text-sm tracking-wide transition-all duration-200 hover:shadow-lg bg-gradient-to-r from-violet-500 to-pink-500 hover:from-violet-600 hover:to-pink-600"
                       >
-                        Ver Prenda
+                        Ver Prenda →
                       </Link>
                     </div>
                   </div>

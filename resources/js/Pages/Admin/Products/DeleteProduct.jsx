@@ -53,7 +53,7 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
                             </div>
                             <div className="bg-neutral-50 p-5 rounded-xl border-2 border-neutral-200">
                                 <span className="block text-sm font-bold mb-2 text-neutral-600">💰 Precio</span>
-                                <div className="text-xl font-bold text-green-600">${Number(data.price).toLocaleString('es-AR')}</div>
+                                <div className="text-xl font-bold text-green-600">${Number(data.price).toLocaleString('es-AR')} ARS</div>
                             </div>
                             <div className="bg-neutral-50 p-5 rounded-xl border-2 border-neutral-200">
                                 <span className="block text-sm font-bold mb-3 text-neutral-600">📂 Categorías</span>

@@ -507,17 +507,17 @@ export default function ProductsView({ products }) {
                                                         <div className="flex flex-col gap-1">
                                                             <div className="px-3 py-1 rounded-lg font-bold text-white shadow-lg text-xs" 
                                                                 style={{ backgroundColor: '#9CA3AF' }}>
-                                                                <span className="line-through">${Number(product.price).toLocaleString('es-AR')}</span>
+                                                                <span className="line-through">${Number(product.price).toLocaleString('es-AR')} ARS</span>
                                                             </div>
                                                             <div className="px-4 py-2 rounded-xl font-bold text-white shadow-lg" 
                                                                 style={{ backgroundColor: '#FF6B9D' }}>
-                                                                💰 ${Number(product.active_offer.discount_price).toLocaleString('es-AR')}
+                                                                💰 ${Number(product.active_offer.discount_price).toLocaleString('es-AR')} ARS
                                                             </div>
                                                         </div>
                                                     ) : (
                                                         <div className="px-4 py-2 rounded-xl font-bold text-white shadow-lg" 
                                                             style={{ backgroundColor: '#FFB800' }}>
-                                                            💰 ${Number(product.price).toLocaleString('es-AR')}
+                                                            💰 ${Number(product.price).toLocaleString('es-AR')} ARS
                                                         </div>
                                                     )}
                                                 </div>
@@ -598,8 +598,8 @@ export default function ProductsView({ products }) {
                                                         <p className="text-xs font-bold mb-1" style={{ color: '#FF6B9D' }}>📢 Oferta Activa</p>
                                                         <p className="text-sm font-semibold text-gray-800">{product.active_offer.name}</p>
                                                         <div className="flex items-center gap-2 mt-2">
-                                                            <span className="text-gray-500 line-through text-sm">${Number(product.price).toLocaleString('es-AR')}</span>
-                                                            <span className="text-lg font-bold" style={{ color: '#FF6B9D' }}>${Number(product.active_offer.discount_price).toLocaleString('es-AR')}</span>
+                                                            <span className="text-gray-500 line-through text-sm">${Number(product.price).toLocaleString('es-AR')} ARS</span>
+                                                            <span className="text-lg font-bold" style={{ color: '#FF6B9D' }}>${Number(product.active_offer.discount_price).toLocaleString('es-AR')} ARS</span>
                                                             <span className="text-xs font-bold px-2 py-1 rounded-full text-white" style={{ backgroundColor: '#FF6B9D' }}>
                                                                 -{product.active_offer.discount_percentage}%
                                                             </span>
@@ -683,7 +683,7 @@ export default function ProductsView({ products }) {
                                                         className="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl font-bold text-white hover:scale-105 transform transition shadow-md"
                                                         style={{ backgroundColor: '#9B59B6' }}
                                                     >
-                                                        👁️ Ver Producto
+                                                        👁️ Ver Prenda
                                                     </Link>
                                                     <div className="flex gap-2">
                                                         <Link

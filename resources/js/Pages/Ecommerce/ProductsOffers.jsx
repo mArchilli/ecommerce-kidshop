@@ -253,12 +253,14 @@ const ProductsOffers = ({ products = [] }) => {
                             )}
 
                             {/* Badge de género */}
-                            {product.gender && (
-                              <div className="absolute top-2 md:top-3 left-2 md:left-3">
-                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs font-bold text-white shadow-md"
-                                  style={{ backgroundColor: '#9B59B6' }}>
-                                  {product.gender.name}
-                                </span>
+                            {product.genders && product.genders.length > 0 && (
+                              <div className="absolute top-2 md:top-3 left-2 md:left-3 flex flex-col gap-1">
+                                {product.genders.map((gender) => (
+                                  <span key={gender.id} className="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs font-bold text-white shadow-md"
+                                    style={{ backgroundColor: '#9B59B6' }}>
+                                    {gender.name}
+                                  </span>
+                                ))}
                               </div>
                             )}
                           </div>
@@ -274,18 +276,29 @@ const ProductsOffers = ({ products = [] }) => {
                               {getActiveOffer(product) ? (
                                 <>
                                   <span className="text-lg md:text-xl font-black" style={{ color: '#FF6B9D' }}>
-                                    ${Number(getActiveOffer(product).discount_price).toLocaleString('es-AR')}
+                                    ${Number(getActiveOffer(product).discount_price).toLocaleString('es-AR')} ARS
                                   </span>
                                   <span className="text-sm text-gray-500 line-through">
-                                    ${Number(product.price).toLocaleString('es-AR')}
+                                    ${Number(product.price).toLocaleString('es-AR')} ARS
                                   </span>
                                 </>
                               ) : (
                                 <span className="text-2xl font-black" style={{ color: '#FF6B9D' }}>
-                                  ${Number(product.price).toLocaleString('es-AR')}
+                                  ${Number(product.price).toLocaleString('es-AR')} ARS
                                 </span>
                               )}
                             </div>
+
+                            {/* Géneros */}
+                            {product.genders && product.genders.length > 0 && (
+                              <div className="flex flex-wrap gap-1 mb-2">
+                                {product.genders.map((gender) => (
+                                  <span key={gender.id} className="text-xs px-2 py-1 rounded-lg bg-violet-100 text-violet-700 font-semibold">
+                                    {gender.name}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
 
                             {/* Etiquetas de categorías */}
                             {product.categories && product.categories.length > 0 && (
@@ -395,12 +408,14 @@ const ProductsOffers = ({ products = [] }) => {
                         )}
 
                         {/* Badge de género */}
-                        {product.gender && (
-                          <div className="absolute top-3 left-3">
-                            <span className="px-3 py-1 rounded-full text-xs font-bold text-white shadow-md"
-                              style={{ backgroundColor: '#9B59B6' }}>
-                              {product.gender.name}
-                            </span>
+                        {product.genders && product.genders.length > 0 && (
+                          <div className="absolute top-3 left-3 flex flex-col gap-1">
+                            {product.genders.map((gender) => (
+                              <span key={gender.id} className="px-3 py-1 rounded-full text-xs font-bold text-white shadow-md"
+                                style={{ backgroundColor: '#9B59B6' }}>
+                                {gender.name}
+                              </span>
+                            ))}
                           </div>
                         )}
                       </div>
@@ -416,18 +431,29 @@ const ProductsOffers = ({ products = [] }) => {
                           {getActiveOffer(product) ? (
                             <>
                               <span className="text-xl font-black" style={{ color: '#FF6B9D' }}>
-                                ${Number(getActiveOffer(product).discount_price).toLocaleString('es-AR')}
+                                ${Number(getActiveOffer(product).discount_price).toLocaleString('es-AR')} ARS
                               </span>
                               <span className="text-sm text-gray-500 line-through">
-                                ${Number(product.price).toLocaleString('es-AR')}
+                                ${Number(product.price).toLocaleString('es-AR')} ARS
                               </span>
                             </>
                           ) : (
                             <span className="text-2xl font-black" style={{ color: '#FF6B9D' }}>
-                              ${Number(product.price).toLocaleString('es-AR')}
+                              ${Number(product.price).toLocaleString('es-AR')} ARS
                             </span>
                           )}
                         </div>
+
+                        {/* Géneros */}
+                        {product.genders && product.genders.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mb-2">
+                            {product.genders.map((gender) => (
+                              <span key={gender.id} className="text-xs px-2 py-1 rounded-lg bg-violet-100 text-violet-700 font-semibold">
+                                {gender.name}
+                              </span>
+                            ))}
+                          </div>
+                        )}
 
                         {/* Etiquetas de categorías */}
                         {product.categories && product.categories.length > 0 && (
