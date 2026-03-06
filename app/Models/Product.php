@@ -10,7 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'price', 'images', 'gender_id', 'is_featured'
+        'name', 'description', 'price', 'images', 'is_featured'
     ];
 
     protected $casts = [
@@ -33,9 +33,9 @@ class Product extends Model
         return $this->belongsToMany(Color::class);
     }
 
-    public function gender()
+    public function genders()
     {
-        return $this->belongsTo(Gender::class);
+        return $this->belongsToMany(Gender::class);
     }
 
     public function offer()

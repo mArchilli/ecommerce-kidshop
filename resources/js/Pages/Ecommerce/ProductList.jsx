@@ -249,18 +249,22 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                     )}
                   </div>
                   
-                  <div className="p-5 flex flex-col flex-1 justify-between" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
+                  <div className="p-5 flex flex-col flex-1 justify-between">
                     {/* Título del producto */}
                     <h3 className="text-xl text-gray-900 mb-3">
                       {product.name}
                     </h3>
                     
                     {/* Género */}
-                    <div className="mb-3">
-                      <span className="inline-block px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
-                        {product.gender.name}
-                      </span>
-                    </div>
+                    {product.genders && product.genders.length > 0 && (
+                      <div className="mb-3 flex flex-wrap gap-1.5">
+                        {product.genders.map((gender) => (
+                          <span key={gender.id} className="inline-block px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                            {gender.name}
+                          </span>
+                        ))}
+                      </div>
+                    )}
 
                     {/* Categorías */}
                     {product.categories && product.categories.length > 0 && (
@@ -363,7 +367,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
               ))}
             </div>
             {/* Paginación */}
-            <div className="flex flex-wrap justify-center items-center gap-2 my-10" style={{ fontFamily: "'Quicksand', 'Nunito', 'Poppins', sans-serif" }}>
+            <div className="flex flex-wrap justify-center items-center gap-2 my-10">
               {products.links.map((link, idx) => {
                 // Normalizamos etiquetas (Laravel incluye &laquo; &raquo;)
                 let label = link.label

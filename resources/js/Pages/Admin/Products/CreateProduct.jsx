@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
-import RadioLabel from '@/Components/RadioLabel';
 
 export default function CreateProduct({ categories = [], sizes = [], colors = [], genders = [] }) {
   const { data, setData, post, errors } = useForm({
@@ -12,7 +11,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
     categories: [],
     sizes: [],
     colors: [],
-    gender_id: '',
+    gender_ids: [],
     is_featured: false,
     image_1: null,
     image_2: null,
@@ -70,8 +69,8 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
     formData.append('name', data.name);
     formData.append('description', data.description);
     formData.append('price', data.price);
-    formData.append('gender_id', data.gender_id);
     formData.append('is_featured', data.is_featured ? '1' : '0');
+    data.gender_ids.forEach(id => formData.append('gender_ids[]', id));
     data.categories.forEach(c => formData.append('categories[]', c));
     data.colors.forEach(c => formData.append('colors[]', c));
     data.sizes.forEach((s, i) => {
@@ -169,18 +168,18 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
                 <label className="block text-sm font-bold mb-3 text-neutral-700">👶 Género</label>
                 <div className="flex gap-4">
                   {genders.map(({ id, name }) => (
-                    <RadioLabel
+                    <CheckboxLabel
                       key={id}
                       id={id}
-                      name="gender_id"
+                      name="gender_ids"
                       value={id}
                       label={name}
                       onChange={handleChange}
-                      checked={data.gender_id == id}
+                      checked={data.gender_ids.includes(id.toString())}
                     />
                   ))}
                 </div>
-                {errors.gender_id && <p className="text-red-500 text-xs mt-2">{errors.gender_id}</p>}
+                {errors.gender_ids && <p className="text-red-500 text-xs mt-2">{errors.gender_ids}</p>}
               </div>
               <div className="md:col-span-2">
                 <label className="flex items-center gap-3 cursor-pointer p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-xl border-2 border-yellow-200 hover:border-yellow-400 transition-all">

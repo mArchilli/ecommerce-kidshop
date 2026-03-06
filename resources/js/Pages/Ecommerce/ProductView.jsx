@@ -228,11 +228,14 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {/* Género */}
-                  <span 
-                    className="px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700"
-                  >
-                    {product.gender.name}
-                  </span>
+                  {product.genders && product.genders.map((gender) => (
+                    <span
+                      key={gender.id}
+                      className="px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700"
+                    >
+                      {gender.name}
+                    </span>
+                  ))}
 
                   {/* Categorías */}
                   {product.categories && product.categories.map((category) => (
@@ -383,11 +386,11 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                         {/* Etiquetas */}
                         <div className="flex flex-wrap gap-1 mb-3">
                           {/* Género */}
-                          {relatedProduct.gender && (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-700">
-                              {relatedProduct.gender.name}
+                          {relatedProduct.genders && relatedProduct.genders.map((gender) => (
+                            <span key={gender.id} className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-700">
+                              {gender.name}
                             </span>
-                          )}
+                          ))}
                           
                           {/* Categorías */}
                           {relatedProduct.categories && relatedProduct.categories.slice(0, 2).map((category) => (
@@ -481,11 +484,11 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                         {/* Etiquetas */}
                         <div className="flex flex-wrap gap-1 mb-3">
                           {/* Género */}
-                          {offerProduct.gender && (
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-700">
-                              {offerProduct.gender.name}
+                          {offerProduct.genders && offerProduct.genders.map((gender) => (
+                            <span key={gender.id} className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-700">
+                              {gender.name}
                             </span>
-                          )}
+                          ))}
                           
                           {/* Categorías */}
                           {offerProduct.categories && offerProduct.categories.slice(0, 2).map((category) => (

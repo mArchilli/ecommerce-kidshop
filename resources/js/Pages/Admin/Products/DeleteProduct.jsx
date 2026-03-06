@@ -2,7 +2,6 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
-import RadioLabel from '@/Components/RadioLabel';
 
 export default function DeleteProduct({ product, categories = [], sizes = [], colors = [], genders = [] }) {
     const { data, setData, delete: destroy, errors } = useForm({
@@ -12,7 +11,7 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
         categories: product.categories.map(category => category.id.toString()),
         sizes: product.sizes.map(size => ({ id: size.id, stock: size.pivot.stock })),
         colors: product.colors.map(color => color.id.toString()),
-        gender_id: product.gender_id || '',
+        gender_ids: product.genders ? product.genders.map(g => g.id.toString()) : [],
     });
 
     const handleSubmit = (e) => {
@@ -85,7 +84,7 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
                             <div className="bg-neutral-50 p-5 rounded-xl border-2 border-neutral-200">
                                 <span className="block text-sm font-bold mb-3 text-neutral-600">👶 Género</span>
                                 <div className="flex flex-wrap gap-2">
-                                    {genders.filter(g => data.gender_id == g.id).map(g => (
+                                    {genders.filter(g => data.gender_ids.includes(g.id.toString())).map(g => (
                                         <span key={g.id} className="px-4 py-2 rounded-xl text-sm font-bold text-white shadow-md" style={{ backgroundColor: '#29C9F4' }}>{g.name}</span>
                                     ))}
                                 </div>

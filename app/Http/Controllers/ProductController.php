@@ -16,13 +16,13 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer'])->get();
+        $products = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])->get();
         return Inertia::render('Admin/Products/ProductsView', ['products' => $products]);
     }
 
     public function showProducts(Request $request)
     {
-        $query = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer'])
+        $query = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
             ->whereHas('sizes', function ($q) {
                 $q->where('product_size.stock', '>', 0);
             });
@@ -46,7 +46,7 @@ class ProductController extends Controller
         }
 
         if ($request->has('gender')) {
-            $query->whereHas('gender', function ($q) use ($request) {
+            $query->whereHas('genders', function ($q) use ($request) {
                 $q->where('name', $request->gender);
             });
         }        
@@ -58,7 +58,7 @@ class ProductController extends Controller
         $genders = Gender::all();
 
         // Productos con ofertas activas (query independiente, no paginada)
-        $offersProducts = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer'])
+        $offersProducts = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
             ->whereHas('activeOffer')
             ->get();
 
@@ -75,14 +75,19 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $product->load(['categories', 'sizes', 'colors', 'gender', 'activeOffer']);
+        $product->load(['categories', 'sizes', 'colors', 'genders', 'activeOffer']);
         
         // Productos relacionados: misma categoría o género, excluyendo el actual
-        $relatedProducts = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer'])
+        $genderIds = $product->genders->pluck('id');
+        $relatedProducts = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
             ->where('id', '!=', $product->id)
-            ->where(function($query) use ($product) {
+            ->where(function($query) use ($product, $genderIds) {
                 // Productos del mismo género
-                $query->where('gender_id', $product->gender_id);
+                if ($genderIds->isNotEmpty()) {
+                    $query->whereHas('genders', function($q) use ($genderIds) {
+                        $q->whereIn('genders.id', $genderIds);
+                    });
+                }
                 
                 // O productos con categorías similares
                 if ($product->categories->isNotEmpty()) {
@@ -96,7 +101,7 @@ class ProductController extends Controller
             ->get();
         
         // Productos en oferta (excluyendo el actual)
-        $offersProducts = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer'])
+        $offersProducts = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
             ->where('id', '!=', $product->id)
             ->whereHas('activeOffer')
             ->take(4)
@@ -134,7 +139,8 @@ class ProductController extends Controller
             'sizes.*.id' => 'required|exists:sizes,id',
             'sizes.*.stock' => 'required|integer|min:0',
             'colors' => 'array',
-            'gender_id' => 'required|exists:genders,id',
+            'gender_ids' => 'required|array|min:1',
+            'gender_ids.*' => 'exists:genders,id',
             'is_featured' => 'nullable|boolean',
             // Eliminar validación obligatoria de cada imagen individual
             'image_1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -178,8 +184,9 @@ class ProductController extends Controller
             return redirect()->back()->withErrors(['images' => 'Error al guardar las imágenes: ' . $e->getMessage()]);
         }
 
-        $product = Product::create($request->only(['name', 'description', 'price', 'gender_id', 'is_featured']) + ['images' => $imagePaths]);
+        $product = Product::create($request->only(['name', 'description', 'price', 'is_featured']) + ['images' => $imagePaths]);
         $product->categories()->sync($request->categories);
+        $product->genders()->sync($request->gender_ids);
         $product->colors()->sync($request->colors);
 
         $sizes = [];
@@ -198,7 +205,7 @@ class ProductController extends Controller
         $colors = Color::all();
         $genders = Gender::all(); // Cargar géneros
         return Inertia::render('Admin/Products/EditProduct', [
-            'product' => $product->load(['categories', 'sizes', 'colors', 'gender']),
+            'product' => $product->load(['categories', 'sizes', 'colors', 'genders']),
             'categories' => $categories,
             'sizes' => $sizes,
             'colors' => $colors,
@@ -217,7 +224,8 @@ class ProductController extends Controller
             'sizes.*.id' => 'required|exists:sizes,id',
             'sizes.*.stock' => 'required|integer|min:0',
             'colors' => 'array',
-            'gender_id' => 'required|exists:genders,id',
+            'gender_ids' => 'required|array|min:1',
+            'gender_ids.*' => 'exists:genders,id',
             'is_featured' => 'nullable|boolean',
             'image_1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'image_2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -257,8 +265,9 @@ class ProductController extends Controller
             }
         }
 
-        $product->update($request->only(['name', 'description', 'price', 'gender_id', 'is_featured']) + ['images' => $imagePaths]);
+        $product->update($request->only(['name', 'description', 'price', 'is_featured']) + ['images' => $imagePaths]);
         $product->categories()->sync($request->categories);
+        $product->genders()->sync($request->gender_ids);
         $product->colors()->sync($request->colors);
 
         $sizes = [];
@@ -277,7 +286,7 @@ class ProductController extends Controller
         $colors = Color::all();
         $genders = Gender::all();
         return Inertia::render('Admin/Products/DeleteProduct', [
-            'product' => $product->load(['categories', 'sizes', 'colors', 'gender']),
+            'product' => $product->load(['categories', 'sizes', 'colors', 'genders']),
             'categories' => $categories,
             'sizes' => $sizes,
             'colors' => $colors,
@@ -301,7 +310,7 @@ class ProductController extends Controller
 
     public function catalog(Request $request)
     {
-        $query = Product::with(['categories', 'sizes', 'colors', 'gender', 'activeOffer'])
+        $query = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
             ->whereHas('sizes', function ($q) {
                 $q->where('product_size.stock', '>', 0);
             });
@@ -341,7 +350,7 @@ class ProductController extends Controller
         }
 
         if ($request->has('gender') && $request->gender !== '') {
-            $query->whereHas('gender', function ($q) use ($request) {
+            $query->whereHas('genders', function ($q) use ($request) {
                 $q->where('name', $request->gender);
             });
         }

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link, usePage } from '@inertiajs/react';
 import CheckboxLabel from '@/Components/CheckboxLabel';
-import RadioLabel from '@/Components/RadioLabel';
 
 export default function EditProduct({ product, categories = [], sizes = [], colors = [], genders = [] }) {
     const { flash } = usePage().props;
@@ -23,7 +22,7 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
         categories: product.categories.map(category => category.id.toString()) || [],
         sizes: product.sizes.map(size => ({ id: size.id, stock: size.pivot.stock })) || [],
         colors: product.colors.map(color => color.id.toString()) || [],
-        gender_id: product.gender_id || '',
+        gender_ids: product.genders ? product.genders.map(g => g.id.toString()) : [],
         is_featured: product.is_featured || false,
         image_1: null,
         image_2: null,
@@ -184,18 +183,18 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                                 <label className="block text-sm font-bold mb-3 text-neutral-700">👶 Género</label>
                                 <div className="flex gap-4">
                                     {genders.map((gender) => (
-                                        <RadioLabel
+                                        <CheckboxLabel
                                             key={gender.id}
                                             id={gender.id}
-                                            name="gender_id"
+                                            name="gender_ids"
                                             value={gender.id}
                                             label={gender.name}
                                             onChange={handleChange}
-                                            checked={data.gender_id == gender.id}
+                                            checked={data.gender_ids.includes(gender.id.toString())}
                                         />
                                     ))}
                                 </div>
-                                {errors.gender_id && <div className="text-red-500 text-xs mt-2">{errors.gender_id}</div>}
+                                {errors.gender_ids && <div className="text-red-500 text-xs mt-2">{errors.gender_ids}</div>}
                             </div>
                             <div className="md:col-span-2">
                                 <label className="flex items-center gap-3 cursor-pointer p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-xl border-2 border-yellow-200 hover:border-yellow-400 transition-all">

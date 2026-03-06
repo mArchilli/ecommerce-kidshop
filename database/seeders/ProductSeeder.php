@@ -192,8 +192,10 @@ class ProductSeeder extends Seeder
                 'price' => $productData['price'],
                 'images' => $productData['images'],
                 'is_featured' => $productData['is_featured'],
-                'gender_id' => $gender->id,
             ]);
+
+            // Asociar género
+            $product->genders()->attach($gender->id);
 
             // Asociar categorías
             $categoryIds = $categories->whereIn('name', $productData['categories'])->pluck('id')->toArray();
