@@ -31,11 +31,11 @@ const Welcome = ({ products, categories, colors, genders, offersProducts }) => {
           {/* Featured Products Section */}
           <FeaturedProducts products={products} />
 
-          {/* Category Explorer Section */}
-          <CategoryExplorer />
-
           {/* Products Offers Section */}
           <ProductsOffers products={offersProducts} />
+
+          {/* Category Explorer Section */}
+          <CategoryExplorer />
 
           {/* About & Payment Methods - Unified Section */}
           <div className="w-full">
