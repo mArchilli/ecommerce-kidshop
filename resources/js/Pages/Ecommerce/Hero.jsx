@@ -18,7 +18,7 @@ const Hero = () => {
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-0">
           
           {/* Logo - Izquierda */}
-          <div className="flex-shrink-0 flex items-center justify-center lg:w-2/5" data-aos="fade-right" data-aos-delay="100">
+          <div className="flex-shrink-0 flex items-center justify-center lg:w-2/5 pt-14" data-aos="fade-right" data-aos-delay="100">
             <div className="relative group">
               <div className="absolute -inset-6 bg-gradient-to-br from-purple-300/20 via-pink-300/20 to-cyan-300/20 rounded-full blur-2xl group-hover:from-purple-300/30 group-hover:via-pink-300/30 group-hover:to-cyan-300/30 transition-all duration-700"></div>
               <img 

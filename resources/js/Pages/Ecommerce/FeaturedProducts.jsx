@@ -11,10 +11,8 @@ const FeaturedProducts = ({ products = [] }) => {
   // Manejar productos paginados o array directo
   const productsList = products?.data || products || [];
   
-  // Filtrar productos destacados
-  const featuredProducts = Array.isArray(productsList) 
-    ? productsList.filter(product => product.is_featured) 
-    : [];
+  // Todos los productos recibidos ya son destacados (filtrados en backend)
+  const featuredProducts = Array.isArray(productsList) ? productsList : [];
 
   // Si no hay productos destacados, no mostrar nada
   if (featuredProducts.length === 0) {
@@ -35,7 +33,7 @@ const FeaturedProducts = ({ products = [] }) => {
   }, []);
 
   const productsPerView = isMobile ? 1 : 4;
-  const showCarousel = featuredProducts.length > 5;
+  const showCarousel = featuredProducts.length > productsPerView;
 
   useEffect(() => {
     if (isTransitioning) {
@@ -142,7 +140,7 @@ const FeaturedProducts = ({ products = [] }) => {
   };
 
   return (
-    <section className="w-full px-4 py-12">
+    <section className="w-full px-4 pb-12">
       <div className="max-w-7xl mx-auto">
         {/* Encabezado de la sección */}
         <div className="text-left mb-12 px-4" data-aos="fade-up">
@@ -529,13 +527,13 @@ const FeaturedProducts = ({ products = [] }) => {
           </div>
         </div>
 
-        {/* Botón para ver todos los productos */}
+        {/* Botón para ver prendas destacadas */}
         <div className="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
           <Link
-            href={route('catalog.index')}
+            href={route('catalog.index', { is_featured: 1 })}
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 hover:scale-105 transform transition-all shadow-lg hover:shadow-xl"
           >
-            Ver todo el catálogo
+            Ver prendas destacadas
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               className="h-5 w-5" 

@@ -11,11 +11,21 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
   // Estado para mostrar/ocultar filtros
   const [showFilters, setShowFilters] = useState(false);
 
-  // Handler para filtros: envía los filtros al backend usando Inertia
-  const handleFilter = (selectedFilters) => {
-    // Merge con parámetros actuales para no perder filtros cuando se aplica búsqueda/orden
+  // Envía al backend los filtros activos (quickFilters + búsqueda + filtros del panel)
+  const submitFilters = (currentQuickFilters, extraFilters = {}) => {
     const baseParams = Object.fromEntries(new URLSearchParams(window.location.search));
-    const merged = { ...baseParams, ...selectedFilters, q: searchTerm, sort };
+    const selectedGenders = currentQuickFilters
+      .filter(f => f.startsWith('gender_'))
+      .map(f => f.replace('gender_', ''));
+    const merged = { ...baseParams, ...extraFilters, q: searchTerm };
+    delete merged.gender;
+    delete merged.sort;
+    delete merged.genders;
+    delete merged.has_offer;
+    delete merged.is_featured;
+    if (selectedGenders.length > 0) merged.genders = selectedGenders;
+    if (currentQuickFilters.includes('has_offer')) merged.has_offer = 1;
+    if (currentQuickFilters.includes('is_featured')) merged.is_featured = 1;
     const cleanFilters = Object.fromEntries(
       Object.entries(merged).filter(([_, v]) => v !== '' && v !== null && v !== undefined)
     );
@@ -25,17 +35,42 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
     });
   };
 
+  // Handler para filtros del panel lateral
+  const handleFilter = (selectedFilters) => submitFilters(quickFilters, selectedFilters);
+
+  // Handler para filtros rápidos (multi-selección, aplica inmediatamente)
+  const handleQuickFilter = (key) => {
+    const updated = quickFilters.includes(key)
+      ? quickFilters.filter(k => k !== key)
+      : [...quickFilters, key];
+    setQuickFilters(updated);
+    submitFilters(updated);
+  };
+
   // Handler para paginación: mantiene los filtros en la URL
   const handlePagination = (url) => {
     if (!url) return;
-    // Extraemos query actual de la URL destino y fusionamos con filtros vigentes
     const target = new URL(url, window.location.origin);
-    const params = new URLSearchParams(target.search);
-    // Reinsertamos filtros activos que no están presentes (incluye búsqueda y orden actuales)
-    Object.entries({ ...filters, q: searchTerm, sort }).forEach(([key, value]) => {
-      if (value && !params.has(key)) params.set(key, value);
-    });
-    router.get(`${route('catalog.index')}?${params.toString()}`, {}, {
+    const page = target.searchParams.get('page');
+    const selectedGenders = quickFilters
+      .filter(f => f.startsWith('gender_'))
+      .map(f => f.replace('gender_', ''));
+    const params = {
+      q: searchTerm || undefined,
+      min_price: filters.min_price || undefined,
+      max_price: filters.max_price || undefined,
+      category: filters.category || undefined,
+      color: filters.color || undefined,
+      size: filters.size || undefined,
+      page: page || undefined,
+      genders: selectedGenders.length > 0 ? selectedGenders : undefined,
+      has_offer: quickFilters.includes('has_offer') ? 1 : undefined,
+      is_featured: quickFilters.includes('is_featured') ? 1 : undefined,
+    };
+    const cleanParams = Object.fromEntries(
+      Object.entries(params).filter(([_, v]) => v !== '' && v !== null && v !== undefined)
+    );
+    router.get(route('catalog.index'), cleanParams, {
       preserveScroll: true,
       replace: false,
     });
@@ -48,7 +83,16 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
   };
 
   const [searchTerm, setSearchTerm] = useState(filters.q || '');
-  const [sort, setSort] = useState(filters.sort || '');
+  const [quickFilters, setQuickFilters] = useState(() => {
+    const initial = [];
+    if (filters.genders) {
+      const g = Array.isArray(filters.genders) ? filters.genders : [filters.genders];
+      g.forEach(name => initial.push(`gender_${name}`));
+    }
+    if (filters.has_offer) initial.push('has_offer');
+    if (filters.is_featured) initial.push('is_featured');
+    return initial;
+  });
 
   useEffect(() => {
     AOS.init({
@@ -87,26 +131,25 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
               </button>
             </div>
 
-            {/* Botones de orden y filtros en desktop */}
+            {/* Botones de filtros rápidos en desktop */}
             <div className="hidden md:flex gap-2 flex-wrap items-center">
               {[
-                { value: '', label: 'Por defecto' },
-                { value: 'price_asc', label: 'Precio ↑' },
-                { value: 'price_desc', label: 'Precio ↓' },
-                { value: 'newest', label: 'Nuevos' },
-                { value: 'oldest', label: 'Antiguos' },
-              ].map(opt => (
+                { key: 'gender_Niños', label: 'Niños' },
+                { key: 'gender_Niñas', label: 'Niñas' },
+                { key: 'has_offer', label: '🏷️ Ofertas' },
+                { key: 'is_featured', label: '⭐ Destacados' },
+              ].map(filter => (
                 <button
-                  key={opt.value || 'default'}
+                  key={filter.key}
                   type="button"
-                  onClick={() => { setSort(opt.value); handleFilter({}); }}
+                  onClick={() => handleQuickFilter(filter.key)}
                   className={`px-4 py-2.5 rounded-full border text-sm font-semibold transition-all ${
-                    sort === opt.value
+                    quickFilters.includes(filter.key)
                       ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
                       : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
                   }`}
                 >
-                  {opt.label}
+                  {filter.label}
                 </button>
               ))}
               {/* Botón mostrar filtros en desktop */}
@@ -120,60 +163,27 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
             </div>
           </div>
 
-          {/* Botones de orden en mobile */}
-          <div className="flex flex-col gap-2 md:hidden">
-            {/* Por defecto - ancho completo */}
-            <button
-              type="button"
-              onClick={() => { setSort(''); handleFilter({}); }}
-              className={`w-full px-4 py-2.5 rounded-full border text-sm font-semibold transition-all ${
-                sort === ''
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
-                  : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
-              }`}
-            >
-              Por defecto
-            </button>
-            {/* Precio ↑ y Precio ↓ */}
-            <div className="grid grid-cols-2 gap-2">
-              {[
-                { value: 'price_asc', label: 'Precio ↑' },
-                { value: 'price_desc', label: 'Precio ↓' },
-              ].map(opt => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => { setSort(opt.value); handleFilter({}); }}
-                  className={`px-4 py-2.5 rounded-full border text-sm font-semibold transition-all ${
-                    sort === opt.value
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
-                      : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-            {/* Nuevos y Antiguos */}
-            <div className="grid grid-cols-2 gap-2">
-              {[
-                { value: 'newest', label: 'Nuevos' },
-                { value: 'oldest', label: 'Antiguos' },
-              ].map(opt => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => { setSort(opt.value); handleFilter({}); }}
-                  className={`px-4 py-2.5 rounded-full border text-sm font-semibold transition-all ${
-                    sort === opt.value
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
-                      : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
+          {/* Botones de filtros rápidos en mobile */}
+          <div className="grid grid-cols-2 gap-2 md:hidden">
+            {[
+              { key: 'gender_Niños', label: 'Niños' },
+              { key: 'gender_Niñas', label: 'Niñas' },
+              { key: 'has_offer', label: '🏷️ Ofertas' },
+              { key: 'is_featured', label: '⭐ Destacados' },
+            ].map(filter => (
+              <button
+                key={filter.key}
+                type="button"
+                onClick={() => handleQuickFilter(filter.key)}
+                className={`px-4 py-2.5 rounded-full border text-sm font-semibold transition-all ${
+                  quickFilters.includes(filter.key)
+                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
+                    : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                }`}
+              >
+                {filter.label}
+              </button>
+            ))}
           </div>
 
           {/* Botón mostrar filtros en mobile (ancho completo) */}

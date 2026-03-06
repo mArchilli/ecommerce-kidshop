@@ -12,7 +12,7 @@ import PaymentMethods from '../Pages/Ecommerce/PaymentMethods';
 import FAQ from '@/Components/FAQ';
 import WhatsAppCTA from '../Pages/Ecommerce/WhatsAppCTA';
 
-const Welcome = ({ products, categories, colors, genders, offersProducts }) => {
+const Welcome = ({ products, categories, colors, genders, offersProducts, featuredProducts }) => {
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -29,7 +29,7 @@ const Welcome = ({ products, categories, colors, genders, offersProducts }) => {
           <Hero />
 
           {/* Featured Products Section */}
-          <FeaturedProducts products={products} />
+          <FeaturedProducts products={featuredProducts} />
 
           {/* Products Offers Section */}
           <ProductsOffers products={offersProducts} />

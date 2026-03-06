@@ -62,6 +62,11 @@ class ProductController extends Controller
             ->whereHas('activeOffer')
             ->get();
 
+        // Productos destacados (query independiente, no paginada)
+        $featuredProducts = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
+            ->where('is_featured', true)
+            ->get();
+
         // Pasar los filtros actuales a la vista para mantener el estado
         $filters = [
             'category' => $request->category,
@@ -70,7 +75,7 @@ class ProductController extends Controller
             'size' => $request->size,
         ];
 
-        return Inertia::render('Welcome', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters', 'offersProducts'));
+        return Inertia::render('Welcome', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters', 'offersProducts', 'featuredProducts'));
     }
 
     public function show(Product $product)
@@ -349,10 +354,23 @@ class ProductController extends Controller
             });
         }
 
-        if ($request->has('gender') && $request->gender !== '') {
+        if ($request->filled('genders')) {
+            $genderNames = $request->input('genders', []);
+            $query->whereHas('genders', function ($q) use ($genderNames) {
+                $q->whereIn('name', $genderNames);
+            });
+        } elseif ($request->has('gender') && $request->gender !== '') {
             $query->whereHas('genders', function ($q) use ($request) {
                 $q->where('name', $request->gender);
             });
+        }
+
+        if ($request->filled('has_offer')) {
+            $query->whereHas('activeOffer');
+        }
+
+        if ($request->filled('is_featured')) {
+            $query->where('is_featured', true);
         }
 
         // Ordenamiento
@@ -388,8 +406,11 @@ class ProductController extends Controller
             'category' => $request->category,
             'color' => $request->color,
             'gender' => $request->gender,
+            'genders' => $request->input('genders', []),
             'size' => $request->size,
             'sort' => $request->sort,
+            'has_offer' => $request->has_offer,
+            'is_featured' => $request->is_featured,
         ];
 
         return Inertia::render('Ecommerce/ProductList', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters'));

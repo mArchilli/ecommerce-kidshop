@@ -102,30 +102,6 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
   const FilterContent = () => (
     <div className="flex flex-col gap-4 sm:gap-8">
 
-      {/* Filtro de Género */}
-      <div className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm">
-        <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">
-          Género
-        </div>
-        <div className="flex flex-nowrap sm:flex-wrap gap-2 overflow-x-auto pb-1 scrollbar-hide">
-          <Chip
-            label="Todos"
-            selected={selectedGender === ''}
-            onClick={() => setSelectedGender('')}
-            color="gender"
-          />
-          {genders.map((gender) => (
-            <Chip
-              key={gender.id}
-              label={gender.name}
-              selected={selectedGender === gender.name}
-              onClick={() => setSelectedGender(gender.name)}
-              color="gender"
-            />
-          ))}
-        </div>
-      </div>
-
       {/* Filtro de Talle */}
       <div className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm">
         <div className="mb-3 font-semibold text-sm sm:text-base text-gray-700">

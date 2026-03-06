@@ -533,6 +533,25 @@ const ProductsOffers = ({ products = [] }) => {
             </div>
           </div>
         </div>
+
+        {/* Botón para ver todas las ofertas */}
+        <div className="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
+          <Link
+            href={route('catalog.index', { has_offer: 1 })}
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white bg-gradient-to-r from-pink-500 to-rose-400 hover:from-pink-600 hover:to-rose-500 hover:scale-105 transform transition-all shadow-lg hover:shadow-xl"
+          >
+            Ver todas las ofertas
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-5 w-5" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </section>
   );
