@@ -294,7 +294,7 @@ const OrderShow = ({ order }) => {
                   Si tienes alguna consulta sobre tu pedido, contáctanos por WhatsApp.
                 </p>
                 <a
-                  href={`https://wa.me/541133973222?text=${encodeURIComponent(
+                  href={`https://wa.me/541172397202?text=${encodeURIComponent(
                     `Hola! Tengo una consulta sobre mi orden #${order.id}`
                   )}`}
                   target="_blank"
