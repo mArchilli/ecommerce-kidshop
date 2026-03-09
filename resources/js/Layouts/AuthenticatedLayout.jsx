@@ -293,6 +293,31 @@ export default function AuthenticatedLayout({ header, children }) {
                             )}
                         </Link>
 
+                        <Link
+                            href={route('admin.users.index')}
+                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 group ${
+                                route().current('admin.users.index')
+                                    ? 'bg-white text-black'
+                                    : 'text-white/90 hover:text-white hover:bg-white/10 hover:scale-105'
+                            } ${sidebarCollapsed ? 'justify-center' : ''}`}
+                            title={sidebarCollapsed ? 'Usuarios' : ''}
+                        >
+                            <svg
+                                className="h-5 w-5 flex-shrink-0 group-hover:rotate-12 transition-transform"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                            </svg>
+                            {!sidebarCollapsed && <span>Usuarios</span>}
+                        </Link>
+
                         <div className="pt-4 border-t border-white/20">
                             <Link
                                 href={route('welcome')}

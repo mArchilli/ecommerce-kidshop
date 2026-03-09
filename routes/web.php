@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\OrderController;
@@ -88,6 +89,12 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
     Route::delete('/admin/offers/{offer}', [OfferController::class, 'destroy'])->name('offers.destroy');
     Route::get('/admin/offers/{offer}/delete', [OfferController::class, 'delete'])->name('offers.delete');
     Route::post('/admin/offers/{offer}/toggle-active', [OfferController::class, 'toggleActive'])->name('offers.toggleActive');
+
+    Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+    Route::post('/admin/users/{user}/verify', [AdminUserController::class, 'verify'])->name('admin.users.verify');
+    Route::get('/admin/users/{user}', [AdminUserController::class, 'show'])->name('admin.users.show');
+    Route::put('/admin/users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
+    Route::put('/admin/users/{user}/password', [AdminUserController::class, 'updatePassword'])->name('admin.users.password');
 });
 
 Route::middleware('auth')->group(function () {
