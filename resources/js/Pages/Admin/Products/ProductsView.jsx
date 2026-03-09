@@ -15,7 +15,7 @@ export default function ProductsView({ products }) {
         new Set(products.flatMap(p => p.sizes.map(s => s.name)))
     );
     const allGenders = Array.from(
-        new Set(products.map(p => p.gender?.name).filter(Boolean))
+        new Set(products.flatMap(p => (p.genders || []).map(g => g.name)))
     );
 
     // Estados de filtros (persistidos en localStorage)
@@ -55,7 +55,7 @@ export default function ProductsView({ products }) {
         }
 
         // Filtro por género
-        if (selectedGender && product.gender?.name !== selectedGender) {
+        if (selectedGender && !(product.genders || []).some(g => g.name === selectedGender)) {
             return false;
         }
 
@@ -128,7 +128,7 @@ export default function ProductsView({ products }) {
                 // ── Datos generales ──
                 'Nombre': product.name,
                 'Descripción': product.description || '',
-                'Género': product.gender?.name || '',
+                'Género': (product.genders || []).map(g => g.name).join(', ') || '',
                 'Categorías': product.categories.map(c => c.name).join(', '),
                 'Colores': product.colors.map(c => c.name).join(', '),
                 'Talles': product.sizes.map(s => s.name).join(', '),
@@ -577,12 +577,12 @@ export default function ProductsView({ products }) {
                                                 <div className="mb-3">
                                                     <h3 className="text-xl font-bold text-black mb-2 group-hover:scale-105 transition-transform">{product.name}</h3>
                                                     <div className="flex flex-wrap gap-2">
-                                                        {product.gender && (
-                                                            <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-sm border-2 text-white font-bold shadow-sm"
+                                                        {(product.genders || []).map(g => (
+                                                            <span key={g.id} className="inline-flex items-center px-3 py-1.5 rounded-xl text-sm border-2 text-white font-bold shadow-sm"
                                                                 style={{ backgroundColor: '#9B59B6', borderColor: '#9B59B6' }}>
-                                                                👶 {product.gender.name}
+                                                                👶 {g.name}
                                                             </span>
-                                                        )}
+                                                        ))}
                                                         {product.active_offer && product.active_offer.is_active && (
                                                             <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-sm border-2 text-white font-bold shadow-sm animate-pulse"
                                                                 style={{ backgroundColor: '#FF6B9D', borderColor: '#FF6B9D' }}>
