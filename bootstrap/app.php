@@ -25,7 +25,9 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        //
+        $middleware->alias([
+            'verified.store' => \App\Http\Middleware\RedirectUnverifiedUsers::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

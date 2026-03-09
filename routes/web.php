@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Middleware\CheckRole;
 
-Route::get('/', [ProductController::class, 'showProducts'])->name('welcome');
+Route::get('/', [ProductController::class, 'showProducts'])->middleware('verified.store')->name('welcome');
 
 // Nueva ruta para el catálogo
-Route::get('/catalog', [ProductController::class, 'catalog'])->name('catalog.index');
+Route::get('/catalog', [ProductController::class, 'catalog'])->middleware('verified.store')->name('catalog.index');
 
 Route::get('/admin/dashboard', function () {
     return Inertia::render('Dashboard', [
@@ -50,7 +50,7 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
     Route::post('/admin/products/{product}/toggle-featured', [ProductController::class, 'toggleFeatured'])->name('products.toggleFeatured');
 });
 
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/products/{product}', [ProductController::class, 'show'])->middleware('verified.store')->name('products.show');
 
 Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(function () {
     Route::get('/admin/categories', [CategoryController::class, 'index'])->name('categories.index');
