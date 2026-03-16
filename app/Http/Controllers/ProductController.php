@@ -60,11 +60,17 @@ class ProductController extends Controller
         // Productos con ofertas activas (query independiente, no paginada)
         $offersProducts = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
             ->whereHas('activeOffer')
+            ->whereHas('sizes', function ($q) {
+                $q->where('product_size.stock', '>', 0);
+            })
             ->get();
 
         // Productos destacados (query independiente, no paginada)
         $featuredProducts = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
             ->where('is_featured', true)
+            ->whereHas('sizes', function ($q) {
+                $q->where('product_size.stock', '>', 0);
+            })
             ->get();
 
         // Pasar los filtros actuales a la vista para mantener el estado
@@ -82,10 +88,13 @@ class ProductController extends Controller
     {
         $product->load(['categories', 'sizes', 'colors', 'genders', 'activeOffer']);
         
-        // Productos relacionados: misma categoría o género, excluyendo el actual
+        // Productos relacionados: misma categoría o género, excluyendo el actual y sin stock
         $genderIds = $product->genders->pluck('id');
         $relatedProducts = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
             ->where('id', '!=', $product->id)
+            ->whereHas('sizes', function ($q) {
+                $q->where('product_size.stock', '>', 0);
+            })
             ->where(function($query) use ($product, $genderIds) {
                 // Productos del mismo género
                 if ($genderIds->isNotEmpty()) {
@@ -105,10 +114,13 @@ class ProductController extends Controller
             ->take(4)
             ->get();
         
-        // Productos en oferta (excluyendo el actual)
+        // Productos en oferta (excluyendo el actual y sin stock)
         $offersProducts = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
             ->where('id', '!=', $product->id)
             ->whereHas('activeOffer')
+            ->whereHas('sizes', function ($q) {
+                $q->where('product_size.stock', '>', 0);
+            })
             ->take(4)
             ->get();
         

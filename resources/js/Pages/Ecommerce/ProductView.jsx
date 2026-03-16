@@ -20,6 +20,10 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
   const mainImgRef = useRef(null);
 
   const handleSizeClick = (size) => {
+    if (size.pivot.stock <= 0) {
+      toast.error('Este talle no tiene stock disponible.');
+      return;
+    }
     setData('size', size.name);
     setData('quantity', 1);
     setShowQuantity(false);
@@ -42,7 +46,11 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
 
   const handleAddToCart = () => {
     if (!data.size) {
-      alert("🎈 ¡Por favor selecciona un talle!");
+      toast.error('¡Por favor seleccioná un talle!');
+      return;
+    }
+    if (sizeStock() <= 0) {
+      toast.error('Este talle no tiene stock disponible.');
       return;
     }
 
@@ -52,7 +60,8 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
         toast.success('¡Producto agregado al carrito!');
       },
       onError: (errors) => {
-        console.error('Error adding product to cart:', errors);
+        const msg = errors.stock || errors.size || errors.quantity || 'Error al agregar al carrito.';
+        toast.error(msg);
       },
     });
   };
@@ -273,10 +282,14 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                     <button
                       key={size.id}
                       onClick={() => handleSizeClick(size)}
+                      disabled={size.pivot.stock <= 0}
+                      title={size.pivot.stock <= 0 ? 'Sin stock' : `Stock: ${size.pivot.stock}`}
                       className={`py-3 rounded-full text-center text-sm font-semibold border-2 transition-all ${
-                        data.size === size.name
-                          ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md"
-                          : "bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50"
+                        size.pivot.stock <= 0
+                          ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed line-through opacity-60'
+                          : data.size === size.name
+                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
+                            : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
                       }`}
                     >
                       {size.name}

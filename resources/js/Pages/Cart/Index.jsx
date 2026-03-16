@@ -67,6 +67,16 @@ const Cart = ({ cart }) => {
     router.visit(route('welcome'));
   };
 
+  // Verifica si el ítem tiene stock disponible para el talle seleccionado
+  const itemHasStock = (item) => {
+    if (!item.product.sizes || !item.size) return true;
+    const size = item.product.sizes.find((s) => s.name === item.size);
+    return size && size.pivot && size.pivot.stock > 0;
+  };
+
+  // Hay algún ítem sin stock → bloquear checkout
+  const hasOutOfStockItems = cart?.items?.some((item) => !itemHasStock(item)) ?? false;
+
   // Subtotal del carrito
   const subtotal =
     cart?.items?.reduce(
@@ -112,11 +122,27 @@ const Cart = ({ cart }) => {
               <section className="md:col-span-8 flex flex-col gap-4">
                 {/* Vista DESKTOP: tarjetas con mejor estilo */}
                 <div className="md:flex md:flex-col md:gap-4">
-                  {cart.items.map((item) => (
+                  {cart.items.map((item) => {
+                    const outOfStock = !itemHasStock(item);
+                    return (
                     <div
                       key={item.id}
-                      className="bg-white/80 backdrop-blur-sm border-2 border-pink-200 rounded-2xl p-6 my-2 flex items-center gap-4 hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+                      className={`backdrop-blur-sm rounded-2xl p-6 my-2 flex flex-col gap-3 transition-all duration-300 ${
+                        outOfStock
+                          ? 'bg-red-50 border-2 border-red-400 shadow-md'
+                          : 'bg-white/80 border-2 border-pink-200 hover:shadow-xl hover:scale-[1.02]'
+                      }`}
                     >
+                      {/* Alerta de sin stock */}
+                      {outOfStock && (
+                        <div className="flex items-center gap-2 bg-red-100 border border-red-300 rounded-xl px-4 py-2 text-red-700 text-sm font-semibold">
+                          <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                          </svg>
+                          Sin stock disponible para el talle <strong>{item.size}</strong>. Eliminá esta prenda para continuar.
+                        </div>
+                      )}
+                      <div className="flex items-center gap-4">
                       <img
                         src={
                           item.product.images && item.product.images.length > 0
@@ -128,9 +154,16 @@ const Cart = ({ cart }) => {
                       />
                       <div className="flex-1">
                         <div className="flex items-start justify-between gap-3">
-                          <h3 className="text-base font-bold text-gray-900">
-                            {item.product.name}
-                          </h3>
+                            <div>
+                              <h3 className="text-base font-bold text-gray-900">
+                                {item.product.name}
+                              </h3>
+                              {item.size && (
+                                <span className="inline-block mt-1 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700">
+                                  Talle: {item.size}
+                                </span>
+                              )}
+                            </div>
                           <Link
                             href={`/cart/remove/${item.id}`}
                             method="delete"
@@ -171,7 +204,7 @@ const Cart = ({ cart }) => {
                             <div className="flex items-center justify-center gap-2">
                               <button
                                 onClick={() => decrementQuantity(item.id)}
-                                disabled={quantities[item.id] <= 1}
+                                disabled={quantities[item.id] <= 1 || outOfStock}
                                 className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white w-8 h-8 rounded-full inline-flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-md disabled:transform-none disabled:shadow-none"
                                 aria-label="Disminuir cantidad"
                               >
@@ -184,7 +217,8 @@ const Cart = ({ cart }) => {
                               </span>
                               <button
                                 onClick={() => incrementQuantity(item.id)}
-                                className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white w-8 h-8 rounded-full inline-flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-md"
+                                disabled={outOfStock}
+                                className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white w-8 h-8 rounded-full inline-flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-md disabled:transform-none disabled:shadow-none"
                                 aria-label="Aumentar cantidad"
                               >
                                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -197,14 +231,20 @@ const Cart = ({ cart }) => {
                           {/* Total por ítem */}
                           <div className="col-span-4 text-right">
                             <div className="text-sm font-semibold text-purple-600">Total</div>
-                            <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
-                              ${(item.unit_price * (parseInt(quantities[item.id] || 0, 10))).toLocaleString('es-AR')} ARS
-                            </div>
+                            {outOfStock ? (
+                              <div className="text-sm font-bold text-red-500">Sin stock</div>
+                            ) : (
+                              <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
+                                ${(item.unit_price * (parseInt(quantities[item.id] || 0, 10))).toLocaleString('es-AR')} ARS
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
+                      </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </section>
 
@@ -227,6 +267,15 @@ const Cart = ({ cart }) => {
                     </div>
                   </div>
 
+                  {hasOutOfStockItems && (
+                    <div className="mt-4 flex items-start gap-2 bg-red-50 border border-red-300 rounded-xl px-4 py-3 text-red-700 text-sm">
+                      <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                      </svg>
+                      <span>Hay prendas sin stock en tu carrito. Eliminalas para poder continuar con la compra.</span>
+                    </div>
+                  )}
+
                   <div className="mt-6 flex flex-col gap-3">
                     <button
                       type="button"
@@ -235,12 +284,22 @@ const Cart = ({ cart }) => {
                     >
                       Vaciar carrito
                     </button>
-                    <Link
-                      href="/checkout"
-                      className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white px-5 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-center"
-                    >
-                      Continuar
-                    </Link>
+                    {hasOutOfStockItems ? (
+                      <button
+                        disabled
+                        className="w-full bg-gray-300 text-gray-500 px-5 py-3 rounded-full font-bold cursor-not-allowed text-center"
+                        title="Eliminá los ítems sin stock para continuar"
+                      >
+                        Continuar
+                      </button>
+                    ) : (
+                      <Link
+                        href="/checkout"
+                        className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white px-5 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-center"
+                      >
+                        Continuar
+                      </Link>
+                    )}
                   </div>
                 </div>
               </aside>

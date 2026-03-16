@@ -47,14 +47,29 @@ class CheckoutController extends Controller
         // Obtener el usuario autenticado
         $user = $request->user();
 
-        // Obtener el carrito del usuario
-        $cart = \App\Models\Cart::with('items.product')
+        // Obtener el carrito del usuario con talles (para verificar stock)
+        $cart = \App\Models\Cart::with(['items.product', 'items.product.sizes'])
             ->where('user_id', $user->id)
             ->first();
 
         // Verificar si el carrito está vacío
         if (!$cart || $cart->items->isEmpty()) {
             return redirect()->route('checkout.index')->with('error', 'Tu carrito está vacío.');
+        }
+
+        // Verificar stock de cada ítem antes de procesar el pago
+        foreach ($cart->items as $item) {
+            $size = $item->product->sizes->firstWhere('name', $item->size);
+            if (!$size || $size->pivot->stock <= 0) {
+                return redirect()->route('cart.index')->with('error',
+                    "Sin stock: \"" . $item->product->name . "\" (talle " . $item->size . ") ya no tiene stock. Por favor eliminá ese ítem del carrito."
+                );
+            }
+            if ($item->quantity > $size->pivot->stock) {
+                return redirect()->route('cart.index')->with('error',
+                    "Stock insuficiente: \"" . $item->product->name . "\" (talle " . $item->size . ") solo tiene " . $size->pivot->stock . " unidades disponibles."
+                );
+            }
         }
 
         // Configurar el token de MercadoPago

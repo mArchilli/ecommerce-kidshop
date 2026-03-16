@@ -19,8 +19,8 @@ class CartController extends Controller
             abort(403, 'Usuario no autenticado');
         }
 
-        // Usar user_id en lugar de $user->cart() y cargar la oferta activa del producto
-        $cart = \App\Models\Cart::with(['items.product.activeOffer'])
+        // Cargar carrito con oferta activa y talles (con stock) de cada producto
+        $cart = \App\Models\Cart::with(['items.product.activeOffer', 'items.product.sizes'])
             ->where('user_id', $user->id)
             ->first();
 
@@ -37,9 +37,20 @@ class CartController extends Controller
 
         $cart = Auth::user()->cart ?? Cart::create(['user_id' => Auth::id()]);
 
-        // Recargar el producto con la oferta activa
-        $product = Product::with('activeOffer')->find($product->id);
-        
+        // Recargar el producto con la oferta activa y los talles (para verificar stock)
+        $product = Product::with(['activeOffer', 'sizes'])->find($product->id);
+
+        // Verificar stock del talle seleccionado
+        $size = $product->sizes->firstWhere('name', $request->size);
+        if (!$size || $size->pivot->stock <= 0) {
+            return back()->withErrors(['stock' => 'Sin stock disponible para el talle seleccionado.']);
+        }
+
+        // Verificar que la cantidad solicitada no supere el stock
+        if ($request->quantity > $size->pivot->stock) {
+            return back()->withErrors(['stock' => 'Stock insuficiente. Solo quedan ' . $size->pivot->stock . ' unidades disponibles.']);
+        }
+
         // Determinar el precio actual (con oferta si aplica)
         $currentPrice = $product->activeOffer 
             ? $product->activeOffer->discount_price 
