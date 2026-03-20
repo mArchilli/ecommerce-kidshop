@@ -72,9 +72,6 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
 
     post(route('cart.add', product.id), {
       preserveScroll: true,
-      onSuccess: () => {
-        toast.success('¡Producto agregado al carrito!');
-      },
       onError: (errors) => {
         const msg = errors.stock || errors.size || errors.quantity || 'Error al agregar al carrito.';
         toast.error(msg);

@@ -310,7 +310,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                     <div className="mt-auto pt-4 border-t border-gray-100">
                       {product.active_offer ? (
                         <div className="flex items-end justify-between mb-3">
-                          <p className="text-sm text-gray-400 line-through">
+                          <p className="text-lg font-semibold text-gray-400 line-through">
                             ${Number(product.price).toLocaleString('es-AR')} ARS
                           </p>
                           <p className="text-3xl font-extrabold text-rose-500">
