@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Inertia } from '@inertiajs/inertia';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head, Link, router } from '@inertiajs/react';
 
@@ -22,7 +21,7 @@ const Cart = ({ cart }) => {
 
   const updateQuantity = (itemId, value = null) => {
     const newQuantity = value !== null ? value : quantities[itemId];
-    Inertia.put(
+    router.put(
       `/cart/update/${itemId}`,
       { quantity: newQuantity },
       { preserveScroll: true, preserveState: true }
@@ -44,7 +43,7 @@ const Cart = ({ cart }) => {
   };
 
   const updateAll = () => {
-    Inertia.put(
+    router.put(
       '/cart/update-all',
       { quantities },
       { preserveScroll: true, preserveState: true }
@@ -53,7 +52,7 @@ const Cart = ({ cart }) => {
 
   // Vaciar el carrito: elimina todos los productos del carrito
   const clearCart = () => {
-    Inertia.delete(
+    router.delete(
       route('cart.clear'),
       {
         preserveScroll: true,
@@ -69,9 +68,23 @@ const Cart = ({ cart }) => {
 
   // Verifica si el ítem tiene stock disponible para el talle seleccionado
   const itemHasStock = (item) => {
+    if (typeof item.has_stock === 'boolean') {
+      return item.has_stock;
+    }
+
     if (!item.product.sizes || !item.size) return true;
-    const size = item.product.sizes.find((s) => s.name === item.size);
-    return size && size.pivot && size.pivot.stock > 0;
+
+    const normalizeSize = (value) =>
+      (value || '')
+        .toString()
+        .trim()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, ' ')
+        .toLowerCase();
+
+    const size = item.product.sizes.find((s) => normalizeSize(s.name) === normalizeSize(item.size));
+    return Boolean(size && size.pivot && size.pivot.stock >= (parseInt(quantities[item.id] || item.quantity, 10)));
   };
 
   // Hay algún ítem sin stock → bloquear checkout
@@ -217,7 +230,7 @@ const Cart = ({ cart }) => {
                               </span>
                               <button
                                 onClick={() => incrementQuantity(item.id)}
-                                disabled={outOfStock}
+                                disabled={outOfStock || (typeof item.current_stock === 'number' && quantities[item.id] >= item.current_stock)}
                                 className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white w-8 h-8 rounded-full inline-flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-md disabled:transform-none disabled:shadow-none"
                                 aria-label="Aumentar cantidad"
                               >

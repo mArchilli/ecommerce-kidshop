@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Size;
@@ -14,6 +15,15 @@ use MercadoPago\Client\Payment\PaymentClient;
 
 class MercadoPagoWebhookController extends Controller
 {
+    private function findSizeModel(string $sizeName)
+    {
+        $byExact = Size::where('name', $sizeName)->first();
+        if ($byExact) return $byExact;
+
+        $normalized = Str::of($sizeName)->lower()->ascii()->replaceMatches('/\s+/', ' ')->trim()->value();
+        return Size::all()->first(fn($s) => Str::of($s->name)->lower()->ascii()->replaceMatches('/\s+/', ' ')->trim()->value() === $normalized);
+    }
+
     public function handle(Request $request)
     {
         $payload = $request->all();
@@ -143,51 +153,55 @@ class MercadoPagoWebhookController extends Controller
                 return response()->json(['status' => 'cart_empty'], 200);
             }
 
-            // Crear la orden
-            $order = $user->orders()->create([
-                'payment_id'      => $paymentId,
-                'total'           => $cart->items->sum(fn($item) => $item->unit_price * $item->quantity),
-                'status'          => 'completed',
-                'shipping_status' => Order::SHIPPING_STATUS_PENDING,
-                'province'        => $shippingInfo['province'] ?? null,
-                'city'            => $shippingInfo['city'] ?? null,
-                'postal_code'     => $shippingInfo['postal_code'] ?? null,
-                'address'         => $shippingInfo['address'] ?? null,
-                'phone'           => $shippingInfo['phone'] ?? null,
-                'shipping_method' => $shippingInfo['shipping_method'] ?? null,
-                'dni'             => $shippingInfo['dni'] ?? null,
-                'first_name'      => $shippingInfo['first_name'] ?? null,
-                'last_name'       => $shippingInfo['last_name'] ?? null,
-                'email'           => $shippingInfo['email'] ?? null,
-                'observations'    => $shippingInfo['observations'] ?? null,
-                'courier_company' => $shippingInfo['courier_company'] ?? null,
-            ]);
+            // Calcular total antes del closure para evitar ambigüedad de tipos
+            $orderTotal = $cart->items->reduce(fn($carry, $item) => $carry + ($item->unit_price * $item->quantity), 0);
 
-            // Crear los items de la orden
-            foreach ($cart->items as $item) {
-                $order->items()->create([
-                    'product_id' => $item->product_id,
-                    'quantity'   => $item->quantity,
-                    'price'      => $item->unit_price,
-                    'size'       => $item->size ?? null,
+            // Crear la orden
+            $order = DB::transaction(function () use ($user, $cart, $paymentId, $shippingInfo, $orderTotal) {
+                $order = $user->orders()->create([
+                    'payment_id'      => $paymentId,
+                    'total'           => $orderTotal,
+                    'status'          => 'completed',
+                    'shipping_status' => Order::SHIPPING_STATUS_PENDING,
+                    'province'        => $shippingInfo['province'] ?? null,
+                    'city'            => $shippingInfo['city'] ?? null,
+                    'postal_code'     => $shippingInfo['postal_code'] ?? null,
+                    'address'         => $shippingInfo['address'] ?? null,
+                    'phone'           => $shippingInfo['phone'] ?? null,
+                    'shipping_method' => $shippingInfo['shipping_method'] ?? null,
+                    'dni'             => $shippingInfo['dni'] ?? null,
+                    'first_name'      => $shippingInfo['first_name'] ?? null,
+                    'last_name'       => $shippingInfo['last_name'] ?? null,
+                    'email'           => $shippingInfo['email'] ?? null,
+                    'observations'    => $shippingInfo['observations'] ?? null,
+                    'courier_company' => $shippingInfo['courier_company'] ?? null,
                 ]);
 
-                // Decrementar el stock en la tabla pivot product_size
-                if ($item->size) {
-                    $sizeModel = Size::where('name', $item->size)->first();
-                    if ($sizeModel) {
-                        DB::table('product_size')
-                            ->where('product_id', $item->product_id)
-                            ->where('size_id', $sizeModel->id)
-                            ->where('stock', '>', 0)
-                            ->decrement('stock', $item->quantity);
+                foreach ($cart->items as $item) {
+                    $order->items()->create([
+                        'product_id' => $item->product_id,
+                        'quantity'   => $item->quantity,
+                        'price'      => $item->unit_price,
+                        'size'       => $item->size ?? null,
+                    ]);
+
+                    if ($item->size) {
+                        $sizeModel = $this->findSizeModel($item->size);
+                        if ($sizeModel) {
+                            DB::table('product_size')
+                                ->where('product_id', $item->product_id)
+                                ->where('size_id', $sizeModel->id)
+                                ->where('stock', '>', 0)
+                                ->decrement('stock', $item->quantity);
+                        }
                     }
                 }
-            }
 
-            // Vaciar el carrito
-            $cart->items()->delete();
-            $cart->delete();
+                $cart->items()->delete();
+                $cart->delete();
+
+                return $order;
+            });
 
             // Limpiar el cache
             Cache::forget($cacheKey);

@@ -8,12 +8,22 @@ use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Preference\PreferenceClient;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
 {
+    private function findSizeByName($sizes, string $sizeName)
+    {
+        $byExact = $sizes->firstWhere('name', $sizeName);
+        if ($byExact) return $byExact;
+
+        $normalized = Str::of($sizeName)->lower()->ascii()->replaceMatches('/\s+/', ' ')->trim()->value();
+        return $sizes->first(fn($s) => Str::of($s->name)->lower()->ascii()->replaceMatches('/\s+/', ' ')->trim()->value() === $normalized);
+    }
+
     public function index(Request $request)
     {
-        $cart = \App\Models\Cart::with('items.product')
+        $cart = \App\Models\Cart::with(['items.product', 'items.product.activeOffer'])
             ->where('user_id', $request->user()->id)
             ->first();
 
@@ -59,7 +69,7 @@ class CheckoutController extends Controller
 
         // Verificar stock de cada ítem antes de procesar el pago
         foreach ($cart->items as $item) {
-            $size = $item->product->sizes->firstWhere('name', $item->size);
+            $size = $this->findSizeByName($item->product->sizes, $item->size ?? '');
             if (!$size || $size->pivot->stock <= 0) {
                 return redirect()->route('cart.index')->with('error',
                     "Sin stock: \"" . $item->product->name . "\" (talle " . $item->size . ") ya no tiene stock. Por favor eliminá ese ítem del carrito."

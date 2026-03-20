@@ -108,7 +108,8 @@ const Checkout = ({ cart, savedShippingInfo }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post(route('checkout.payment')); 
+    if (processing) return;
+    post(route('checkout.payment'));
   };
 
   const proceedToPayment = () => {

@@ -10,9 +10,19 @@ use App\Models\Size;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PaymentStatusController extends Controller
 {
+    private function findSizeModel(string $sizeName)
+    {
+        $byExact = Size::where('name', $sizeName)->first();
+        if ($byExact) return $byExact;
+
+        $normalized = Str::of($sizeName)->lower()->ascii()->replaceMatches('/\s+/', ' ')->trim()->value();
+        return Size::all()->first(fn($s) => Str::of($s->name)->lower()->ascii()->replaceMatches('/\s+/', ' ')->trim()->value() === $normalized);
+    }
+
     public function success(Request $request)
     {
         $paymentId    = $request->get('payment_id');
@@ -81,48 +91,51 @@ class PaymentStatusController extends Controller
             return redirect()->route('checkout.index')->with('error', 'Falta información del DNI.');
         }
 
-        $order = $user->orders()->create([
-            'payment_id'      => $paymentId ?? 'pending',
-            'total'           => $cart->items->sum(fn($item) => $item->unit_price * $item->quantity),
-            'status'          => 'completed',
-            'shipping_status' => Order::SHIPPING_STATUS_PENDING,
-            'province'        => $shippingInfo['province'] ?? null,
-            'city'            => $shippingInfo['city'] ?? null,
-            'postal_code'     => $shippingInfo['postal_code'] ?? null,
-            'address'         => $shippingInfo['address'] ?? null,
-            'phone'           => $shippingInfo['phone'] ?? null,
-            'shipping_method' => $shippingInfo['shipping_method'] ?? null,
-            'dni'             => $dni,
-            'first_name'      => $shippingInfo['first_name'] ?? null,
-            'last_name'       => $shippingInfo['last_name'] ?? null,
-            'email'           => $shippingInfo['email'] ?? null,
-            'observations'    => $shippingInfo['observations'] ?? null,
-            'courier_company' => $shippingInfo['courier_company'] ?? null,
-        ]);
-
-        foreach ($cart->items as $item) {
-            $order->items()->create([
-                'product_id' => $item->product_id,
-                'quantity'   => $item->quantity,
-                'price'      => $item->unit_price,
-                'size'       => $item->size ?? null,
+        $order = DB::transaction(function () use ($user, $cart, $paymentId, $shippingInfo, $dni) {
+            $order = $user->orders()->create([
+                'payment_id'      => $paymentId ?? 'pending',
+                'total'           => $cart->items->sum(fn($item) => $item->unit_price * $item->quantity),
+                'status'          => 'completed',
+                'shipping_status' => Order::SHIPPING_STATUS_PENDING,
+                'province'        => $shippingInfo['province'] ?? null,
+                'city'            => $shippingInfo['city'] ?? null,
+                'postal_code'     => $shippingInfo['postal_code'] ?? null,
+                'address'         => $shippingInfo['address'] ?? null,
+                'phone'           => $shippingInfo['phone'] ?? null,
+                'shipping_method' => $shippingInfo['shipping_method'] ?? null,
+                'dni'             => $dni,
+                'first_name'      => $shippingInfo['first_name'] ?? null,
+                'last_name'       => $shippingInfo['last_name'] ?? null,
+                'email'           => $shippingInfo['email'] ?? null,
+                'observations'    => $shippingInfo['observations'] ?? null,
+                'courier_company' => $shippingInfo['courier_company'] ?? null,
             ]);
 
-            // Decrementar el stock en la tabla pivot product_size
-            if ($item->size) {
-                $sizeModel = Size::where('name', $item->size)->first();
-                if ($sizeModel) {
-                    DB::table('product_size')
-                        ->where('product_id', $item->product_id)
-                        ->where('size_id', $sizeModel->id)
-                        ->where('stock', '>', 0)
-                        ->decrement('stock', $item->quantity);
+            foreach ($cart->items as $item) {
+                $order->items()->create([
+                    'product_id' => $item->product_id,
+                    'quantity'   => $item->quantity,
+                    'price'      => $item->unit_price,
+                    'size'       => $item->size ?? null,
+                ]);
+
+                if ($item->size) {
+                    $sizeModel = $this->findSizeModel($item->size);
+                    if ($sizeModel) {
+                        DB::table('product_size')
+                            ->where('product_id', $item->product_id)
+                            ->where('size_id', $sizeModel->id)
+                            ->where('stock', '>', 0)
+                            ->decrement('stock', $item->quantity);
+                    }
                 }
             }
-        }
 
-        $cart->items()->delete();
-        $cart->delete();
+            $cart->items()->delete();
+            $cart->delete();
+
+            return $order;
+        });
 
         $request->session()->forget(['shipping_info', 'payment_in_progress']);
         $order->load(['items.product', 'user']);

@@ -1,12 +1,15 @@
 import React, { useState, useRef } from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
-import { Head, Link, useForm, router } from '@inertiajs/react';
+import { Head, Link, useForm, router, usePage } from '@inertiajs/react';
 import { toast } from 'react-toastify';
 
 const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => {
+  const { auth } = usePage().props;
+
   const { data, setData, post, processing, errors } = useForm({
     quantity: 1,
-    size: ''
+    size: '',
+    size_id: null,
   });
 
   // Ordenar imágenes: image_1, image_2, image_3
@@ -25,6 +28,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
       return;
     }
     setData('size', size.name);
+    setData('size_id', size.id);
     setData('quantity', 1);
     setShowQuantity(false);
     setTimeout(() => {
@@ -40,12 +44,24 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
   };
 
   const sizeStock = () => {
-    const selected = product.sizes.find((s) => s.name === data.size);
+    const selected = product.sizes.find((s) => s.id === data.size_id);
     return selected ? selected.pivot.stock : 0;
   };
 
   const handleAddToCart = () => {
-    if (!data.size) {
+    if (!auth?.user) {
+      toast.error('Iniciá sesión para agregar productos al carrito.');
+      router.visit(route('login'));
+      return;
+    }
+
+    if (!auth?.user?.email_verified_at) {
+      toast.error('Verificá tu email para poder agregar productos al carrito.');
+      router.visit(route('verification.notice'));
+      return;
+    }
+
+    if (!data.size_id) {
       toast.error('¡Por favor seleccioná un talle!');
       return;
     }
@@ -54,7 +70,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
       return;
     }
 
-    post(route('cart.add', product.id), data, {
+    post(route('cart.add', product.id), {
       preserveScroll: true,
       onSuccess: () => {
         toast.success('¡Producto agregado al carrito!');
@@ -282,12 +298,13 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                     <button
                       key={size.id}
                       onClick={() => handleSizeClick(size)}
+                      type="button"
                       disabled={size.pivot.stock <= 0}
                       title={size.pivot.stock <= 0 ? 'Sin stock' : `Stock: ${size.pivot.stock}`}
                       className={`py-3 rounded-full text-center text-sm font-semibold border-2 transition-all ${
                         size.pivot.stock <= 0
                           ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed line-through opacity-60'
-                          : data.size === size.name
+                          : data.size_id === size.id
                             ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent shadow-md'
                             : 'bg-white text-gray-700 border-gray-300 hover:border-purple-300 hover:bg-purple-50'
                       }`}
@@ -299,7 +316,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
               </div>
 
               {/* Cantidad */}
-              {data.size && (
+              {data.size_id && (
                 <div
                   className={`rounded-2xl border border-gray-200 bg-white shadow-md p-5 transition-all duration-500 ${
                     showQuantity ? "opacity-100 transform translate-y-0" : "opacity-0 transform -translate-y-4"
@@ -338,9 +355,10 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
               {/* Botón de agregar al carrito */}
               <div className="space-y-3">
                 <button
+                  type="button"
                   onClick={handleAddToCart}
                   className="w-full py-4 rounded-full font-semibold text-base text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={!data.size || data.quantity < 1 || processing}
+                  disabled={!data.size_id || data.quantity < 1 || processing}
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -348,7 +366,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
                   {processing ? 'Agregando...' : 'Agregar al carrito'}
                 </button>
 
-                {!data.size && (
+                {!data.size_id && (
                   <p className="text-center text-xs font-semibold text-pink-600">
                     Primero elegí un talle
                   </p>
