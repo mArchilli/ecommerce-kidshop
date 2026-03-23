@@ -17,6 +17,7 @@ class GenderSeeder extends Seeder
         DB::table('genders')->insert([
             ['name' => 'Niños'],
             ['name' => 'Niñas'],
+            ['name' => 'Unisex'],
         ]);
     }
 }

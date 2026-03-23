@@ -16,7 +16,9 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])->get();
+        $products = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
+            ->orderBy('created_at', 'desc')
+            ->get();
         return Inertia::render('Admin/Products/ProductsView', ['products' => $products]);
     }
 
@@ -25,7 +27,8 @@ class ProductController extends Controller
         $query = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
             ->whereHas('sizes', function ($q) {
                 $q->where('product_size.stock', '>', 0);
-            });
+            })
+            ->orderBy('created_at', 'desc');
 
         if ($request->has('category')) {
             $query->whereHas('categories', function ($q) use ($request) {
@@ -330,7 +333,8 @@ class ProductController extends Controller
         $query = Product::with(['categories', 'sizes', 'colors', 'genders', 'activeOffer'])
             ->whereHas('sizes', function ($q) {
                 $q->where('product_size.stock', '>', 0);
-            });
+            })
+            ->orderBy('created_at', 'desc');
 
         if ($request->filled('q')) {
             $q = trim($request->q);

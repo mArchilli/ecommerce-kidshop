@@ -71,8 +71,11 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
       Object.entries(params).filter(([_, v]) => v !== '' && v !== null && v !== undefined)
     );
     router.get(route('catalog.index'), cleanParams, {
-      preserveScroll: true,
+      preserveScroll: false,
       replace: false,
+      onSuccess: () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
     });
   };
 
