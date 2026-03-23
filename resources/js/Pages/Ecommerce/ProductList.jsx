@@ -18,11 +18,22 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
       .filter(f => f.startsWith('gender_'))
       .map(f => f.replace('gender_', ''));
     const merged = { ...baseParams, ...extraFilters, q: searchTerm };
-    delete merged.gender;
-    delete merged.sort;
-    delete merged.genders;
-    delete merged.has_offer;
-    delete merged.is_featured;
+    // Eliminar todas las claves relacionadas con filtros que se reconstruyen,
+    // incluyendo la notación de array (genders[0], genders[1], etc.) que genera URLSearchParams
+    Object.keys(merged).forEach(key => {
+      if (
+        key === 'gender' ||
+        key === 'sort' ||
+        key === 'has_offer' ||
+        key === 'is_featured' ||
+        key === 'genders' ||
+        key.startsWith('genders[')
+      ) {
+        delete merged[key];
+      }
+    });
+    // Resetear página al aplicar filtros nuevos
+    delete merged.page;
     if (selectedGenders.length > 0) merged.genders = selectedGenders;
     if (currentQuickFilters.includes('has_offer')) merged.has_offer = 1;
     if (currentQuickFilters.includes('is_featured')) merged.is_featured = 1;
