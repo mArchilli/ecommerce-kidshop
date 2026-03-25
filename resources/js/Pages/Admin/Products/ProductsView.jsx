@@ -28,6 +28,8 @@ export default function ProductsView({ products }) {
     const [maxPrice, setMaxPrice] = useState(() => localStorage.getItem('pv_maxPrice') || '');
     const [showFilters, setShowFilters] = useState(true);
     const [sortOrder, setSortOrder] = useState(() => localStorage.getItem('pv_sort') || '');
+    const [onlyFeatured, setOnlyFeatured] = useState(() => localStorage.getItem('pv_featured') === 'true');
+    const [onlyOffers, setOnlyOffers] = useState(() => localStorage.getItem('pv_offers') === 'true');
 
     // Filtrar productos según todos los criterios
     const filteredProducts = products.filter(product => {
@@ -69,6 +71,16 @@ export default function ProductsView({ products }) {
             return false;
         }
 
+        // Filtro por destacados
+        if (onlyFeatured && !product.is_featured) {
+            return false;
+        }
+
+        // Filtro por ofertas activas
+        if (onlyOffers && !product.active_offer?.is_active) {
+            return false;
+        }
+
         return true;
     }).sort((a, b) => {
         if (sortOrder === 'asc') return a.name.localeCompare(b.name);
@@ -85,7 +97,9 @@ export default function ProductsView({ products }) {
         setMinPrice('');
         setMaxPrice('');
         setSortOrder('');
-        ['pv_search','pv_category','pv_color','pv_size','pv_gender','pv_minPrice','pv_maxPrice','pv_sort']
+        setOnlyFeatured(false);
+        setOnlyOffers(false);
+        ['pv_search','pv_category','pv_color','pv_size','pv_gender','pv_minPrice','pv_maxPrice','pv_sort','pv_featured','pv_offers']
             .forEach(k => localStorage.removeItem(k));
     };
 
@@ -97,7 +111,9 @@ export default function ProductsView({ products }) {
         selectedGender,
         minPrice,
         maxPrice,
-        sortOrder
+        sortOrder,
+        onlyFeatured || null,
+        onlyOffers || null,
     ].filter(Boolean).length;
 
     // Persistir todos los filtros en localStorage al cambiar
@@ -110,7 +126,9 @@ export default function ProductsView({ products }) {
         localStorage.setItem('pv_minPrice', minPrice);
         localStorage.setItem('pv_maxPrice', maxPrice);
         localStorage.setItem('pv_sort', sortOrder);
-    }, [searchTerm, selectedCategory, selectedColor, selectedSize, selectedGender, minPrice, maxPrice, sortOrder]);
+        localStorage.setItem('pv_featured', onlyFeatured);
+        localStorage.setItem('pv_offers', onlyOffers);
+    }, [searchTerm, selectedCategory, selectedColor, selectedSize, selectedGender, minPrice, maxPrice, sortOrder, onlyFeatured, onlyOffers]);
 
     const handleToggleFeatured = (productId, e) => {
         e.preventDefault();
@@ -258,6 +276,28 @@ export default function ProductsView({ products }) {
                                     </button>
                                 </div>
 
+                                {/* Filtros de destacados y ofertas */}
+                                <div className="flex gap-2 mb-3">
+                                    <button
+                                        onClick={() => setOnlyFeatured(v => !v)}
+                                        className={`flex-1 px-3 py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-md ${
+                                            onlyFeatured ? 'text-white' : 'bg-white border-2 border-yellow-300 text-yellow-600'
+                                        }`}
+                                        style={onlyFeatured ? { backgroundColor: '#FFB800', color: 'white' } : {}}
+                                    >
+                                        ⭐ Destacados
+                                    </button>
+                                    <button
+                                        onClick={() => setOnlyOffers(v => !v)}
+                                        className={`flex-1 px-3 py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-105 shadow-md ${
+                                            onlyOffers ? 'text-white' : 'bg-white border-2 border-red-300 text-red-500'
+                                        }`}
+                                        style={onlyOffers ? { backgroundColor: '#FC1C1D', color: 'white' } : {}}
+                                    >
+                                        🏷️ Ofertas
+                                    </button>
+                                </div>
+
                                 {/* Chips de filtros activos */}
                                 {activeFiltersCount > 0 && (
                                     <div className="mb-3 flex flex-wrap gap-1.5">
@@ -308,6 +348,18 @@ export default function ProductsView({ products }) {
                                             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#29C9F4' }}>
                                                 🔤 {sortOrder === 'asc' ? 'A → Z' : 'Z → A'}
                                                 <button onClick={() => setSortOrder('')} className="ml-0.5 hover:opacity-70">✕</button>
+                                            </span>
+                                        )}
+                                        {onlyFeatured && (
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#FFB800' }}>
+                                                ⭐ Destacados
+                                                <button onClick={() => setOnlyFeatured(false)} className="ml-0.5 hover:opacity-70">✕</button>
+                                            </span>
+                                        )}
+                                        {onlyOffers && (
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm" style={{ backgroundColor: '#FC1C1D' }}>
+                                                🏷️ Con Oferta
+                                                <button onClick={() => setOnlyOffers(false)} className="ml-0.5 hover:opacity-70">✕</button>
                                             </span>
                                         )}
                                     </div>
