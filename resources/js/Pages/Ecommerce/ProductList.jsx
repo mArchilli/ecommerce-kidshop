@@ -300,14 +300,22 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                       <div className="mb-4">
                         <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">Talles</p>
                         <div className="flex flex-wrap gap-1.5">
-                          {product.sizes.slice(0, 6).map((size) => (
-                            <span
-                              key={`size-${product.id}-${size.id}`}
-                              className="min-w-[2.25rem] h-9 flex items-center justify-center px-2 rounded-xl text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200"
-                            >
-                              {size.name}
-                            </span>
-                          ))}
+                          {product.sizes.slice(0, 6).map((size) => {
+                            const outOfStock = size.pivot?.stock <= 0;
+                            return (
+                              <span
+                                key={`size-${product.id}-${size.id}`}
+                                title={outOfStock ? 'Sin stock' : `Stock: ${size.pivot?.stock}`}
+                                className={`min-w-[2.25rem] h-9 flex items-center justify-center px-2 rounded-xl text-xs font-bold border ${
+                                  outOfStock
+                                    ? 'bg-gray-100 text-gray-400 border-gray-200 line-through opacity-60'
+                                    : 'bg-amber-50 text-amber-700 border-amber-200'
+                                }`}
+                              >
+                                {size.name}
+                              </span>
+                            );
+                          })}
                           {product.sizes.length > 6 && (
                             <span
                               title={product.sizes.slice(6).map(s => s.name).join(', ')}
