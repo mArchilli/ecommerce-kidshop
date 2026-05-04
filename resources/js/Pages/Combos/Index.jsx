@@ -36,14 +36,30 @@ export default function CombosIndex({ combos }) {
                                     key={combo.id}
                                     className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-pink-200 overflow-hidden hover:shadow-2xl hover:scale-105 transition-all duration-300"
                                 >
-                                    {/* Header */}
-                                    <div className="bg-gradient-to-r from-purple-500 to-cyan-500 p-6 text-white">
-                                        <div className="text-4xl mb-3">🎁</div>
-                                        <h2 className="text-2xl font-bold">{combo.name}</h2>
-                                        {combo.description && (
-                                            <p className="text-white/80 text-sm mt-1 line-clamp-2">{combo.description}</p>
-                                        )}
-                                    </div>
+                                    {/* Header: imagen si hay, sino degradado */}
+                                    {combo.image ? (
+                                        <div className="relative h-48 overflow-hidden">
+                                            <img
+                                                src={combo.image.startsWith('images/') ? `/${combo.image}` : `/images/${combo.image}`}
+                                                alt={combo.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-5">
+                                                <h2 className="text-2xl font-bold text-white">{combo.name}</h2>
+                                                {combo.description && (
+                                                    <p className="text-white/80 text-sm mt-1 line-clamp-2">{combo.description}</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="bg-gradient-to-r from-purple-500 to-cyan-500 p-6 text-white">
+                                            <div className="text-4xl mb-3">🎁</div>
+                                            <h2 className="text-2xl font-bold">{combo.name}</h2>
+                                            {combo.description && (
+                                                <p className="text-white/80 text-sm mt-1 line-clamp-2">{combo.description}</p>
+                                            )}
+                                        </div>
+                                    )}
 
                                     {/* Categorías */}
                                     <div className="p-5 space-y-2">

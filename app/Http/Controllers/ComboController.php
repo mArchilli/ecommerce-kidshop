@@ -40,6 +40,22 @@ class ComboController extends Controller
         ]);
     }
 
+    private function storeImage($file): string
+    {
+        $storePath = rtrim(env('COMBO_IMAGES_PATH', 'images'), '/');
+        $urlPath   = rtrim(env('COMBO_IMAGES_URL_PATH', 'images'), '/');
+        $absPath   = public_path($storePath . '/combos');
+
+        if (!is_dir($absPath)) {
+            mkdir($absPath, 0755, true);
+        }
+
+        $filename = uniqid() . '_' . $file->getClientOriginalName();
+        $file->move($absPath, $filename);
+
+        return $urlPath . '/combos/' . $filename;
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -47,17 +63,24 @@ class ComboController extends Controller
             'description'               => 'nullable|string',
             'price'                     => 'required|numeric|min:0',
             'is_active'                 => 'boolean',
+            'image'                     => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'items'                     => 'required|array|min:1',
             'items.*.category_id'       => 'required|exists:categories,id',
             'items.*.product_ids'       => 'required|array|min:1',
             'items.*.product_ids.*'     => 'exists:products,id',
         ]);
 
+        $imageUrl = null;
+        if ($request->hasFile('image')) {
+            $imageUrl = $this->storeImage($request->file('image'));
+        }
+
         $combo = Combo::create([
             'name'        => $validated['name'],
             'description' => $validated['description'] ?? null,
             'price'       => $validated['price'],
             'is_active'   => $validated['is_active'] ?? true,
+            'image'       => $imageUrl,
         ]);
 
         foreach ($validated['items'] as $item) {
@@ -103,17 +126,24 @@ class ComboController extends Controller
             'description'               => 'nullable|string',
             'price'                     => 'required|numeric|min:0',
             'is_active'                 => 'boolean',
+            'image'                     => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'items'                     => 'required|array|min:1',
             'items.*.category_id'       => 'required|exists:categories,id',
             'items.*.product_ids'       => 'required|array|min:1',
             'items.*.product_ids.*'     => 'exists:products,id',
         ]);
 
+        $imageUrl = $combo->image;
+        if ($request->hasFile('image')) {
+            $imageUrl = $this->storeImage($request->file('image'));
+        }
+
         $combo->update([
             'name'        => $validated['name'],
             'description' => $validated['description'] ?? null,
             'price'       => $validated['price'],
             'is_active'   => $validated['is_active'] ?? true,
+            'image'       => $imageUrl,
         ]);
 
         $combo->items()->delete();

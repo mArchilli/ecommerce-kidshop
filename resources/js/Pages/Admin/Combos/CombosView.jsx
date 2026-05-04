@@ -90,6 +90,21 @@ export default function CombosView({ combos }) {
                                     key={combo.id}
                                     className="bg-white rounded-2xl shadow-xl overflow-hidden border-4 border-white hover:shadow-2xl transition-all duration-300 hover:scale-105"
                                 >
+                                    {/* Imagen de portada */}
+                                    {combo.image ? (
+                                        <div className="h-88 overflow-hidden">
+                                            <img
+                                                src={combo.image.startsWith('images/') ? `/${combo.image}` : `/images/${combo.image}`}
+                                                alt={combo.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="h-40 bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center">
+                                            <span className="text-6xl">🎁</span>
+                                        </div>
+                                    )}
+
                                     {/* Header del combo */}
                                     <div className="p-5 border-b border-gray-100" style={{ backgroundColor: '#f0fdf4' }}>
                                         <div className="flex items-start justify-between gap-2">

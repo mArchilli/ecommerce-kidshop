@@ -17,6 +17,8 @@ export default function EditCombo({ combo, categories, items }) {
         initialProductsByCategory[item.category_id] = item.product_ids;
     });
 
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
     const [selectedCategoryIds, setSelectedCategoryIds] = useState(initialCategoryIds);
     const [productsByCategory, setProductsByCategory] = useState(initialProductsByCategory);
     const [categorySearch, setCategorySearch] = useState('');
@@ -58,6 +60,18 @@ export default function EditCombo({ combo, categories, items }) {
         return imgPath.startsWith('images/') ? `/${imgPath}` : `/images/${imgPath}`;
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0] || null;
+        setImageFile(file);
+        setImagePreview(file ? URL.createObjectURL(file) : null);
+    };
+
+    const getCurrentImageSrc = () => {
+        if (imagePreview) return imagePreview;
+        if (!combo.image) return null;
+        return combo.image.startsWith('images/') ? `/${combo.image}` : `/images/${combo.image}`;
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setErrors({});
@@ -67,10 +81,23 @@ export default function EditCombo({ combo, categories, items }) {
             product_ids: productsByCategory[catId] || [],
         }));
 
-        const payload = { ...form, items: itemsPayload };
+        const formData = new FormData();
+        formData.append('_method', 'PUT');
+        formData.append('name', form.name);
+        formData.append('description', form.description);
+        formData.append('price', form.price);
+        formData.append('is_active', form.is_active ? '1' : '0');
+        if (imageFile) formData.append('image', imageFile);
+        itemsPayload.forEach((item, i) => {
+            formData.append(`items[${i}][category_id]`, item.category_id);
+            item.product_ids.forEach((pid, j) => {
+                formData.append(`items[${i}][product_ids][${j}]`, pid);
+            });
+        });
+
         setProcessing(true);
 
-        router.put(route('combos.update', combo.id), payload, {
+        router.post(route('combos.update', combo.id), formData, {
             onError: (errs) => {
                 setErrors(errs);
                 setProcessing(false);
@@ -155,6 +182,45 @@ export default function EditCombo({ combo, categories, items }) {
                                     className="w-5 h-5 text-cyan-600 border-gray-300 rounded focus:ring-cyan-500"
                                 />
                                 <label htmlFor="is_active" className="text-sm font-bold text-gray-700">Combo activo</label>
+                            </div>
+
+                            {/* Imagen de portada */}
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Imagen de portada</label>
+                                <div className="flex items-start gap-4">
+                                    {getCurrentImageSrc() && (
+                                        <div className="w-32 h-32 rounded-xl overflow-hidden border-2 border-gray-200 flex-shrink-0">
+                                            <img src={getCurrentImageSrc()} alt="Imagen actual" className="w-full h-full object-cover" />
+                                        </div>
+                                    )}
+                                    <div className="flex-1">
+                                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-cyan-400 hover:bg-cyan-50 transition-colors">
+                                            <div className="text-center">
+                                                <div className="text-3xl mb-1">🖼️</div>
+                                                <p className="text-sm font-semibold text-gray-600">
+                                                    {imageFile ? imageFile.name : (combo.image ? 'Cambiar imagen' : 'Subir imagen')}
+                                                </p>
+                                                <p className="text-xs text-gray-400 mt-1">JPG, PNG, WEBP — max 2MB</p>
+                                            </div>
+                                            <input
+                                                type="file"
+                                                accept="image/jpeg,image/png,image/gif,image/webp"
+                                                onChange={handleImageChange}
+                                                className="hidden"
+                                            />
+                                        </label>
+                                        {imageFile && (
+                                            <button
+                                                type="button"
+                                                onClick={() => { setImageFile(null); setImagePreview(null); }}
+                                                className="mt-2 text-xs text-red-500 hover:text-red-700 font-semibold"
+                                            >
+                                                ✕ Cancelar cambio
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                                <InputError message={errors.image} className="mt-2" />
                             </div>
                         </div>
 

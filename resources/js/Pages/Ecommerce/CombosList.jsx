@@ -26,15 +26,31 @@ export default function CombosList({ combos = [] }) {
                             data-aos-delay={idx * 100}
                             className="bg-white rounded-3xl shadow-lg border-2 border-pink-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
                         >
-                            {/* Header degradado */}
-                            <div className="bg-gradient-to-r from-purple-500 to-cyan-500 p-6 text-white relative overflow-hidden">
-                                <div className="absolute -top-4 -right-4 text-8xl opacity-20 select-none">🎁</div>
-                                <div className="text-4xl mb-3">🎁</div>
-                                <h3 className="text-xl font-bold leading-tight">{combo.name}</h3>
-                                {combo.description && (
-                                    <p className="text-white/75 text-sm mt-1 line-clamp-2">{combo.description}</p>
-                                )}
-                            </div>
+                            {/* Header: imagen si hay, sino degradado */}
+                            {combo.image ? (
+                                <div className="relative h-88 overflow-hidden bg-gray-50 flex items-center justify-center">
+                                    <img
+                                        src={combo.image.startsWith('images/') ? `/${combo.image}` : `/images/${combo.image}`}
+                                        alt={combo.name}
+                                        className="w-full h-full object-contain"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-4">
+                                        <h3 className="text-xl font-bold text-white leading-tight">{combo.name}</h3>
+                                        {combo.description && (
+                                            <p className="text-white/75 text-sm mt-1 line-clamp-2">{combo.description}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="bg-gradient-to-r from-purple-500 to-cyan-500 p-6 text-white relative overflow-hidden">
+                                    <div className="absolute -top-4 -right-4 text-8xl opacity-20 select-none">🎁</div>
+                                    <div className="text-4xl mb-3">🎁</div>
+                                    <h3 className="text-xl font-bold leading-tight">{combo.name}</h3>
+                                    {combo.description && (
+                                        <p className="text-white/75 text-sm mt-1 line-clamp-2">{combo.description}</p>
+                                    )}
+                                </div>
+                            )}
 
                             {/* Cuerpo */}
                             <div className="p-5">

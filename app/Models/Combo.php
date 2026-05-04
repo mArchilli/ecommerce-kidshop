@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Combo extends Model
 {
-    protected $fillable = ['name', 'description', 'price', 'is_active'];
+    protected $fillable = ['name', 'description', 'price', 'is_active', 'image'];
 
     protected $casts = [
         'price' => 'decimal:2',
