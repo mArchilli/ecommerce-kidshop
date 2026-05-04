@@ -442,7 +442,18 @@ class ProductController extends Controller
             'is_featured' => $request->is_featured,
         ];
 
-        return Inertia::render('Ecommerce/ProductList', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters'));
+        $combos = Combo::where('is_active', true)
+            ->with(['items.category'])
+            ->get()
+            ->map(function ($combo) {
+                $combo->category_names = $combo->items
+                    ->pluck('category.name')
+                    ->unique()
+                    ->values();
+                return $combo;
+            });
+
+        return Inertia::render('Ecommerce/ProductList', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters', 'combos'));
     }
 
     public function toggleFeatured(Product $product)

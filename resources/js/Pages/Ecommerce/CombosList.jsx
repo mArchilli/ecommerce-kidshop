@@ -18,8 +18,8 @@ export default function CombosList({ combos = [] }) {
         return image.startsWith('images/') ? `/${image}` : `/images/${image}`;
     };
 
-    const ComboCard = ({ combo }) => (
-        <div className="bg-white rounded-3xl shadow-lg border-2 border-pink-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col h-full">
+    const ComboCard = ({ combo, animated = true }) => (
+        <div className={`bg-white rounded-3xl shadow-lg border-2 border-pink-100 overflow-hidden flex flex-col h-full${animated ? ' hover:shadow-2xl hover:-translate-y-2 transition-all duration-300' : ''}`}>
             {/* Header: imagen si hay, sino degradado */}
             {getImageSrc(combo.image) ? (
                 <div className="relative h-48 overflow-hidden flex-shrink-0">
@@ -71,7 +71,7 @@ export default function CombosList({ combos = [] }) {
                     </div>
                     <Link
                         href={route('combos.public.show', combo.id)}
-                        className="px-5 py-2.5 bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white text-sm font-bold rounded-full transition-all duration-200 hover:shadow-lg hover:scale-105"
+                        className={`px-5 py-2.5 bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white text-sm font-bold rounded-full transition-all duration-200${animated ? ' hover:shadow-lg hover:scale-105' : ''}`}
                     >
                         Armar combo →
                     </Link>
@@ -103,7 +103,7 @@ export default function CombosList({ combos = [] }) {
                                     className="snap-center flex-shrink-0"
                                     style={{ flex: '0 0 85%' }}
                                 >
-                                    <ComboCard combo={combo} />
+                                    <ComboCard combo={combo} animated={false} />
                                 </div>
                             ))}
                         </div>
@@ -119,18 +119,6 @@ export default function CombosList({ combos = [] }) {
                     </div>
                 )}
 
-                {/* Ver todos */}
-                <div className="text-center mt-10 px-4" data-aos="fade-up">
-                    <Link
-                        href={route('combos.public.index')}
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 hover:scale-105 transform transition-all shadow-lg hover:shadow-xl"
-                    >
-                        Ver todos los combos
-                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </Link>
-                </div>
             </div>
         </section>
     );

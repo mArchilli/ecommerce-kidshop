@@ -5,21 +5,15 @@ import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-const ProductList = ({ products, categories, colors, genders, sizes = [], filters = {} }) => {
-  // products: objeto paginado de Laravel (data, links, meta)
-
-  // Estado para mostrar/ocultar filtros
+const ProductList = ({ products, categories, colors, genders, sizes = [], filters = {}, combos = [] }) => {
   const [showFilters, setShowFilters] = useState(false);
 
-  // Envía al backend los filtros activos (quickFilters + búsqueda + filtros del panel)
   const submitFilters = (currentQuickFilters, extraFilters = {}) => {
     const baseParams = Object.fromEntries(new URLSearchParams(window.location.search));
     const selectedGenders = currentQuickFilters
       .filter(f => f.startsWith('gender_'))
       .map(f => f.replace('gender_', ''));
     const merged = { ...baseParams, ...extraFilters, q: searchTerm };
-    // Eliminar todas las claves relacionadas con filtros que se reconstruyen,
-    // incluyendo la notación de array (genders[0], genders[1], etc.) que genera URLSearchParams
     Object.keys(merged).forEach(key => {
       if (
         key === 'gender' ||
@@ -32,7 +26,6 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
         delete merged[key];
       }
     });
-    // Resetear página al aplicar filtros nuevos
     delete merged.page;
     if (selectedGenders.length > 0) merged.genders = selectedGenders;
     if (currentQuickFilters.includes('has_offer')) merged.has_offer = 1;
@@ -46,10 +39,8 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
     });
   };
 
-  // Handler para filtros del panel lateral
   const handleFilter = (selectedFilters) => submitFilters(quickFilters, selectedFilters);
 
-  // Handler para filtros rápidos (multi-selección, aplica inmediatamente)
   const handleQuickFilter = (key) => {
     const updated = quickFilters.includes(key)
       ? quickFilters.filter(k => k !== key)
@@ -58,7 +49,6 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
     submitFilters(updated);
   };
 
-  // Handler para paginación: mantiene los filtros en la URL
   const handlePagination = (url) => {
     if (!url) return;
     const target = new URL(url, window.location.origin);
@@ -90,7 +80,6 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
     });
   };
 
-  // Función para asegurar el prefijo correcto en la ruta de la imagen
   const getImageSrc = (imgPath) => {
     if (!imgPath) return '/placeholder.svg';
     return imgPath.startsWith('images/') ? `/${imgPath}` : `/images/${imgPath}`;
@@ -109,24 +98,112 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
   });
 
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
+    AOS.init({ duration: 1000, once: true });
   }, []);
 
   return (
     <EcommerceLayout>
       <Head title="Catálogo" />
 
-      <div className="max-w-7xl mx-auto px-4 " >
-        <h1 className="hidden text-3xl font-extrabold text-gray-900 sm:text-4xl my-6 text-center md:text-left">Catalogo de prendas</h1>
-        
-        {/* Barra de búsqueda y orden (responsive) */}
+      {/* ── SECCIÓN COMBOS ── */}
+      {combos.length > 0 && (
+        <section className=" py-14 px-4">
+          <div className="max-w-7xl mx-auto">
+            {/* Encabezado combos */}
+            <div className="text-center mb-10">
+              <span className="inline-block bg-gradient-to-r from-purple-500 to-cyan-500 text-white text-xs font-extrabold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 shadow">
+                ⭐ Más vendidos
+              </span>
+              <h2 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-500 bg-clip-text text-transparent mb-3">
+                🎁 Combos Especiales
+              </h2>
+              <p className="text-gray-500 text-lg max-w-xl mx-auto">
+                Armá tu combo a medida y ahorrá en cada prenda. La mejor relación calidad-precio para vestir a tus hijos.
+              </p>
+            </div>
+
+            {/* Grid combos */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {combos.map((combo) => (
+                <div
+                  key={combo.id}
+                  data-aos="fade-up"
+                  className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-pink-200 overflow-hidden hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col"
+                >
+                  {/* Imagen o degradado */}
+                  {combo.image ? (
+                    <div className="relative h-52 overflow-hidden">
+                      <img
+                        src={getImageSrc(combo.image)}
+                        alt={combo.name}
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-5">
+                        <h3 className="text-2xl font-extrabold text-white leading-tight">{combo.name}</h3>
+                        {combo.description && (
+                          <p className="text-white/80 text-sm mt-1 line-clamp-2">{combo.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-gradient-to-r from-purple-500 to-cyan-500 p-7 text-white">
+                      <div className="text-5xl mb-3">🎁</div>
+                      <h3 className="text-2xl font-extrabold">{combo.name}</h3>
+                      {combo.description && (
+                        <p className="text-white/80 text-sm mt-1 line-clamp-2">{combo.description}</p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Categorías incluidas */}
+                  <div className="p-5 space-y-2 flex-1">
+                    <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3">Incluye</p>
+                    {combo.category_names?.map((name, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-cyan-400 flex-shrink-0" />
+                        <span className="text-sm font-semibold text-gray-700">{name}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Precio y CTA */}
+                  <div className="px-5 pb-6 border-t border-gray-100 pt-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm text-gray-500 font-medium">Precio del combo</span>
+                      <span className="text-3xl font-black bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
+                        ${Number(combo.price).toLocaleString('es-AR')}
+                      </span>
+                    </div>
+                    <Link
+                      href={route('combos.public.show', combo.id)}
+                      className="block w-full text-center py-3 px-6 bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-bold rounded-full transition-all duration-300 hover:shadow-lg text-sm"
+                    >
+                      Crear mi combo →
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── SEPARADOR ── */}
+      {combos.length > 0 && (
+        <div className="relative flex items-center justify-center py-8 px-4">
+          <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+          <span className="relative bg-white px-6 py-2 rounded-full border border-gray-200 text-sm font-bold text-gray-500 shadow-sm">
+            ✨ Todas las prendas
+          </span>
+        </div>
+      )}
+
+      {/* ── SECCIÓN PRENDAS ── */}
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Barra de búsqueda y orden */}
         <div className="w-full my-6 space-y-4">
-          {/* Fila con búsqueda y orden */}
           <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
-            {/* Barra de búsqueda - más pequeña en desktop */}
+            {/* Búsqueda */}
             <div className="flex gap-2 md:w-auto w-full">
               <input
                 type="text"
@@ -145,7 +222,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
               </button>
             </div>
 
-            {/* Botones de filtros rápidos en desktop */}
+            {/* Filtros rápidos desktop */}
             <div className="hidden md:flex gap-2 flex-wrap items-center">
               {[
                 { key: 'gender_Niños', label: 'Niños' },
@@ -166,7 +243,6 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                   {filter.label}
                 </button>
               ))}
-              {/* Botón mostrar filtros en desktop */}
               <button
                 type="button"
                 onClick={() => setShowFilters(!showFilters)}
@@ -177,7 +253,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
             </div>
           </div>
 
-          {/* Botones de filtros rápidos en mobile */}
+          {/* Filtros rápidos mobile */}
           <div className="grid grid-cols-2 gap-2 md:hidden">
             {[
               { key: 'gender_Niños', label: 'Niños' },
@@ -200,7 +276,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
             ))}
           </div>
 
-          {/* Botón mostrar filtros en mobile (ancho completo) */}
+          {/* Botón filtros mobile */}
           <div className="md:hidden">
             <button
               type="button"
@@ -211,8 +287,8 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
             </button>
           </div>
         </div>
-        
-        {/* Menú de filtros detallado (desplegable, no modal) */}
+
+        {/* Panel de filtros */}
         {showFilters && (
           <ProductFilter
             categories={categories}
@@ -228,12 +304,12 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
             onClose={() => setShowFilters(false)}
           />
         )}
+
+        {/* Grid de prendas */}
         {products && products.data && products.data.length > 0 ? (
           <>
-            <div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center max-w-7xl mx-auto"
-            >
-              {products.data.map((product, idx) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center max-w-7xl mx-auto">
+              {products.data.map((product) => (
                 <div
                   key={product.id}
                   className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col border border-gray-100"
@@ -247,7 +323,6 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                    {/* Badge oferta */}
                     {product.active_offer && (
                       <div className="absolute top-3 right-3">
                         <span className="bg-rose-500 text-white text-xs font-extrabold px-3 py-1.5 rounded-full shadow-lg tracking-wide">
@@ -256,7 +331,6 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                       </div>
                     )}
 
-                    {/* Badge destacado */}
                     {product.is_featured && (
                       <div className="absolute top-3 left-3">
                         <div className="bg-amber-400 rounded-full p-2 shadow-lg">
@@ -270,13 +344,11 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
 
                   {/* Contenido */}
                   <div className="p-5 flex flex-col flex-1">
-
-                    {/* Título */}
                     <h3 className="text-2xl font-extrabold text-gray-900 leading-tight mb-3 tracking-tight">
                       {product.name}
                     </h3>
 
-                    {/* Tags: género, categorías, colores */}
+                    {/* Tags */}
                     <div className="flex flex-wrap gap-1.5 mb-4">
                       {product.genders && product.genders.map((gender) => (
                         <span key={gender.id} className="px-2.5 py-1 rounded-full text-xs font-semibold bg-violet-100 text-violet-700 border border-violet-200">
@@ -356,19 +428,16 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                 </div>
               ))}
             </div>
+
             {/* Paginación */}
             <div className="flex flex-wrap justify-center items-center gap-2 my-10">
               {products.links.map((link, idx) => {
-                // Normalizamos etiquetas (Laravel incluye &laquo; &raquo;)
                 let label = link.label
                   .replace('&laquo;', '←')
                   .replace('&raquo;', '→')
                   .replace(/&.*?;/g, (m) => m);
-                
-                // Mantener etiquetas simples
                 if (idx === 0) label = '← Anterior';
                 if (idx === products.links.length - 1) label = 'Siguiente →';
-                
                 return (
                   <button
                     key={idx}
@@ -390,7 +459,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
             </div>
           </>
         ) : (
-          <div className='m-4 sm:m-1'>
+          <div className="m-4 sm:m-1">
             <p className="text-center text-xl text-black mt-8 h-96">
               No hay prendas para los filtros seleccionados.
             </p>

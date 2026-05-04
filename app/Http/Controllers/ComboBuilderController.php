@@ -14,22 +14,6 @@ use Inertia\Inertia;
 
 class ComboBuilderController extends Controller
 {
-    public function index()
-    {
-        $combos = Combo::where('is_active', true)
-            ->with(['items.category'])
-            ->get()
-            ->map(function ($combo) {
-                $combo->category_names = $combo->items
-                    ->pluck('category.name')
-                    ->unique()
-                    ->values();
-                return $combo;
-            });
-
-        return Inertia::render('Combos/Index', ['combos' => $combos]);
-    }
-
     public function show(Combo $combo)
     {
         abort_if(!$combo->is_active, 404);

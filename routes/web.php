@@ -55,7 +55,6 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
 Route::get('/products/{product}', [ProductController::class, 'show'])->middleware('verified.store')->name('products.show');
 
 // Combos públicos
-Route::get('/combos', [ComboBuilderController::class, 'index'])->middleware('verified.store')->name('combos.public.index');
 Route::get('/combos/{combo}', [ComboBuilderController::class, 'show'])->middleware('verified.store')->name('combos.public.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
