@@ -58,9 +58,11 @@ class CartController extends Controller
         }
 
         // Cargar carrito con oferta activa y talles (con stock) de cada producto
-        $cart = \App\Models\Cart::with(['items.product.activeOffer', 'items.product.sizes'])
-            ->where('user_id', $user->id)
-            ->first();
+        $cart = \App\Models\Cart::with([
+            'items.product.activeOffer',
+            'items.product.sizes',
+            'comboItems.combo',
+        ])->where('user_id', $user->id)->first();
 
         if ($cart && $cart->items) {
             $cart->items->transform(function ($item) {

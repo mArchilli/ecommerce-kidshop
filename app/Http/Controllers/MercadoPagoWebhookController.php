@@ -145,16 +145,21 @@ class MercadoPagoWebhookController extends Controller
                 return response()->json(['status' => 'user_not_found'], 200);
             }
 
-            // Obtener el carrito del usuario
-            $cart = $user->cart()->with('items.product')->first();
+            // Obtener el carrito del usuario (items regulares + combos)
+            $cart = $user->cart()->with('items.product', 'comboItems')->first();
 
-            if (!$cart || $cart->items->isEmpty()) {
+            $hasRegularItems = $cart && $cart->items->isNotEmpty();
+            $hasComboItems   = $cart && $cart->comboItems->isNotEmpty();
+
+            if (!$cart || (!$hasRegularItems && !$hasComboItems)) {
                 Log::warning('Webhook: carrito vacío o no encontrado', ['user_id' => $userId]);
                 return response()->json(['status' => 'cart_empty'], 200);
             }
 
-            // Calcular total antes del closure para evitar ambigüedad de tipos
-            $orderTotal = $cart->items->reduce(fn($carry, $item) => $carry + ($item->unit_price * $item->quantity), 0);
+            // Calcular total (items regulares + combos)
+            $regularTotal = $cart->items->reduce(fn($carry, $item) => $carry + ($item->unit_price * $item->quantity), 0);
+            $comboTotal   = $cart->comboItems->reduce(fn($carry, $item) => $carry + ($item->unit_price * $item->quantity), 0);
+            $orderTotal   = $regularTotal + $comboTotal;
 
             // Crear la orden
             $order = DB::transaction(function () use ($user, $cart, $paymentId, $shippingInfo, $orderTotal) {
@@ -177,6 +182,7 @@ class MercadoPagoWebhookController extends Controller
                     'courier_company' => $shippingInfo['courier_company'] ?? null,
                 ]);
 
+                // Crear order_items para productos regulares
                 foreach ($cart->items as $item) {
                     $order->items()->create([
                         'product_id' => $item->product_id,
@@ -197,7 +203,31 @@ class MercadoPagoWebhookController extends Controller
                     }
                 }
 
+                // Crear order_items para combos y decrementar stock de cada prenda
+                foreach ($cart->comboItems as $comboItem) {
+                    $order->items()->create([
+                        'product_id' => null,
+                        'quantity'   => $comboItem->quantity,
+                        'price'      => $comboItem->unit_price,
+                        'size'       => $comboItem->size,
+                        'combo_data' => $comboItem->combo_data,
+                    ]);
+
+                    // Decrementar stock de cada prenda seleccionada en el combo
+                    $sizeModel = $this->findSizeModel($comboItem->size);
+                    if ($sizeModel) {
+                        foreach (($comboItem->combo_data['items'] ?? []) as $selectedProduct) {
+                            DB::table('product_size')
+                                ->where('product_id', $selectedProduct['product_id'])
+                                ->where('size_id', $sizeModel->id)
+                                ->where('stock', '>', 0)
+                                ->decrement('stock', $comboItem->quantity);
+                        }
+                    }
+                }
+
                 $cart->items()->delete();
+                $cart->comboItems()->delete();
                 $cart->delete();
 
                 return $order;

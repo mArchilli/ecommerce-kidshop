@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\ComboBuilderController;
+use App\Http\Controllers\ComboController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\PaymentStatusController;
@@ -52,6 +54,15 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
 
 Route::get('/products/{product}', [ProductController::class, 'show'])->middleware('verified.store')->name('products.show');
 
+// Combos públicos
+Route::get('/combos', [ComboBuilderController::class, 'index'])->middleware('verified.store')->name('combos.public.index');
+Route::get('/combos/{combo}', [ComboBuilderController::class, 'show'])->middleware('verified.store')->name('combos.public.show');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/cart/combo/{combo}', [ComboBuilderController::class, 'addToCart'])->name('combos.addToCart');
+    Route::delete('/cart/combo-item/{comboCartItem}', [ComboBuilderController::class, 'removeFromCart'])->name('combos.removeFromCart');
+});
+
 Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(function () {
     Route::get('/admin/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/admin/categories/create', [CategoryController::class, 'create'])->name('categories.create');
@@ -89,6 +100,15 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
     Route::delete('/admin/offers/{offer}', [OfferController::class, 'destroy'])->name('offers.destroy');
     Route::get('/admin/offers/{offer}/delete', [OfferController::class, 'delete'])->name('offers.delete');
     Route::post('/admin/offers/{offer}/toggle-active', [OfferController::class, 'toggleActive'])->name('offers.toggleActive');
+
+    Route::get('/admin/combos', [ComboController::class, 'index'])->name('combos.index');
+    Route::get('/admin/combos/create', [ComboController::class, 'create'])->name('combos.create');
+    Route::post('/admin/combos', [ComboController::class, 'store'])->name('combos.store');
+    Route::get('/admin/combos/{combo}/edit', [ComboController::class, 'edit'])->name('combos.edit');
+    Route::put('/admin/combos/{combo}', [ComboController::class, 'update'])->name('combos.update');
+    Route::get('/admin/combos/{combo}/delete', [ComboController::class, 'delete'])->name('combos.delete');
+    Route::delete('/admin/combos/{combo}', [ComboController::class, 'destroy'])->name('combos.destroy');
+    Route::post('/admin/combos/{combo}/toggle-active', [ComboController::class, 'toggleActive'])->name('combos.toggleActive');
 
     Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
     Route::post('/admin/users/{user}/verify', [AdminUserController::class, 'verify'])->name('admin.users.verify');

@@ -258,6 +258,31 @@ export default function AuthenticatedLayout({ header, children }) {
                         </Link>
 
                         <Link
+                            href={route('combos.index')}
+                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 group ${
+                                route().current('combos.index') || route().current('combos.create') || route().current('combos.edit')
+                                    ? 'bg-white text-black'
+                                    : 'text-white/90 hover:text-white hover:bg-white/10 hover:scale-105'
+                            } ${sidebarCollapsed ? 'justify-center' : ''}`}
+                            title={sidebarCollapsed ? 'Combos' : ''}
+                        >
+                            <svg
+                                className="h-5 w-5 flex-shrink-0 group-hover:rotate-12 transition-transform"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                                />
+                            </svg>
+                            {!sidebarCollapsed && <span>Combos</span>}
+                        </Link>
+
+                        <Link
                             href={route('admin.orders.index')}
                             className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 group relative ${
                                 route().current('admin.orders.index')
@@ -477,6 +502,16 @@ export default function AuthenticatedLayout({ header, children }) {
                                         }`}
                                     >
                                         Ofertas
+                                    </Link>
+                                    <Link
+                                        href={route('combos.index')}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            route().current('combos.index') || route().current('combos.create') || route().current('combos.edit')
+                                                ? 'bg-white text-black'
+                                                : 'text-white/90 hover:text-white hover:bg-white/10'
+                                        }`}
+                                    >
+                                        Combos
                                     </Link>
                                     <Link
                                         href={route('admin.orders.index')}

@@ -23,9 +23,11 @@ class CheckoutController extends Controller
 
     public function index(Request $request)
     {
-        $cart = \App\Models\Cart::with(['items.product', 'items.product.activeOffer'])
-            ->where('user_id', $request->user()->id)
-            ->first();
+        $cart = \App\Models\Cart::with([
+            'items.product',
+            'items.product.activeOffer',
+            'comboItems.combo',
+        ])->where('user_id', $request->user()->id)->first();
 
         // Obtener la información de envío guardada en sesión (si existe)
         $shippingInfo = $request->session()->get('shipping_info', null);
@@ -58,16 +60,21 @@ class CheckoutController extends Controller
         $user = $request->user();
 
         // Obtener el carrito del usuario con talles (para verificar stock)
-        $cart = \App\Models\Cart::with(['items.product', 'items.product.sizes'])
-            ->where('user_id', $user->id)
-            ->first();
+        $cart = \App\Models\Cart::with([
+            'items.product',
+            'items.product.sizes',
+            'comboItems.combo',
+        ])->where('user_id', $user->id)->first();
 
-        // Verificar si el carrito está vacío
-        if (!$cart || $cart->items->isEmpty()) {
+        // Verificar si el carrito está vacío (productos o combos)
+        $hasRegularItems = $cart && $cart->items->isNotEmpty();
+        $hasComboItems   = $cart && $cart->comboItems->isNotEmpty();
+
+        if (!$cart || (!$hasRegularItems && !$hasComboItems)) {
             return redirect()->route('checkout.index')->with('error', 'Tu carrito está vacío.');
         }
 
-        // Verificar stock de cada ítem antes de procesar el pago
+        // Verificar stock de cada ítem regular antes de procesar el pago
         foreach ($cart->items as $item) {
             $size = $this->findSizeByName($item->product->sizes, $item->size ?? '');
             if (!$size || $size->pivot->stock <= 0) {
@@ -88,22 +95,35 @@ class CheckoutController extends Controller
         // Crear cliente de preferencias
         $client = new PreferenceClient();
 
-        // Mapea los items para MercadoPago - validar que cumplan los requisitos
-        $items = $cart->items->map(function ($item) {
+        // Mapea los items regulares para MercadoPago
+        $regularItems = $cart->items->map(function ($item) {
             $unitPrice = round((float) $item->unit_price, 2);
-            
-            // Validar que el precio sea mayor a 0
             if ($unitPrice <= 0) {
                 throw new \Exception("El precio del producto '{$item->product->name}' debe ser mayor a 0");
             }
-            
             return [
-                'title' => substr($item->product->name, 0, 256), // Máximo 256 caracteres
-                'quantity' => (int) $item->quantity,
+                'title'      => substr($item->product->name, 0, 256),
+                'quantity'   => (int) $item->quantity,
                 'unit_price' => $unitPrice,
                 'currency_id' => 'ARS',
             ];
-        })->toArray();
+        });
+
+        // Mapea los combos para MercadoPago
+        $comboItemsMP = $cart->comboItems->map(function ($item) {
+            $unitPrice = round((float) $item->unit_price, 2);
+            if ($unitPrice <= 0) {
+                throw new \Exception("El precio del combo '{$item->combo_data['combo_name']}' debe ser mayor a 0");
+            }
+            return [
+                'title'      => substr('Combo: ' . ($item->combo_data['combo_name'] ?? $item->combo->name), 0, 256),
+                'quantity'   => (int) $item->quantity,
+                'unit_price' => $unitPrice,
+                'currency_id' => 'ARS',
+            ];
+        });
+
+        $items = $regularItems->merge($comboItemsMP)->values()->toArray();
 
         // Validar que haya items
         if (empty($items)) {

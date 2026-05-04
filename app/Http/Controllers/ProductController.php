@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Combo;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Size;
@@ -84,7 +85,19 @@ class ProductController extends Controller
             'size' => $request->size,
         ];
 
-        return Inertia::render('Welcome', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters', 'offersProducts', 'featuredProducts'));
+        // Combos activos con resumen de categorías
+        $activeCombos = Combo::where('is_active', true)
+            ->with(['items.category'])
+            ->get()
+            ->map(function ($combo) {
+                $combo->category_names = $combo->items
+                    ->pluck('category.name')
+                    ->unique()
+                    ->values();
+                return $combo;
+            });
+
+        return Inertia::render('Welcome', compact('products', 'categories', 'colors', 'sizes', 'genders', 'filters', 'offersProducts', 'featuredProducts', 'activeCombos'));
     }
 
     public function show(Product $product)

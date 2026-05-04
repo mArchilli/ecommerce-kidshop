@@ -6,13 +6,14 @@ import 'aos/dist/aos.css';
 import Hero from '../Pages/Ecommerce/Hero';
 import FeaturedProducts from '../Pages/Ecommerce/FeaturedProducts';
 import CategoryExplorer from '../Pages/Ecommerce/CategoryExplorer';
+import CombosList from '../Pages/Ecommerce/CombosList';
 import ProductsOffers from '../Pages/Ecommerce/ProductsOffers';
 import About from '../Pages/Ecommerce/About';
 import PaymentMethods from '../Pages/Ecommerce/PaymentMethods';
 import FAQ from '@/Components/FAQ';
 import WhatsAppCTA from '../Pages/Ecommerce/WhatsAppCTA';
 
-const Welcome = ({ products, categories, colors, genders, offersProducts, featuredProducts }) => {
+const Welcome = ({ products, categories, colors, genders, offersProducts, featuredProducts, activeCombos }) => {
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -27,6 +28,9 @@ const Welcome = ({ products, categories, colors, genders, offersProducts, featur
         <main className="flex-grow w-full bg-gradient-to-br from-white via-pink-50 to-cyan-50">
           {/* Hero Section */}
           <Hero />
+
+          {/* Combos Section */}
+          <CombosList combos={activeCombos} />
 
           {/* Featured Products Section */}
           <FeaturedProducts products={featuredProducts} />

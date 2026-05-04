@@ -1,0 +1,163 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Category;
+use App\Models\Combo;
+use App\Models\ComboItem;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+
+class ComboController extends Controller
+{
+    public function index()
+    {
+        $combos = Combo::with(['items.category', 'items.product'])->get();
+
+        $combos->each(function ($combo) {
+            $combo->categories_summary = $combo->items
+                ->groupBy('category_id')
+                ->map(fn($items) => [
+                    'category' => $items->first()->category,
+                    'products' => $items->pluck('product'),
+                ])
+                ->values();
+        });
+
+        return Inertia::render('Admin/Combos/CombosView', [
+            'combos' => $combos,
+        ]);
+    }
+
+    public function create()
+    {
+        $categories = Category::with(['products' => function ($q) {
+            $q->select('products.id', 'products.name', 'products.images', 'products.price');
+        }])->get();
+
+        return Inertia::render('Admin/Combos/CreateCombo', [
+            'categories' => $categories,
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name'                      => 'required|string|max:255',
+            'description'               => 'nullable|string',
+            'price'                     => 'required|numeric|min:0',
+            'is_active'                 => 'boolean',
+            'items'                     => 'required|array|min:1',
+            'items.*.category_id'       => 'required|exists:categories,id',
+            'items.*.product_ids'       => 'required|array|min:1',
+            'items.*.product_ids.*'     => 'exists:products,id',
+        ]);
+
+        $combo = Combo::create([
+            'name'        => $validated['name'],
+            'description' => $validated['description'] ?? null,
+            'price'       => $validated['price'],
+            'is_active'   => $validated['is_active'] ?? true,
+        ]);
+
+        foreach ($validated['items'] as $item) {
+            foreach ($item['product_ids'] as $productId) {
+                ComboItem::create([
+                    'combo_id'    => $combo->id,
+                    'category_id' => $item['category_id'],
+                    'product_id'  => $productId,
+                ]);
+            }
+        }
+
+        return redirect()->route('combos.index')->with('success', 'Combo creado exitosamente');
+    }
+
+    public function edit(Combo $combo)
+    {
+        $combo->load(['items.category', 'items.product']);
+
+        $categories = Category::with(['products' => function ($q) {
+            $q->select('products.id', 'products.name', 'products.images', 'products.price');
+        }])->get();
+
+        $itemsByCategory = $combo->items
+            ->groupBy('category_id')
+            ->map(fn($items) => [
+                'category_id' => $items->first()->category_id,
+                'product_ids' => $items->pluck('product_id')->toArray(),
+            ])
+            ->values();
+
+        return Inertia::render('Admin/Combos/EditCombo', [
+            'combo'      => $combo,
+            'categories' => $categories,
+            'items'      => $itemsByCategory,
+        ]);
+    }
+
+    public function update(Request $request, Combo $combo)
+    {
+        $validated = $request->validate([
+            'name'                      => 'required|string|max:255',
+            'description'               => 'nullable|string',
+            'price'                     => 'required|numeric|min:0',
+            'is_active'                 => 'boolean',
+            'items'                     => 'required|array|min:1',
+            'items.*.category_id'       => 'required|exists:categories,id',
+            'items.*.product_ids'       => 'required|array|min:1',
+            'items.*.product_ids.*'     => 'exists:products,id',
+        ]);
+
+        $combo->update([
+            'name'        => $validated['name'],
+            'description' => $validated['description'] ?? null,
+            'price'       => $validated['price'],
+            'is_active'   => $validated['is_active'] ?? true,
+        ]);
+
+        $combo->items()->delete();
+
+        foreach ($validated['items'] as $item) {
+            foreach ($item['product_ids'] as $productId) {
+                ComboItem::create([
+                    'combo_id'    => $combo->id,
+                    'category_id' => $item['category_id'],
+                    'product_id'  => $productId,
+                ]);
+            }
+        }
+
+        return redirect()->route('combos.index')->with('success', 'Combo actualizado exitosamente');
+    }
+
+    public function delete(Combo $combo)
+    {
+        $combo->load(['items.category', 'items.product']);
+
+        $categoriesSummary = $combo->items
+            ->groupBy('category_id')
+            ->map(fn($items) => [
+                'category' => $items->first()->category,
+                'products' => $items->pluck('product'),
+            ])
+            ->values();
+
+        return Inertia::render('Admin/Combos/DeleteCombo', [
+            'combo'              => $combo,
+            'categories_summary' => $categoriesSummary,
+        ]);
+    }
+
+    public function destroy(Combo $combo)
+    {
+        $combo->delete();
+        return redirect()->route('combos.index')->with('success', 'Combo eliminado exitosamente');
+    }
+
+    public function toggleActive(Combo $combo)
+    {
+        $combo->update(['is_active' => !$combo->is_active]);
+        return back()->with('success', 'Estado del combo actualizado');
+    }
+}

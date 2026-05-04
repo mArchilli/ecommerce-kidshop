@@ -3,6 +3,8 @@ import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head, Link, router } from '@inertiajs/react';
 
 const Cart = ({ cart }) => {
+  const comboItems = cart?.combo_items ?? [];
+
   const [quantities, setQuantities] = useState(
     cart && cart.items
       ? cart.items.reduce((acc, item) => {
@@ -90,12 +92,19 @@ const Cart = ({ cart }) => {
   // Hay algún ítem sin stock → bloquear checkout
   const hasOutOfStockItems = cart?.items?.some((item) => !itemHasStock(item)) ?? false;
 
-  // Subtotal del carrito
-  const subtotal =
+  // Subtotal del carrito (productos + combos)
+  const regularSubtotal =
     cart?.items?.reduce(
       (total, item) => total + item.unit_price * (parseInt(quantities[item.id] || 0, 10)),
       0
     ) || 0;
+
+  const comboSubtotal = comboItems.reduce(
+    (total, item) => total + Number(item.price) * item.quantity,
+    0
+  );
+
+  const subtotal = regularSubtotal + comboSubtotal;
 
   // Función para asegurar el prefijo correcto en la ruta de la imagen
   const getImageSrc = (imgPath) => {
@@ -128,14 +137,14 @@ const Cart = ({ cart }) => {
             </button>
           </div>
 
-        {cart && cart.items && cart.items.length > 0 ? (
+        {(cart && cart.items && cart.items.length > 0) || comboItems.length > 0 ? (
           <>
             <div className="grid md:grid-cols-12 gap-6">
               {/* Columna izquierda: Ítems */}
               <section className="md:col-span-8 flex flex-col gap-4">
                 {/* Vista DESKTOP: tarjetas con mejor estilo */}
                 <div className="md:flex md:flex-col md:gap-4">
-                  {cart.items.map((item) => {
+                  {cart?.items?.map((item) => {
                     const outOfStock = !itemHasStock(item);
                     return (
                     <div
@@ -258,6 +267,72 @@ const Cart = ({ cart }) => {
                     </div>
                     );
                   })}
+
+                  {/* Combo items */}
+                  {comboItems.map((comboItem) => (
+                    <div
+                      key={`combo-${comboItem.id}`}
+                      className="bg-white/80 border-2 border-cyan-200 hover:shadow-xl rounded-2xl p-6 my-2 transition-all duration-300"
+                    >
+                      {/* Header combo */}
+                      <div className="flex items-start justify-between gap-3 mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center text-2xl flex-shrink-0">
+                            🎁
+                          </div>
+                          <div>
+                            <h3 className="text-base font-bold text-gray-900">
+                              {comboItem.combo_data?.combo_name ?? 'Combo'}
+                            </h3>
+                            <span className="inline-block mt-1 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-700">
+                              Talle: {comboItem.size}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
+                            ${Number(comboItem.price).toLocaleString('es-AR')} ARS
+                          </span>
+                          <Link
+                            href={route('combos.removeFromCart', comboItem.id)}
+                            method="delete"
+                            as="button"
+                            preserveScroll
+                            aria-label="Eliminar combo"
+                            className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white w-9 h-9 rounded-full inline-flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-md"
+                          >
+                            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m1 0l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m5 4v8m4-8v8" />
+                            </svg>
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Contenido del combo */}
+                      <div className="bg-gray-50 rounded-xl p-4 space-y-2">
+                        <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Prendas del combo</p>
+                        {(comboItem.combo_data?.items ?? []).map((product, idx) => (
+                          <div key={idx} className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                              {product.product_image ? (
+                                <img
+                                  src={product.product_image.startsWith('images/') ? `/${product.product_image}` : `/images/${product.product_image}`}
+                                  alt={product.product_name}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-lg">👕</div>
+                              )}
+                            </div>
+                            <div>
+                              <p className="text-xs font-bold text-gray-500">{product.category_name}</p>
+                              <p className="text-sm font-semibold text-gray-800">{product.product_name}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </section>
 
