@@ -32,8 +32,7 @@ const Welcome = ({ products, categories, colors, genders, offersProducts, featur
           {/* Combos Section */}
           <CombosList combos={activeCombos} />
 
-          {/* Featured Products Section */}
-          <FeaturedProducts products={featuredProducts} />
+          {/* <FeaturedProducts products={featuredProducts} /> */}
 
           {/* Products Offers Section */}
           <ProductsOffers products={offersProducts} />
@@ -48,10 +47,8 @@ const Welcome = ({ products, categories, colors, genders, offersProducts, featur
               <About />
             </div>
             
-            {/* Payment Methods Section */}
-            <div data-aos="fade-up" data-aos-delay="200">
-              <PaymentMethods />
-            </div>
+            {/* <PaymentMethods /> */}
+
           </div>
 
           {/* FAQ Section */}

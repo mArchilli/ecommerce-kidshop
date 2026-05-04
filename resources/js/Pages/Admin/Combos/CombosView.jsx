@@ -88,11 +88,11 @@ export default function CombosView({ combos }) {
                             {filteredCombos.map((combo) => (
                                 <div
                                     key={combo.id}
-                                    className="bg-white rounded-2xl shadow-xl overflow-hidden border-4 border-white hover:shadow-2xl transition-all duration-300 hover:scale-105"
+                                    className="h-full bg-white rounded-2xl shadow-xl overflow-hidden border-4 border-white hover:shadow-2xl transition-all duration-300 hover:scale-105 flex flex-col"
                                 >
                                     {/* Imagen de portada */}
                                     {combo.image ? (
-                                        <div className="h-88 overflow-hidden">
+                                        <div className="h-48 overflow-hidden flex-shrink-0">
                                             <img
                                                 src={combo.image.startsWith('images/') ? `/${combo.image}` : `/images/${combo.image}`}
                                                 alt={combo.name}
@@ -100,13 +100,13 @@ export default function CombosView({ combos }) {
                                             />
                                         </div>
                                     ) : (
-                                        <div className="h-40 bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center">
+                                        <div className="h-40 bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
                                             <span className="text-6xl">🎁</span>
                                         </div>
                                     )}
 
                                     {/* Header del combo */}
-                                    <div className="p-5 border-b border-gray-100" style={{ backgroundColor: '#f0fdf4' }}>
+                                    <div className="p-5 border-b border-gray-100 flex-shrink-0" style={{ backgroundColor: '#f0fdf4' }}>
                                         <div className="flex items-start justify-between gap-2">
                                             <div>
                                                 <h3 className="text-xl font-bold text-gray-900">{combo.name}</h3>
@@ -121,7 +121,7 @@ export default function CombosView({ combos }) {
                                     </div>
 
                                     {/* Categorías y prendas */}
-                                    <div className="p-5 space-y-3">
+                                    <div className="p-5 space-y-3 flex-1">
                                         {combo.categories_summary?.map((slot, idx) => (
                                             <div key={idx} className="bg-gray-50 rounded-xl p-3">
                                                 <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">
@@ -139,10 +139,27 @@ export default function CombosView({ combos }) {
                                                 </div>
                                             </div>
                                         ))}
+
+                                        {/* Talles */}
+                                        {combo.size_names?.length > 0 && (
+                                            <div className="pt-2">
+                                                <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Talles</p>
+                                                <div className="flex flex-wrap gap-1.5">
+                                                    {combo.size_names.map((size, i) => (
+                                                        <span
+                                                            key={i}
+                                                            className="min-w-[2.25rem] h-7 flex items-center justify-center px-2 rounded-lg text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200"
+                                                        >
+                                                            {size}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
 
                                     {/* Estado y acciones */}
-                                    <div className="px-5 pb-5 space-y-3">
+                                    <div className="px-5 pb-5 space-y-3 flex-shrink-0">
                                         <button
                                             onClick={(e) => handleToggleActive(combo.id, e)}
                                             className={`w-full px-4 py-2 rounded-xl font-bold text-sm transition-all ${

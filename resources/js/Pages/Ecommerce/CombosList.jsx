@@ -95,7 +95,7 @@ export default function CombosList({ combos = [] }) {
     );
 
     return (
-        <section className="w-full px-4 py-16">
+        <section className="w-full px-4 pb-12">
             <div className="max-w-7xl mx-auto">
                 {/* Encabezado */}
                 <div className="text-left mb-12 px-8" data-aos="fade-up">
@@ -126,7 +126,7 @@ export default function CombosList({ combos = [] }) {
                     /* Grid desktop */
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-8">
                         {combos.map((combo, idx) => (
-                            <div key={combo.id} data-aos="fade-up" data-aos-delay={idx * 100}>
+                            <div key={combo.id} data-aos="fade-up" data-aos-delay={idx * 100} className="h-full">
                                 <ComboCard combo={combo} idx={idx} />
                             </div>
                         ))}

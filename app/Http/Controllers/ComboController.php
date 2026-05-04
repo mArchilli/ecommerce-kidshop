@@ -13,7 +13,7 @@ class ComboController extends Controller
 {
     public function index()
     {
-        $combos = Combo::with(['items.category', 'items.product'])->get();
+        $combos = Combo::with(['items.category', 'items.product', 'sizes'])->get();
 
         $combos->each(function ($combo) {
             $combo->categories_summary = $combo->items
@@ -23,6 +23,7 @@ class ComboController extends Controller
                     'products' => $items->pluck('product'),
                 ])
                 ->values();
+            $combo->size_names = $combo->sizes->pluck('name')->values();
         });
 
         return Inertia::render('Admin/Combos/CombosView', [

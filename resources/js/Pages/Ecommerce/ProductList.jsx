@@ -115,7 +115,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                 ⭐ Más vendidos
               </span>
               <h2 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-500 bg-clip-text text-transparent mb-3">
-                🎁 Combos Especiales
+                Combos Especiales
               </h2>
               <p className="text-gray-500 text-lg max-w-xl mx-auto">
                 Armá tu combo a medida y ahorrá en cada prenda. La mejor relación calidad-precio para vestir a tus hijos.
