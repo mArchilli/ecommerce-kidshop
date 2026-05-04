@@ -17,4 +17,9 @@ class Combo extends Model
     {
         return $this->hasMany(ComboItem::class);
     }
+
+    public function sizes()
+    {
+        return $this->belongsToMany(Size::class);
+    }
 }

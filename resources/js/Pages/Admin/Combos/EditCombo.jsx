@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 import InputError from '@/Components/InputError';
 
-export default function EditCombo({ combo, categories, items }) {
+export default function EditCombo({ combo, categories, items, sizes, comboSizeIds }) {
     const [form, setForm] = useState({
         name: combo.name,
         description: combo.description || '',
@@ -19,12 +19,19 @@ export default function EditCombo({ combo, categories, items }) {
 
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+    const [selectedSizeIds, setSelectedSizeIds] = useState(comboSizeIds || []);
     const [selectedCategoryIds, setSelectedCategoryIds] = useState(initialCategoryIds);
     const [productsByCategory, setProductsByCategory] = useState(initialProductsByCategory);
     const [categorySearch, setCategorySearch] = useState('');
     const [productSearch, setProductSearch] = useState({});
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
+
+    const toggleSize = (sizeId) => {
+        setSelectedSizeIds(prev =>
+            prev.includes(sizeId) ? prev.filter(id => id !== sizeId) : [...prev, sizeId]
+        );
+    };
 
     const filteredCategories = categories.filter(cat =>
         !categorySearch || cat.name.toLowerCase().includes(categorySearch.toLowerCase())
@@ -88,6 +95,9 @@ export default function EditCombo({ combo, categories, items }) {
         formData.append('price', form.price);
         formData.append('is_active', form.is_active ? '1' : '0');
         if (imageFile) formData.append('image', imageFile);
+        selectedSizeIds.forEach((sid, i) => {
+            formData.append(`size_ids[${i}]`, sid);
+        });
         itemsPayload.forEach((item, i) => {
             formData.append(`items[${i}][category_id]`, item.category_id);
             item.product_ids.forEach((pid, j) => {
@@ -222,6 +232,42 @@ export default function EditCombo({ combo, categories, items }) {
                                 </div>
                                 <InputError message={errors.image} className="mt-2" />
                             </div>
+                        </div>
+
+                        {/* Selección de talles */}
+                        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border-4 border-white space-y-4">
+                            <h3 className="text-base font-bold text-gray-700 border-b pb-3">
+                                Talles disponibles *
+                                <span className="ml-2 text-sm font-normal text-gray-500">Talles en los que estará disponible este combo</span>
+                            </h3>
+
+                            {sizes.length === 0 ? (
+                                <p className="text-sm text-gray-500 italic">No hay talles creados en el sistema.</p>
+                            ) : (
+                                <div className="flex flex-wrap gap-2">
+                                    {sizes.map(size => (
+                                        <button
+                                            key={size.id}
+                                            type="button"
+                                            onClick={() => toggleSize(size.id)}
+                                            className={`px-5 py-2 rounded-xl text-sm font-bold transition-all border-2 ${
+                                                selectedSizeIds.includes(size.id)
+                                                    ? 'bg-cyan-500 text-white border-cyan-500 scale-105'
+                                                    : 'bg-white text-gray-700 border-gray-300 hover:border-cyan-400 hover:text-cyan-600'
+                                            }`}
+                                        >
+                                            {selectedSizeIds.includes(size.id) ? '✓ ' : ''}{size.name}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+
+                            {selectedSizeIds.length > 0 && (
+                                <p className="text-sm text-cyan-700 font-semibold">
+                                    ✓ {selectedSizeIds.length} {selectedSizeIds.length === 1 ? 'talle seleccionado' : 'talles seleccionados'}
+                                </p>
+                            )}
+                            <InputError message={errors.size_ids} className="mt-1" />
                         </div>
 
                         {/* Selección de categorías */}

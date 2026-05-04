@@ -34,7 +34,9 @@ class ComboBuilderController extends Controller
     {
         abort_if(!$combo->is_active, 404);
 
-        $combo->load(['items.category', 'items.product.sizes']);
+        $combo->load(['items.category', 'items.product.sizes', 'sizes']);
+
+        $allowedSizeIds = $combo->sizes->pluck('id')->toArray();
 
         $categoriesWithProducts = $combo->items
             ->groupBy('category_id')
@@ -57,6 +59,7 @@ class ComboBuilderController extends Controller
         $availableSizes = $combo->items
             ->flatMap(fn($item) => $item->product->sizes->filter(fn($s) => $s->pivot->stock > 0))
             ->unique('id')
+            ->filter(fn($s) => in_array($s->id, $allowedSizeIds))
             ->map(fn($s) => ['id' => $s->id, 'name' => $s->name])
             ->values();
 

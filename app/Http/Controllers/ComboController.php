@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Combo;
 use App\Models\ComboItem;
+use App\Models\Size;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -35,8 +36,11 @@ class ComboController extends Controller
             $q->select('products.id', 'products.name', 'products.images', 'products.price');
         }])->get();
 
+        $sizes = Size::orderBy('name')->get(['id', 'name']);
+
         return Inertia::render('Admin/Combos/CreateCombo', [
             'categories' => $categories,
+            'sizes'      => $sizes,
         ]);
     }
 
@@ -64,6 +68,8 @@ class ComboController extends Controller
             'price'                     => 'required|numeric|min:0',
             'is_active'                 => 'boolean',
             'image'                     => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'size_ids'                  => 'required|array|min:1',
+            'size_ids.*'                => 'exists:sizes,id',
             'items'                     => 'required|array|min:1',
             'items.*.category_id'       => 'required|exists:categories,id',
             'items.*.product_ids'       => 'required|array|min:1',
@@ -83,6 +89,8 @@ class ComboController extends Controller
             'image'       => $imageUrl,
         ]);
 
+        $combo->sizes()->sync($validated['size_ids']);
+
         foreach ($validated['items'] as $item) {
             foreach ($item['product_ids'] as $productId) {
                 ComboItem::create([
@@ -98,11 +106,13 @@ class ComboController extends Controller
 
     public function edit(Combo $combo)
     {
-        $combo->load(['items.category', 'items.product']);
+        $combo->load(['items.category', 'items.product', 'sizes']);
 
         $categories = Category::with(['products' => function ($q) {
             $q->select('products.id', 'products.name', 'products.images', 'products.price');
         }])->get();
+
+        $sizes = Size::orderBy('name')->get(['id', 'name']);
 
         $itemsByCategory = $combo->items
             ->groupBy('category_id')
@@ -113,9 +123,11 @@ class ComboController extends Controller
             ->values();
 
         return Inertia::render('Admin/Combos/EditCombo', [
-            'combo'      => $combo,
-            'categories' => $categories,
-            'items'      => $itemsByCategory,
+            'combo'        => $combo,
+            'categories'   => $categories,
+            'items'        => $itemsByCategory,
+            'sizes'        => $sizes,
+            'comboSizeIds' => $combo->sizes->pluck('id')->toArray(),
         ]);
     }
 
@@ -127,6 +139,8 @@ class ComboController extends Controller
             'price'                     => 'required|numeric|min:0',
             'is_active'                 => 'boolean',
             'image'                     => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'size_ids'                  => 'required|array|min:1',
+            'size_ids.*'                => 'exists:sizes,id',
             'items'                     => 'required|array|min:1',
             'items.*.category_id'       => 'required|exists:categories,id',
             'items.*.product_ids'       => 'required|array|min:1',
@@ -145,6 +159,8 @@ class ComboController extends Controller
             'is_active'   => $validated['is_active'] ?? true,
             'image'       => $imageUrl,
         ]);
+
+        $combo->sizes()->sync($validated['size_ids']);
 
         $combo->items()->delete();
 
