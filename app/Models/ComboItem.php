@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ComboItem extends Model
 {
-    protected $fillable = ['combo_id', 'category_id', 'product_id'];
+    protected $fillable = ['combo_id', 'category_id', 'quantity', 'product_id'];
 
     public function combo()
     {

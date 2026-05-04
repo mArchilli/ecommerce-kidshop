@@ -6,13 +6,13 @@ export default function ComboBuilder({ combo, categories, availableSizes }) {
     const { auth } = usePage().props;
 
     const [selectedSizeId, setSelectedSizeId] = useState(null);
+    // selections: { [categoryId]: productId[] }
     const [selections, setSelections] = useState({});
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState({});
 
     const selectedSize = availableSizes.find(s => s.id === selectedSizeId);
 
-    // Para una categoría y talle dado, filtra los productos con stock > 0
     const productsWithStock = useMemo(() => {
         if (!selectedSizeId) return {};
         const result = {};
@@ -29,8 +29,9 @@ export default function ComboBuilder({ combo, categories, availableSizes }) {
         if (!selectedSizeId) return false;
         return categories.every(cat => {
             const available = productsWithStock[cat.category.id] || [];
-            if (available.length === 0) return true; // categoría sin stock, no requerida
-            return !!selections[cat.category.id];
+            if (available.length === 0) return true;
+            const selected = selections[cat.category.id] || [];
+            return selected.length === cat.quantity;
         });
     }, [selections, selectedSizeId, categories, productsWithStock]);
 
@@ -39,11 +40,18 @@ export default function ComboBuilder({ combo, categories, availableSizes }) {
         return img.startsWith('images/') ? `/${img}` : `/images/${img}`;
     };
 
-    const handleSelectProduct = (categoryId, productId) => {
-        setSelections(prev => ({
-            ...prev,
-            [categoryId]: prev[categoryId] === productId ? null : productId,
-        }));
+    const handleSelectProduct = (categoryId, productId, quantity) => {
+        setSelections(prev => {
+            const current = prev[categoryId] || [];
+            if (current.includes(productId)) {
+                return { ...prev, [categoryId]: current.filter(id => id !== productId) };
+            }
+            if (current.length < quantity) {
+                return { ...prev, [categoryId]: [...current, productId] };
+            }
+            // At limit: replace the oldest selection
+            return { ...prev, [categoryId]: [...current.slice(1), productId] };
+        });
     };
 
     const handleSubmit = (e) => {
@@ -54,9 +62,12 @@ export default function ComboBuilder({ combo, categories, availableSizes }) {
         }
 
         setErrors({});
-        const selectionList = Object.entries(selections)
-            .filter(([, pid]) => pid !== null)
-            .map(([catId, pid]) => ({ category_id: parseInt(catId), product_id: pid }));
+        const selectionList = [];
+        Object.entries(selections).forEach(([catId, pids]) => {
+            pids.forEach(pid => {
+                selectionList.push({ category_id: parseInt(catId), product_id: pid });
+            });
+        });
 
         setProcessing(true);
         router.post(route('combos.addToCart', combo.id), {
@@ -82,7 +93,7 @@ export default function ComboBuilder({ combo, categories, availableSizes }) {
                     {/* Header */}
                     <div className="mb-8">
                         <Link
-                            href={route('combos.public.index')}
+                            href={route('catalog.index')}
                             className="inline-flex items-center gap-2 text-purple-600 font-semibold hover:text-purple-800 mb-4 transition-colors"
                         >
                             ← Volver a combos
@@ -157,7 +168,7 @@ export default function ComboBuilder({ combo, categories, availableSizes }) {
                                         2
                                     </div>
                                     <h2 className="text-xl font-bold text-gray-800">
-                                        Elegí una prenda por categoría
+                                        Elegí tus prendas
                                         <span className="ml-2 text-sm font-normal text-gray-500">
                                             — talle {selectedSize?.name}
                                         </span>
@@ -166,27 +177,34 @@ export default function ComboBuilder({ combo, categories, availableSizes }) {
 
                                 {categories.map(cat => {
                                     const available = productsWithStock[cat.category.id] || [];
-                                    const selectedProductId = selections[cat.category.id] || null;
+                                    const selectedIds = selections[cat.category.id] || [];
+                                    const quantity = cat.quantity;
 
                                     return (
                                         <div
                                             key={cat.category.id}
                                             className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-pink-200 p-6"
                                         >
-                                            <div className="flex items-center justify-between mb-4">
+                                            <div className="flex items-center justify-between mb-3">
                                                 <h3 className="text-lg font-bold text-gray-800">
                                                     👕 {cat.category.name}
                                                 </h3>
-                                                {selectedProductId ? (
+                                                {selectedIds.length === quantity ? (
                                                     <span className="text-xs font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full">
-                                                        ✓ Seleccionada
+                                                        ✓ Completado
                                                     </span>
                                                 ) : (
                                                     <span className="text-xs font-bold text-orange-500 bg-orange-100 px-3 py-1 rounded-full">
-                                                        Pendiente
+                                                        {selectedIds.length}/{quantity} seleccionada{quantity !== 1 ? 's' : ''}
                                                     </span>
                                                 )}
                                             </div>
+
+                                            {quantity > 1 && (
+                                                <p className="text-sm text-purple-700 font-semibold mb-4 bg-purple-50 rounded-xl px-3 py-2">
+                                                    Elegí {quantity} prenda{quantity !== 1 ? 's' : ''} de esta categoría
+                                                </p>
+                                            )}
 
                                             {available.length === 0 ? (
                                                 <div className="bg-red-50 border border-red-200 rounded-2xl p-4 text-center">
@@ -197,29 +215,36 @@ export default function ComboBuilder({ combo, categories, availableSizes }) {
                                             ) : (
                                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                                                     {available.map(product => {
-                                                        const isSelected = selectedProductId === product.id;
+                                                        const isSelected = selectedIds.includes(product.id);
+                                                        const selectionIndex = selectedIds.indexOf(product.id);
                                                         const sizeStock = product.sizes_with_stock?.find(s => s.id === selectedSizeId)?.stock ?? 0;
+                                                        const atLimit = selectedIds.length >= quantity && !isSelected;
 
                                                         return (
                                                             <button
                                                                 key={product.id}
                                                                 type="button"
-                                                                onClick={() => handleSelectProduct(cat.category.id, product.id)}
+                                                                onClick={() => handleSelectProduct(cat.category.id, product.id, quantity)}
                                                                 className={`relative rounded-2xl border-2 p-3 text-left transition-all duration-200 ${
                                                                     isSelected
                                                                         ? 'border-purple-500 bg-purple-50 shadow-lg scale-105'
-                                                                        : 'border-gray-200 bg-white hover:border-purple-300 hover:shadow-md'
+                                                                        : atLimit
+                                                                            ? 'border-gray-200 bg-gray-50 opacity-60 hover:opacity-80 hover:border-purple-300'
+                                                                            : 'border-gray-200 bg-white hover:border-purple-300 hover:shadow-md'
                                                                 }`}
                                                             >
                                                                 {isSelected && (
                                                                     <div className="absolute top-2 right-2 w-6 h-6 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full flex items-center justify-center z-10">
-                                                                        <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                                                        </svg>
+                                                                        {quantity > 1 ? (
+                                                                            <span className="text-white text-xs font-bold">{selectionIndex + 1}</span>
+                                                                        ) : (
+                                                                            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                                                            </svg>
+                                                                        )}
                                                                     </div>
                                                                 )}
 
-                                                                {/* Imagen */}
                                                                 <div className="aspect-square rounded-xl overflow-hidden bg-gray-100 mb-3">
                                                                     {getImageSrc(product.images?.[0]) ? (
                                                                         <img
@@ -251,7 +276,9 @@ export default function ComboBuilder({ combo, categories, availableSizes }) {
                                 })}
 
                                 {errors.selections && (
-                                    <p className="text-red-500 text-sm font-semibold px-2">{errors.selections}</p>
+                                    <div className="bg-red-50 border border-red-300 rounded-2xl px-5 py-4 text-red-700 font-semibold text-sm">
+                                        {errors.selections}
+                                    </div>
                                 )}
                                 {errors.stock && (
                                     <div className="bg-red-50 border border-red-300 rounded-2xl px-5 py-4 text-red-700 font-semibold text-sm">
@@ -260,25 +287,34 @@ export default function ComboBuilder({ combo, categories, availableSizes }) {
                                 )}
 
                                 {/* Resumen de selección */}
-                                {Object.values(selections).some(v => v !== null) && (
+                                {Object.values(selections).some(arr => arr.length > 0) && (
                                     <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-cyan-200 p-6">
                                         <h3 className="text-lg font-bold text-gray-800 mb-4">Tu combo</h3>
                                         <div className="space-y-3 mb-5">
                                             {categories.map(cat => {
-                                                const pid = selections[cat.category.id];
-                                                const product = pid ? cat.products.find(p => p.id === pid) : null;
+                                                const selectedIds = selections[cat.category.id] || [];
+                                                const selectedProducts = selectedIds
+                                                    .map(pid => cat.products.find(p => p.id === pid))
+                                                    .filter(Boolean);
                                                 return (
-                                                    <div key={cat.category.id} className="flex items-center gap-3">
-                                                        <span className="text-xs font-bold text-gray-500 w-24 flex-shrink-0">{cat.category.name}</span>
-                                                        {product ? (
-                                                            <span className="flex items-center gap-2 text-sm font-semibold text-gray-800">
-                                                                {getImageSrc(product.images?.[0]) && (
-                                                                    <img src={getImageSrc(product.images[0])} alt="" className="w-8 h-8 rounded-lg object-cover" />
-                                                                )}
-                                                                {product.name}
-                                                            </span>
+                                                    <div key={cat.category.id}>
+                                                        <span className="text-xs font-bold text-gray-500 block mb-1">{cat.category.name}</span>
+                                                        {selectedProducts.length > 0 ? (
+                                                            <div className="space-y-1">
+                                                                {selectedProducts.map((product, idx) => (
+                                                                    <div key={idx} className="flex items-center gap-2 text-sm font-semibold text-gray-800 ml-2">
+                                                                        {cat.quantity > 1 && (
+                                                                            <span className="text-xs text-purple-500 font-bold w-4">{idx + 1}.</span>
+                                                                        )}
+                                                                        {getImageSrc(product.images?.[0]) && (
+                                                                            <img src={getImageSrc(product.images[0])} alt="" className="w-8 h-8 rounded-lg object-cover" />
+                                                                        )}
+                                                                        {product.name}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
                                                         ) : (
-                                                            <span className="text-xs text-gray-400 italic">Sin seleccionar</span>
+                                                            <span className="text-xs text-gray-400 italic ml-2">Sin seleccionar</span>
                                                         )}
                                                     </div>
                                                 );
@@ -310,7 +346,7 @@ export default function ComboBuilder({ combo, categories, availableSizes }) {
                                         }
                                     </button>
                                     <Link
-                                        href={route('combos.public.index')}
+                                        href={route('catalog.index')}
                                         className="sm:w-auto py-4 px-8 bg-white border-2 border-gray-200 text-gray-600 font-bold rounded-full transition-all duration-300 hover:border-gray-300 text-center"
                                     >
                                         Cancelar

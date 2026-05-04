@@ -73,6 +73,7 @@ class ComboController extends Controller
             'size_ids.*'                => 'exists:sizes,id',
             'items'                     => 'required|array|min:1',
             'items.*.category_id'       => 'required|exists:categories,id',
+            'items.*.quantity'          => 'required|integer|min:1|max:10',
             'items.*.product_ids'       => 'required|array|min:1',
             'items.*.product_ids.*'     => 'exists:products,id',
         ]);
@@ -97,6 +98,7 @@ class ComboController extends Controller
                 ComboItem::create([
                     'combo_id'    => $combo->id,
                     'category_id' => $item['category_id'],
+                    'quantity'    => $item['quantity'],
                     'product_id'  => $productId,
                 ]);
             }
@@ -119,6 +121,7 @@ class ComboController extends Controller
             ->groupBy('category_id')
             ->map(fn($items) => [
                 'category_id' => $items->first()->category_id,
+                'quantity'    => $items->first()->quantity,
                 'product_ids' => $items->pluck('product_id')->toArray(),
             ])
             ->values();
@@ -144,6 +147,7 @@ class ComboController extends Controller
             'size_ids.*'                => 'exists:sizes,id',
             'items'                     => 'required|array|min:1',
             'items.*.category_id'       => 'required|exists:categories,id',
+            'items.*.quantity'          => 'required|integer|min:1|max:10',
             'items.*.product_ids'       => 'required|array|min:1',
             'items.*.product_ids.*'     => 'exists:products,id',
         ]);
@@ -170,6 +174,7 @@ class ComboController extends Controller
                 ComboItem::create([
                     'combo_id'    => $combo->id,
                     'category_id' => $item['category_id'],
+                    'quantity'    => $item['quantity'],
                     'product_id'  => $productId,
                 ]);
             }

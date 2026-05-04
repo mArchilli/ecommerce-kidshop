@@ -26,6 +26,7 @@ class ComboBuilderController extends Controller
             ->groupBy('category_id')
             ->map(function ($items) {
                 $category = $items->first()->category;
+                $quantity  = $items->first()->quantity;
                 $products = $items->map(function ($item) {
                     $product = $item->product;
                     $product->sizes_with_stock = $product->sizes->map(fn($s) => [
@@ -36,7 +37,7 @@ class ComboBuilderController extends Controller
                     return $product;
                 })->values();
 
-                return ['category' => $category, 'products' => $products];
+                return ['category' => $category, 'quantity' => $quantity, 'products' => $products];
             })
             ->values();
 
@@ -66,6 +67,25 @@ class ComboBuilderController extends Controller
         ]);
 
         $size = Size::findOrFail($validated['size_id']);
+
+        // Validate that each category has exactly the required number of selections
+        $combo->load('items');
+        $quantityByCategory = $combo->items
+            ->groupBy('category_id')
+            ->map(fn($items) => $items->first()->quantity);
+
+        $selectionsByCategory = collect($validated['selections'])->groupBy('category_id');
+
+        foreach ($quantityByCategory as $catId => $required) {
+            $selected = $selectionsByCategory->get($catId, collect())->count();
+            if ($selected !== (int) $required) {
+                $category = \App\Models\Category::find($catId);
+                $catName  = $category ? $category->name : "categoría #{$catId}";
+                return back()->withErrors([
+                    'selections' => "Debés seleccionar exactamente {$required} prenda(s) de {$catName}.",
+                ]);
+            }
+        }
 
         $comboItems = [];
         foreach ($validated['selections'] as $selection) {

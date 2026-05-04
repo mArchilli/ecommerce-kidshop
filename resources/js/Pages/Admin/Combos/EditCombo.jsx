@@ -13,8 +13,10 @@ export default function EditCombo({ combo, categories, items, sizes, comboSizeId
 
     const initialCategoryIds = items.map(item => item.category_id);
     const initialProductsByCategory = {};
+    const initialCategoryQuantities = {};
     items.forEach(item => {
         initialProductsByCategory[item.category_id] = item.product_ids;
+        initialCategoryQuantities[item.category_id] = item.quantity || 1;
     });
 
     const [imageFile, setImageFile] = useState(null);
@@ -22,6 +24,7 @@ export default function EditCombo({ combo, categories, items, sizes, comboSizeId
     const [selectedSizeIds, setSelectedSizeIds] = useState(comboSizeIds || []);
     const [selectedCategoryIds, setSelectedCategoryIds] = useState(initialCategoryIds);
     const [productsByCategory, setProductsByCategory] = useState(initialProductsByCategory);
+    const [categoryQuantities, setCategoryQuantities] = useState(initialCategoryQuantities);
     const [categorySearch, setCategorySearch] = useState('');
     const [productSearch, setProductSearch] = useState({});
     const [errors, setErrors] = useState({});
@@ -45,9 +48,15 @@ export default function EditCombo({ combo, categories, items, sizes, comboSizeId
                 delete next[categoryId];
                 return next;
             });
+            setCategoryQuantities(prev => {
+                const next = { ...prev };
+                delete next[categoryId];
+                return next;
+            });
         } else {
             setSelectedCategoryIds(prev => [...prev, categoryId]);
             setProductsByCategory(prev => ({ ...prev, [categoryId]: [] }));
+            setCategoryQuantities(prev => ({ ...prev, [categoryId]: 1 }));
         }
     };
 
@@ -85,6 +94,7 @@ export default function EditCombo({ combo, categories, items, sizes, comboSizeId
 
         const itemsPayload = selectedCategoryIds.map(catId => ({
             category_id: catId,
+            quantity: categoryQuantities[catId] || 1,
             product_ids: productsByCategory[catId] || [],
         }));
 
@@ -100,6 +110,7 @@ export default function EditCombo({ combo, categories, items, sizes, comboSizeId
         });
         itemsPayload.forEach((item, i) => {
             formData.append(`items[${i}][category_id]`, item.category_id);
+            formData.append(`items[${i}][quantity]`, item.quantity);
             item.product_ids.forEach((pid, j) => {
                 formData.append(`items[${i}][product_ids][${j}]`, pid);
             });
@@ -336,6 +347,28 @@ export default function EditCombo({ combo, categories, items, sizes, comboSizeId
                                         >
                                             ✕ Quitar
                                         </button>
+                                    </div>
+
+                                    <div className="flex items-center gap-3 bg-cyan-50 rounded-xl px-4 py-3 border border-cyan-200">
+                                        <span className="text-sm font-bold text-cyan-800">
+                                            ¿Cuántas prendas elige el cliente de esta categoría?
+                                        </span>
+                                        <div className="flex items-center gap-1 ml-auto">
+                                            {[1, 2, 3, 4, 5].map(n => (
+                                                <button
+                                                    key={n}
+                                                    type="button"
+                                                    onClick={() => setCategoryQuantities(prev => ({ ...prev, [cat.id]: n }))}
+                                                    className={`w-8 h-8 rounded-lg text-sm font-bold border-2 transition-all ${
+                                                        (categoryQuantities[cat.id] || 1) === n
+                                                            ? 'bg-cyan-500 text-white border-cyan-500'
+                                                            : 'bg-white text-gray-600 border-gray-300 hover:border-cyan-400'
+                                                    }`}
+                                                >
+                                                    {n}
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
 
                                     <div className="relative">
