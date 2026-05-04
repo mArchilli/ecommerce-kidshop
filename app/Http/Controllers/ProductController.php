@@ -87,13 +87,14 @@ class ProductController extends Controller
 
         // Combos activos con resumen de categorías
         $activeCombos = Combo::where('is_active', true)
-            ->with(['items.category'])
+            ->with(['items.category', 'sizes'])
             ->get()
             ->map(function ($combo) {
                 $combo->category_names = $combo->items
                     ->pluck('category.name')
                     ->unique()
                     ->values();
+                $combo->size_names = $combo->sizes->pluck('name')->values();
                 return $combo;
             });
 
@@ -443,13 +444,14 @@ class ProductController extends Controller
         ];
 
         $combos = Combo::where('is_active', true)
-            ->with(['items.category'])
+            ->with(['items.category', 'sizes'])
             ->get()
             ->map(function ($combo) {
                 $combo->category_names = $combo->items
                     ->pluck('category.name')
                     ->unique()
                     ->values();
+                $combo->size_names = $combo->sizes->pluck('name')->values();
                 return $combo;
             });
 

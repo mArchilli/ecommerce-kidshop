@@ -60,6 +60,20 @@ export default function CombosList({ combos = [] }) {
                     </div>
                 </div>
 
+                {/* Talles */}
+                {combo.size_names?.length > 0 && (
+                    <div className="mb-4">
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Talles</p>
+                        <div className="flex flex-wrap gap-1.5">
+                            {combo.size_names.map((size, i) => (
+                                <span key={i} className="min-w-[2.25rem] h-8 flex items-center justify-center px-2 rounded-xl text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                    {size}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 {/* Precio y CTA */}
                 <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
                     <div>

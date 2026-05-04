@@ -166,6 +166,20 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                     ))}
                   </div>
 
+                  {/* Talles */}
+                  {combo.size_names?.length > 0 && (
+                    <div className="px-5 pb-4">
+                      <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">Talles</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {combo.size_names.map((size, idx) => (
+                          <span key={idx} className="min-w-[2.25rem] h-8 flex items-center justify-center px-2 rounded-xl text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                            {size}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Precio y CTA */}
                   <div className="px-5 pb-6 border-t border-gray-100 pt-4">
                     <div className="flex items-center justify-between mb-4">
@@ -308,7 +322,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
         {/* Grid de prendas */}
         {products && products.data && products.data.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center max-w-7xl mx-auto">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 justify-center max-w-7xl mx-auto">
               {products.data.map((product) => (
                 <div
                   key={product.id}
@@ -343,8 +357,8 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                   </div>
 
                   {/* Contenido */}
-                  <div className="p-5 flex flex-col flex-1">
-                    <h3 className="text-2xl font-extrabold text-gray-900 leading-tight mb-3 tracking-tight">
+                  <div className="p-3 sm:p-5 flex flex-col flex-1">
+                    <h3 className="text-base sm:text-2xl font-extrabold text-gray-900 leading-tight mb-2 sm:mb-3 tracking-tight">
                       {product.name}
                     </h3>
 
@@ -403,16 +417,16 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                     {/* Precio y CTA */}
                     <div className="mt-auto pt-4 border-t border-gray-100">
                       {product.active_offer ? (
-                        <div className="flex items-end justify-between mb-3">
-                          <p className="text-lg font-semibold text-gray-400 line-through">
+                        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-3 gap-0.5">
+                          <p className="text-sm sm:text-lg font-semibold text-gray-400 line-through">
                             ${Number(product.price).toLocaleString('es-AR')} ARS
                           </p>
-                          <p className="text-3xl font-extrabold text-rose-500">
+                          <p className="text-lg sm:text-3xl font-extrabold text-rose-500">
                             ${Number(product.active_offer.discount_price).toLocaleString('es-AR')} ARS
                           </p>
                         </div>
                       ) : (
-                        <p className="text-3xl font-extrabold text-gray-900 mb-3">
+                        <p className="text-lg sm:text-3xl font-extrabold text-gray-900 mb-3">
                           ${Number(product.price).toLocaleString('es-AR')} ARS
                         </p>
                       )}
