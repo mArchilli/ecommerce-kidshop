@@ -87,6 +87,7 @@ class ProductController extends Controller
 
         // Combos activos con resumen de categorías
         $activeCombos = Combo::where('is_active', true)
+            ->where('is_featured', true)
             ->with(['items.category', 'sizes'])
             ->get()
             ->map(function ($combo) {

@@ -16,6 +16,12 @@ export default function CombosView({ combos }) {
         router.post(route('combos.toggleActive', comboId), {}, { preserveScroll: true });
     };
 
+    const handleToggleFeatured = (comboId, e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        router.post(route('combos.toggleFeatured', comboId), {}, { preserveScroll: true });
+    };
+
     return (
         <AuthenticatedLayout
             header={
@@ -160,16 +166,28 @@ export default function CombosView({ combos }) {
 
                                     {/* Estado y acciones */}
                                     <div className="px-5 pb-5 space-y-3 flex-shrink-0">
-                                        <button
-                                            onClick={(e) => handleToggleActive(combo.id, e)}
-                                            className={`w-full px-4 py-2 rounded-xl font-bold text-sm transition-all ${
-                                                combo.is_active
-                                                    ? 'bg-green-100 text-green-800 hover:bg-green-200'
-                                                    : 'bg-red-100 text-red-800 hover:bg-red-200'
-                                            }`}
-                                        >
-                                            {combo.is_active ? '✓ Activo' : '✕ Inactivo'}
-                                        </button>
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={(e) => handleToggleActive(combo.id, e)}
+                                                className={`flex-1 px-4 py-2 rounded-xl font-bold text-sm transition-all ${
+                                                    combo.is_active
+                                                        ? 'bg-green-100 text-green-800 hover:bg-green-200'
+                                                        : 'bg-red-100 text-red-800 hover:bg-red-200'
+                                                }`}
+                                            >
+                                                {combo.is_active ? '✓ Activo' : '✕ Inactivo'}
+                                            </button>
+                                            <button
+                                                onClick={(e) => handleToggleFeatured(combo.id, e)}
+                                                className={`flex-1 px-4 py-2 rounded-xl font-bold text-sm transition-all ${
+                                                    combo.is_featured
+                                                        ? 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                                                        : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                                                }`}
+                                            >
+                                                {combo.is_featured ? '⭐ Destacado' : '☆ Destacar'}
+                                            </button>
+                                        </div>
 
                                         <div className="flex gap-2">
                                             <Link

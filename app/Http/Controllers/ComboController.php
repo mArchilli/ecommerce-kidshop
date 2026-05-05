@@ -68,6 +68,7 @@ class ComboController extends Controller
             'description'               => 'nullable|string',
             'price'                     => 'required|numeric|min:0',
             'is_active'                 => 'boolean',
+            'is_featured'               => 'boolean',
             'image'                     => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'size_ids'                  => 'required|array|min:1',
             'size_ids.*'                => 'exists:sizes,id',
@@ -88,6 +89,7 @@ class ComboController extends Controller
             'description' => $validated['description'] ?? null,
             'price'       => $validated['price'],
             'is_active'   => $validated['is_active'] ?? true,
+            'is_featured' => $validated['is_featured'] ?? false,
             'image'       => $imageUrl,
         ]);
 
@@ -142,6 +144,7 @@ class ComboController extends Controller
             'description'               => 'nullable|string',
             'price'                     => 'required|numeric|min:0',
             'is_active'                 => 'boolean',
+            'is_featured'               => 'boolean',
             'image'                     => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'size_ids'                  => 'required|array|min:1',
             'size_ids.*'                => 'exists:sizes,id',
@@ -162,6 +165,7 @@ class ComboController extends Controller
             'description' => $validated['description'] ?? null,
             'price'       => $validated['price'],
             'is_active'   => $validated['is_active'] ?? true,
+            'is_featured' => $validated['is_featured'] ?? false,
             'image'       => $imageUrl,
         ]);
 
@@ -211,5 +215,11 @@ class ComboController extends Controller
     {
         $combo->update(['is_active' => !$combo->is_active]);
         return back()->with('success', 'Estado del combo actualizado');
+    }
+
+    public function toggleFeatured(Combo $combo)
+    {
+        $combo->update(['is_featured' => !$combo->is_featured]);
+        return back()->with('success', 'Destacado del combo actualizado');
     }
 }

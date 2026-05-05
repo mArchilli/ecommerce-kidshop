@@ -108,6 +108,7 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->group(func
     Route::get('/admin/combos/{combo}/delete', [ComboController::class, 'delete'])->name('combos.delete');
     Route::delete('/admin/combos/{combo}', [ComboController::class, 'destroy'])->name('combos.destroy');
     Route::post('/admin/combos/{combo}/toggle-active', [ComboController::class, 'toggleActive'])->name('combos.toggleActive');
+    Route::post('/admin/combos/{combo}/toggle-featured', [ComboController::class, 'toggleFeatured'])->name('combos.toggleFeatured');
 
     Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
     Route::post('/admin/users/{user}/verify', [AdminUserController::class, 'verify'])->name('admin.users.verify');

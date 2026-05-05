@@ -9,6 +9,7 @@ export default function EditCombo({ combo, categories, items, sizes, comboSizeId
         description: combo.description || '',
         price: combo.price,
         is_active: combo.is_active,
+        is_featured: combo.is_featured ?? false,
     });
 
     const initialCategoryIds = items.map(item => item.category_id);
@@ -104,6 +105,7 @@ export default function EditCombo({ combo, categories, items, sizes, comboSizeId
         formData.append('description', form.description);
         formData.append('price', form.price);
         formData.append('is_active', form.is_active ? '1' : '0');
+        formData.append('is_featured', form.is_featured ? '1' : '0');
         if (imageFile) formData.append('image', imageFile);
         selectedSizeIds.forEach((sid, i) => {
             formData.append(`size_ids[${i}]`, sid);
@@ -194,15 +196,27 @@ export default function EditCombo({ combo, categories, items, sizes, comboSizeId
                                 <InputError message={errors.price} className="mt-2" />
                             </div>
 
-                            <div className="flex items-center gap-3">
-                                <input
-                                    type="checkbox"
-                                    id="is_active"
-                                    checked={form.is_active}
-                                    onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
-                                    className="w-5 h-5 text-cyan-600 border-gray-300 rounded focus:ring-cyan-500"
-                                />
-                                <label htmlFor="is_active" className="text-sm font-bold text-gray-700">Combo activo</label>
+                            <div className="flex flex-wrap gap-6">
+                                <div className="flex items-center gap-3">
+                                    <input
+                                        type="checkbox"
+                                        id="is_active"
+                                        checked={form.is_active}
+                                        onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
+                                        className="w-5 h-5 text-cyan-600 border-gray-300 rounded focus:ring-cyan-500"
+                                    />
+                                    <label htmlFor="is_active" className="text-sm font-bold text-gray-700">Combo activo</label>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <input
+                                        type="checkbox"
+                                        id="is_featured"
+                                        checked={form.is_featured}
+                                        onChange={(e) => setForm({ ...form, is_featured: e.target.checked })}
+                                        className="w-5 h-5 text-amber-500 border-gray-300 rounded focus:ring-amber-400"
+                                    />
+                                    <label htmlFor="is_featured" className="text-sm font-bold text-gray-700">⭐ Destacar en la tienda</label>
+                                </div>
                             </div>
 
                             {/* Imagen de portada */}

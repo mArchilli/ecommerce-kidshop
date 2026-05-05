@@ -40,17 +40,6 @@ const Welcome = ({ products, categories, colors, genders, offersProducts, featur
           {/* Category Explorer Section */}
           <CategoryExplorer />
 
-          {/* About & Payment Methods - Unified Section */}
-          <div className="w-full">
-            {/* About Section */}
-            <div data-aos="fade-up">
-              <About />
-            </div>
-            
-            {/* <PaymentMethods /> */}
-
-          </div>
-
           {/* FAQ Section */}
           <FAQ />
 

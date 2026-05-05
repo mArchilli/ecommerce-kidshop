@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Combo extends Model
 {
-    protected $fillable = ['name', 'description', 'price', 'is_active', 'image'];
+    protected $fillable = ['name', 'description', 'price', 'is_active', 'is_featured', 'image'];
 
     protected $casts = [
-        'price' => 'decimal:2',
-        'is_active' => 'boolean',
+        'price'       => 'decimal:2',
+        'is_active'   => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     public function items()

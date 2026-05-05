@@ -8,6 +8,32 @@ import 'aos/dist/aos.css';
 const ProductList = ({ products, categories, colors, genders, sizes = [], filters = {}, combos = [] }) => {
   const [showFilters, setShowFilters] = useState(false);
 
+  // ── Combo filters state ──
+  const [comboSearch, setComboSearch] = useState('');
+  const [comboFilterCategory, setComboFilterCategory] = useState(null);
+  const [comboFilterSize, setComboFilterSize] = useState(null);
+
+  const allComboCategories = React.useMemo(() => {
+    const names = new Set();
+    combos.forEach(c => c.category_names?.forEach(n => names.add(n)));
+    return [...names].sort();
+  }, [combos]);
+
+  const allComboSizes = React.useMemo(() => {
+    const names = new Set();
+    combos.forEach(c => c.size_names?.forEach(n => names.add(n)));
+    return [...names].sort();
+  }, [combos]);
+
+  const filteredCombos = React.useMemo(() => {
+    return combos.filter(c => {
+      const matchSearch = !comboSearch || c.name.toLowerCase().includes(comboSearch.toLowerCase());
+      const matchCategory = !comboFilterCategory || c.category_names?.includes(comboFilterCategory);
+      const matchSize = !comboFilterSize || c.size_names?.includes(comboFilterSize);
+      return matchSearch && matchCategory && matchSize;
+    });
+  }, [combos, comboSearch, comboFilterCategory, comboFilterSize]);
+
   const submitFilters = (currentQuickFilters, extraFilters = {}) => {
     const baseParams = Object.fromEntries(new URLSearchParams(window.location.search));
     const selectedGenders = currentQuickFilters
@@ -107,97 +133,192 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
 
       {/* ── SECCIÓN COMBOS ── */}
       {combos.length > 0 && (
-        <section className=" py-14 px-4">
+        <section className="py-14 px-4">
           <div className="max-w-7xl mx-auto">
-            {/* Encabezado combos */}
-            <div className="text-center mb-10">
+
+            {/* Encabezado */}
+            <div className="text-center mb-8">
               <span className="inline-block bg-gradient-to-r from-purple-500 to-cyan-500 text-white text-xs font-extrabold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 shadow">
-                ⭐ Más vendidos
+                🎁 Combos disponibles
               </span>
               <h2 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-500 bg-clip-text text-transparent mb-3">
                 Combos Especiales
               </h2>
               <p className="text-gray-500 text-lg max-w-xl mx-auto">
-                Armá tu combo a medida y ahorrá en cada prenda. La mejor relación calidad-precio para vestir a tus hijos.
+                Armá tu combo a medida y ahorrá en cada prenda.
               </p>
             </div>
 
-            {/* Grid combos */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {combos.map((combo) => (
-                <div
-                  key={combo.id}
-                  data-aos="fade-up"
-                  className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-pink-200 overflow-hidden hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col"
+            {/* Barra de búsqueda */}
+            <div className="relative max-w-lg mx-auto mb-6">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg">🔍</span>
+              <input
+                type="text"
+                value={comboSearch}
+                onChange={e => setComboSearch(e.target.value)}
+                placeholder="Buscar combo..."
+                className="w-full pl-11 pr-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 outline-none text-sm font-semibold bg-white shadow-sm transition-all"
+              />
+              {comboSearch && (
+                <button
+                  onClick={() => setComboSearch('')}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 font-bold"
+                >✕</button>
+              )}
+            </div>
+
+            {/* Filtros */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              {/* Filtro por categoría */}
+              {allComboCategories.length > 0 && (
+                <div className="flex-1">
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Categoría</p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setComboFilterCategory(null)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold border-2 transition-all ${
+                        !comboFilterCategory
+                          ? 'bg-purple-500 text-white border-purple-500'
+                          : 'bg-white text-gray-600 border-gray-200 hover:border-purple-300'
+                      }`}
+                    >
+                      Todas
+                    </button>
+                    {allComboCategories.map(cat => (
+                      <button
+                        key={cat}
+                        onClick={() => setComboFilterCategory(comboFilterCategory === cat ? null : cat)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold border-2 transition-all ${
+                          comboFilterCategory === cat
+                            ? 'bg-purple-500 text-white border-purple-500'
+                            : 'bg-white text-gray-600 border-gray-200 hover:border-purple-300'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Filtro por talle */}
+              {allComboSizes.length > 0 && (
+                <div className="flex-1">
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Talle</p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setComboFilterSize(null)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold border-2 transition-all ${
+                        !comboFilterSize
+                          ? 'bg-cyan-500 text-white border-cyan-500'
+                          : 'bg-white text-gray-600 border-gray-200 hover:border-cyan-300'
+                      }`}
+                    >
+                      Todos
+                    </button>
+                    {allComboSizes.map(size => (
+                      <button
+                        key={size}
+                        onClick={() => setComboFilterSize(comboFilterSize === size ? null : size)}
+                        className={`min-w-[2.25rem] px-3 py-1.5 rounded-xl text-xs font-bold border-2 transition-all ${
+                          comboFilterSize === size
+                            ? 'bg-cyan-500 text-white border-cyan-500'
+                            : 'bg-white text-gray-600 border-gray-200 hover:border-cyan-300'
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Resultado */}
+            {filteredCombos.length === 0 ? (
+              <div className="text-center py-16 text-gray-400">
+                <div className="text-5xl mb-4">🔍</div>
+                <p className="font-bold text-lg">No se encontraron combos</p>
+                <button
+                  onClick={() => { setComboSearch(''); setComboFilterCategory(null); setComboFilterSize(null); }}
+                  className="mt-4 text-sm text-purple-500 font-semibold hover:underline"
                 >
-                  {/* Imagen o degradado */}
-                  {combo.image ? (
-                    <div className="relative h-52 overflow-hidden">
-                      <img
-                        src={getImageSrc(combo.image)}
-                        alt={combo.name}
-                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-5">
-                        <h3 className="text-2xl font-extrabold text-white leading-tight">{combo.name}</h3>
+                  Limpiar filtros
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredCombos.map((combo) => (
+                  <div
+                    key={combo.id}
+                    data-aos="fade-up"
+                    className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-pink-200 overflow-hidden hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col"
+                  >
+                    {combo.image ? (
+                      <div className="relative h-52 overflow-hidden">
+                        <img
+                          src={getImageSrc(combo.image)}
+                          alt={combo.name}
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-5">
+                          <h3 className="text-2xl font-extrabold text-white leading-tight">{combo.name}</h3>
+                          {combo.description && (
+                            <p className="text-white/80 text-sm mt-1 line-clamp-2">{combo.description}</p>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-gradient-to-r from-purple-500 to-cyan-500 p-7 text-white">
+                        <div className="text-5xl mb-3">🎁</div>
+                        <h3 className="text-2xl font-extrabold">{combo.name}</h3>
                         {combo.description && (
                           <p className="text-white/80 text-sm mt-1 line-clamp-2">{combo.description}</p>
                         )}
                       </div>
-                    </div>
-                  ) : (
-                    <div className="bg-gradient-to-r from-purple-500 to-cyan-500 p-7 text-white">
-                      <div className="text-5xl mb-3">🎁</div>
-                      <h3 className="text-2xl font-extrabold">{combo.name}</h3>
-                      {combo.description && (
-                        <p className="text-white/80 text-sm mt-1 line-clamp-2">{combo.description}</p>
-                      )}
-                    </div>
-                  )}
+                    )}
 
-                  {/* Categorías incluidas */}
-                  <div className="p-5 space-y-2 flex-1">
-                    <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3">Incluye</p>
-                    {combo.category_names?.map((name, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-cyan-400 flex-shrink-0" />
-                        <span className="text-sm font-semibold text-gray-700">{name}</span>
+                    <div className="p-5 space-y-2 flex-1">
+                      <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3">Incluye</p>
+                      {combo.category_names?.map((name, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-cyan-400 flex-shrink-0" />
+                          <span className="text-sm font-semibold text-gray-700">{name}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {combo.size_names?.length > 0 && (
+                      <div className="px-5 pb-4">
+                        <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">Talles</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {combo.size_names.map((size, idx) => (
+                            <span key={idx} className="min-w-[2.25rem] h-8 flex items-center justify-center px-2 rounded-xl text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                              {size}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    ))}
-                  </div>
+                    )}
 
-                  {/* Talles */}
-                  {combo.size_names?.length > 0 && (
-                    <div className="px-5 pb-4">
-                      <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">Talles</p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {combo.size_names.map((size, idx) => (
-                          <span key={idx} className="min-w-[2.25rem] h-8 flex items-center justify-center px-2 rounded-xl text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                            {size}
-                          </span>
-                        ))}
+                    <div className="px-5 pb-6 border-t border-gray-100 pt-4">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-sm text-gray-500 font-medium">Precio del combo</span>
+                        <span className="text-3xl font-black bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
+                          ${Number(combo.price).toLocaleString('es-AR')}
+                        </span>
                       </div>
+                      <Link
+                        href={route('combos.public.show', combo.id)}
+                        className="block w-full text-center py-3 px-6 bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-bold rounded-full transition-all duration-300 hover:shadow-lg text-sm"
+                      >
+                        Crear mi combo →
+                      </Link>
                     </div>
-                  )}
-
-                  {/* Precio y CTA */}
-                  <div className="px-5 pb-6 border-t border-gray-100 pt-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-sm text-gray-500 font-medium">Precio del combo</span>
-                      <span className="text-3xl font-black bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
-                        ${Number(combo.price).toLocaleString('es-AR')}
-                      </span>
-                    </div>
-                    <Link
-                      href={route('combos.public.show', combo.id)}
-                      className="block w-full text-center py-3 px-6 bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-bold rounded-full transition-all duration-300 hover:shadow-lg text-sm"
-                    >
-                      Crear mi combo →
-                    </Link>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       )}
