@@ -7,7 +7,6 @@ use App\Http\Controllers\ComboBuilderController;
 use App\Http\Controllers\ComboController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OfferController;
-use App\Http\Controllers\PaymentStatusController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
@@ -136,25 +135,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mis-compras/{order}', [UserOrderController::class, 'show'])->name('user.orders.show');
 });
 
-use App\Http\Controllers\MercadoPagoWebhookController;
-
-// Webhook de MercadoPago (sin autenticación, sin CSRF - llamado server-to-server)
-Route::post('/webhook/mercadopago', [MercadoPagoWebhookController::class, 'handle'])->name('webhook.mercadopago');
-
-
-
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index'); 
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
-});
-
-// Success sin auth: MercadoPago puede redirigir en un contexto mobile sin sesión.
-// La seguridad está en el payment_id único de la URL. El controlador maneja la autenticación internamente.
-Route::get('/payment/success', [PaymentStatusController::class, 'success'])->name('payment.success');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/payment/failure', [PaymentStatusController::class, 'failure'])->name('payment.failure');
-    Route::get('/payment/pending', [PaymentStatusController::class, 'pending'])->name('payment.pending');
+    Route::get('/checkout/success/{order}', [CheckoutController::class, 'success'])->name('checkout.success');
 });
 
 require __DIR__.'/auth.php';

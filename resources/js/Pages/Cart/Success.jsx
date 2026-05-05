@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
 import { Head } from '@inertiajs/react';
 
-const Success = ({ shippingInfo, user, cart, order, message, payment_id, autoWhatsApp }) => {
+const Success = ({ shippingInfo, user, cart, order, message, autoWhatsApp }) => {
   const whatsappNumber = '5491172397202';
   
   // Usar datos de la orden si están disponibles, sino del carrito
@@ -84,25 +84,25 @@ const Success = ({ shippingInfo, user, cart, order, message, payment_id, autoWha
   const whatsappMessage = encodeURIComponent(whatsappMessageParts.filter(Boolean).join('\n'));
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
-  // Auto-abrir WhatsApp cuando el usuario llega a esta página (solo una vez por sesión de pago)
+  // Auto-abrir WhatsApp cuando el usuario llega a esta página (solo una vez por orden)
   useEffect(() => {
-    if (!autoWhatsApp) return;
+    if (!autoWhatsApp || !order?.id) return;
     // Usamos sessionStorage para evitar que se abra más de una vez si el usuario recarga
-    const alreadyOpened = sessionStorage.getItem('wa_opened_' + (order?.id || payment_id));
+    const alreadyOpened = sessionStorage.getItem('wa_opened_' + order.id);
     if (alreadyOpened) return;
 
     // Pequeño delay para que el usuario vea la página antes de que se abra WhatsApp
     const timer = setTimeout(() => {
-      sessionStorage.setItem('wa_opened_' + (order?.id || payment_id), '1');
+      sessionStorage.setItem('wa_opened_' + order.id, '1');
       window.open(whatsappUrl, '_blank');
     }, 1500);
 
     return () => clearTimeout(timer);
-  }, [autoWhatsApp, whatsappUrl, order?.id, payment_id]);
+  }, [autoWhatsApp, whatsappUrl, order?.id]);
 
   return (
     <EcommerceLayout>
-      <Head title="Pago Exitoso" />
+      <Head title="Pedido confirmado" />
       <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 py-16 bg-gradient-to-br from-white via-pink-50 to-cyan-50">
         {/* Icono de éxito */}
         <div className="bg-gradient-to-br from-pink-100 to-fuchsia-100 rounded-full p-6 mb-6 flex items-center justify-center shadow-lg">
@@ -111,9 +111,9 @@ const Success = ({ shippingInfo, user, cart, order, message, payment_id, autoWha
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M16 24l7 7 9-13" />
           </svg>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-fuchsia-600 to-pink-600 bg-clip-text text-transparent mb-4 text-center">¡Pago realizado con éxito!</h1>
+        <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-fuchsia-600 to-pink-600 bg-clip-text text-transparent mb-4 text-center">¡Pedido confirmado!</h1>
         <p className="text-lg text-gray-700 mb-4 text-center">
-          Gracias por tu compra, <span className="font-bold">{firstName} {lastName}</span>.
+          Gracias por tu pedido, <span className="font-bold">{firstName} {lastName}</span>.
         </p>
         
         {/* Alerta importante */}

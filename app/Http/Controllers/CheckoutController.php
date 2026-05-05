@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
-use MercadoPago\MercadoPagoConfig;
-use MercadoPago\Client\Preference\PreferenceClient;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
+use App\Models\Order;
+use App\Models\Size;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
@@ -19,6 +18,15 @@ class CheckoutController extends Controller
 
         $normalized = Str::of($sizeName)->lower()->ascii()->replaceMatches('/\s+/', ' ')->trim()->value();
         return $sizes->first(fn($s) => Str::of($s->name)->lower()->ascii()->replaceMatches('/\s+/', ' ')->trim()->value() === $normalized);
+    }
+
+    private function findSizeModel(string $sizeName)
+    {
+        $byExact = Size::where('name', $sizeName)->first();
+        if ($byExact) return $byExact;
+
+        $normalized = Str::of($sizeName)->lower()->ascii()->replaceMatches('/\s+/', ' ')->trim()->value();
+        return Size::all()->first(fn($s) => Str::of($s->name)->lower()->ascii()->replaceMatches('/\s+/', ' ')->trim()->value() === $normalized);
     }
 
     public function index(Request $request)
@@ -56,17 +64,14 @@ class CheckoutController extends Controller
             'courier_company' => 'nullable|string|in:Correo Argentino,Andreani,Via Cargo,Consultar con la tienda',
         ]);
 
-        // Obtener el usuario autenticado
         $user = $request->user();
 
-        // Obtener el carrito del usuario con talles (para verificar stock)
         $cart = \App\Models\Cart::with([
             'items.product',
             'items.product.sizes',
             'comboItems.combo',
         ])->where('user_id', $user->id)->first();
 
-        // Verificar si el carrito está vacío (productos o combos)
         $hasRegularItems = $cart && $cart->items->isNotEmpty();
         $hasComboItems   = $cart && $cart->comboItems->isNotEmpty();
 
@@ -74,7 +79,7 @@ class CheckoutController extends Controller
             return redirect()->route('checkout.index')->with('error', 'Tu carrito está vacío.');
         }
 
-        // Verificar stock de cada ítem regular antes de procesar el pago
+        // Verificar stock de cada ítem regular antes de confirmar
         foreach ($cart->items as $item) {
             $size = $this->findSizeByName($item->product->sizes, $item->size ?? '');
             if (!$size || $size->pivot->stock <= 0) {
@@ -89,111 +94,97 @@ class CheckoutController extends Controller
             }
         }
 
-        // Configurar el token de MercadoPago
-        MercadoPagoConfig::setAccessToken(config('services.mercadopago.access_token'));
+        // Limpiar DNI (solo números)
+        $validated['dni'] = preg_replace('/[^0-9]/', '', $validated['dni']);
 
-        // Crear cliente de preferencias
-        $client = new PreferenceClient();
+        $regularTotal = $cart->items->reduce(fn($carry, $item) => $carry + ($item->unit_price * $item->quantity), 0);
+        $comboTotal   = $cart->comboItems->reduce(fn($carry, $item) => $carry + ($item->unit_price * $item->quantity), 0);
+        $orderTotal   = $regularTotal + $comboTotal;
 
-        // Mapea los items regulares para MercadoPago
-        $regularItems = $cart->items->map(function ($item) {
-            $unitPrice = round((float) $item->unit_price, 2);
-            if ($unitPrice <= 0) {
-                throw new \Exception("El precio del producto '{$item->product->name}' debe ser mayor a 0");
+        $order = DB::transaction(function () use ($user, $cart, $validated, $orderTotal) {
+            $order = $user->orders()->create([
+                'total'           => $orderTotal,
+                'status'          => 'completed',
+                'shipping_status' => Order::SHIPPING_STATUS_PENDING,
+                'province'        => $validated['province'] ?? null,
+                'city'            => $validated['city'] ?? null,
+                'postal_code'     => $validated['postal_code'] ?? null,
+                'address'         => $validated['address'] ?? null,
+                'phone'           => $validated['phone'] ?? null,
+                'shipping_method' => $validated['shipping_method'] ?? null,
+                'dni'             => $validated['dni'] ?? null,
+                'first_name'      => $validated['first_name'] ?? null,
+                'last_name'       => $validated['last_name'] ?? null,
+                'email'           => $validated['email'] ?? null,
+                'observations'    => $validated['observations'] ?? null,
+                'courier_company' => $validated['courier_company'] ?? null,
+            ]);
+
+            foreach ($cart->items as $item) {
+                $order->items()->create([
+                    'product_id' => $item->product_id,
+                    'quantity'   => $item->quantity,
+                    'price'      => $item->unit_price,
+                    'size'       => $item->size ?? null,
+                ]);
+
+                if ($item->size) {
+                    $sizeModel = $this->findSizeModel($item->size);
+                    if ($sizeModel) {
+                        DB::table('product_size')
+                            ->where('product_id', $item->product_id)
+                            ->where('size_id', $sizeModel->id)
+                            ->where('stock', '>', 0)
+                            ->decrement('stock', $item->quantity);
+                    }
+                }
             }
-            return [
-                'title'      => substr($item->product->name, 0, 256),
-                'quantity'   => (int) $item->quantity,
-                'unit_price' => $unitPrice,
-                'currency_id' => 'ARS',
-            ];
+
+            foreach ($cart->comboItems as $comboItem) {
+                $order->items()->create([
+                    'product_id' => null,
+                    'quantity'   => $comboItem->quantity,
+                    'price'      => $comboItem->unit_price,
+                    'size'       => $comboItem->size,
+                    'combo_data' => $comboItem->combo_data,
+                ]);
+
+                $sizeModel = $this->findSizeModel($comboItem->size);
+                if ($sizeModel) {
+                    foreach (($comboItem->combo_data['items'] ?? []) as $selectedProduct) {
+                        DB::table('product_size')
+                            ->where('product_id', $selectedProduct['product_id'])
+                            ->where('size_id', $sizeModel->id)
+                            ->where('stock', '>', 0)
+                            ->decrement('stock', $comboItem->quantity);
+                    }
+                }
+            }
+
+            $cart->items()->delete();
+            $cart->comboItems()->delete();
+            $cart->delete();
+
+            return $order;
         });
 
-        // Mapea los combos para MercadoPago
-        $comboItemsMP = $cart->comboItems->map(function ($item) {
-            $unitPrice = round((float) $item->unit_price, 2);
-            if ($unitPrice <= 0) {
-                throw new \Exception("El precio del combo '{$item->combo_data['combo_name']}' debe ser mayor a 0");
-            }
-            return [
-                'title'      => substr('Combo: ' . ($item->combo_data['combo_name'] ?? $item->combo->name), 0, 256),
-                'quantity'   => (int) $item->quantity,
-                'unit_price' => $unitPrice,
-                'currency_id' => 'ARS',
-            ];
-        });
+        $request->session()->forget('shipping_info');
 
-        $items = $regularItems->merge($comboItemsMP)->values()->toArray();
+        return redirect()->route('checkout.success', ['order' => $order->id]);
+    }
 
-        // Validar que haya items
-        if (empty($items)) {
-            return redirect()->route('checkout.index')->with('error', 'No hay productos para procesar.');
+    public function success(Request $request, Order $order)
+    {
+        if ($order->user_id !== $request->user()->id) {
+            abort(403);
         }
 
-        // Guardar la información de envío en la sesión ANTES de crear la preferencia
-        $request->session()->put('shipping_info', $validated);
-        $request->session()->put('payment_in_progress', true);
+        $order->load(['items.product', 'user']);
 
-        // Limpiar y validar DNI (solo números)
-        $dniLimpio = preg_replace('/[^0-9]/', '', $validated['dni']);
-
-        // Generar external_reference ANTES de crear la preferencia para poder usarlo como clave de cache
-        $externalReference = $user->id . '_' . time();
-
-        // Preparar datos del payer
-        $payerData = [
-            'name' => trim($validated['first_name']),
-            'surname' => trim($validated['last_name']),
-            'email' => trim($validated['email']),
-            'identification' => [
-                'type' => 'DNI',
-                'number' => $dniLimpio,
-            ],
-        ];
-
-        // Solo agregar teléfono si existe y no está vacío
-        if (!empty($validated['phone'])) {
-            $payerData['phone'] = [
-                'area_code' => '',
-                'number' => preg_replace('/[^0-9]/', '', $validated['phone']),
-            ];
-        }
-
-        try {
-            // Crear la preferencia con external_reference simplificado
-            // Guardar shipping_info en cache keyed por external_reference (disponible para el webhook)
-            // TTL de 2 horas: suficiente tiempo para que el usuario complete el pago
-            Cache::put('shipping_info_' . $externalReference, $validated, now()->addHours(2));
-
-            $preference = $client->create([
-                'items' => $items,
-                'back_urls' => [
-                    'success' => config('app.url') . '/payment/success',
-                    'failure' => config('app.url') . '/payment/failure',
-                    'pending' => config('app.url') . '/payment/pending',
-                ],
-                'auto_return'         => 'approved',
-                'external_reference'  => $externalReference,
-                'notification_url'    => config('app.url') . '/webhook/mercadopago',
-                'payer'               => $payerData,
-                'statement_descriptor' => 'TIENDA NIÑOS',
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error al crear preferencia de MercadoPago', [
-                'error' => $e->getMessage(),
-                'items' => $items,
-                'payer' => $payerData,
-            ]);
-            
-            return redirect()->route('checkout.index')
-                ->with('error', 'Error al procesar el pago. Por favor, intenta nuevamente.');
-        }
-
-        // Retornar la vista con el preferenceId y la información de envío
-        return Inertia::render('Cart/Payment', [
-            'cart' => $cart,
-            'preferenceId' => $preference->id,
-            'shippingInfo' => $validated,
+        return Inertia::render('Cart/Success', [
+            'order'        => $order,
+            'user'         => $order->user,
+            'autoWhatsApp' => true,
         ]);
     }
 }

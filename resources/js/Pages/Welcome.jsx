@@ -9,7 +9,6 @@ import CategoryExplorer from '../Pages/Ecommerce/CategoryExplorer';
 import CombosList from '../Pages/Ecommerce/CombosList';
 import ProductsOffers from '../Pages/Ecommerce/ProductsOffers';
 import About from '../Pages/Ecommerce/About';
-import PaymentMethods from '../Pages/Ecommerce/PaymentMethods';
 import FAQ from '@/Components/FAQ';
 import WhatsAppCTA from '../Pages/Ecommerce/WhatsAppCTA';
 
