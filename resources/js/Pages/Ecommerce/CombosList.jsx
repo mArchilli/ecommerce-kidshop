@@ -22,7 +22,7 @@ export default function CombosList({ combos = [] }) {
         <div className={`bg-white rounded-3xl shadow-lg border-2 border-pink-100 overflow-hidden flex flex-col h-full${animated ? ' hover:shadow-2xl hover:-translate-y-2 transition-all duration-300' : ''}`}>
             {/* Header: imagen si hay, sino degradado */}
             {getImageSrc(combo.image) ? (
-                <div className="relative h-48 overflow-hidden flex-shrink-0">
+                <div className="relative h-80 sm:h-96 overflow-hidden flex-shrink-0">
                     <img
                         src={getImageSrc(combo.image)}
                         alt={combo.name}

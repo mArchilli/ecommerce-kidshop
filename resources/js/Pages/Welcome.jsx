@@ -22,7 +22,64 @@ const Welcome = ({ products, categories, colors, genders, offersProducts, featur
 
   return (
     <EcommerceLayout>
-      <Head title="Bienvenido" />
+      <Head>
+        <title>La Tienda de los Niños | Ropa infantil y combos para niños y niñas</title>
+        <meta
+          name="description"
+          content="Tienda online de ropa para niños y niñas. Comprá prendas de calidad y combos armables con descuento. Envíos a todo el país."
+        />
+        <meta
+          name="keywords"
+          content="ropa para niños, ropa para niñas, ropa infantil, combos de ropa para niños, tienda de ropa infantil, ropa niños online, indumentaria infantil, combos con descuento, ropa para bebés"
+        />
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="La Tienda de los Niños" />
+        <meta name="language" content="es-AR" />
+        <meta name="theme-color" content="#ec4899" />
+        <link rel="canonical" href="/" />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="La Tienda de los Niños" />
+        <meta property="og:locale" content="es_AR" />
+        <meta
+          property="og:title"
+          content="La Tienda de los Niños | Ropa infantil y combos para niños y niñas"
+        />
+        <meta
+          property="og:description"
+          content="Ropa cómoda y de calidad para niños y niñas, con combos armables al mejor precio. Comprá online y recibí en todo el país."
+        />
+        <meta property="og:image" content="/images/logo.png" />
+        <meta property="og:image:alt" content="Logo La Tienda de los Niños" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="La Tienda de los Niños | Ropa infantil y combos"
+        />
+        <meta
+          name="twitter:description"
+          content="Ropa para niños y niñas y combos armables con descuento. Envíos a todo el país."
+        />
+        <meta name="twitter:image" content="/images/logo.png" />
+
+        {/* Datos estructurados Schema.org */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ClothingStore',
+            name: 'La Tienda de los Niños',
+            description:
+              'Tienda online de ropa para niños y niñas con combos armables al mejor precio.',
+            image: '/images/logo.png',
+            url: typeof window !== 'undefined' ? window.location.origin : '/',
+            areaServed: 'AR',
+            currenciesAccepted: 'ARS',
+          })}
+        </script>
+      </Head>
       <div className="flex flex-col min-h-screen font-sans">
         <main className="flex-grow w-full bg-gradient-to-br from-white via-pink-50 to-cyan-50">
           {/* Hero Section */}
