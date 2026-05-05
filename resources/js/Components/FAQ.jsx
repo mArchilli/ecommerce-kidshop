@@ -74,52 +74,52 @@ export default function FAQ() {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className={`group relative bg-gradient-to-r from-white via-pink-50/30 to-cyan-50/30 backdrop-blur-sm rounded-2xl shadow-lg border-2 overflow-hidden transition-all duration-500 md:hover:shadow-2xl md:hover:scale-[1.02] ${
-                openIndex === index 
-                  ? 'border-cyan-400 shadow-cyan-200/50 scale-[1.01]' 
+              style={{ willChange: openIndex === index ? 'transform' : 'auto' }}
+              className={`group relative bg-gradient-to-r from-white via-pink-50/30 to-cyan-50/30 rounded-2xl shadow-lg border-2 overflow-hidden transition-[border-color,box-shadow,transform] duration-300 ease-out transform-gpu md:hover:shadow-xl ${
+                openIndex === index
+                  ? 'border-cyan-400 shadow-cyan-200/50'
                   : 'border-pink-200 hover:border-pink-300'
               }`}
             >
-              {/* Efecto de brillo en hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-              
               <button
                 onClick={() => toggleQuestion(index)}
-                className={`relative w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none  transition-all duration-300 ${
+                className={`relative w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none transition-colors duration-200 ${
                   openIndex === index ? 'bg-gradient-to-r from-cyan-50/50 to-pink-50/50' : ''
                 }`}
                 aria-expanded={openIndex === index}
               >
-                <span className={`text-xl font-bold pr-6 transition-colors duration-300 ${
-                  openIndex === index 
-                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-pink-600' 
-                    : 'text-gray-800 group-hover:text-gray-900'
+                <span className={`text-xl font-bold pr-6 transition-colors duration-200 ${
+                  openIndex === index
+                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-pink-600'
+                    : 'text-gray-800'
                 }`}>
                   {faq.question}
                 </span>
-                <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  openIndex === index 
-                    ? 'bg-gradient-to-br from-cyan-500 to-pink-500 shadow-lg scale-110' 
-                    : 'bg-gradient-to-br from-pink-200 to-cyan-200 group-hover:from-pink-300 group-hover:to-cyan-300 group-hover:shadow-md'
+                <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-[background,transform] duration-200 ease-out transform-gpu ${
+                  openIndex === index
+                    ? 'bg-gradient-to-br from-cyan-500 to-pink-500 shadow-lg scale-110'
+                    : 'bg-gradient-to-br from-pink-200 to-cyan-200'
                 }`}>
                   <FontAwesomeIcon
                     icon={faChevronDown}
-                    className={`text-white text-sm transition-transform duration-400 ease-in-out ${
+                    className={`text-white text-sm transition-transform duration-200 ease-out ${
                       openIndex === index ? 'rotate-180' : 'rotate-0'
                     }`}
                   />
                 </div>
               </button>
-              
+
               <div
-                className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                  openIndex === index ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                  openIndex === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
                 }`}
               >
-                <div className="px-8 pb-6 pt-2">
-                  <div className="w-full h-0.5 bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 mb-5 rounded-full shadow-sm"></div>
-                  <div className="text-gray-700 leading-relaxed text-base bg-white/50 p-5 rounded-xl border border-pink-100/50">
-                    {faq.answer}
+                <div className="overflow-hidden">
+                  <div className="px-8 pb-6 pt-2">
+                    <div className="w-full h-0.5 bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 mb-5 rounded-full shadow-sm"></div>
+                    <div className="text-gray-700 leading-relaxed text-base bg-white/50 p-5 rounded-xl border border-pink-100/50">
+                      {faq.answer}
+                    </div>
                   </div>
                 </div>
               </div>

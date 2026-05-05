@@ -52,7 +52,7 @@ const CategoryExplorer = () => {
           {genders.map((gender, index) => (
             <Link
               key={gender.slug}
-              href={route('catalog.index', { gender: gender.slug })}
+              href={route('catalog.index', { genders: [gender.slug] })}
               className="group"
               data-aos="zoom-in"
               data-aos-delay={index * 100}
