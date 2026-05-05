@@ -22,11 +22,11 @@ export default function CombosList({ combos = [] }) {
         <div className={`bg-white rounded-3xl shadow-lg border-2 border-pink-100 overflow-hidden flex flex-col h-full${animated ? ' hover:shadow-2xl hover:-translate-y-2 transition-all duration-300' : ''}`}>
             {/* Header: imagen si hay, sino degradado */}
             {getImageSrc(combo.image) ? (
-                <div className="relative h-80 sm:h-96 overflow-hidden flex-shrink-0">
+                <div className="relative overflow-hidden flex-shrink-0">
                     <img
                         src={getImageSrc(combo.image)}
                         alt={combo.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-auto block"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-4">
                         <h3 className="text-xl font-bold text-white leading-tight">{combo.name}</h3>
@@ -96,7 +96,7 @@ export default function CombosList({ combos = [] }) {
 
     return (
         <section className="w-full px-4 pb-12">
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-[1440px] mx-auto">
                 {/* Encabezado */}
                 <div className="text-left mb-12 px-8" data-aos="fade-up">
                     <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">

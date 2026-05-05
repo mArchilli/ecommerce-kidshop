@@ -69,7 +69,7 @@ export default function OffersView({ offers }) {
             <Head title="Ofertas" />
 
             <div className="py-8 sm:py-12">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
                     {/* Buscador */}
                     <div className="mb-4 sm:mb-6">
                         <div className="bg-gradient-to-r from-white to-neutral-50 rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6">

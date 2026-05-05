@@ -141,7 +141,7 @@ const FeaturedProducts = ({ products = [] }) => {
 
   return (
     <section className="w-full px-4 pb-12">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1440px] mx-auto">
         {/* Encabezado de la sección */}
         <div className="text-left mb-12 px-4" data-aos="fade-up">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">

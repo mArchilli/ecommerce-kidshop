@@ -811,7 +811,7 @@ export default function ProductsView({ products }) {
                     </div>{/* /overflow-hidden */}
                         </div>{/* /flex-1 columna izquierda */}
                     </div>{/* /flex dos columnas */}
-                </div>{/* /max-w-7xl */}
+                </div>{/* /max-w-[1440px] */}
             </div>{/* /py-8 */}
         </AuthenticatedLayout>
     );

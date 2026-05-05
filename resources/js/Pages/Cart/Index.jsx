@@ -117,7 +117,7 @@ const Cart = ({ cart }) => {
       <Head title="Carrito de Compras" />
 
       <div className="bg-gradient-to-br from-purple-50 via-pink-50 to-cyan-50 min-h-screen py-16">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1440px] mx-auto px-4">
           {/* Header */}
           <div className="text-left mb-12">
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mb-4">

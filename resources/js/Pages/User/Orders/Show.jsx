@@ -61,7 +61,7 @@ const OrderShow = ({ order }) => {
     <EcommerceLayout>
       <Head title={`Orden #${order.id}`} />
       <div className="min-h-screen bg-gradient-to-br from-white via-pink-50 to-cyan-50 py-12">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1440px] mx-auto px-4">
           {/* Header */}
           <div className="mb-8" data-aos="fade-down">
             <Link

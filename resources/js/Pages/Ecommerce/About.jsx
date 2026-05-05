@@ -12,7 +12,7 @@ export default function AboutUs() {
   }, []);
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-16 pb-8">
+    <section className="max-w-[1440px] mx-auto px-4 py-16 pb-8">
       {/* Encabezado de sección */}
       <div className="text-left mb-10 px-4" data-aos="fade-up">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">

@@ -32,7 +32,7 @@ export default function CategoriesView({ categories }) {
         >
             <Head title="Categorías" />
             <div className="py-6 sm:py-10">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
                     {/* Buscador y orden */}
                     <div className="mb-6">
                         <div className="bg-gradient-to-r from-white to-cyan-50 rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6">

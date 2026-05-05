@@ -134,7 +134,7 @@ export default function EditProduct({ product, categories = [], sizes = [], colo
                 </button>
             </div>
 
-            <div className="max-w-7xl mx-auto py-10">
+            <div className="max-w-[1440px] mx-auto py-10">
                 <form onSubmit={handleSubmit} className="space-y-8" encType="multipart/form-data">
                     {/* Información básica */}
                     <div className="bg-white rounded-2xl border-4 border-white shadow-lg p-6">

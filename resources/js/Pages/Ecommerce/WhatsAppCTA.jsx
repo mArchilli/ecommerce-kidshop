@@ -15,7 +15,7 @@ export default function WhatsAppCTA() {
 
   return (
     <section id="whatsapp-section" className="w-full px-4 py-16">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1440px] mx-auto">
         <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden border-4 border-green-500" data-aos="zoom-in">
           {/* Gradiente verde de esquina a esquina */}
           <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-emerald-300/10 to-green-500/15 pointer-events-none"></div>

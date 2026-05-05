@@ -555,7 +555,7 @@ export default function AuthenticatedLayout({ header, children }) {
             <div className={user.role === 'admin' ? `lg:${sidebarCollapsed ? 'ml-16' : 'ml-64'}` : ''}>
                 {header && (
                     <header className="bg-white border-b border-black/10">
-                        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+                        <div className="mx-auto max-w-[1440px] px-4 py-4 sm:px-6 lg:px-8">
                             {header}
                         </div>
                     </header>

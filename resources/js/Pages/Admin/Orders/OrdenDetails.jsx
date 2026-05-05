@@ -35,7 +35,7 @@ const OrderDetails = ({ order, csrf_token }) => {
         >
             <Head title={`Orden #${order.id}`} />
 
-            <div className="max-w-7xl mx-auto px-4 py-6 sm:py-10">
+            <div className="max-w-[1440px] mx-auto px-4 py-6 sm:py-10">
                 {/* Información de envío */}
                 <section className="bg-white rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6">
                     <div className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b-4 border-white rounded-xl p-3 sm:p-4" style={{ backgroundColor: '#29C9F4' }}>

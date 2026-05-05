@@ -175,7 +175,7 @@ export default function Index({ pendingOrders, dispatchedOrders, filters }) {
         >
             <Head title="Órdenes" />
             <div className="py-12">
-                <div className="mx-auto max-w-7xl space-y-8 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-[1440px] space-y-8 sm:px-6 lg:px-8">
 
                     {/* ── Filtros ─────────────────────────────────────── */}
                     <div className="bg-white rounded-2xl shadow-lg border-4 border-white overflow-hidden">

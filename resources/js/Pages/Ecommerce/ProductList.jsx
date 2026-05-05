@@ -134,7 +134,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
       {/* ── SECCIÓN COMBOS ── */}
       {combos.length > 0 && (
         <section className="py-14 px-4">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-[1440px] mx-auto">
 
             {/* Encabezado */}
             <div className="text-center mb-8">
@@ -255,11 +255,11 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
                     className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border-2 border-pink-200 overflow-hidden hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col"
                   >
                     {combo.image ? (
-                      <div className="relative h-52 overflow-hidden">
+                      <div className="relative overflow-hidden">
                         <img
                           src={getImageSrc(combo.image)}
                           alt={combo.name}
-                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                          className="w-full h-auto block transition-transform duration-500 hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-5">
                           <h3 className="text-2xl font-extrabold text-white leading-tight">{combo.name}</h3>
@@ -334,7 +334,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
       )}
 
       {/* ── SECCIÓN PRENDAS ── */}
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-[1440px] mx-auto px-4">
         {/* Barra de búsqueda y orden */}
         <div className="w-full my-6 space-y-4">
           <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
@@ -443,7 +443,7 @@ const ProductList = ({ products, categories, colors, genders, sizes = [], filter
         {/* Grid de prendas */}
         {products && products.data && products.data.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 justify-center max-w-7xl mx-auto">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 justify-center max-w-[1440px] mx-auto">
               {products.data.map((product) => (
                 <div
                   key={product.id}

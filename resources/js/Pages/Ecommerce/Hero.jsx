@@ -14,7 +14,7 @@ const Hero = () => {
       <div className="absolute bottom-20 right-10 w-96 h-96 xl:w-[28rem] xl:h-[28rem] bg-pink-200/30 rounded-full blur-3xl pointer-events-none"></div>
       
 
-      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto w-full px-6 lg:px-12 xl:px-16 py-10 md:py-16 xl:py-20">
+      <div className="max-w-[1440px] xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto w-full px-6 lg:px-12 xl:px-16 py-10 md:py-16 xl:py-20">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-0">
 
           {/* Logo - Izquierda */}

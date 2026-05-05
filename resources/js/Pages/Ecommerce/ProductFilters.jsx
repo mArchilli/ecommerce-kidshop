@@ -157,7 +157,7 @@ const ProductFilter = ({ categories, colors, genders, sizes = [], onFilter, init
     <>
       {/* Contenedor de filtros expandidos */}
       {isVisible && (
-        <div className="rounded-xl bg-white max-w-7xl mx-auto shadow-md border border-gray-200 my-6">
+        <div className="rounded-xl bg-white max-w-[1440px] mx-auto shadow-md border border-gray-200 my-6">
           <div
             ref={contentRef}
             className="overflow-hidden transition-all"

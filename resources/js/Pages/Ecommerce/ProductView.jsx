@@ -136,7 +136,7 @@ const ProductView = ({ product, relatedProducts = [], offersProducts = [] }) => 
       {/* Fondo con gradiente suave */}
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 relative overflow-hidden">
 
-        <div className="max-w-7xl mx-auto px-4 py-6 sm:py-10 lg:px-8 relative z-10">
+        <div className="max-w-[1440px] mx-auto px-4 py-6 sm:py-10 lg:px-8 relative z-10">
           {/* Botón para volver atrás */}
           <div className="mb-6">
             <button

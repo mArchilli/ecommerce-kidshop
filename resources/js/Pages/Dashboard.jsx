@@ -33,7 +33,7 @@ export default function Dashboard() {
             <style>{floatingAnimation}</style>
 
             <div className="py-6 sm:py-10">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+                <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
                     {/* Bienvenida */}
                     <section 
                         className="rounded-2xl border-4 border-white shadow-lg overflow-hidden relative"

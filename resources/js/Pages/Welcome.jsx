@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import EcommerceLayout from '@/Layouts/EcommerceLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Hero from '../Pages/Ecommerce/Hero';
@@ -87,6 +87,14 @@ const Welcome = ({ products, categories, colors, genders, offersProducts, featur
 
           {/* Combos Section */}
           <CombosList combos={activeCombos} />
+          <div className="flex justify-center -mt-4 pb-12">
+            <Link
+              href={route('catalog.index')}
+              className="px-8 py-3 bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
+            >
+              Ver todos los combos →
+            </Link>
+          </div>
 
           {/* <FeaturedProducts products={featuredProducts} /> */}
 

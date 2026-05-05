@@ -38,7 +38,7 @@ const EcommerceLayout = ({ children }) => {
         <link rel="icon" type="image/png" href="/images/logo-tienda-de-ninios.png" />
       </Head>
       <nav className="fixed top-0 left-0 right-0 z-[60] backdrop-blur-md backdrop-saturate-150 bg-white/20">
-        <div className="mx-auto max-w-7xl w-full px-4 py-3 flex justify-between items-center relative z-[80]">
+        <div className="mx-auto max-w-[1440px] w-full px-4 py-3 flex justify-between items-center relative z-[80]">
           {/* Logo */}
           <Link
             href="/"

@@ -35,7 +35,7 @@ export default function DeleteProduct({ product, categories = [], sizes = [], co
             }
         >
             <Head title="Eliminar Producto" />
-            <div className="max-w-7xl mx-auto py-10">
+            <div className="max-w-[1440px] mx-auto py-10">
                 <form onSubmit={handleSubmit} className="space-y-8">
                     <div className="bg-white rounded-2xl border-4 shadow-lg p-8" style={{ borderColor: '#FC1C1D' }}>
                         <div className="mb-8 p-6 rounded-xl" style={{ backgroundColor: '#FFF0F0', borderLeft: '6px solid #FC1C1D' }}>

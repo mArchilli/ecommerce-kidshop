@@ -62,7 +62,7 @@ export default function Index({ users, filters, stats }) {
         <AuthenticatedLayout>
             <Head title="Usuarios" />
 
-            <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto">
 
                 {/* Título */}
                 <div className="mb-8">

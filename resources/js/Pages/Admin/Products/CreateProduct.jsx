@@ -104,7 +104,7 @@ export default function CreateProduct({ categories = [], sizes = [], colors = []
       }
     >
       <Head title="Crear Producto" />
-      <div className="max-w-7xl mx-auto py-6 sm:py-10 px-4">
+      <div className="max-w-[1440px] mx-auto py-6 sm:py-10 px-4">
         <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6 sm:space-y-8">
           {/* Información básica */}
           <div className="bg-gradient-to-br from-white to-green-50 rounded-2xl border-4 border-white shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow">

@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer className="bg-cyan-50 border-t-4 border-gradient-to-r from-cyan-400 to-pink-400">
       {/* Contenido principal */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-[1440px] mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Marca con Logo */}
           <div className="space-y-4">
@@ -108,7 +108,7 @@ export default function Footer() {
 
       {/* Barra inferior */}
       <div className="border-t-2 border-white/50 bg-cyan-50">
-        <div className="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
+        <div className="max-w-[1440px] mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-xs text-gray-600 font-medium">
             © {year} La Tienda de los Niños. Todos los derechos reservados.
           </p>
